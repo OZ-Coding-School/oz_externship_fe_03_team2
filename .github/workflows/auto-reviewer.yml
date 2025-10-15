@@ -9,4 +9,5 @@ jobs:
     steps:
       - uses: kentaro-m/auto-assign-action@v2.0.0
         with:
-          reviewers: 'devjaesung,chen4023' # 리뷰어 깃헙 아이디
+          configuration-path: '.github/auto-assign.yml'
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
