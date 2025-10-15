@@ -1,7 +1,3 @@
----
-assignees: ['devjaesung', 'chen4023']
----
-
 # 📌 관련 이슈
 
 <!-- 예: closes #123 -->
@@ -21,3 +17,8 @@ assignees: ['devjaesung', 'chen4023']
 # 📸 스크린샷 (선택)
 
 <!-- 스샷 보여주고 싶으면 첨부 -->
+
+## 리뷰어
+
+- @devjaesung
+- @chen4023
