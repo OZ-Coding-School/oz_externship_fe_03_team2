@@ -19,10 +19,10 @@ const variantStyles: Record<BadgeVariant, string> = {
 }
 
 const sizeStyles: Record<BadgeSize, string> = {
-  sm: 'px-2 py-0.5 font-["Pretendard"] text-xs not-italic font-normal',
-  page: 'px-2 py-1 font-["Pretendard"] text-xs not-italic font-normal',
-  md: 'px-2.5 py-1 font-["Pretendard"] text-sm not-italic font-normal',
-  lg: 'px-3 py-1.5 font-["Pretendard"] text-base not-italic font-normal',
+  sm: 'px-2 py-0.5 text-xs not-italic font-normal',
+  page: 'px-2 py-1 text-xs not-italic font-normal',
+  md: 'px-2.5 py-1 text-sm not-italic font-normal',
+  lg: 'px-3 py-1.5 text-base not-italic font-normal',
 }
 
 const radiusStyles: Record<BadgeRadius, string> = {
