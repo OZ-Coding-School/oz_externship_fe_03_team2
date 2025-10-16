@@ -6,6 +6,7 @@ import MyPage from './pages/MyPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import MainPage from './pages/MainPage'
+import { Loading } from './components/common/Loading'
 
 function App() {
   const routes = useRoutes([
@@ -19,6 +20,7 @@ function App() {
     },
     { path: '/login', element: <LoginPage /> },
     { path: '/signup', element: <SignUpPage /> },
+    { path: '/loading', element: <Loading /> },
   ])
 
   return routes
