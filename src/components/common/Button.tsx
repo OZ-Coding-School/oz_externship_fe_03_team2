@@ -32,7 +32,7 @@ const sizeStyles: Record<ButtonSize, string> = {
   lg: 'px-6 py-3 text-base h-12 min-w-24 rounded-lg',
 }
 
-export const Button: React.FC<ButtonProps> = ({
+function Button({
   variant = 'primary',
   size = 'md',
   disabled = false,
@@ -40,7 +40,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   icon,
   ...rest
-}) => {
+}: ButtonProps) {
   const variantClass = variantStyles[variant]
   const sizeClass = sizeStyles[size]
 
@@ -57,3 +57,5 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   )
 }
+
+export default Button

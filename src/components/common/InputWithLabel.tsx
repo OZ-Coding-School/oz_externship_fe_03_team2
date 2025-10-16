@@ -13,7 +13,7 @@ type InputWithLabelProps = {
   disabled?: boolean
 }
 
-const InputWithLabel: React.FC<InputWithLabelProps> = ({
+function InputWithLabel({
   label,
   name,
   type = 'text',
@@ -24,7 +24,7 @@ const InputWithLabel: React.FC<InputWithLabelProps> = ({
   error,
   icon,
   disabled = false,
-}) => {
+}: InputWithLabelProps) {
   return (
     <div className="flex w-full flex-col">
       {/* Label */}
