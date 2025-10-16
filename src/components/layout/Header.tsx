@@ -4,7 +4,7 @@ import Button from '../common/Button'
 function Header() {
   return (
     <header className="h-16 border-b border-gray-200 bg-white">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-center px-[60px]">
+      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-center px-8">
         {/* 로고 */}
         <Link to="/" className="flex h-12 items-center justify-center">
           <span className="bg-primary-500 mr-2 flex h-8 w-8 items-center justify-center rounded-lg font-bold text-white">
