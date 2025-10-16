@@ -2,10 +2,10 @@ import { useRoutes } from 'react-router'
 import './App.css'
 
 import LayoutPage from './pages/LayoutPage'
-import RenderPage from './pages/RenderPage'
 import MyPage from './pages/MyPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
+import MainPage from './pages/MainPage'
 
 function App() {
   const routes = useRoutes([
@@ -13,7 +13,7 @@ function App() {
       path: '/',
       element: <LayoutPage />, // 공통 레이아웃
       children: [
-        { index: true, element: <RenderPage /> }, //메인페이지
+        { index: true, element: <MainPage /> },
         { path: 'mypage', element: <MyPage /> },
       ],
     },
