@@ -10,16 +10,18 @@ export default function NotFoundPage() {
       <h2 className="mt-4 text-2xl font-semibold text-gray-800">
         찾으시는 페이지가 없습니다
       </h2>
-      <br />
-      <p className="mt-2 leading-relaxed text-gray-600">
-        방문하시려는 페이지의 주소가 잘못 입력되었거나, 삭제되어 사용하실 수
-        없습니다.
-        <br />
-        입력하신 주소가 정확한지 다시 확인해주세요.
+
+      <p className="mt-4 leading-relaxed whitespace-pre-line text-gray-600">
+        {`방문하시려는 페이지의 주소가 잘못 입력되었거나, 삭제되어 사용하실 수 없습니다.
+        입력하신 주소가 정확한지 다시 한 번 확인해 주세요.`}
       </p>
 
       <div className="mt-8">
-        <Button variant="primary" size="md" onClick={() => navigate('/')}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => navigate('/', { replace: true })}
+        >
           홈으로 가기 →
         </Button>
       </div>
