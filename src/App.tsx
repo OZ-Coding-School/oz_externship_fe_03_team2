@@ -1,11 +1,12 @@
 import { useRoutes } from 'react-router'
 import './App.css'
-
 import LayoutPage from './pages/LayoutPage'
 import MyPage from './pages/MyPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import MainPage from './pages/MainPage'
+import ToastPage from './pages/ToastPage'
+import ToastContainer from './components/common/toast/ToastContainer'
 
 function App() {
   const routes = useRoutes([
@@ -19,9 +20,15 @@ function App() {
     },
     { path: '/login', element: <LoginPage /> },
     { path: '/signup', element: <SignUpPage /> },
+    { path: '/practice', element: <ToastPage /> },
   ])
 
-  return routes
+  return (
+    <>
+      <ToastContainer />
+      {routes}
+    </>
+  )
 }
 
 export default App
