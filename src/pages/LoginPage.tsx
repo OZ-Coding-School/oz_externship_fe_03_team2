@@ -1,6 +1,4 @@
-import React from 'react'
-
-const LoginPage: React.FC = () => {
+function LoginPage() {
   return <div>로그인 페이지</div>
 }
 
