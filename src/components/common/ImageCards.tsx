@@ -17,7 +17,11 @@ export default function ImageCards({
     <div
       className={`${size} relative rounded-lg duration-300 select-none hover:-translate-y-[.3rem] hover:shadow-[0_0_.9375rem_#00000020] hover:transition-all`}
     >
-      <img className="h-full w-full rounded-lg object-cover" src={imageUrl} />
+      <img
+        className="h-full w-full rounded-lg object-cover"
+        src={imageUrl}
+        alt={title}
+      />
       <div
         className={`absolute bottom-0 flex w-full flex-col gap-3 rounded-b-lg border-2 border-gray-200 bg-white p-[1.5625rem]`}
       >
