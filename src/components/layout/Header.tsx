@@ -1,7 +1,10 @@
 import { Link } from 'react-router'
 import Button from '../common/Button'
+import HeaderIsLogin from './HeaderIsLogin'
 
 function Header() {
+  const isLogin = true // false일땐 비로그인
+
   return (
     <header className="h-16 border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-center px-8">
@@ -30,17 +33,23 @@ function Header() {
           </div>
 
           {/* 로그인 + 회원가입 버튼 */}
-          <div className="ml-8 flex items-center justify-center gap-4">
-            <Link
-              to="/login"
-              className="hover:text-primary-500 text-base text-gray-700"
-            >
-              로그인
-            </Link>
-            <Button variant="primary" size="md">
-              회원가입
-            </Button>
-          </div>
+          {isLogin ? (
+            // 로그인 상태라면 헤더 로그인 UI로 교체
+            <HeaderIsLogin />
+          ) : (
+            // 미로그인: 로그인/회원가입 버튼
+            <div className="ml-8 flex items-center justify-center gap-4">
+              <Link
+                to="/login"
+                className="hover:text-primary-500 text-base text-gray-700"
+              >
+                로그인
+              </Link>
+              <Button variant="primary" size="md">
+                회원가입
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </header>
