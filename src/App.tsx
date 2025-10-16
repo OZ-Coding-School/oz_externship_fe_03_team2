@@ -1,12 +1,13 @@
 import { useRoutes } from 'react-router'
 import './App.css'
-
 import LayoutPage from './pages/LayoutPage'
 import MyPage from './pages/MyPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import MainPage from './pages/MainPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ToastContainer from './components/common/toast/ToastContainer'
+
 function App() {
   const routes = useRoutes([
     {
@@ -22,7 +23,12 @@ function App() {
     { path: '*', element: <NotFoundPage /> },
   ])
 
-  return routes
+  return (
+    <>
+      <ToastContainer />
+      {routes}
+    </>
+  )
 }
 
 export default App

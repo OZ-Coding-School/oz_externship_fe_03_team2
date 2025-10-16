@@ -12,6 +12,7 @@ export interface DropDownProps {
   options: Option[]
   xButton?: boolean
   // xButton에 관한 내용 없을 시 그냥 false가 기본값으로 먹힘
+  onSelect?: (value: string) => void
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -20,6 +21,7 @@ export function DropDown({
   placeholder,
   options,
   xButton = false,
+  onSelect,
   size = 'md',
 }: DropDownProps) {
   const [dropDownState, setDropDownState] = useState<boolean>(false)
@@ -86,6 +88,7 @@ export function DropDown({
                 onClick={() => {
                   setDropDownState(false)
                   setSelectedOption(option.text)
+                  onSelect?.(option.text)
                 }}
                 className={`flex items-center ${currentSize.dropDown} ${
                   currentSize.height
