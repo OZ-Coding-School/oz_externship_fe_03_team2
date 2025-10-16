@@ -49,12 +49,3 @@
   --color-danger-600: #dc2626;
   --color-danger-800: #991b1b;
 }
-/* index.css - 맨 밑에 추가 */
-/* ol[data-sonner-toaster] {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  top: 1rem !important;
-  transform: translateX(-50%) !important;
-  z-index: 9999 !important;
-} */
