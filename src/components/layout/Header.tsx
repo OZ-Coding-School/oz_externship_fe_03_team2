@@ -21,15 +21,14 @@ function Header() {
             <Link to="#" className="hover:text-primary-500">
               강의 목록
             </Link>
-
             <Link to="#" className="hover:text-primary-500">
               스터디 그룹
             </Link>
-
             <Link to="#" className="hover:text-primary-500">
               구인 공고
             </Link>
           </div>
+
           {/* 로그인 + 회원가입 버튼 */}
           <div className="ml-8 flex items-center justify-center gap-4">
             <Link
