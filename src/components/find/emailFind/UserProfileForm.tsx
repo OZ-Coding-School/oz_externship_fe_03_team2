@@ -1,9 +1,10 @@
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import { UserRoundSearch } from 'lucide-react'
+import { PhoneForwarded, UserRoundSearch } from 'lucide-react'
 import Toast from '../../common/toast/Toast'
 import { toast } from 'sonner'
 import type { FormData } from '../TestPage'
+import useDebounce from '../../../hooks/useDebounce'
 
 interface UserProfileFormProps {
   formData: FormData
@@ -19,7 +20,7 @@ export default function UserProfileForm({
   onNext,
 }: UserProfileFormProps) {
   const handleSubmit = () => {
-    if (!formData.name || !formData.phone) {
+    if (!formData.name || !formData.phone || !phoneReg) {
       toast.custom((t) => (
         <Toast
           id={t}
@@ -33,7 +34,10 @@ export default function UserProfileForm({
     onNext()
   }
 
-  const phoneReg = /^[0-9]{10,11}$/.test(formData.phone)
+  const debouncedPhone = useDebounce(formData.phone)
+  const phoneReg =
+    debouncedPhone === '' ? true : /^[0-9]{10,11}$/.test(debouncedPhone)
+  const phoneError = !phoneReg ? '유효한 전화번호를 입력해주세요.' : ''
 
   return (
     <div className="flex w-[23rem] flex-col items-center justify-center gap-[1.5rem]">
@@ -66,10 +70,11 @@ export default function UserProfileForm({
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, phone: e.target.value }))
           }
+          error={phoneError}
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit} disabled={!phoneReg}>
+        <Button size="freeWidthLg" onClick={handleSubmit}>
           다음 단계
         </Button>
         <Button size="lg" variant="text">
