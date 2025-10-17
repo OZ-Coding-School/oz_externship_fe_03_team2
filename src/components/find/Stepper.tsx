@@ -11,10 +11,10 @@ export default function Stepper({ level }: { level: number }) {
   }
 
   return (
-    <div>
-      <div className="flex items-center gap-1">
+    <div className="flex w-[23rem] flex-col items-center gap-2">
+      <div className="flex w-full items-center justify-center gap-2">
         <div
-          className={`${getCircleColor(1)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full text-[.875rem] font-bold text-white`}
+          className={`${getCircleColor(1)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full p-2 text-[.875rem] font-bold text-white`}
         >
           1
         </div>
@@ -22,7 +22,7 @@ export default function Stepper({ level }: { level: number }) {
           className={`${getCircleColor(2)} h-[.25rem] w-[4.6669rem] rounded-full`}
         ></div>
         <div
-          className={`${getCircleColor(2)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full text-[.875rem] font-bold text-white`}
+          className={`${getCircleColor(2)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full p-2 text-[.875rem] font-bold text-white`}
         >
           2
         </div>
@@ -30,10 +30,15 @@ export default function Stepper({ level }: { level: number }) {
           className={`${getCircleColor(3)} h-[.25rem] w-[4.6669rem] rounded-full`}
         ></div>
         <div
-          className={`${getCircleColor(3)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full text-[.875rem] font-bold text-white`}
+          className={`${getCircleColor(3)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full p-2 text-[.875rem] font-bold text-white`}
         >
           3
         </div>
+      </div>
+      <div className="flex w-[18.0625rem] justify-between text-[.75rem]">
+        <p>정보입력</p>
+        <p>휴대폰인증</p>
+        <p>결과확인</p>
       </div>
     </div>
   )
