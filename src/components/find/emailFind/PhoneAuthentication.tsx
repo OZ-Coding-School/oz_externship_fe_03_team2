@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import type { FormData } from '../TestPage'
+import type { FormData } from '../../../pages/EmailFindPage'
 import Toast from '../../common/toast/Toast'
 import { Phone } from 'lucide-react'
 

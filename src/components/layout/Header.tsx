@@ -21,7 +21,7 @@ function Header() {
 
   return (
     <>
-      <header className="h-16 border-b border-gray-200 bg-white">
+      <header className="fixed h-16 w-full border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-8">
           {/* 왼쪽 햄버거 버튼 (모바일) + 로고 */}
           <div className="flex items-center gap-4">

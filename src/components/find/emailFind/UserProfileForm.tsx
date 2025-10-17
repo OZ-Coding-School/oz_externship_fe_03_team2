@@ -3,7 +3,7 @@ import InputWithLabel from '../../common/InputWithLabel'
 import { PhoneForwarded, UserRoundSearch } from 'lucide-react'
 import Toast from '../../common/toast/Toast'
 import { toast } from 'sonner'
-import type { FormData } from '../TestPage'
+import type { FormData } from '../../../pages/EmailFindPage'
 import useDebounce from '../../../hooks/useDebounce'
 
 interface UserProfileFormProps {
