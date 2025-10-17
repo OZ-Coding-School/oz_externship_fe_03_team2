@@ -21,7 +21,7 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node)
     )
-      setOpen(false) // 사이드패널이 존재하고 클릭 위치가 밖일 때 닫음
+      setOpen(false) // 드롭다운이 존재하고 클릭 위치가 밖일 때 닫음
   }, [])
 
   useEffect(() => {

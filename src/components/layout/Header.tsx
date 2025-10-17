@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router'
 import Button from '../common/Button'
 import HeaderIsLogin from './HeaderIsLogin'
-import { Menu, X, User, Power } from 'lucide-react'
+import { Menu, X, Users, Megaphone, Book, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import Avatar from '../common/Avatar'
 
@@ -11,18 +11,13 @@ function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const userName = '김개발'
-  const userEmail = 'test@naver.com'
+  const userEmail = 'kim.dev@example.com'
 
   const navLinks = [
-    { label: '강의 목록', path: '/ddd' },
-    { label: '스터디 그룹', path: '/ddd' },
-    { label: '구인 공고', path: '/ddd' },
+    { label: '강의 목록', path: '/ddd', icon: Book },
+    { label: '스터디 그룹', path: '/ddd', icon: Users },
+    { label: '구인 공고', path: '/ddd', icon: Megaphone },
   ]
-
-  const handleLoginClick = () => {
-    navigate('/login')
-    setSidebarOpen(false)
-  }
 
   return (
     <>
@@ -127,79 +122,72 @@ function Header() {
           />
 
           {/* 사이드 패널 */}
-          <div className="animate-slide-in-left fixed top-0 left-0 z-50 flex h-full w-64 flex-col overflow-y-auto bg-white shadow-lg">
-            {/* 닫기 버튼 */}
-            <div className="flex justify-end p-4">
+          <div className="animate-slide-in-left fixed top-0 left-0 z-50 flex h-full w-66 flex-col overflow-y-auto bg-white shadow-lg">
+            {/* 헤더: 로고 + 닫기 버튼 */}
+            <div className="flex items-center justify-between border-b border-gray-200 p-4">
+              <Link
+                to="/"
+                className="flex items-center gap-2"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span className="bg-primary-500 flex h-7 w-7 items-center justify-center rounded-lg font-bold text-white">
+                  S
+                </span>
+              </Link>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="hover:text-primary-500 text-gray-700"
+                className="hover:text-primary-500 text-gray-400"
               >
-                <X size={24} />
+                <X size={22} />
               </button>
             </div>
 
-            {/* 사용자 정보 섹션 */}
-            <div className="border-b border-gray-200 px-6 py-4">
-              {isLogin ? (
-                <div className="flex items-center gap-3">
-                  <Avatar name={userName} size="md" isHeader />
-                  <div className="flex-1">
-                    <p className="text-base font-semibold text-gray-900">
-                      {userName}
-                    </p>
-                    <p className="text-sm text-gray-500">{userEmail}</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Avatar name={userName} size="md" isHeader />
-                  <div
-                    className="flex-1 cursor-pointer"
-                    onClick={handleLoginClick}
-                  >
-                    <p className="hover:text-primary-500 text-sm text-gray-900">
-                      로그인해주세요
-                    </p>
-                  </div>
-                </div>
-              )}
+            {/* 메뉴 섹션 */}
+            <div className="flex-1 px-4 py-6">
+              <h3 className="mb-4 text-sm font-semibold text-gray-500">메뉴</h3>
+              <nav className="flex flex-col gap-2">
+                {navLinks.map((link) => {
+                  const Icon = link.icon
+                  return (
+                    <Link
+                      key={link.label}
+                      to={link.path}
+                      className="hover:bg-primary-50 hover:text-primary-600 flex items-center gap-3 px-4 py-3 text-sm text-gray-700 transition"
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <Icon size={20} />
+                      <span>{link.label}</span>
+                    </Link>
+                  )
+                })}
+              </nav>
             </div>
 
-            {/* 네비 링크 */}
-            <div className="flex flex-col">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.path}
-                  className="hover:bg-primary-50 hover:text-primary-600 border-b border-gray-100 px-6 py-3 text-sm text-gray-700"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* 마이페이지, 로그아웃 버튼 (로그인 상태일 때만) */}
-            {isLogin && (
-              <div className="mt-auto flex justify-around border-b border-gray-200 py-3">
-                <div
-                  onClick={() => {
-                    navigate('/mypage')
-                    setSidebarOpen(false)
-                  }}
-                  className="hover:text-primary-500 flex cursor-pointer items-center gap-3 px-6 py-3 text-base text-gray-700"
-                >
-                  <User size={20} />
-                </div>
-                <div
-                  onClick={() => {
-                    setSidebarOpen(false)
-                  }}
-                  className="hover:text-danger-500 flex cursor-pointer items-center gap-3 px-6 py-3 text-base text-gray-700"
-                >
-                  <Power size={20} />
+            {/* 유저 정보 + 로그아웃 */}
+            <div className="border-t border-gray-200">
+              {/* 유저 정보 */}
+              <div className="flex items-center gap-3 px-4 py-4">
+                <Avatar name={userName} size="md" />
+                <div className="flex flex-1 flex-col">
+                  <p className="text-sm font-semibold text-gray-900">
+                    {userName}
+                  </p>
+                  <p className="text-xs text-gray-500">{userEmail}</p>
                 </div>
               </div>
-            )}
+
+              {/* 로그아웃 버튼 */}
+              <button
+                onClick={() => {
+                  // 로그아웃 로직
+                  setSidebarOpen(false)
+                }}
+                className="hover:text-danger-500 mb-5 flex min-w-58 cursor-pointer items-center justify-center gap-3 border-t border-gray-100 bg-gray-100 px-4 py-2 text-sm text-gray-700 transition hover:bg-red-50"
+              >
+                <LogOut size={16} className="rotate-180 transform" />
+                <span>로그아웃</span>
+              </button>
+            </div>
           </div>
         </>
       )}
