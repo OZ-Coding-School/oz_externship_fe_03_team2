@@ -7,8 +7,8 @@ export interface NodataProps {
 
 function Nodata({ onClick }: NodataProps) {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex h-[382px] w-[854px] flex-col items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="flex h-[382px] w-full max-w-[854px] flex-col items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
         <div className="bg-primary-50 mb-6 flex h-[80px] w-[80px] items-center justify-center rounded-full">
           <Inbox className="text-primary-500" />
         </div>
