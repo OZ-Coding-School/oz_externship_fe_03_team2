@@ -1,9 +1,10 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Button from '../common/Button'
 import HeaderIsLogin from './HeaderIsLogin'
 
 function Header() {
   const isLogin = true // false일땐 비로그인
+  const navigate = useNavigate()
 
   return (
     <header className="h-16 border-b border-gray-200 bg-white">
@@ -45,7 +46,11 @@ function Header() {
               >
                 로그인
               </Link>
-              <Button variant="primary" size="md">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => navigate('/signup')}
+              >
                 회원가입
               </Button>
             </div>

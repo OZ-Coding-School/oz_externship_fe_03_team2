@@ -1,3 +1,4 @@
+import { User } from 'lucide-react'
 import { type HTMLAttributes } from 'react'
 
 type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -6,6 +7,7 @@ interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   name: string
   imgUrl?: string
   size?: AvatarSize
+  isHeader?: boolean
 }
 
 const baseStyles =
@@ -24,9 +26,19 @@ export default function Avatar({
   imgUrl,
   size = 'md',
   className = '',
+  isHeader = false,
   ...rest
 }: AvatarProps) {
   const sizeClass = sizeStyles[size]
+
+  // 헤더인 경우 아이콘으로 대체
+  if (isHeader) {
+    return (
+      <div className={`${baseStyles} ${sizeClass} ${className}`} {...rest}>
+        <User className="text-primary-500" size={20} />
+      </div>
+    )
+  }
 
   return (
     <div className={`${baseStyles} ${sizeClass} ${className}`} {...rest}>
