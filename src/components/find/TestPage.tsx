@@ -23,7 +23,7 @@ export default function TestPage() {
   const handlePrevStep = () => setLevel((prev) => prev - 1)
 
   return (
-    <div className="w-[28rem] shadow-xs">
+    <div className="flex w-[28rem] flex-col justify-center gap-[1.5rem] shadow-xs">
       <Stepper level={level} />
 
       {level === 1 ? (

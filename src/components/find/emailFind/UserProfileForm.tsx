@@ -34,30 +34,42 @@ export default function UserProfileForm({
   }
 
   return (
-    <div>
-      <div className="bg-primary-200 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
-        <UserRoundSearch size={25} />
+    <div className="flex w-[23rem] flex-col items-center justify-center gap-[1.5rem]">
+      <div className="flex flex-col items-center gap-[1rem]">
+        <div className="bg-primary-100 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
+          <UserRoundSearch size={30} />
+        </div>
+        <div className="flex flex-col items-center gap-[.5rem]">
+          <p className="text-[1.125rem] font-semibold">회원 정보 입력</p>
+          <p className="text-[.875rem] text-[#4B5563]">
+            가입 시 입력한 이름과 휴대폰 번호를 입력해주세요
+          </p>
+        </div>
       </div>
-      <h2>회원 정보 입력</h2>
-      <p>가입 시 입력한 이름과 휴대폰 번호를 입력해주세요</p>
-      <InputWithLabel
-        label="이름"
-        name="name"
-        value={formData.name}
-        onChange={(e) =>
-          setFormData((prev) => ({ ...prev, name: e.target.value }))
-        }
-      />
-      <InputWithLabel
-        label="휴대전화"
-        name="phone"
-        value={formData.phone}
-        onChange={(e) =>
-          setFormData((prev) => ({ ...prev, phone: e.target.value }))
-        }
-      />
-      <Button onClick={handleSubmit}>다음 단계</Button>
-      <button>로그인으로 돌아가기</button>
+      <div className="flex w-full flex-col items-center gap-[1.5rem]">
+        <InputWithLabel
+          label="이름"
+          name="name"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, name: e.target.value }))
+          }
+        />
+        <InputWithLabel
+          label="휴대전화"
+          name="phone"
+          value={formData.phone}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, phone: e.target.value }))
+          }
+        />
+      </div>
+      <div className="flex flex-col items-center gap-[.75rem]">
+        <Button size="lg" onClick={handleSubmit}>
+          다음 단계
+        </Button>
+        <button>로그인으로 돌아가기</button>
+      </div>
     </div>
   )
 }
