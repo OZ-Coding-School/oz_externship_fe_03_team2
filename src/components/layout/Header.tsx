@@ -35,10 +35,9 @@ function Header() {
 
           {/* 로그인 + 회원가입 버튼 */}
           {isLogin ? (
-            // 로그인 상태라면 헤더 로그인 UI로 교체
-            <HeaderIsLogin />
+            <HeaderIsLogin /> // 로그인 상태라면 헤더 로그인 UI로 교체
           ) : (
-            // 미로그인: 로그인/회원가입 버튼
+            // 비로그인: 로그인/회원가입 버튼
             <div className="ml-8 flex items-center justify-center gap-4">
               <Link
                 to="/login"
