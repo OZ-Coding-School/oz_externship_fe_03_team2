@@ -19,7 +19,7 @@ export default function PhoneAuthentication({
   onPrev,
 }: PhoneAuthProps) {
   const handleSubmit = () => {
-    if (!formData.name || !formData.phone) {
+    if (!formData.authCode) {
       toast.custom((t) => (
         <Toast
           id={t}
@@ -33,23 +33,35 @@ export default function PhoneAuthentication({
     onNext()
   }
   return (
-    <div>
-      <div className="bg-primary-100 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
-        <Phone size={30} />
+    <div className="flex w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
+      <div className="flex flex-col items-center gap-4">
+        <div className="bg-primary-100 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
+          <Phone size={30} />
+        </div>
+        <div className="flex flex-col items-center gap-[.5rem]">
+          <p className="text-[1.125rem] font-semibold">휴대폰 인증</p>
+          <p className="text-[.875rem]">
+            {formData.phone}로 인증코드를 발송했습니다.
+          </p>
+        </div>
       </div>
-      <h2>휴대폰 인증</h2>
-      <p>{formData.phone}로 인증코드를 발송했습니다</p>
 
-      <InputWithLabel
-        label="인증코드"
-        name="authCode"
-        value={formData.authCode}
-        placeholder="4자리 인증코드 입력"
-        onChange={(e) =>
-          setFormData((prev) => ({ ...prev, authCode: e.target.value }))
-        }
-      />
-      <button>인증코드 전송</button>
+      <div className="flex items-end gap-2">
+        <div className="w-[15.5625rem]">
+          <InputWithLabel
+            label="인증코드"
+            name="authCode"
+            value={formData.authCode}
+            placeholder="4자리 인증코드 입력"
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, authCode: e.target.value }))
+            }
+          />
+        </div>
+        <button className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-[2.625rem] w-[7rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]">
+          인증코드전송
+        </button>
+      </div>
 
       <Button variant="primary" size="freeWidthLg" onClick={handleSubmit}>
         인증하기

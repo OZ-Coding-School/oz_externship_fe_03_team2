@@ -67,7 +67,7 @@ export default function UserProfileForm({
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidth" onClick={handleSubmit}>
+        <Button size="freeWidthLg" onClick={handleSubmit}>
           다음 단계
         </Button>
         <Button size="lg" variant="text">
