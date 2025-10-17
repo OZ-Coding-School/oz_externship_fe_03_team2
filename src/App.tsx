@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage'
 import MainPage from './pages/MainPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ToastContainer from './components/common/toast/ToastContainer'
+import TestPage from './components/find/testPage'
 
 function App() {
   const routes = useRoutes([
@@ -21,6 +22,7 @@ function App() {
     { path: '/login', element: <LoginPage /> },
     { path: '/signup', element: <SignUpPage /> },
     { path: '*', element: <NotFoundPage /> },
+    { path: '/test', element: <TestPage /> },
   ])
 
   return (
