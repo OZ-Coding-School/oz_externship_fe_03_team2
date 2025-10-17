@@ -33,6 +33,8 @@ export default function UserProfileForm({
     onNext()
   }
 
+  const phoneReg = /^[0-9]{10,11}$/.test(formData.phone)
+
   return (
     <div className="flex w-[23rem] flex-col items-center justify-center gap-[1.5rem]">
       <div className="flex flex-col items-center gap-[1rem]">
@@ -67,7 +69,7 @@ export default function UserProfileForm({
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit}>
+        <Button size="freeWidthLg" onClick={handleSubmit} disabled={!phoneReg}>
           다음 단계
         </Button>
         <Button size="lg" variant="text">

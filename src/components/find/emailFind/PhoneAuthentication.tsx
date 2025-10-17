@@ -32,6 +32,9 @@ export default function PhoneAuthentication({
     }
     onNext()
   }
+
+  const authReg = /^[0-9]{4}$/.test(formData.authCode)
+
   return (
     <div className="flex w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
       <div className="flex flex-col items-center gap-4">
@@ -63,7 +66,12 @@ export default function PhoneAuthentication({
         </button>
       </div>
 
-      <Button variant="primary" size="freeWidthLg" onClick={handleSubmit}>
+      <Button
+        variant="primary"
+        size="freeWidthLg"
+        onClick={handleSubmit}
+        disabled={!authReg}
+      >
         인증하기
       </Button>
       <Button variant="outline" size="freeWidthMd" onClick={onPrev}>
