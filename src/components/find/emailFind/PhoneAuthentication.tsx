@@ -33,6 +33,17 @@ export default function PhoneAuthentication({
     onNext()
   }
 
+  const handleAuthCode = () => {
+    toast.custom((t) => (
+      <Toast
+        id={t}
+        title="인증번호를 재발송하였습니다"
+        message="재발송된 인증번호를 확인 후 다시 시도해주세요."
+        type="success"
+      />
+    ))
+  }
+
   const authReg = /^[0-9]{4}$/.test(formData.authCode)
 
   return (
@@ -61,7 +72,10 @@ export default function PhoneAuthentication({
             }
           />
         </div>
-        <button className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-[2.625rem] w-[7rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]">
+        <button
+          onClick={() => handleAuthCode()}
+          className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-[2.625rem] w-[7rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]"
+        >
           인증코드전송
         </button>
       </div>

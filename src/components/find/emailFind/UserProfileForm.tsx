@@ -5,6 +5,7 @@ import Toast from '../../common/toast/Toast'
 import { toast } from 'sonner'
 import type { FormData } from '../../../pages/EmailFindPage'
 import useDebounce from '../../../hooks/useDebounce'
+import { useNavigate } from 'react-router'
 
 interface UserProfileFormProps {
   formData: FormData
@@ -19,6 +20,7 @@ export default function UserProfileForm({
   setFormData,
   onNext,
 }: UserProfileFormProps) {
+  const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !phoneReg) {
       toast.custom((t) => (
@@ -84,7 +86,7 @@ export default function UserProfileForm({
         <Button size="freeWidthLg" onClick={handleSubmit}>
           다음 단계
         </Button>
-        <Button size="lg" variant="text">
+        <Button size="lg" variant="text" onClick={() => navigate('/login')}>
           로그인으로 돌아가기
         </Button>
       </div>

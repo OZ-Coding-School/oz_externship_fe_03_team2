@@ -44,7 +44,7 @@ export default function Toast({ id, title, message, type }: ToastType) {
           {toastUi[type].icon}
         </span>
         <div className={`${toastUi[type].textColor}`}>
-          <p>{title}</p>
+          <p className="font-semibold">{title}</p>
           <p>{message}</p>
         </div>
       </div>
