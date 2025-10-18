@@ -43,14 +43,14 @@ export default function PhoneAuthentication({
         </div>
         <div className="flex flex-col items-center gap-[.5rem]">
           <p className="text-[1.125rem] font-semibold">휴대폰 인증</p>
-          <p className="text-[.875rem]">
-            {formData.phone}로 인증코드를 발송했습니다.
+          <p className="text-center text-[.875rem]">
+            &apos;{formData.phone}&apos; 로 인증코드를 발송했습니다.
           </p>
         </div>
       </div>
 
-      <div className="flex items-end gap-2">
-        <div className="w-[15.5625rem]">
+      <div className="flex flex-row items-end gap-2">
+        <div className="w-full min-w-5 overflow-hidden">
           <InputWithLabel
             label="인증코드"
             name="authCode"
