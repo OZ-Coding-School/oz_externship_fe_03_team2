@@ -33,14 +33,20 @@ export default function UserProfileForm({
     }
     onNext()
   }
-
+  // 전화번호 유효성 검사
   const debouncedPhone = useDebounce(formData.phone)
   const phoneReg =
     debouncedPhone === '' ? true : /^[0-9]{10,11}$/.test(debouncedPhone)
   const phoneError = !phoneReg ? '유효한 전화번호를 입력해주세요.' : ''
 
+  // 이름 유효성 검사
+  const debouncedName = useDebounce(formData.name)
+  const NameReg =
+    debouncedName === '' ? true : /^[가-힣a-zA-Z]{2,20}$/.test(debouncedName)
+  const NameError = !NameReg ? '유효한 이름을 입력해주세요.' : ''
+
   return (
-    <div className="flex w-[23rem] flex-col items-center justify-center gap-[1.5rem]">
+    <div className="flex w-full max-w-[23rem] flex-col items-center justify-center gap-[1.5rem]">
       <div className="flex flex-col items-center gap-[1rem]">
         <div className="bg-primary-100 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
           <UserRoundSearch size={30} />
@@ -61,6 +67,7 @@ export default function UserProfileForm({
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, name: e.target.value }))
           }
+          error={NameError}
         />
         <InputWithLabel
           label="휴대전화"

@@ -5,7 +5,7 @@ import { Check } from 'lucide-react'
 export default function EmailFindFinish() {
   const navigate = useNavigate()
   return (
-    <div className="flex w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
+    <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
       <div className="flex flex-col items-center gap-4">
         <div className="bg-success-100 text-success-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
           <Check size={30} />
@@ -33,7 +33,7 @@ export default function EmailFindFinish() {
         >
           로그인하기
         </button>
-        <div className="w-[11.1875rem]">
+        <div className="w-[11.1875rem] whitespace-nowrap">
           <Button variant="outline" size="freeWidthLg">
             비밀번호 찾기
           </Button>

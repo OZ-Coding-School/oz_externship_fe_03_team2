@@ -36,7 +36,7 @@ export default function PhoneAuthentication({
   const authReg = /^[0-9]{4}$/.test(formData.authCode)
 
   return (
-    <div className="flex w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
+    <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
       <div className="flex flex-col items-center gap-4">
         <div className="bg-primary-100 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
           <Phone size={30} />

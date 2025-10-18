@@ -24,14 +24,14 @@ export default function EmailFindPage() {
 
   return (
     <div className="min-h-screen py-25">
-      <div className="m-5 flex flex-col items-center justify-center gap-[2rem]">
+      <div className="m-5 flex flex-col items-center justify-center gap-[2rem] [word-break:keep-all]">
         <div className="flex flex-col items-center gap-[.5rem]">
           <p className="text-[1.875rem] font-semibold">이메일 찾기</p>
           <p className="text-[.875rem]">
             가입 시 입력한 정보로 이메일을 찾을 수 있습니다
           </p>
         </div>
-        <div className="shadow-normal flex w-[28rem] flex-col justify-center gap-[1.5rem] rounded-lg px-[2.5rem] pt-[2rem] pb-[.75rem]">
+        <div className="shadow-normal flex w-full max-w-[28rem] flex-col justify-center gap-[1.5rem] rounded-lg px-[2.5rem] pt-[2rem] pb-[.75rem]">
           <Stepper level={level} />
 
           {level === 1 ? (
