@@ -48,12 +48,6 @@ export default function Stepper({ level }: { level: number }) {
           <p className="text-[.75rem] text-gray-500">결과확인</p>
         </div>
       </div>
-      {/* <div className="flex w-full max-w-[18.0625rem] justify-between px-13 text-[.75rem] text-gray-500 lg:p-0"> */}
-      {/* <div className="flex w-full  items-center justify-between text-[.75rem] text-gray-500 lg:max-w-[18rem]"> */}
-      {/* <div className="flex w-full flex-1 items-center justify-between text-[.75rem] text-gray-500  ">
-        <p>정보입력</p>
-        <p>휴대폰인증</p>
-        <p>결과확인</p> */}
       <div className="flex w-full flex-1/4 items-center justify-around text-[.75rem] text-gray-500"></div>
     </div>
   )
