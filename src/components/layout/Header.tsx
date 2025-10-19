@@ -166,7 +166,13 @@ function Header() {
             {/* 유저 정보 + 로그아웃 */}
             <div className="border-t border-gray-200">
               {/* 유저 정보 */}
-              <div className="flex items-center gap-3 px-4 py-4">
+              <div
+                className="hover:bg-primary-50 flex cursor-pointer items-center gap-3 px-4 py-4"
+                onClick={() => {
+                  navigate('/mypage')
+                  setSidebarOpen(false)
+                }}
+              >
                 <Avatar name={userName} size="md" />
                 <div className="flex flex-1 flex-col">
                   <p className="text-sm font-semibold text-gray-900">
