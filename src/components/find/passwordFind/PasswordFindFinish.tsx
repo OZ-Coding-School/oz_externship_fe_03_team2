@@ -30,6 +30,18 @@ export default function PasswordFindFinish({
       return
     }
   }
+  const handlePasswordChange = () => {
+    // 나중에 api 나오면 성공/에러 로직 나누기?
+    toast.custom((t) => (
+      <Toast
+        id={t}
+        title="비밀번호가 변경되었습니다"
+        message="로그인을 시도해주세요."
+        type="success"
+      />
+    ))
+    return
+  }
 
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
@@ -38,7 +50,7 @@ export default function PasswordFindFinish({
     debouncedPassword === ''
       ? true
       : /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(debouncedPassword)
-  const passwordError = passwordReg ? '' : '더 강력한 비밀번호를 사용하십시오.'
+  const passwordError = passwordReg ? '' : '비밀번호 강도가 약합니다.'
 
   const passwordConfirmTest = useDebounce(passwordConfirm)
   const passwordConfirmError =
@@ -87,6 +99,7 @@ export default function PasswordFindFinish({
           onClick={() => {
             navigate('/login')
             handleSubmit()
+            handlePasswordChange()
           }}
           className="bg-success-500 h-12 w-full rounded-lg text-white"
         >

@@ -20,7 +20,7 @@ export default function PasswordFindEmailForm({
 }: PasswordFindEmailFormProps) {
   const navigate = useNavigate()
   const handleSubmit = () => {
-    if (!formData.email) {
+    if (!formData.email || emailError) {
       toast.custom((t) => (
         <Toast
           id={t}
@@ -39,7 +39,7 @@ export default function PasswordFindEmailForm({
     debouncedEmail === ''
       ? true
       : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(debouncedEmail)
-  const emailError = emailReg ? '' : '올바른 이메일 형식을 입력해주세요.'
+  const emailError = !emailReg ? '올바른 이메일 형식을 입력해주세요.' : ''
 
   return (
     <div className="flex w-full max-w-[23rem] flex-col items-center justify-center gap-[1.5rem]">
