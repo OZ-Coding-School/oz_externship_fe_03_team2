@@ -11,7 +11,7 @@ export interface FormData {
   authCode: string
 }
 
-export default function EmailFindPage() {
+export default function PasswordFindPage() {
   const [level, setLevel] = useState(1)
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -32,12 +32,7 @@ export default function EmailFindPage() {
           </p>
         </div>
         <div className="shadow-normal flex w-full max-w-[28rem] flex-col justify-center gap-[1.5rem] rounded-lg px-[2.5rem] pt-[2rem] pb-[.75rem]">
-          <Stepper
-            level={level}
-            descriptionOne="이메일입력"
-            descriptionTwo="이메일인증"
-            descriptionThree="비밀번호재설정"
-          />
+          <Stepper level={level} />
 
           {level === 1 ? (
             <UserProfileForm

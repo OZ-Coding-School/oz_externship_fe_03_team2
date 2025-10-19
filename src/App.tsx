@@ -9,6 +9,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import ToastContainer from './components/common/toast/ToastContainer'
 import EmailFindPage from './pages/EmailFindPage'
 import CommonTest from './tests/CommonTest'
+import PasswordFindPage from './pages/PasswordFindPage'
 
 function App() {
   const routes = useRoutes([
@@ -18,12 +19,13 @@ function App() {
       children: [
         { index: true, element: <MainPage /> },
         { path: 'mypage', element: <MyPage /> },
-        { path: '/emailfind', element: <EmailFindPage /> },
       ],
     },
     { path: '/login', element: <LoginPage /> },
     { path: '/signup', element: <SignUpPage /> },
     { path: '/test', element: <CommonTest /> },
+    { path: '/emailfind', element: <EmailFindPage /> },
+    { path: '/passwordfind', element: <PasswordFindPage /> },
     { path: '*', element: <NotFoundPage /> },
   ])
 
