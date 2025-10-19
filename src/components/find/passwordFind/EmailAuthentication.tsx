@@ -1,13 +1,13 @@
 import { toast } from 'sonner'
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import type { FormData } from '../../../pages/EmailFindPage'
 import Toast from '../../common/toast/Toast'
 import { Phone } from 'lucide-react'
+import type { PasswordFormData } from '../../../pages/PasswordFindPage'
 
 interface PhoneAuthProps {
-  formData: FormData
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>
+  formData: PasswordFormData
+  setFormData: React.Dispatch<React.SetStateAction<PasswordFormData>>
   onNext: () => void
   onPrev: () => void
 }

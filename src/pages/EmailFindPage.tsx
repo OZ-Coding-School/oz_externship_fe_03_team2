@@ -34,9 +34,9 @@ export default function EmailFindPage() {
         <div className="shadow-normal flex w-full max-w-[28rem] flex-col justify-center gap-[1.5rem] rounded-lg px-[2.5rem] pt-[2rem] pb-[.75rem]">
           <Stepper
             level={level}
-            descriptionOne="이메일입력"
-            descriptionTwo="이메일인증"
-            descriptionThree="비밀번호재설정"
+            descriptionOne="정보입력"
+            descriptionTwo="휴대폰인증"
+            descriptionThree="결과확인"
           />
 
           {level === 1 ? (
