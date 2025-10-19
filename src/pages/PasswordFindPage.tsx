@@ -52,7 +52,7 @@ export default function PasswordFindPage() {
               onPrev={handlePrevStep}
             />
           ) : (
-            <PasswordFindFinish />
+            <PasswordFindFinish formData={formData} setFormData={setFormData} />
           )}
         </div>
       </div>

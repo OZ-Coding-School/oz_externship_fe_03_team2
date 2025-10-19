@@ -1,6 +1,5 @@
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import { UserRoundSearch } from 'lucide-react'
 import Toast from '../../common/toast/Toast'
 import { toast } from 'sonner'
 import useDebounce from '../../../hooks/useDebounce'
@@ -39,7 +38,7 @@ export default function PasswordFindEmailForm({
   const emailReg =
     debouncedEmail === ''
       ? true
-      : debouncedEmail.includes('@') || debouncedEmail.includes('.')
+      : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(debouncedEmail)
   const emailError = emailReg ? '' : '올바른 이메일 형식을 입력해주세요.'
 
   return (

@@ -74,9 +74,9 @@ export default function PhoneAuthentication({
         </div>
         <button
           onClick={() => handleAuthCode()}
-          className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-[2.625rem] w-[7rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]"
+          className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-10 w-[7rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]"
         >
-          인증코드전송
+          재전송
         </button>
       </div>
 
