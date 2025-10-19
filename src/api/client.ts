@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from 'axios'
+import { setupInterceptors } from './interceptors'
 
 const url = import.meta.env.VITE_API_BASE_URL
 
@@ -6,10 +7,13 @@ const url = import.meta.env.VITE_API_BASE_URL
 export const apiClient: AxiosInstance = axios.create({
   baseURL: url,
   withCredentials: true, // httpOnly
+  timeout: 10000, //10초
   headers: {
     'Content-Type': 'application/json',
   },
 })
+
+setupInterceptors(apiClient)
 
 // api 호출
 export const api = {
