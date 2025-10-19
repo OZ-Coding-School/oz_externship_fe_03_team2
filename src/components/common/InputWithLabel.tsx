@@ -1,7 +1,17 @@
 import React from 'react'
+import Button from './Button'
+
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'danger'
+  | 'text'
+type ButtonSize = 'md' | 'sm' | 'lg' | 'freeWidthLg' | 'freeWidthMd'
 
 type InputWithLabelProps = {
-  label: string
+  label?: string
   name: string
   type?: string
   value: string
@@ -13,6 +23,14 @@ type InputWithLabelProps = {
   disabled?: boolean
   description?: string
   required?: boolean
+  button?: {
+    label: string
+    onClick: () => void
+    variant?: ButtonVariant
+    size?: ButtonSize
+    icon?: React.ReactNode
+    disabled?: boolean
+  }
 }
 
 function InputWithLabel({
@@ -28,36 +46,59 @@ function InputWithLabel({
   disabled = false,
   description,
   required = false,
+  button,
 }: InputWithLabelProps) {
   return (
     <div className="flex w-full flex-col">
-      <div className="mb-2 flex h-6 items-center gap-5 text-sm font-medium">
-        {/* Label */}
-        <label htmlFor={name} className="text-gray-700">
-          {label}
-          {required && <span className="text-danger-500">*</span>}
-        </label>
+      {label && (
+        <div className="mb-2 flex h-6 items-center gap-5 text-sm font-medium">
+          {/* Label */}
+          <label htmlFor={name} className="text-gray-700">
+            {label}
+            {required && <span className="text-danger-500">*</span>}
+          </label>
 
-        {description && <span className="text-primary-500">{description}</span>}
-      </div>
+          {description && (
+            <span className="text-primary-500">{description}</span>
+          )}
+        </div>
+      )}
 
-      {/* Input */}
-      <div
-        className={`mb-5 flex items-center rounded-md border bg-white px-4 py-2 transition ${error ? 'border-danger-500' : 'focus-within:border-primary-500 border-gray-300'} ${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
-      >
-        {icon && <span className="mr-2 text-gray-500">{icon}</span>}
-        <input
-          id={name}
-          name={name}
-          type={type}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          placeholder={placeholder}
-          disabled={disabled}
-          className="flex-1 bg-transparent text-gray-900 placeholder-gray-400 outline-none"
-          autoComplete="off"
-        />
+      {/* input + button(선택) */}
+      <div className="flex items-stretch gap-2">
+        <div className="flex-1">
+          <div
+            className={`flex h-10 items-center rounded-md border bg-white px-4 py-2 transition ${error ? 'border-danger-500' : 'focus-within:border-primary-500 border-gray-300'} ${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
+          >
+            {icon && <span className="mr-2 text-gray-500">{icon}</span>}
+            <input
+              id={name}
+              name={name}
+              type={type}
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              placeholder={placeholder}
+              disabled={disabled}
+              className="flex-1 bg-transparent text-gray-900 placeholder-gray-400 outline-none"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+
+        {/* 버튼 */}
+        {button && (
+          <Button
+            type="button"
+            variant={button.variant || 'primary'}
+            size={button.size || 'md'}
+            icon={button.icon}
+            onClick={button.onClick}
+            disabled={button.disabled || disabled}
+          >
+            {button.label}
+          </Button>
+        )}
       </div>
 
       {/* 에러 있을때만 */}

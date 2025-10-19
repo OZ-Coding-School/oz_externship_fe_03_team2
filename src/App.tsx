@@ -8,6 +8,7 @@ import MainPage from './pages/MainPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ToastContainer from './components/common/toast/ToastContainer'
 import EmailFindPage from './pages/EmailFindPage'
+import CommonTest from './tests/commonTest'
 
 function App() {
   const routes = useRoutes([
@@ -22,6 +23,7 @@ function App() {
     },
     { path: '/login', element: <LoginPage /> },
     { path: '/signup', element: <SignUpPage /> },
+    { path: '/test', element: <CommonTest /> },
     { path: '*', element: <NotFoundPage /> },
   ])
 
