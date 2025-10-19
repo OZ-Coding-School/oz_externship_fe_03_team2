@@ -3,8 +3,9 @@ import InputWithLabel from '../components/common/InputWithLabel'
 import Header from '../components/layout/Header'
 import Button from '../components/common/Button'
 import { useNavigate } from 'react-router'
+import Gender from '../components/common/signup/Gender'
 
-interface Form {
+export interface Form {
   name: string
   nickname: string
   birth: string
@@ -56,6 +57,7 @@ function SignUpPage() {
       newErrors['passwordConfirm'] = '비밀번호를 확인해주세요'
     if (!form.emailCode) newErrors['emailCode'] = '인증번호를 입력해주세요'
     if (!form.phoneCode) newErrors['phoneCode'] = '인증번호를 입력해주세요'
+    if (form.gender === 'none') newErrors['gender'] = '성별을 선택해주세요'
 
     if (Object.keys(newErrors).length > 0) {
       setError(newErrors)
@@ -128,28 +130,12 @@ function SignUpPage() {
             onChange={handleChange}
           />
           <div className="flex flex-col gap-2">
-            <div>
-              성별
-              <span className="text-danger-500">*</span>
-            </div>
-            <div className="flex gap-5">
-              <button
-                type="button"
-                className={`${form.gender === 'male' ? 'bg-primary-100 text-primary-600 border-primary-600' : 'border-gray-300 bg-gray-200 text-gray-700'} cursor-pointer items-center justify-center rounded-full border px-[2.0625rem] py-[.5625rem]`}
-                onClick={() => setForm((prev) => ({ ...prev, gender: 'male' }))}
-              >
-                남
-              </button>
-              <button
-                type="button"
-                className={`${form.gender === 'female' ? 'bg-primary-100 text-primary-600 border-primary-600' : 'border-gray-300 bg-gray-200 text-gray-700'} cursor-pointer items-center justify-center rounded-full border px-[2.0625rem] py-[.5625rem]`}
-                onClick={() =>
-                  setForm((prev) => ({ ...prev, gender: 'female' }))
-                }
-              >
-                여
-              </button>
-            </div>
+            <Gender
+              form={form}
+              setForm={setForm}
+              error={error}
+              setError={setError}
+            />
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex items-end gap-3">
