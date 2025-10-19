@@ -37,14 +37,14 @@ export default function Toast({ id, title, message, type }: ToastType) {
 
   return (
     <div
-      className={`relative flex h-[4.875rem] w-[28rem] items-start justify-between gap-3 rounded-lg border p-[.875rem] text-[.875rem] select-none ${toastUi[type].border} ${toastUi[type].bg}`}
+      className={`relative flex w-auto max-w-[28rem] items-start justify-between gap-3 rounded-lg border p-[.875rem] text-[.875rem] [word-break:keep-all] select-none ${toastUi[type].border} ${toastUi[type].bg}`}
     >
       <div className="flex gap-[.75rem]">
         <span className={`${toastUi[type].iconColor}`}>
           {toastUi[type].icon}
         </span>
         <div className={`${toastUi[type].textColor}`}>
-          <p>{title}</p>
+          <p className="font-semibold">{title}</p>
           <p>{message}</p>
         </div>
       </div>

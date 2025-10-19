@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage'
 import MainPage from './pages/MainPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ToastContainer from './components/common/toast/ToastContainer'
+import EmailFindPage from './pages/EmailFindPage'
 
 function App() {
   const routes = useRoutes([
@@ -16,6 +17,7 @@ function App() {
       children: [
         { index: true, element: <MainPage /> },
         { path: 'mypage', element: <MyPage /> },
+        { path: '/emailfind', element: <EmailFindPage /> },
       ],
     },
     { path: '/login', element: <LoginPage /> },

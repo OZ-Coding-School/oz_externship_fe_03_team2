@@ -5,13 +5,14 @@ import { Toaster } from 'sonner'
 export default function ToastContainer() {
   return (
     <Toaster
-      position="bottom-center"
+      position="top-center"
       duration={4000}
-      toastOptions={{
-        style: {
-          left: 'calc(50% - 14rem)',
-        },
-      }}
+      // 토스트 너비 지정 시 필요할 수 있는 내용임.
+      // toastOptions={{
+      //   style: {
+      //     left: 'calc(50% - 14rem)',
+      //   },
+      // }}
     />
   )
 }
