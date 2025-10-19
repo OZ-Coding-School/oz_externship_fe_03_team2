@@ -78,6 +78,11 @@ function SignUpPage() {
     })
     setError({})
   }
+
+  const zmfflr = () => {
+    alert('1')
+  }
+
   return (
     <div className="bg-gray-50">
       <Header />
@@ -115,10 +120,13 @@ function SignUpPage() {
               required
               placeholder="닉네임을 입력해주세요"
               onChange={handleChange}
+              button={{
+                label: '중복확인',
+                onClick: zmfflr,
+                variant: 'signup',
+                size: 'ml',
+              }}
             />
-            <Button variant="signup" size="ml">
-              중복확인
-            </Button>
           </div>
           <InputWithLabel
             label="생년월일"

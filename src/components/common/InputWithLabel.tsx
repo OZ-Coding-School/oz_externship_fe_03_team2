@@ -10,7 +10,8 @@ type ButtonVariant =
   | 'ghost'
   | 'danger'
   | 'text'
-type ButtonSize = 'md' | 'sm' | 'lg' | 'freeWidthLg' | 'freeWidthMd'
+  | 'signup'
+type ButtonSize = 'md' | 'sm' | 'lg' | 'ml' | 'freeWidthLg' | 'freeWidthMd'
 
 type InputWithLabelProps = {
   label?: string
