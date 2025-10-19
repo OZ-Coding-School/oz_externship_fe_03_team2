@@ -8,7 +8,7 @@ import MainPage from './pages/MainPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ToastContainer from './components/common/toast/ToastContainer'
 import EmailFindPage from './pages/EmailFindPage'
-import CommonTest from './tests/commonTest'
+import CommonTest from './tests/CommonTest'
 
 function App() {
   const routes = useRoutes([
