@@ -156,10 +156,13 @@ function SignUpPage() {
                 description="로그인 시 아이디로 사용합니다."
                 placeholder="example@gmail.com"
                 onChange={handleChange}
+                button={{
+                  label: '인증코드전송',
+                  onClick: zmfflr,
+                  variant: 'signup',
+                  size: 'ml',
+                }}
               />
-              <Button variant="signup" size="ml">
-                인증번호전송
-              </Button>
             </div>
             <div className="flex items-end gap-3">
               <InputWithLabel
@@ -168,10 +171,13 @@ function SignUpPage() {
                 error={error['emailCode']}
                 placeholder="전송된 코드를 입력해주세요"
                 onChange={handleChange}
+                button={{
+                  label: '인증코드확인',
+                  onClick: zmfflr,
+                  variant: 'signup',
+                  size: 'ml',
+                }}
               />
-              <Button variant="signup" size="ml">
-                인증코드확인
-              </Button>
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -184,10 +190,13 @@ function SignUpPage() {
                 required
                 placeholder="01012345678"
                 onChange={handleChange}
+                button={{
+                  label: '인증코드전송',
+                  onClick: zmfflr,
+                  variant: 'signup',
+                  size: 'ml',
+                }}
               />
-              <Button variant="signup" size="ml">
-                인증번호전송
-              </Button>
             </div>
             <div className="flex items-end gap-3">
               <InputWithLabel
@@ -197,10 +206,14 @@ function SignUpPage() {
                 error={error['phoneCode']}
                 placeholder="인증번호 6자리를 입력해주세요"
                 onChange={handleChange}
+                button={{
+                  label: '인증코드확인',
+                  onClick: zmfflr,
+                  variant: 'signup',
+                  size: 'ml',
+                  disabled: true,
+                }}
               />
-              <Button variant="signup" size="ml">
-                인증코드확인
-              </Button>
             </div>
           </div>
           <div className="flex flex-col gap-4">
