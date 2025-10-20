@@ -7,7 +7,7 @@ function MainPage() {
   const normalizeBreaks = (text: string) => text.replace(/<br\s*\/?>/gi, '\n')
 
   return (
-    <main className="bg-primary-50 flex justify-center">
+    <main className="bg-primary-50 flex flex-col items-center justify-center">
       {/* Hero Section */}
       <section className="flex w-[1440px] justify-center px-8 py-20">
         <div className="flex max-w-[1280px] items-center justify-between gap-12">
@@ -49,6 +49,70 @@ function MainPage() {
               alt="스터디룸"
               className="h-full w-full object-cover"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Section */}
+      <section className="flex w-[1440px] flex-col items-center justify-center bg-white px-8 py-16">
+        <div className="max-w-[1280px] text-center">
+          {/* 제목 */}
+          <div className="mx-auto mb-12 w-[1216px]">
+            <h2 className="mb-4 text-[24px] font-extrabold text-gray-900">
+              왜 StudyHub를 선택해야 할까요?
+            </h2>
+            <p className="text-[16px] leading-[24px] text-[#4B5563]">
+              체계적인 학습과 실무 경험을 동시에 얻을 수 있는 최적의
+              플랫폼입니다.
+            </p>
+          </div>
+
+          {/* Feature 아이템 3개 */}
+          <div className="flex w-[1216px] justify-center gap-16">
+            {/* 1. 다양한 IT 강의 */}
+            <div className="flex w-[384px] flex-col items-center">
+              <div className="mb-4 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-yellow-100 text-3xl text-yellow-500">
+                💻
+              </div>
+              <h3 className="mb-2 text-[18px] font-semibold text-gray-900">
+                다양한 IT 강의
+              </h3>
+              <p className="w-[336px] text-[16px] leading-[24px] text-[#4B5563]">
+                프론트엔드부터 백엔드, 데이터사이언스까지
+                <br />
+                모든 분야의 전문 강의를 제공합니다.
+              </p>
+            </div>
+
+            {/* 2. 스터디 그룹 */}
+            <div className="flex w-[384px] flex-col items-center">
+              <div className="mb-4 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-green-100 text-3xl text-green-500">
+                👥
+              </div>
+              <h3 className="mb-2 text-[18px] font-semibold text-gray-900">
+                스터디 그룹
+              </h3>
+              <p className="w-[336px] text-[16px] leading-[24px] text-[#4B5563]">
+                같은 목표를 가진 사람들과 함께 학습하며
+                <br />
+                서로 동기부여하고 성장할 수 있습니다.
+              </p>
+            </div>
+
+            {/* 3. 전문 강사진 */}
+            <div className="flex w-[384px] flex-col items-center">
+              <div className="mb-4 flex h-[80px] w-[80px] items-center justify-center rounded-full bg-purple-100 text-3xl text-purple-500">
+                🎓
+              </div>
+              <h3 className="mb-2 text-[18px] font-semibold text-gray-900">
+                전문 강사진
+              </h3>
+              <p className="w-[336px] text-[16px] leading-[24px] text-[#4B5563]">
+                실무 경험이 풍부한 전문가들이 직접 제작한
+                <br />
+                고품질의 강의 콘텐츠를 만나보세요.
+              </p>
+            </div>
           </div>
         </div>
       </section>
