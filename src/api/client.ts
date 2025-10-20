@@ -8,9 +8,6 @@ export const apiClient: AxiosInstance = axios.create({
   baseURL: url,
   withCredentials: true, // httpOnly
   timeout: 10000, //10초
-  headers: {
-    'Content-Type': 'application/json',
-  },
 })
 
 setupInterceptors(apiClient)
