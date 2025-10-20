@@ -18,12 +18,10 @@ function Modal({
   children,
   footer,
 }: ModalProps) {
-  if (!isOpen) return null
+  if (!isOpen) return
 
   const handleOutClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose() // 배경을 직접 클릭했을 때만 닫기
-    }
+    if (e.target === e.currentTarget) onClose() // 배경을 직접 클릭했을 때만 닫기
   }
 
   return (
@@ -42,7 +40,7 @@ function Modal({
           </div>
           <button
             onClick={onClose}
-            className="hover:text-primary-500 cursor-pointer text-gray-400"
+            className="hover:text-primary-600 text-gray-400"
           >
             <X size={20} />
           </button>

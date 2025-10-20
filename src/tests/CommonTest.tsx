@@ -333,14 +333,14 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">스몰 사이즈</h2>
             <DropDown
-              title="국가"
-              placeholder="국가 선택"
+              title="지역"
+              placeholder="지역 선택"
               size="sm"
               options={[
-                { text: '대한민국', icon: <MapPin size={16} /> },
-                { text: '일본' },
-                { text: '중국' },
-                { text: '미국' },
+                { text: '서울', icon: <MapPin size={16} /> },
+                { text: '경기' },
+                { text: '인천' },
+                { text: '부산' },
               ]}
               onSelect={(value) => {
                 setFormData((prev) => ({ ...prev, country: value }))
@@ -389,11 +389,11 @@ function CommonTest() {
               placeholder="카테고리를 선택하세요"
               size="lg"
               options={[
-                { text: '전자제품', icon: <Plus size={18} /> },
-                { text: '의류', icon: <Heart size={18} /> },
-                { text: '음식', icon: <MapPin size={18} /> },
-                { text: '도서', icon: <Globe size={18} /> },
-                { text: '스포츠', icon: <Trash2 size={18} /> },
+                { text: '카테고리1', icon: <Plus size={18} /> },
+                { text: '카테고리2', icon: <Heart size={18} /> },
+                { text: '카테고리3', icon: <MapPin size={18} /> },
+                { text: '카테고리4', icon: <Globe size={18} /> },
+                { text: '카테고리5', icon: <Trash2 size={18} /> },
               ]}
               xButton
               onSelect={(value) => {
@@ -401,7 +401,7 @@ function CommonTest() {
                   <Toast
                     id={t}
                     title="카테고리 선택"
-                    message={`${value} 카테고리를 선택했습니다`}
+                    message={`${value} 선택했습니다`}
                     type="success"
                   />
                 ))
