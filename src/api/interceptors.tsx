@@ -27,7 +27,7 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
       message: '요청 처리 중 오류가 발생했습니다',
     }
 
-    const finalMessage = serverMessage || errorInfo.message
+    const finalMessage = serverMessage ?? errorInfo.message
     showErrorToast(errorInfo.title, finalMessage)
 
     if (status === 401) window.location.href = '/login' // 401 에러 로그인 페이지로 이동
@@ -35,7 +35,7 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
 
   // 요청은 만들어졌지만 응답이 없는 경우 (네트워크 에러, 타임아웃)
   else if (error.request) {
-    const errorCode = error.code || 'ERR_NETWORK'
+    const errorCode = error.code ?? 'ERR_NETWORK'
     const errorInfo: ErrorInfo = NETWORK_ERROR_MESSAGES[errorCode] ?? {
       title: '네트워크 오류',
       message: '요청을 처리할 수 없습니다. 네트워크를 확인해주세요',
