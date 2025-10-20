@@ -51,7 +51,7 @@ function MainPage() {
       </section>
 
       {/* Feature Section */}
-      <section className="flex w-full max-w-[1440px] flex-col items-center justify-center bg-white px-6 py-12 sm:px-8 sm:py-16">
+      <section className="flex w-full flex-col items-center justify-center bg-white px-6 py-12 sm:px-8 sm:py-16">
         <div className="w-full max-w-[1280px] text-center">
           {/* 제목 */}
           <div className="mx-auto mb-10 w-full max-w-[1216px]">
