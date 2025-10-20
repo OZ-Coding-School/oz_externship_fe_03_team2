@@ -34,7 +34,11 @@ export default function EmailFindFinish() {
           로그인하기
         </button>
         <div className="w-[11.1875rem] whitespace-nowrap">
-          <Button variant="outline" size="freeWidthLg">
+          <Button
+            variant="outline"
+            size="freeWidthLg"
+            onClick={() => navigate('/passwordfind')}
+          >
             비밀번호 찾기
           </Button>
         </div>

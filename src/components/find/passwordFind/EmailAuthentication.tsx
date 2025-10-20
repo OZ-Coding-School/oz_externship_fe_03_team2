@@ -1,23 +1,23 @@
 import { toast } from 'sonner'
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import type { FormData } from '../../../pages/EmailFindPage'
 import Toast from '../../common/toast/Toast'
-import { Phone } from 'lucide-react'
+import { MailCheck } from 'lucide-react'
+import type { PasswordFormData } from '../../../pages/PasswordFindPage'
 
-interface PhoneAuthProps {
-  formData: FormData
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>
+interface EmailAuthProps {
+  formData: PasswordFormData
+  setFormData: React.Dispatch<React.SetStateAction<PasswordFormData>>
   onNext: () => void
   onPrev: () => void
 }
 
-export default function PhoneAuthentication({
+export default function EmailAuthentication({
   formData,
   setFormData,
   onNext,
   onPrev,
-}: PhoneAuthProps) {
+}: EmailAuthProps) {
   const handleSubmit = () => {
     if (!formData.authCode) {
       toast.custom((t) => (
@@ -44,18 +44,18 @@ export default function PhoneAuthentication({
     ))
   }
 
-  const authReg = /^[0-9]{4}$/.test(formData.authCode)
+  const authReg = /^[0-9]{6}$/.test(formData.authCode)
 
   return (
     <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
       <div className="flex flex-col items-center gap-4">
         <div className="bg-primary-100 text-primary-600 flex h-[4rem] w-[4rem] items-center justify-center rounded-full">
-          <Phone size={30} />
+          <MailCheck size={30} />
         </div>
         <div className="flex flex-col items-center gap-[.5rem]">
-          <p className="text-[1.125rem] font-semibold">휴대폰 인증</p>
+          <p className="text-[1.125rem] font-semibold">이메일 인증</p>
           <p className="text-center text-[.875rem]">
-            &apos;{formData.phone}&apos; 로 인증코드를 발송했습니다.
+            {formData.email}로 인증코드를 발송했습니다.
           </p>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function PhoneAuthentication({
             label="인증코드"
             name="authCode"
             value={formData.authCode}
-            placeholder="4자리 인증코드 입력"
+            placeholder="6자리 인증코드 입력"
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, authCode: e.target.value }))
             }
@@ -74,7 +74,7 @@ export default function PhoneAuthentication({
         </div>
         <button
           onClick={() => handleAuthCode()}
-          className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-10 w-[7rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]"
+          className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-[2.625rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]"
         >
           재전송
         </button>

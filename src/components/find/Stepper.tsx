@@ -1,4 +1,16 @@
-export default function Stepper({ level }: { level: number }) {
+interface StepperType {
+  level: number
+  descriptionOne: string
+  descriptionTwo: string
+  descriptionThree: string
+}
+
+export default function Stepper({
+  level,
+  descriptionOne,
+  descriptionTwo,
+  descriptionThree,
+}: StepperType) {
   const getCircleColor = (circleNum: number): string => {
     if (level === 3) return 'bg-success-500'
     if (circleNum <= level) return 'bg-primary-500'
@@ -13,39 +25,39 @@ export default function Stepper({ level }: { level: number }) {
   return (
     <div className="flex w-full max-w-[23rem] flex-col items-center gap-2">
       <div className="flex w-full items-center justify-center gap-2">
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex max-w-[2rem] flex-col items-center gap-2">
           <div
             className={`${getCircleColor(1)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full text-[.875rem] ${getTextColor(1)}`}
           >
             1
           </div>
-          <p className="text-[.75rem] text-gray-500">정보입력</p>
+          <p className="text-[.75rem] text-gray-500">{descriptionOne}</p>
         </div>
 
         <div
           className={`${getCircleColor(2)} relative bottom-3 h-[.25rem] max-w-[4.6669rem] flex-1 rounded-full`}
         ></div>
 
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex max-w-[2rem] flex-col items-center gap-2">
           <div
             className={`${getCircleColor(2)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full p-2 text-[.875rem] ${getTextColor(2)}`}
           >
             2
           </div>
-          <p className="text-[.75rem] text-gray-500">휴대폰인증</p>
+          <p className="text-[.75rem] text-gray-500">{descriptionTwo}</p>
         </div>
 
         <div
           className={`${getCircleColor(3)} relative bottom-3 h-[.25rem] max-w-[4.6669rem] flex-1 rounded-full`}
         ></div>
 
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex max-w-[2rem] flex-col items-center gap-2">
           <div
             className={`${getCircleColor(3)} flex h-[2rem] w-[2rem] items-center justify-center rounded-full p-2 text-[.875rem] ${getTextColor(3)}`}
           >
             3
           </div>
-          <p className="text-[.75rem] text-gray-500">결과확인</p>
+          <p className="text-[.75rem] text-gray-500">{descriptionThree}</p>
         </div>
       </div>
       <div className="flex w-full flex-1/4 items-center justify-around text-[.75rem] text-gray-500"></div>
