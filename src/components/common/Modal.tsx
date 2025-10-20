@@ -29,13 +29,13 @@ function Modal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onClick={handleOutClick}
     >
-      <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
+      <div className="w-full max-w-md rounded-xl bg-white shadow-lg">
         {/* 헤더 */}
         <div className="flex items-start justify-between border-b border-gray-200 p-6">
           <div className="flex-1">
             <h2 className="text-lg font-bold text-gray-900">{title}</h2>
             {subtitle && (
-              <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+              <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
             )}
           </div>
           <button
