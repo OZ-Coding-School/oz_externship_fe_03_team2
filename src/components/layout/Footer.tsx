@@ -1,10 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import type { LinkGroup } from '../../types/Footer'
+import { Link } from 'react-router'
+import type { LinkGroup } from '../../types/typeFooter'
 
-// ------------------------------------------------
-// (1) 푸터에 들어갈 실제 링크 데이터입니다.
-// ------------------------------------------------
 const SERVICE_LINKS: LinkGroup = {
   title: '서비스',
   links: [
@@ -23,32 +19,30 @@ const SUPPORT_LINKS: LinkGroup = {
   ],
 }
 
-// ------------------------------------------------
-// (2) 작은 컴포넌트: 링크 그룹 (React.FC 제거, Props 타입 직접 지정)
-// ------------------------------------------------
-const LinkSection = ({ title, links }: LinkGroup) => (
-  <div className="flex flex-col">
-    <h3 className="mb-4 text-lg font-semibold text-gray-400">{title}</h3>
-    <ul className="space-y-3">
-      {links.map((link) => (
-        <li key={link.text}>
-          <Link
-            to={link.url}
-            className="hover:text-primary-400 text-sm text-gray-200 transition-colors duration-150"
-          >
-            {link.text}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-)
+function LinkSection(props: LinkGroup) {
+  const { title, links } = props
 
-// ------------------------------------------------
-// (3) 메인 푸터 컴포넌트 (React.FC 제거)
-// ------------------------------------------------
-const Footer = () => {
-  const currentYear = new Date().getFullYear()
+  return (
+    <div className="flex flex-col">
+      <h3 className="mb-4 text-lg font-semibold text-gray-400">{title}</h3>
+      <ul className="space-y-3">
+        {links.map((link) => (
+          <li key={link.text}>
+            <Link
+              to={link.url}
+              className="hover:text-primary-400 text-sm text-gray-200 transition-colors duration-150"
+            >
+              {link.text}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function Footer() {
+  const currentYear = 2025
 
   return (
     <footer className="bg-gray-900 p-10 text-gray-200 md:px-16">

@@ -1,6 +1,6 @@
 export interface LinkItem {
   text: string
-  url: string // 이동할 URL 주소
+  url: string
 }
 
 export interface LinkGroup {
