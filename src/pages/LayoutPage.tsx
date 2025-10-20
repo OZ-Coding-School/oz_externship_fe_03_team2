@@ -1,6 +1,7 @@
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import { Outlet, useLocation } from 'react-router'
+import { NotiBadge } from '../components/layout/NotiBadge'
 
 function LayoutPage() {
   const location = useLocation()
@@ -10,6 +11,7 @@ function LayoutPage() {
   return (
     <>
       <Header />
+      <NotiBadge />
       <Outlet />
       {showFooter && <Footer />}
     </>
