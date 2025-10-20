@@ -18,7 +18,7 @@ function App() {
       element: <LayoutPage />,
       children: [
         { index: true, element: <MainPage /> },
-        { path: 'mypage', element: <MyPage /> },
+        { path: 'mypage/*', element: <MyPage /> },
       ],
     },
     { path: '/login', element: <LoginPage /> },
