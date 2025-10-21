@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InputWithLabel from '../components/common/InputWithLabel'
 import Header from '../components/layout/Header'
 import Button from '../components/common/Button'
 import { useNavigate } from 'react-router'
 import Gender from '../components/common/signup/Gender'
+import Toast from '../components/common/toast/Toast'
+import { toast } from 'sonner'
+import useDebounce from '../hooks/useDebounce'
+import validateAll from '../utils/validators'
 
 export interface Form {
   name: string
@@ -37,11 +41,28 @@ function SignUpPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
+    setForm((prev) => ({
+      ...prev,
+      [name]:
+        name === 'birth'
+          ? value.replace(/\D/g, '').slice(0, 8)
+          : name === 'phone'
+            ? value.replace(/\D/g, '').slice(0, 11)
+            : name === 'emailCode' || name === 'phoneCode'
+              ? value.replace(/\D/g, '').slice(0, 6)
+              : value,
+    }))
     if (error[name]) {
       setError((prev) => ({ ...prev, [name]: '' }))
     }
   }
+
+  const debounceForm = useDebounce(form)
+
+  useEffect(() => {
+    const validator = validateAll(debounceForm)
+    setError((prev) => ({ ...prev, ...validator }))
+  }, [debounceForm])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,7 +101,7 @@ function SignUpPage() {
   }
 
   const zmfflr = () => {
-    alert('1')
+    toast.custom(() => <Toast title="클릭" message="잘됨" type="success" />)
   }
 
   return (
@@ -125,6 +146,7 @@ function SignUpPage() {
                 onClick: zmfflr,
                 variant: 'signup',
                 size: 'ml',
+                disabled: !form.name,
               }}
             />
           </div>
@@ -150,6 +172,7 @@ function SignUpPage() {
               <InputWithLabel
                 label="이메일"
                 name="email"
+                type="email"
                 value={form.email}
                 error={error['email']}
                 required
@@ -161,6 +184,7 @@ function SignUpPage() {
                   onClick: zmfflr,
                   variant: 'signup',
                   size: 'ml',
+                  disabled: !form.email,
                 }}
               />
             </div>
@@ -176,6 +200,7 @@ function SignUpPage() {
                   onClick: zmfflr,
                   variant: 'signup',
                   size: 'ml',
+                  disabled: !form.emailCode,
                 }}
               />
             </div>
@@ -185,6 +210,7 @@ function SignUpPage() {
               <InputWithLabel
                 label="휴대전화"
                 name="phone"
+                type="tel"
                 value={form.phone}
                 error={error['phone']}
                 required
@@ -195,6 +221,7 @@ function SignUpPage() {
                   onClick: zmfflr,
                   variant: 'signup',
                   size: 'ml',
+                  disabled: !form.phone,
                 }}
               />
             </div>
@@ -211,7 +238,7 @@ function SignUpPage() {
                   onClick: zmfflr,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: true,
+                  disabled: !form.phoneCode,
                 }}
               />
             </div>
@@ -220,6 +247,7 @@ function SignUpPage() {
             <InputWithLabel
               label="비밀번호"
               name="password"
+              type="password"
               value={form.password}
               error={error['password']}
               required
@@ -230,6 +258,7 @@ function SignUpPage() {
             <InputWithLabel
               label=""
               name="passwordConfirm"
+              type="password"
               value={form.passwordConfirm}
               error={error['passwordConfirm']}
               placeholder="비밀번호를 다시 입력해주세요"
