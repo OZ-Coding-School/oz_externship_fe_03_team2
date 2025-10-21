@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Button from './Button'
+import { useCountdown } from '../../hooks/useCountdown'
+import { timeFormat } from '../../utils/timeFormat'
 
 type ButtonVariant =
   | 'primary'
@@ -23,6 +25,7 @@ type InputWithLabelProps = {
   disabled?: boolean
   description?: string
   required?: boolean
+  maxLength?: number
   button?: {
     label: string
     onClick: () => void
@@ -47,40 +50,16 @@ function InputWithLabel({
   disabled = false,
   description,
   required = false,
+  maxLength,
   button,
 }: InputWithLabelProps) {
-  const [time, setTime] = useState(button?.countdown || 0)
-  const [isCountingDown, setIsCountingDown] = useState(false)
-
-  // 타이머
-  useEffect(() => {
-    if (!isCountingDown || time < 0) return
-
-    const interval = setInterval(() => {
-      setTime((prev) => {
-        if (prev <= 1) {
-          setIsCountingDown(false)
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [isCountingDown, time])
+  const { time, isRunning, start } = useCountdown(button?.countdown || 0)
 
   const handleButtonClick = () => {
     if (button?.countdown) {
-      setTime(button.countdown)
-      setIsCountingDown(true)
+      start(button.countdown)
     }
     button?.onClick()
-  }
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const sec = seconds % 60
-    return `${minutes}:${sec.toString().padStart(2, '0')}`
   }
 
   return (
@@ -117,6 +96,7 @@ function InputWithLabel({
               disabled={disabled}
               className="flex-1 bg-transparent text-gray-900 placeholder-gray-400 outline-none"
               autoComplete="off"
+              maxLength={maxLength}
             />
           </div>
         </div>
@@ -131,8 +111,8 @@ function InputWithLabel({
             onClick={handleButtonClick}
             disabled={button.disabled}
           >
-            {isCountingDown && time > 0
-              ? `재전송 (${formatTime(time)})`
+            {isRunning && time > 0
+              ? `재전송 (${timeFormat(time)})`
               : button.label}
           </Button>
         )}

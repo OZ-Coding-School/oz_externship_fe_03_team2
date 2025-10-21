@@ -175,6 +175,7 @@ function ProfileEditModal({
               value={verificationCode}
               onChange={handleVerificationChange}
               placeholder="인증번호 6자리 입력"
+              maxLength={6}
               button={{
                 label: '확인',
                 onClick: handleVerificationConfirm,
