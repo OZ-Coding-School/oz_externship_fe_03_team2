@@ -128,7 +128,7 @@ function MainPage() {
             </button>
           </div>
 
-          <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-between">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-10">
             {[
               {
                 title: 'React 완전 마스터 강의',
@@ -159,7 +159,7 @@ function MainPage() {
                 date={course.date}
                 imageUrl={course.imageUrl}
                 size="w-full sm:w-[384px] h-[17.375rem]"
-                onClick={() => navigate('/popularcourses')} //임시경로작성
+                onClick={() => navigate('/popularcourses')} // 임시 경로
               />
             ))}
           </div>
