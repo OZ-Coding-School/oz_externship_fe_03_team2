@@ -110,7 +110,7 @@ function MainPage() {
         </div>
       </section>
 
-      {/* 인기 강의 섹션 */}
+      {/* 인기 강의 Section  */}
       <section className="flex w-full flex-col items-center justify-center bg-white px-6 py-16 sm:px-8">
         <div className="w-full max-w-[1280px]">
           <div className="mb-10 flex items-end justify-between">
@@ -161,6 +161,35 @@ function MainPage() {
                 onClick={() => navigate('/popularcourses')} // 임시경로작성
               />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="flex w-full justify-center bg-[#E0B43A] px-6 py-20">
+        <div className="flex w-full max-w-[1280px] flex-col items-center text-center text-white">
+          <h2 className="mb-4 text-[24px] leading-[32px] font-extrabold sm:text-[28px] sm:leading-[38px]">
+            지금 시작하여 IT 전문가가 되어보세요!
+          </h2>
+          <p className="mb-10 text-[16px] leading-[26px] sm:text-[18px] sm:leading-[28px]">
+            수백 개의 강의와 활발한 스터디 그룹이 여러분을 기다리고 있습니다.
+          </p>
+
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <Button
+              variant="outline"
+              className="!h-[52px] !w-[180px] !rounded-lg !border-none !bg-white !text-[#E0B43A] hover:!bg-[#fdf7e3] hover:!text-[#C58C00]"
+              onClick={() => navigate('/signup')}
+            >
+              무료로 시작하기
+            </Button>
+            <Button
+              variant="outline"
+              className="!h-[52px] !w-[200px] !rounded-lg !border !border-white !text-white hover:!bg-white hover:!text-[#E0B43A]"
+              onClick={() => navigate('/studygroups')} // 임시경로작성
+            >
+              스터디 그룹 만들기
+            </Button>
           </div>
         </div>
       </section>
