@@ -71,7 +71,7 @@ function validateField(
     case 'password':
       return passwordRe.test(formdata)
         ? ''
-        : '8~15자, 대/소문자+숫자+특수문자 포함'
+        : '8~15자, 대소문자+숫자+특수문자 포함 해주세요'
     case 'passwordConfirm':
       return formdata === password ? '' : '비밀번호가 일치하지 않습니다'
     case 'emailCode':
