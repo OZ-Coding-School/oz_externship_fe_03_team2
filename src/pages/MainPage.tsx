@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
+import ImageCards from '../components/common/ImageCards'
 
 function MainPage() {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ function MainPage() {
             </Button>
 
             <Button
-              onClick={() => navigate('/studygroups')} //임시경로작성
+              onClick={() => navigate('/studygroups')} // 임시경로작성
               className="!border-primary-500 !text-primary-600 hover:!bg-primary-100 !h-[48px] !w-full max-w-[300px] !rounded-[8px] !border sm:!h-[50px] sm:!w-[177px]"
             >
               스터디 그룹 참여
@@ -53,7 +54,6 @@ function MainPage() {
       {/* Feature Section */}
       <section className="flex w-full flex-col items-center justify-center bg-white px-6 py-12 sm:px-8 sm:py-16">
         <div className="w-full max-w-[1280px] text-center">
-          {/* 제목 */}
           <div className="mx-auto mb-10 w-full max-w-[1216px]">
             <h2 className="mb-3 text-[20px] font-extrabold text-gray-900 sm:mb-4 sm:text-[24px]">
               왜 StudyHub를 선택해야할까요?
@@ -64,9 +64,7 @@ function MainPage() {
             </p>
           </div>
 
-          {/* Feature 아이템 3개 */}
           <div className="flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
-            {/* 1. 다양한 IT 강의 */}
             <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
               <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-yellow-100 text-2xl text-yellow-500 sm:h-[80px] sm:w-[80px] sm:text-3xl">
                 💻
@@ -81,7 +79,6 @@ function MainPage() {
               </p>
             </div>
 
-            {/* 2. 스터디 그룹 */}
             <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
               <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-green-100 text-2xl text-green-500 sm:h-[80px] sm:w-[80px] sm:text-3xl">
                 👥
@@ -96,7 +93,6 @@ function MainPage() {
               </p>
             </div>
 
-            {/* 3️. 전문 강사진 */}
             <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
               <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-purple-100 text-2xl text-purple-500 sm:h-[80px] sm:w-[80px] sm:text-3xl">
                 🎓
@@ -110,6 +106,61 @@ function MainPage() {
                 고품질의 강의 콘텐츠를 만나보세요.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 인기 강의 섹션 */}
+      <section className="flex w-full flex-col items-center justify-center bg-white px-6 py-16 sm:px-8">
+        <div className="w-full max-w-[1280px]">
+          <div className="mb-10 flex items-end justify-between">
+            <div>
+              <h2 className="text-[20px] font-extrabold text-gray-900 sm:text-[24px]">
+                인기 강의
+              </h2>
+              <p className="text-[14px] text-gray-600 sm:text-[16px]">
+                지금 가장 많은 사람들이 수강하는 강의들
+              </p>
+            </div>
+            <button className="text-primary-600 text-[14px] font-medium">
+              모든 강의 보기 →
+            </button>
+          </div>
+
+          <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-between">
+            {[
+              {
+                title: 'React 완전 마스터 강의',
+                description: '김개발',
+                date: '₩59,000원',
+                imageUrl:
+                  'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1200&auto=format&fit=crop',
+              },
+              {
+                title: 'Python 데이터 사이언스',
+                description: '이분석',
+                date: '₩99,000원',
+                imageUrl:
+                  'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop',
+              },
+              {
+                title: 'AWS 클라우드 아키텍처',
+                description: '한클라우드',
+                date: '₩129,000원',
+                imageUrl:
+                  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop',
+              },
+            ].map((course, index) => (
+              <ImageCards
+                key={index}
+                title={course.title}
+                description={course.description}
+                date={course.date}
+                imageUrl={course.imageUrl}
+                size="w-full sm:w-[384px] h-[17.375rem]"
+                onClick={() => navigate('/popularcourses')} // 임시경로작성
+              />
+            ))}
           </div>
         </div>
       </section>
