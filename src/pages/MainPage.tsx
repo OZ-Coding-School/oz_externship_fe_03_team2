@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
 import ImageCards from '../components/common/ImageCards'
+import { Laptop, Users, GraduationCap } from 'lucide-react'
 
 function MainPage() {
   const navigate = useNavigate()
@@ -33,7 +34,7 @@ function MainPage() {
             </Button>
 
             <Button
-              onClick={() => navigate('/studygroups')} // 임시경로작성
+              onClick={() => navigate('/studygroups')} //임시경로작성
               className="!border-primary-500 !text-primary-600 hover:!bg-primary-100 !h-[48px] !w-full max-w-[300px] !rounded-[8px] !border sm:!h-[50px] sm:!w-[177px]"
             >
               스터디 그룹 참여
@@ -66,8 +67,8 @@ function MainPage() {
 
           <div className="flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
             <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
-              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-yellow-100 text-2xl text-yellow-500 sm:h-[80px] sm:w-[80px] sm:text-3xl">
-                💻
+              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-yellow-100 text-yellow-500 sm:h-[80px] sm:w-[80px]">
+                <Laptop className="h-8 w-8 sm:h-10 sm:w-10" />
               </div>
               <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
                 다양한 IT 강의
@@ -80,8 +81,8 @@ function MainPage() {
             </div>
 
             <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
-              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-green-100 text-2xl text-green-500 sm:h-[80px] sm:w-[80px] sm:text-3xl">
-                👥
+              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-green-100 text-green-500 sm:h-[80px] sm:w-[80px]">
+                <Users className="h-8 w-8 sm:h-10 sm:w-10" />
               </div>
               <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
                 스터디 그룹
@@ -94,8 +95,8 @@ function MainPage() {
             </div>
 
             <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
-              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-purple-100 text-2xl text-purple-500 sm:h-[80px] sm:w-[80px] sm:text-3xl">
-                🎓
+              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-purple-100 text-purple-500 sm:h-[80px] sm:w-[80px]">
+                <GraduationCap className="h-8 w-8 sm:h-10 sm:w-10" />
               </div>
               <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
                 전문 강사진
@@ -110,7 +111,7 @@ function MainPage() {
         </div>
       </section>
 
-      {/* 인기 강의 Section  */}
+      {/* 인기 강의 Section */}
       <section className="flex w-full flex-col items-center justify-center bg-white px-6 py-16 sm:px-8">
         <div className="w-full max-w-[1280px]">
           <div className="mb-10 flex items-end justify-between">
@@ -158,7 +159,7 @@ function MainPage() {
                 date={course.date}
                 imageUrl={course.imageUrl}
                 size="w-full sm:w-[384px] h-[17.375rem]"
-                onClick={() => navigate('/popularcourses')} // 임시경로작성
+                onClick={() => navigate('/popularcourses')} //임시경로작성
               />
             ))}
           </div>
@@ -186,7 +187,7 @@ function MainPage() {
             <Button
               variant="outline"
               className="!h-[52px] !w-[200px] !rounded-lg !border !border-white !text-white hover:!bg-white hover:!text-[#E0B43A]"
-              onClick={() => navigate('/studygroups')} // 임시경로작성
+              onClick={() => navigate('/studygroups')} //임시경로작성
             >
               스터디 그룹 만들기
             </Button>
