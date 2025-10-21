@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router'
+import { useNavigate } from 'react-router'
 import Avatar from '../common/Avatar'
 
 interface MenuItem {
@@ -7,16 +7,17 @@ interface MenuItem {
   subLabel: string
   path: string
   icon: React.ReactNode
+  hiddenOnMobile?: boolean
+  hiddenOnDesktop?: boolean
 }
 
 interface MyPageSidebarProps {
   menuItems: MenuItem[]
+  currentActive: string
 }
 
-function MyPageSideBar({ menuItems }: MyPageSidebarProps) {
+function MyPageSideBar({ menuItems, currentActive }: MyPageSidebarProps) {
   const navigate = useNavigate()
-  const location = useLocation()
-  const currentActive = location.pathname.split('/mypage/')[1] || 'profile'
 
   return (
     <div className="w-70 flex-shrink-0 rounded-xl border border-gray-200 bg-white p-[25px] shadow-sm">
@@ -35,29 +36,37 @@ function MyPageSideBar({ menuItems }: MyPageSidebarProps) {
       {/* 메뉴 */}
       <div className="flex flex-col gap-3">
         {menuItems.map((item) => (
-          <button
+          <div
             key={item.id}
-            onClick={() => navigate(item.path)}
-            className={`w-full cursor-pointer rounded-lg px-4 py-3 text-left transition-colors ${
-              currentActive === item.id ? 'bg-primary-100' : 'hover:bg-gray-100'
+            className={`${item.hiddenOnMobile ? 'hidden md:block' : ''} ${
+              item.hiddenOnDesktop ? 'md:hidden' : ''
             }`}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-gray-700">{item.icon}</span>
-              <div>
-                <p
-                  className={`text-sm font-medium ${
-                    currentActive === item.id
-                      ? 'text-gray-900'
-                      : 'text-gray-700'
-                  }`}
-                >
-                  {item.label}
-                </p>
-                <p className="text-xs text-gray-500">{item.subLabel}</p>
+            <button
+              onClick={() => navigate(item.path)}
+              className={`w-full cursor-pointer rounded-lg px-4 py-3 text-left transition-colors ${
+                currentActive === item.id
+                  ? 'bg-primary-100'
+                  : 'hover:bg-gray-100'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-gray-700">{item.icon}</span>
+                <div>
+                  <p
+                    className={`text-sm font-medium ${
+                      currentActive === item.id
+                        ? 'text-gray-900'
+                        : 'text-gray-700'
+                    }`}
+                  >
+                    {item.label}
+                  </p>
+                  <p className="text-xs text-gray-500">{item.subLabel}</p>
+                </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </div>
         ))}
       </div>
     </div>
