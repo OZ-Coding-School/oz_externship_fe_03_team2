@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from './Button'
 
 type ButtonVariant =
@@ -30,6 +30,7 @@ type InputWithLabelProps = {
     size?: ButtonSize
     icon?: React.ReactNode
     disabled?: boolean
+    countdown?: number
   }
 }
 
@@ -48,6 +49,40 @@ function InputWithLabel({
   required = false,
   button,
 }: InputWithLabelProps) {
+  const [time, setTime] = useState(button?.countdown || 0)
+  const [isCountingDown, setIsCountingDown] = useState(false)
+
+  // 타이머
+  useEffect(() => {
+    if (!isCountingDown || time < 0) return
+
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        if (prev <= 1) {
+          setIsCountingDown(false)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [isCountingDown, time])
+
+  const handleButtonClick = () => {
+    if (button?.countdown) {
+      setTime(button.countdown)
+      setIsCountingDown(true)
+    }
+    button?.onClick()
+  }
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const sec = seconds % 60
+    return `${minutes}:${sec.toString().padStart(2, '0')}`
+  }
+
   return (
     <div className="flex w-full flex-col">
       {label && (
@@ -55,7 +90,7 @@ function InputWithLabel({
           {/* Label */}
           <label htmlFor={name} className="text-gray-700">
             {label}
-            {required && <span className="text-danger-500">*</span>}
+            {required && <span className="text-danger-500 ml-1">*</span>}
           </label>
 
           {description && (
@@ -93,10 +128,12 @@ function InputWithLabel({
             variant={button.variant || 'primary'}
             size={button.size || 'md'}
             icon={button.icon}
-            onClick={button.onClick}
-            disabled={button.disabled || disabled}
+            onClick={handleButtonClick}
+            disabled={button.disabled}
           >
-            {button.label}
+            {isCountingDown && time > 0
+              ? `재전송 (${formatTime(time)})`
+              : button.label}
           </Button>
         )}
       </div>

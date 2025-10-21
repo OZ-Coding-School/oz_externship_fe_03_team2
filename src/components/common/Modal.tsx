@@ -31,16 +31,16 @@ function Modal({
     >
       <div className="w-full max-w-md rounded-xl bg-white shadow-lg">
         {/* 헤더 */}
-        <div className="flex items-start justify-between border-b border-gray-200 p-6">
+        <div className="flex items-center justify-between border-b border-gray-200 p-6">
           <div className="flex-1">
-            <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
             {subtitle && (
               <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="hover:text-primary-600 text-gray-400"
+            className="hover:text-primary-600 cursor-pointer text-gray-400"
           >
             <X size={20} />
           </button>
