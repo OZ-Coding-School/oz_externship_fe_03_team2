@@ -66,19 +66,7 @@ function SignUpPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const newErrors: Record<string, string> = {}
-
-    if (!form.name) newErrors['name'] = '이름을 입력해주세요'
-    if (!form.nickname) newErrors['nickname'] = '닉네임을 입력해주세요'
-    if (!form.birth) newErrors['birth'] = '생년월일을 입력해주세요'
-    if (!form.email) newErrors['email'] = '이메일을 입력해주세요'
-    if (!form.phone) newErrors['phone'] = '핸드폰 번호를 입력해주세요'
-    if (!form.password) newErrors['password'] = '비밀번호를 입력해주세요'
-    if (!form.passwordConfirm)
-      newErrors['passwordConfirm'] = '비밀번호를 확인해주세요'
-    if (!form.emailCode) newErrors['emailCode'] = '인증번호를 입력해주세요'
-    if (!form.phoneCode) newErrors['phoneCode'] = '인증번호를 입력해주세요'
-    if (form.gender === 'none') newErrors['gender'] = '성별을 선택해주세요'
+    const newErrors = validateAll(form, true)
 
     if (Object.keys(newErrors).length > 0) {
       setError(newErrors)
@@ -100,7 +88,7 @@ function SignUpPage() {
     setError({})
   }
 
-  const zmfflr = () => {
+  const handleClick = () => {
     toast.custom(() => <Toast title="클릭" message="잘됨" type="success" />)
   }
 
@@ -143,7 +131,7 @@ function SignUpPage() {
               onChange={handleChange}
               button={{
                 label: '중복확인',
-                onClick: zmfflr,
+                onClick: handleClick,
                 variant: 'signup',
                 size: 'ml',
                 disabled: !form.name,
@@ -181,7 +169,7 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드전송',
-                  onClick: zmfflr,
+                  onClick: handleClick,
                   variant: 'signup',
                   size: 'ml',
                   disabled: !form.email,
@@ -197,7 +185,7 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드확인',
-                  onClick: zmfflr,
+                  onClick: handleClick,
                   variant: 'signup',
                   size: 'ml',
                   disabled: !form.emailCode,
@@ -218,7 +206,7 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드전송',
-                  onClick: zmfflr,
+                  onClick: handleClick,
                   variant: 'signup',
                   size: 'ml',
                   disabled: !form.phone,
@@ -235,7 +223,7 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드확인',
-                  onClick: zmfflr,
+                  onClick: handleClick,
                   variant: 'signup',
                   size: 'ml',
                   disabled: !form.phoneCode,

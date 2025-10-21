@@ -8,48 +8,82 @@ const codeRe = /^\d{6}$/
 const passwordRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,15}$/
 const birthRe = /^\d{8}$/
 
-function isValidDateYYYYMMDD(v: string): boolean {
-  if (!birthRe.test(v)) return false
-  const y = +v.slice(0, 4),
-    m = +v.slice(4, 6),
-    d = +v.slice(6, 8)
-  const dt = new Date(y, m - 1, d)
-  const ok =
-    dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d
-  if (!ok) return false
-  return dt <= new Date()
+function isValidDateYYYYMMDD(formdata: string): boolean {
+  if (!birthRe.test(formdata)) return false
+  const year = +formdata.slice(0, 4)
+  const month = +formdata.slice(4, 6)
+  const date = +formdata.slice(6, 8)
+  const birth = new Date(year, month - 1, date)
+  const birthConfirm =
+    birth.getFullYear() === year &&
+    birth.getMonth() === month - 1 &&
+    birth.getDate() === date
+  if (!birthConfirm) return false
+  return birth <= new Date()
 }
 
-function validateField(name: string, value: string, password?: string): string {
-  if (!value) return ''
+function validateField(
+  name: string,
+  formdata: string,
+  password?: string,
+  submit: boolean = false
+): string {
+  if (submit && !formdata) {
+    switch (name) {
+      case 'name':
+        return '이름을 입력해주세요'
+      case 'nickname':
+        return '닉네임을 입력해주세요'
+      case 'birth':
+        return '생년월일을 입력해주세요'
+      case 'email':
+        return '이메일을 입력해주세요'
+      case 'phone':
+        return '핸드폰 번호를 입력해주세요'
+      case 'password':
+        return '비밀번호를 입력해주세요'
+      case 'passwordConfirm':
+        return '비밀번호를 확인해주세요'
+      case 'emailCode':
+        return '인증번호를 입력해주세요'
+      case 'phoneCode':
+        return '인증번호를 입력해주세요'
+      default:
+        return ''
+    }
+  }
+
+  if (!formdata) return ''
 
   switch (name) {
     case 'name':
-      return nameRe.test(value) ? '' : '2~8자의 한글/영문만 가능합니다'
+      return nameRe.test(formdata) ? '' : '2~8자의 한글/영문만 가능합니다'
     case 'nickname':
-      return nicknameRe.test(value) ? '' : '2~12자, 한글/영문/숫자만 가능합니다'
+      return nicknameRe.test(formdata)
+        ? ''
+        : '2~12자, 한글/영문/숫자만 가능합니다'
     case 'birth':
-      return isValidDateYYYYMMDD(value) ? '' : '유효한 날짜를 입력해주세요'
+      return isValidDateYYYYMMDD(formdata) ? '' : '유효한 날짜를 입력해주세요'
     case 'email':
-      return emailRe.test(value) ? '' : '이메일 형식이 올바르지 않습니다'
+      return emailRe.test(formdata) ? '' : '이메일 형식이 올바르지 않습니다'
     case 'phone':
-      return phoneRe.test(value) ? '' : '휴대폰 번호를 확인해주세요'
+      return phoneRe.test(formdata) ? '' : '휴대폰 번호를 확인해주세요'
     case 'password':
-      return passwordRe.test(value)
+      return passwordRe.test(formdata)
         ? ''
         : '8~15자, 대/소문자+숫자+특수문자 포함'
     case 'passwordConfirm':
-      return value === password ? '' : '비밀번호가 일치하지 않습니다'
+      return formdata === password ? '' : '비밀번호가 일치하지 않습니다'
     case 'emailCode':
-      return codeRe.test(value) ? '' : '인증번호 6자리를 입력해주세요'
+      return codeRe.test(formdata) ? '' : '인증번호 6자리를 입력해주세요'
     case 'phoneCode':
-      return codeRe.test(value) ? '' : '인증번호 6자리를 입력해주세요'
+      return codeRe.test(formdata) ? '' : '인증번호 6자리를 입력해주세요'
     default:
       return ''
   }
 }
 
-function validateAll(form: Partial<Form>) {
+function validateAll(form: Partial<Form>, submit: boolean = false) {
   const error: Record<string, string> = {}
   const fields = [
     'name',
@@ -61,14 +95,24 @@ function validateAll(form: Partial<Form>) {
     'passwordConfirm',
     'emailCode',
     'phoneCode',
-  ] as const //
+  ] as const
 
   for (const key of fields) {
-    error[key] = validateField(
+    const fieldError = validateField(
       key,
       String(form[key] ?? ''),
-      key === 'passwordConfirm' ? form.password : undefined
+      key === 'passwordConfirm' ? form.password : undefined,
+      submit
     )
+
+    if (fieldError) {
+      //오류가 있는데 빈 문자열로 덮는거 방지
+      error[key] = fieldError
+    }
+  }
+
+  if (submit && form.gender === 'none') {
+    error['gender'] = '성별을 선택해주세요'
   }
   return error
 }
