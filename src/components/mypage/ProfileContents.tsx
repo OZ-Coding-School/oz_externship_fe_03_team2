@@ -3,6 +3,7 @@ import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 import ProfileEditModal from './ProfileEditModal'
 import { PROFILE_FIELDS } from '../../constants/myPageProfile'
+import PasswordChangeModal from './PasswordChangeModal'
 
 interface ProfileData {
   name: string
@@ -14,9 +15,10 @@ interface ProfileData {
 
 function ProfileContents() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [formData, setFormData] = useState<ProfileData>({
     name: '김 개발',
-    nickname: '김개발',
+    nickname: 'ozdev',
     email: 'kim.dev@example.com',
     phone: '010-1234-5678',
     birthDay: '1990. 5. 15.',
@@ -91,7 +93,11 @@ function ProfileContents() {
               보안을 위해 정기적으로 비밀번호를 변경해주세요
             </p>
           </div>
-          <Button variant="secondary" size="md">
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => setIsPasswordModalOpen(true)}
+          >
             비밀번호 변경
           </Button>
         </div>
@@ -121,6 +127,12 @@ function ProfileContents() {
         profileData={formData}
         onClose={handleCancel}
         onSave={handleSave}
+      />
+
+      {/* 비밀번호 변경 모달 */}
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
       />
     </div>
   )

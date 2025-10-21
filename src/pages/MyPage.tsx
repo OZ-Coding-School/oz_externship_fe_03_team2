@@ -22,16 +22,19 @@ function MyPage() {
   }
 
   return (
-    <div className="bg-gray-50">
-      <div className="mx-auto flex max-w-[1280px] gap-6 p-6">
-        {/* 왼쪽 사이드바 */}
-        <MyPageSideBar
-          menuItems={MYPAGE_MENU_ITEMS}
-          currentActive={currentActive}
-        />
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-[1280px] p-4 md:p-6">
+        {/* 모바일 - 세로 or 데스크톱 - 가로 */}
+        <div className="flex flex-col gap-6 md:flex-row">
+          {/* 사이드바 (모바일 - 위에, 데스크톱 - 왼쪽) */}
+          <MyPageSideBar
+            menuItems={MYPAGE_MENU_ITEMS}
+            currentActive={currentActive}
+          />
 
-        {/* 오른쪽 콘텐츠 */}
-        <main className="flex-1">{renderContent()}</main>
+          {/* 콘텐츠 (모바일 - 아래, 데스크톱 - 오른쪽) */}
+          <main className="w-full flex-1">{renderContent()}</main>
+        </div>
       </div>
     </div>
   )
