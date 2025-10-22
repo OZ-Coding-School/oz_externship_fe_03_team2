@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import Modal from '../common/Modal'
 import Button from '../common/Button'
-import { AlertCircle, ChevronDown } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import Toast from '../common/toast/Toast'
 import { useNavigate } from 'react-router'
+import { DropDown } from '../common/dropDown'
 
 interface UserLeaveModalProps {
   isOpen: boolean
@@ -20,7 +21,6 @@ const LEAVE_REASONS = [
 ]
 
 function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
   const [detailReason, setDetailReason] = useState('')
   const [isChecked, setIsChecked] = useState(false)
@@ -98,49 +98,14 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
 
       {/* 탈퇴 사유 드롭다운 */}
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-medium text-gray-900">
-          탈퇴 사유<span className="text-danger-500 ml-1">*</span>
-        </label>
-        <div
-          tabIndex={0}
-          onBlur={() => setIsDropdownOpen(false)}
-          className="relative"
-        >
-          <div
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className={`flex h-11 cursor-pointer items-center justify-between rounded-lg border px-4 py-2.5 transition-colors ${
-              isDropdownOpen ? 'border-primary-500' : 'border-gray-200'
-            }`}
-          >
-            <span
-              className={`text-sm ${selectedReason ? 'text-gray-900' : 'text-gray-500'}`}
-            >
-              {selectedReason || '서비스 불만족'}
-            </span>
-            <ChevronDown
-              className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
-                isDropdownOpen ? 'rotate-180' : ''
-              }`}
-            />
-          </div>
-          {isDropdownOpen && (
-            <div className="absolute z-10 mt-1 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-              {LEAVE_REASONS.map((reason) => (
-                <div
-                  key={reason.text}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => {
-                    setSelectedReason(reason.text)
-                    setIsDropdownOpen(false)
-                  }}
-                  className="cursor-pointer px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-50 active:bg-gray-100"
-                >
-                  {reason.text}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <DropDown
+          label="탈퇴 사유"
+          required
+          placeholder="서비스 불만족"
+          options={LEAVE_REASONS}
+          size="wFree"
+          onSelect={(value) => setSelectedReason(value)}
+        />
       </div>
 
       {/* 탈퇴 상세 사유 */}

@@ -333,7 +333,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">스몰 사이즈</h2>
             <DropDown
-              title="지역"
+              label="지역"
               placeholder="지역 선택"
               size="sm"
               options={[
@@ -359,7 +359,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">미디움 사이즈</h2>
             <DropDown
-              title="언어 선택"
+              label="언어 선택"
               placeholder="언어를 선택하세요"
               size="md"
               options={[
@@ -385,9 +385,10 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">라지 사이즈</h2>
             <DropDown
-              title="카테고리 선택"
+              label="카테고리 선택"
               placeholder="카테고리를 선택하세요"
               size="lg"
+              // onXButtonClick={()=>()}
               options={[
                 { text: '카테고리1', icon: <Plus size={18} /> },
                 { text: '카테고리2', icon: <Heart size={18} /> },
@@ -396,6 +397,7 @@ function CommonTest() {
                 { text: '카테고리5', icon: <Trash2 size={18} /> },
               ]}
               xButton
+              border
               onSelect={(value) => {
                 toast.custom((t) => (
                   <Toast
@@ -406,6 +408,31 @@ function CommonTest() {
                   />
                 ))
               }}
+            />
+          </div>
+          <div className="w-70">
+            <DropDown
+              label="title/border 없음 + w-full"
+              placeholder="w-full"
+              size="wFree"
+              options={[
+                { text: 'w-full' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+              ]}
+            />
+          </div>
+          <div className="w-150">
+            <DropDown
+              label="w-full : 겉 div로 조절.."
+              required
+              placeholder="제목 없음"
+              size="wFree"
+              options={[{ text: '제목 없음' }, { text: 'w-free' }]}
             />
           </div>
         </section>
