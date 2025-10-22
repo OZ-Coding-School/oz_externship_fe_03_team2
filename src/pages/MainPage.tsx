@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
 import ImageCards from '../components/common/ImageCards'
-import { Laptop, Users, GraduationCap } from 'lucide-react'
+import { FeaturesData, CoursesData } from '../components/mainpage'
 
 function MainPage() {
   const navigate = useNavigate()
@@ -34,7 +34,7 @@ function MainPage() {
             </Button>
 
             <Button
-              onClick={() => navigate('/studygroups')} //임시경로작성
+              onClick={() => navigate('/studygroups')}
               className="!border-primary-500 !text-primary-600 hover:!bg-primary-100 !h-[48px] !w-full max-w-[300px] !rounded-[8px] !border sm:!h-[50px] sm:!w-[177px]"
             >
               스터디 그룹 참여
@@ -66,47 +66,26 @@ function MainPage() {
           </div>
 
           <div className="flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
-            <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
-              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-yellow-100 text-yellow-500 sm:h-[80px] sm:w-[80px]">
-                <Laptop className="h-8 w-8 sm:h-10 sm:w-10" />
-              </div>
-              <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
-                다양한 IT 강의
-              </h3>
-              <p className="w-full max-w-[300px] text-[14px] leading-[22px] text-[#4B5563] sm:max-w-[336px] sm:text-[16px] sm:leading-[24px]">
-                프론트엔드부터 백엔드, 데이터사이언스까지
-                <br />
-                모든 분야의 전문 강의를 제공합니다.
-              </p>
-            </div>
-
-            <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
-              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-green-100 text-green-500 sm:h-[80px] sm:w-[80px]">
-                <Users className="h-8 w-8 sm:h-10 sm:w-10" />
-              </div>
-              <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
-                스터디 그룹
-              </h3>
-              <p className="w-full max-w-[300px] text-[14px] leading-[22px] text-[#4B5563] sm:max-w-[336px] sm:text-[16px] sm:leading-[24px]">
-                같은 목표를 가진 사람들과 함께 학습하며
-                <br />
-                서로 동기부여하고 성장할 수 있습니다.
-              </p>
-            </div>
-
-            <div className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]">
-              <div className="mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-purple-100 text-purple-500 sm:h-[80px] sm:w-[80px]">
-                <GraduationCap className="h-8 w-8 sm:h-10 sm:w-10" />
-              </div>
-              <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
-                전문 강사진
-              </h3>
-              <p className="w-full max-w-[300px] text-[14px] leading-[22px] text-[#4B5563] sm:max-w-[336px] sm:text-[16px] sm:leading-[24px]">
-                실무 경험이 풍부한 전문가들이 직접 제작한
-                <br />
-                고품질의 강의 콘텐츠를 만나보세요.
-              </p>
-            </div>
+            {FeaturesData.map(
+              ({ icon: Icon, bgColor, textColor, title, description }, i) => (
+                <div
+                  key={i}
+                  className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]"
+                >
+                  <div
+                    className={`mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full ${bgColor} ${textColor} sm:h-[80px] sm:w-[80px]`}
+                  >
+                    <Icon className="h-8 w-8 sm:h-10 sm:w-10" />
+                  </div>
+                  <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
+                    {title}
+                  </h3>
+                  <p className="w-full max-w-[300px] text-[14px] leading-[22px] whitespace-pre-line text-[#4B5563] sm:max-w-[336px] sm:text-[16px] sm:leading-[24px]">
+                    {description}
+                  </p>
+                </div>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -127,38 +106,14 @@ function MainPage() {
               모든 강의 보기 →
             </button>
           </div>
+
           <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
-            {[
-              {
-                title: 'React 완전 마스터 강의',
-                description: '김개발',
-                date: '₩59,000원',
-                imageUrl:
-                  'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1200&auto=format&fit=crop',
-              },
-              {
-                title: 'Python 데이터 사이언스',
-                description: '이분석',
-                date: '₩99,000원',
-                imageUrl:
-                  'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop',
-              },
-              {
-                title: 'AWS 클라우드 아키텍처',
-                description: '한클라우드',
-                date: '₩129,000원',
-                imageUrl:
-                  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop',
-              },
-            ].map((course, index) => (
+            {CoursesData.map((course, i) => (
               <ImageCards
-                key={index}
-                title={course.title}
-                description={course.description}
-                date={course.date}
-                imageUrl={course.imageUrl}
+                key={i}
+                {...course}
                 size="w-full sm:w-[384px] h-[17.375rem]"
-                onClick={() => navigate('/popularcourses')} // 임시 경로
+                onClick={() => navigate('/popularcourses')}
               />
             ))}
           </div>
@@ -186,7 +141,7 @@ function MainPage() {
             <Button
               variant="outline"
               className="!h-[52px] !w-[200px] !rounded-lg !border !border-white !text-white hover:!bg-white hover:!text-[#E0B43A]"
-              onClick={() => navigate('/studygroups')} //임시경로작성
+              onClick={() => navigate('/studygroups')}
             >
               스터디 그룹 만들기
             </Button>
