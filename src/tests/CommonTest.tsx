@@ -388,6 +388,7 @@ function CommonTest() {
               label="카테고리 선택"
               placeholder="카테고리를 선택하세요"
               size="lg"
+              // onXButtonClick={()=>()}
               options={[
                 { text: '카테고리1', icon: <Plus size={18} /> },
                 { text: '카테고리2', icon: <Heart size={18} /> },
@@ -410,8 +411,8 @@ function CommonTest() {
             />
           </div>
           <div className="w-70">
-            <h2>title/border 없음 + w-full</h2>
             <DropDown
+              label="title/border 없음 + w-full"
               placeholder="w-full"
               size="wFree"
               options={[
@@ -426,8 +427,9 @@ function CommonTest() {
             />
           </div>
           <div className="w-150">
-            <h2>w-full : 겉 div로 조절..</h2>
             <DropDown
+              label="w-full : 겉 div로 조절.."
+              required
               placeholder="제목 없음"
               size="wFree"
               options={[{ text: '제목 없음' }, { text: 'w-free' }]}
