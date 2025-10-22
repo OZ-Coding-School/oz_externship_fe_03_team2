@@ -60,19 +60,23 @@ export function DropDown({
 
   return (
     <div
-      className={`flex flex-col ${border && `h-36 rounded-md border border-gray-200 bg-white p-6`} ${currentSize.container} select-none`}
+      className={`flex flex-col ${border && `h-36 rounded-md border border-gray-200 bg-white p-6`} ${currentSize.container} relative select-none`}
     >
+      {xButton && (
+        <button
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-600 active:text-gray-700"
+          onClick={onXButtonClick}
+          type="button"
+        >
+          <X />
+        </button>
+      )}
       {label && (
         <div className="my-1 flex w-full items-start justify-between">
           <label className="text-sm font-medium">
             {label}
             {required && <span className="ml-1 text-red-500">*</span>}
           </label>
-          {xButton && (
-            <button onClick={onXButtonClick} type="button">
-              <X />
-            </button>
-          )}
         </div>
       )}
       <div

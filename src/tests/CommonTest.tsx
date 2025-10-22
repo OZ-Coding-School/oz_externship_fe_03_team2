@@ -333,7 +333,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">스몰 사이즈</h2>
             <DropDown
-              title="지역"
+              label="지역"
               placeholder="지역 선택"
               size="sm"
               options={[
@@ -359,7 +359,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">미디움 사이즈</h2>
             <DropDown
-              title="언어 선택"
+              label="언어 선택"
               placeholder="언어를 선택하세요"
               size="md"
               options={[
@@ -385,7 +385,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">라지 사이즈</h2>
             <DropDown
-              title="카테고리 선택"
+              label="카테고리 선택"
               placeholder="카테고리를 선택하세요"
               size="lg"
               options={[
