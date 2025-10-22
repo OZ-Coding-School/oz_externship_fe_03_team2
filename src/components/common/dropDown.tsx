@@ -13,7 +13,8 @@ export interface DropDownProps {
   xButton?: boolean
   // xButton에 관한 내용 없을 시 그냥 false가 기본값으로 먹힘
   onSelect?: (value: string) => void
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'wFree'
+  border?: boolean
 }
 
 export function DropDown({
@@ -23,6 +24,7 @@ export function DropDown({
   xButton = false,
   onSelect,
   size = 'md',
+  border = false,
 }: DropDownProps) {
   const [dropDownState, setDropDownState] = useState<boolean>(false)
   const [selectedOption, setSelectedOption] = useState<string>()
@@ -43,18 +45,25 @@ export function DropDown({
       dropDown: 'w-[46.875rem]',
       height: 'h-[3.25rem]',
     },
+    wFree: {
+      container: 'w-full',
+      dropDown: 'w-full',
+      height: 'h-[2.25rem]',
+    },
   }
 
   const currentSize = sizeStyles[size]
 
   return (
     <div
-      className={`flex flex-col justify-between border border-gray-200 bg-white ${currentSize.container} h-[8.75rem] rounded-md p-[1.5625rem] select-none`}
+      className={`flex flex-col ${border && `h-[8.75rem] rounded-md border border-gray-200 bg-white p-[1.5625rem]`} ${currentSize.container} select-none`}
     >
-      <div className="flex w-full items-start justify-between">
-        <p className="text-center text-[1.125rem] font-[500]">{title}</p>
-        <span>{xButton && <X />}</span>
-      </div>
+      {title && (
+        <div className="my-1 flex w-full items-start justify-between">
+          <p className="text-center text-[1.125rem] font-[500]">{title}</p>
+          {xButton && <span>{xButton && <X />}</span>}
+        </div>
+      )}
       <div
         tabIndex={0}
         onBlur={() => setDropDownState(false)}
@@ -68,7 +77,9 @@ export function DropDown({
             dropDownState && 'border-gray-400'
           }`}
         >
-          <p className="text-[.875rem] font-light text-gray-500">
+          <p
+            className={`text-[.875rem] font-light ${dropDownState ? 'text-black' : 'text-gray-500'}`}
+          >
             {selectedOption || placeholder}
           </p>
           {dropDownState ? (
@@ -79,7 +90,7 @@ export function DropDown({
         </div>
         {dropDownState && (
           <div
-            className={`absolute rounded-lg border-[.0938rem] border-gray-200 bg-white shadow-[0_0.25rem_0.5rem_#00000020] top-[${currentSize.height}] ${currentSize.dropDown} z-10 max-h-[12rem] overflow-x-hidden overflow-y-auto`}
+            className={`absolute rounded-lg border-[.0938rem] border-gray-200 bg-white shadow-[0_0.25rem_0.5rem_#00000020] ${currentSize.dropDown} z-10 max-h-[12rem] overflow-x-hidden overflow-y-auto text-[.875rem]`}
           >
             {options?.map((option) => (
               <div

@@ -5,6 +5,7 @@ import { AlertCircle, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import Toast from '../common/toast/Toast'
 import { useNavigate } from 'react-router'
+import { DropDown } from '../common/dropDown'
 
 interface UserLeaveModalProps {
   isOpen: boolean
@@ -101,46 +102,11 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
         <label className="mb-2 block text-sm font-medium text-gray-900">
           탈퇴 사유<span className="text-danger-500 ml-1">*</span>
         </label>
-        <div
-          tabIndex={0}
-          onBlur={() => setIsDropdownOpen(false)}
-          className="relative"
-        >
-          <div
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className={`flex h-11 cursor-pointer items-center justify-between rounded-lg border px-4 py-2.5 transition-colors ${
-              isDropdownOpen ? 'border-primary-500' : 'border-gray-200'
-            }`}
-          >
-            <span
-              className={`text-sm ${selectedReason ? 'text-gray-900' : 'text-gray-500'}`}
-            >
-              {selectedReason || '서비스 불만족'}
-            </span>
-            <ChevronDown
-              className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
-                isDropdownOpen ? 'rotate-180' : ''
-              }`}
-            />
-          </div>
-          {isDropdownOpen && (
-            <div className="absolute z-10 mt-1 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-              {LEAVE_REASONS.map((reason) => (
-                <div
-                  key={reason.text}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => {
-                    setSelectedReason(reason.text)
-                    setIsDropdownOpen(false)
-                  }}
-                  className="cursor-pointer px-4 py-2.5 text-sm text-gray-900 hover:bg-gray-50 active:bg-gray-100"
-                >
-                  {reason.text}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <DropDown
+          placeholder="서비스 불만족"
+          options={LEAVE_REASONS}
+          size="wFree"
+        />
       </div>
 
       {/* 탈퇴 상세 사유 */}

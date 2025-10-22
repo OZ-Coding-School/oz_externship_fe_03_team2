@@ -396,6 +396,7 @@ function CommonTest() {
                 { text: '카테고리5', icon: <Trash2 size={18} /> },
               ]}
               xButton
+              border
               onSelect={(value) => {
                 toast.custom((t) => (
                   <Toast
@@ -406,6 +407,30 @@ function CommonTest() {
                   />
                 ))
               }}
+            />
+          </div>
+          <div className="w-70">
+            <h2>title/border 없음 + w-full</h2>
+            <DropDown
+              placeholder="w-full"
+              size="wFree"
+              options={[
+                { text: 'w-full' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+              ]}
+            />
+          </div>
+          <div className="w-150">
+            <h2>w-full : 겉 div로 조절..</h2>
+            <DropDown
+              placeholder="제목 없음"
+              size="wFree"
+              options={[{ text: '제목 없음' }, { text: 'w-free' }]}
             />
           </div>
         </section>
