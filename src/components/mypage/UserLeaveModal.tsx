@@ -98,10 +98,9 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
 
       {/* 탈퇴 사유 드롭다운 */}
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-medium text-gray-900">
-          탈퇴 사유<span className="text-danger-500 ml-1">*</span>
-        </label>
         <DropDown
+          label="탈퇴 사유"
+          required
           placeholder="서비스 불만족"
           options={LEAVE_REASONS}
           size="wFree"

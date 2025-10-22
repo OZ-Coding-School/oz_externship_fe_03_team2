@@ -36,23 +36,23 @@ export function DropDown({
   const sizeStyles = {
     sm: {
       container: 'w-[25rem]',
-      dropDown: 'w-[21.875rem]',
-      height: 'h-[2.5rem]',
+      dropDown: 'w-[22rem]',
+      height: 'h-10',
     },
     md: {
       container: 'w-[37rem]',
-      dropDown: 'w-[33.875rem]',
-      height: 'h-[2.875rem]',
+      dropDown: 'w-[34rem]',
+      height: 'h-11',
     },
     lg: {
       container: 'w-[50rem]',
-      dropDown: 'w-[46.875rem]',
-      height: 'h-[3.25rem]',
+      dropDown: 'w-[47rem]',
+      height: 'h-12',
     },
     wFree: {
       container: 'w-full',
       dropDown: 'w-full',
-      height: 'h-[2.25rem]',
+      height: 'h-9',
     },
   }
 
@@ -60,11 +60,11 @@ export function DropDown({
 
   return (
     <div
-      className={`flex flex-col ${border && `h-[8.75rem] rounded-md border border-gray-200 bg-white p-[1.5625rem]`} ${currentSize.container} select-none`}
+      className={`flex flex-col ${border && `h-36 rounded-md border border-gray-200 bg-white p-6`} ${currentSize.container} select-none`}
     >
       {label && (
         <div className="my-1 flex w-full items-start justify-between">
-          <label className="text-[1.125rem] font-[500]">
+          <label className="text-sm font-medium">
             {label}
             {required && <span className="ml-1 text-red-500">*</span>}
           </label>
@@ -85,12 +85,12 @@ export function DropDown({
           onClick={() => setDropDownState(!dropDownState)}
           className={`flex ${currentSize.dropDown} ${
             currentSize.height
-          } relative items-center justify-between rounded-lg border-[.0938rem] border-gray-200 px-[1.0625rem] py-[.8125rem] ${
-            dropDownState && 'border-gray-400'
+          } relative items-center justify-between rounded-lg border px-4 py-3 ${
+            dropDownState ? 'border-gray-400' : 'border-gray-200'
           }`}
         >
           <p
-            className={`text-[.875rem] font-light ${dropDownState ? 'text-black' : 'text-gray-500'}`}
+            className={`text-sm font-light ${dropDownState ? 'text-black' : 'text-gray-500'}`}
           >
             {selectedOption || placeholder}
           </p>
@@ -102,7 +102,7 @@ export function DropDown({
         </div>
         {dropDownState && (
           <div
-            className={`absolute rounded-lg border-[.0938rem] border-gray-200 bg-white shadow-[0_0.25rem_0.5rem_#00000020] ${currentSize.dropDown} z-10 max-h-[12rem] overflow-x-hidden overflow-y-auto text-[.875rem]`}
+            className={`absolute rounded-lg border border-gray-200 bg-white shadow-md ${currentSize.dropDown} z-10 max-h-48 overflow-x-hidden overflow-y-auto text-sm`}
           >
             {options?.map((option) => (
               <div
@@ -117,7 +117,7 @@ export function DropDown({
                 }}
                 className={`flex items-center ${currentSize.dropDown} ${
                   currentSize.height
-                } px-[1.0625rem] py-[.8125rem] font-light hover:bg-gray-50 active:bg-gray-100 ${option.icon && 'gap-2.5'}`}
+                } px-4 py-3 font-light hover:bg-gray-50 active:bg-gray-100 ${option.icon && 'gap-2.5'}`}
               >
                 <span>{option.icon}</span>
                 <span>{option.text}</span>
