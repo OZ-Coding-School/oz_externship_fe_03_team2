@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Modal from '../common/Modal'
 import Button from '../common/Button'
-import { AlertCircle, ChevronDown } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import Toast from '../common/toast/Toast'
 import { useNavigate } from 'react-router'
@@ -21,7 +21,6 @@ const LEAVE_REASONS = [
 ]
 
 function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedReason, setSelectedReason] = useState('')
   const [detailReason, setDetailReason] = useState('')
   const [isChecked, setIsChecked] = useState(false)
@@ -106,6 +105,7 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
           placeholder="서비스 불만족"
           options={LEAVE_REASONS}
           size="wFree"
+          onSelect={(value) => setSelectedReason(value)}
         />
       </div>
 
