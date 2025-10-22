@@ -26,7 +26,7 @@ function validateField(
   name: string,
   formdata: string,
   password?: string,
-  submit: boolean = false
+  submit: boolean = false // submit이 true라면 빈값인지 먼저 체크 (제출시)
 ): string {
   if (submit && !formdata) {
     switch (name) {
@@ -84,6 +84,7 @@ function validateField(
 }
 
 function validateAll(form: Partial<Form>, submit: boolean = false) {
+  // Partial은 모든 속성을 옵셔널로 만들어줌
   const error: Record<string, string> = {}
   const fields = [
     'name',
@@ -95,7 +96,7 @@ function validateAll(form: Partial<Form>, submit: boolean = false) {
     'passwordConfirm',
     'emailCode',
     'phoneCode',
-  ] as const
+  ] as const // 리터럴 값으로 바꿔주고 readonly로 변경시켜줌
 
   for (const key of fields) {
     const fieldError = validateField(

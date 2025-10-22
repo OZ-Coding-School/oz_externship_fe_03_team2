@@ -8,6 +8,7 @@ import Toast from '../components/common/toast/Toast'
 import { toast } from 'sonner'
 import useDebounce from '../hooks/useDebounce'
 import validateAll from '../utils/validators'
+import { phoneFormat } from '../utils/phoneFormat'
 
 export interface Form {
   name: string
@@ -37,7 +38,22 @@ function SignUpPage() {
     phoneCode: '',
   })
 
+  const [confirm, setConfirm] = useState({
+    emailSent: false,
+    emailVerify: false,
+    phoneSent: false,
+    phoneVerify: false,
+    nickConfirm: false,
+  }) // 인증번호 전송 및 확인
+
   const [error, setError] = useState<Record<string, string>>({})
+
+  const debounceForm = useDebounce(form)
+
+  useEffect(() => {
+    const validator = validateAll(debounceForm)
+    setError((prev) => ({ ...prev, ...validator }))
+  }, [debounceForm])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -52,17 +68,20 @@ function SignUpPage() {
               ? value.replace(/\D/g, '').slice(0, 6)
               : value,
     }))
+
     if (error[name]) {
       setError((prev) => ({ ...prev, [name]: '' }))
     }
+    if (name === 'nickname') {
+      setConfirm((prev) => ({ ...prev, nickConfirm: false }))
+    }
+    if (name === 'email') {
+      setConfirm((prev) => ({ ...prev, emailSent: false, emailVerify: false }))
+    }
+    if (name === 'phone') {
+      setConfirm((prev) => ({ ...prev, phoneSent: false, phoneVerify: false }))
+    }
   }
-
-  const debounceForm = useDebounce(form)
-
-  useEffect(() => {
-    const validator = validateAll(debounceForm)
-    setError((prev) => ({ ...prev, ...validator }))
-  }, [debounceForm])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,6 +92,7 @@ function SignUpPage() {
       return
     }
 
+    //제출되었으니 초기화
     setForm({
       name: '',
       nickname: '',
@@ -85,12 +105,58 @@ function SignUpPage() {
       emailCode: '',
       phoneCode: '',
     })
+    setConfirm({
+      emailSent: false,
+      emailVerify: false,
+      phoneSent: false,
+      phoneVerify: false,
+      nickConfirm: false,
+    })
     setError({})
+    toast.custom(() => <Toast title="제출" message="성공" type="success" />)
   }
 
-  const handleClick = () => {
-    toast.custom(() => <Toast title="클릭" message="잘됨" type="success" />)
+  //추후 API 연결
+  const nicknameConfirm = () => {
+    setConfirm((prev) => ({ ...prev, nickConfirm: true }))
+    toast.custom(() => <Toast title="닉네임" message="중복" type="success" />)
   }
+  const emailSend = () => {
+    setConfirm((prev) => ({ ...prev, emailSent: true }))
+    toast.custom(() => <Toast title="이메일" message="보냄" type="success" />)
+  }
+  const emailVerify = () => {
+    setConfirm((prev) => ({ ...prev, emailVerify: true }))
+    toast.custom(() => <Toast title="이메일" message="코드" type="success" />)
+  }
+  const phoneSent = () => {
+    setConfirm((prev) => ({ ...prev, phoneSent: true }))
+    toast.custom(() => <Toast title="폰" message="보냄" type="success" />)
+  }
+  const phoneVerify = () => {
+    setConfirm((prev) => ({ ...prev, phoneVerify: true }))
+    toast.custom(() => <Toast title="폰" message="코드" type="success" />)
+  }
+
+  const formSubmit = //제출 버튼 disabled
+    !error['name'] &&
+    form.name &&
+    !error['nickname'] &&
+    form.nickname &&
+    !error['birth'] &&
+    form.birth &&
+    !error['email'] &&
+    form.email &&
+    !error['phone'] &&
+    form.phone &&
+    !error['password'] &&
+    form.password &&
+    !error['passwordConfirm'] &&
+    form.passwordConfirm &&
+    form.gender !== 'none' &&
+    confirm.emailVerify &&
+    confirm.phoneVerify &&
+    confirm.nickConfirm
 
   return (
     <div className="bg-gray-50">
@@ -104,7 +170,7 @@ function SignUpPage() {
           <p className="text-gray-600">이미 계정이 있으신가요?</p>
           <button
             type="button"
-            className="text-primary-600"
+            className="text-primary-600 cursor-pointer"
             onClick={() => navigate('/login')}
           >
             로그인하기
@@ -131,10 +197,10 @@ function SignUpPage() {
               onChange={handleChange}
               button={{
                 label: '중복확인',
-                onClick: handleClick,
+                onClick: nicknameConfirm,
                 variant: 'signup',
                 size: 'ml',
-                disabled: !form.name,
+                disabled: !(form.nickname && !error['nickname']),
               }}
             />
           </div>
@@ -169,10 +235,10 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드전송',
-                  onClick: handleClick,
+                  onClick: emailSend,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !form.email,
+                  disabled: !(form.email && !error['email']),
                 }}
               />
             </div>
@@ -185,10 +251,14 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드확인',
-                  onClick: handleClick,
+                  onClick: emailVerify,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !form.emailCode,
+                  disabled: !(
+                    form.emailCode &&
+                    !error['emailCode'] &&
+                    confirm.emailSent
+                  ),
                 }}
               />
             </div>
@@ -199,17 +269,17 @@ function SignUpPage() {
                 label="휴대전화"
                 name="phone"
                 type="tel"
-                value={form.phone}
+                value={phoneFormat(form.phone)}
                 error={error['phone']}
                 required
                 placeholder="01012345678"
                 onChange={handleChange}
                 button={{
                   label: '인증코드전송',
-                  onClick: handleClick,
+                  onClick: phoneSent,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !form.phone,
+                  disabled: !(form.phone && !error['phone']),
                 }}
               />
             </div>
@@ -223,10 +293,14 @@ function SignUpPage() {
                 onChange={handleChange}
                 button={{
                   label: '인증코드확인',
-                  onClick: handleClick,
+                  onClick: phoneVerify,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !form.phoneCode,
+                  disabled: !(
+                    form.phoneCode &&
+                    !error['phoneCode'] &&
+                    confirm.phoneSent
+                  ),
                 }}
               />
             </div>
@@ -254,7 +328,7 @@ function SignUpPage() {
             />
           </div>
         </div>
-        <Button type="submit" size="freeWidthLg">
+        <Button type="submit" size="freeWidthLg" disabled={!formSubmit}>
           가입하기
         </Button>
       </form>
