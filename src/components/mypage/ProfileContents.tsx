@@ -4,6 +4,7 @@ import Button from '../common/Button'
 import ProfileEditModal from './ProfileEditModal'
 import { PROFILE_FIELDS } from '../../constants/myPageProfile'
 import PasswordChangeModal from './PasswordChangeModal'
+import UserLeaveModal from './UserLeaveModal'
 
 interface ProfileData {
   name: string
@@ -16,6 +17,7 @@ interface ProfileData {
 function ProfileContents() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+  const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
   const [formData, setFormData] = useState<ProfileData>({
     name: '김 개발',
     nickname: 'ozdev',
@@ -115,7 +117,11 @@ function ProfileContents() {
               </span>
             </p>
           </div>
-          <Button variant="danger" size="md">
+          <Button
+            variant="danger"
+            size="md"
+            onClick={() => setIsWithdrawalModalOpen(true)}
+          >
             회원 탈퇴
           </Button>
         </div>
@@ -133,6 +139,11 @@ function ProfileContents() {
       <PasswordChangeModal
         isOpen={isPasswordModalOpen}
         onClose={() => setIsPasswordModalOpen(false)}
+      />
+
+      <UserLeaveModal
+        isOpen={isWithdrawalModalOpen}
+        onClose={() => setIsWithdrawalModalOpen(false)}
       />
     </div>
   )
