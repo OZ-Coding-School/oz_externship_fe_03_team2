@@ -3,6 +3,7 @@ import MyPageSideBar from '../components/mypage/MyPageSideBar'
 import ProfileContents from '../components/mypage/ProfileContents'
 import JobsContents from '../components/mypage/JobsContents'
 import { MYPAGE_MENU_ITEMS } from '../constants/myPageMenu'
+import CourseContents from '../components/mypage/CourseContents'
 
 function MyPage() {
   const location = useLocation()
@@ -16,6 +17,8 @@ function MyPage() {
         return <ProfileContents />
       case 'jobs':
         return <JobsContents />
+      case 'course':
+        return <CourseContents />
       default:
         return <ProfileContents />
     }

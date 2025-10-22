@@ -1,4 +1,4 @@
-type BadgeVariant = 'default' | 'primary' | 'success' | 'danger'
+type BadgeVariant = 'default' | 'primary' | 'success' | 'danger' | 'pupple'
 type BadgeSize = 'sm' | 'page' | 'md' | 'lg'
 type BadgeRadius = 'sm' | 'full'
 
@@ -16,6 +16,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   primary: 'bg-primary-100 text-primary-800',
   success: 'bg-success-100 text-success-800',
   danger: 'bg-[#FEE2E2] text-danger-800',
+  pupple: 'bg-[#F3E8FF] text-[#6B21A8]',
 }
 
 const sizeStyles: Record<BadgeSize, string> = {

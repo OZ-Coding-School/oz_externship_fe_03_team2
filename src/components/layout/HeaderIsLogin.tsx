@@ -34,7 +34,7 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
   }, [open, handleClickOutside])
 
   const handleMyPageClick = () => {
-    navigate('/mypage')
+    navigate('/mypage/profile')
     setOpen(false)
   }
 
