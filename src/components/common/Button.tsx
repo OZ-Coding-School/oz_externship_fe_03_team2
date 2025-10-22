@@ -7,7 +7,8 @@ type ButtonVariant =
   | 'ghost'
   | 'danger'
   | 'text'
-type ButtonSize = 'md' | 'sm' | 'lg' | 'freeWidthLg' | 'freeWidthMd'
+  | 'signup'
+type ButtonSize = 'md' | 'sm' | 'lg' | 'ml' | 'freeWidthLg' | 'freeWidthMd'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
@@ -17,7 +18,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const baseStyles =
-  'flex flex-row justify-center items-center font-medium focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
+  'flex flex-row justify-center items-center whitespace-nowrap font-medium focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
@@ -31,11 +32,14 @@ const variantStyles: Record<ButtonVariant, string> = {
   danger:
     'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-800 disabled:bg-danger-500',
   text: 'text-primary-600 hover:text-primary-700 active:text-primary-800',
+  signup:
+    'text-primary-600 bg-primary-100 hover:bg-primary-200 active:bg-primary-300 disabled:text-gray-800 disabled:bg-gray-300',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
   sm: 'px-3 py-2 h-9 text-sm min-w-18 rounded-md',
   md: 'px-4 py-2.5 text-sm h-10 min-w-20 rounded-lg',
+  ml: 'px-6 py-3 text-base h-10 min-w-24 rounded-lg',
   lg: 'px-6 py-3 text-base h-12 min-w-24 rounded-lg',
   freeWidthMd: 'px-4 py-2.5 text-sm h-10 min-w-full rounded-lg',
   freeWidthLg: 'px-4 py-2.5 text-sm h-12 min-w-full rounded-lg',
