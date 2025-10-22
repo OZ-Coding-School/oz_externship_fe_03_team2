@@ -7,7 +7,7 @@ interface Option {
 }
 
 export interface DropDownProps {
-  title: string
+  title?: string
   placeholder: string
   options: Option[]
   xButton?: boolean

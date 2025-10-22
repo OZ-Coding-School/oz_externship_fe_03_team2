@@ -2,7 +2,7 @@ import React from 'react'
 import { X } from 'lucide-react'
 
 type ModalProps = {
-  title: string
+  title: React.ReactNode
   subtitle?: string
   isOpen: boolean
   onClose: () => void
