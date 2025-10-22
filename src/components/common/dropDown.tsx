@@ -7,7 +7,7 @@ interface Option {
 }
 
 export interface DropDownProps {
-  title?: string
+  label?: string
   placeholder: string
   options: Option[]
   xButton?: boolean
@@ -15,16 +15,20 @@ export interface DropDownProps {
   onSelect?: (value: string) => void
   size?: 'sm' | 'md' | 'lg' | 'wFree'
   border?: boolean
+  required?: boolean
+  onXButtonClick?: () => void
 }
 
 export function DropDown({
-  title,
+  label,
   placeholder,
   options,
   xButton = false,
   onSelect,
   size = 'md',
   border = false,
+  required = false,
+  onXButtonClick,
 }: DropDownProps) {
   const [dropDownState, setDropDownState] = useState<boolean>(false)
   const [selectedOption, setSelectedOption] = useState<string>()
@@ -58,10 +62,17 @@ export function DropDown({
     <div
       className={`flex flex-col ${border && `h-[8.75rem] rounded-md border border-gray-200 bg-white p-[1.5625rem]`} ${currentSize.container} select-none`}
     >
-      {title && (
+      {label && (
         <div className="my-1 flex w-full items-start justify-between">
-          <p className="text-center text-[1.125rem] font-[500]">{title}</p>
-          {xButton && <span>{xButton && <X />}</span>}
+          <label className="text-[1.125rem] font-[500]">
+            {label}
+            {required && <span className="ml-1 text-red-500">*</span>}
+          </label>
+          {xButton && (
+            <button onClick={onXButtonClick} type="button">
+              <X />
+            </button>
+          )}
         </div>
       )}
       <div
@@ -70,6 +81,7 @@ export function DropDown({
         className="relative"
       >
         <div
+          aria-expanded={dropDownState}
           onClick={() => setDropDownState(!dropDownState)}
           className={`flex ${currentSize.dropDown} ${
             currentSize.height
@@ -95,6 +107,8 @@ export function DropDown({
             {options?.map((option) => (
               <div
                 key={option.text}
+                role="option"
+                aria-selected={selectedOption === option.text}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
                   setDropDownState(false)
