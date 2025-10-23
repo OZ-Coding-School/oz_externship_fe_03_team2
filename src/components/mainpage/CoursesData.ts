@@ -1,4 +1,12 @@
-export const CoursesData = [
+export type Course = {
+  title: string
+  description: string
+  date: string
+  imageUrl: string
+}
+
+// API 연결 전 임시 더미 데이터
+export const CoursesData: Course[] = [
   {
     title: 'React 완전 마스터 강의',
     description: '김개발',
