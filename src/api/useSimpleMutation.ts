@@ -4,9 +4,9 @@ export function useSimpleMutation<
   T = unknown,
   TError = Error,
   TVariables = void,
-  // 이렇게 인라인으로 타입 지정하는 게 더러워보여도
+  // 인라인으로 타입 지정하는 게 더러워보여도 이렇게 하는 게 나음
   // 인터페이스에서 하면 제네릭으로 지정이 안 되고
-  // T는 unknown, TError는 Error, TVaribles는
+  // 그 순간에 타입 추론이 되어버려서..
 >(
   mutationFn: (variables: TVariables) => Promise<T>,
   options?: {
