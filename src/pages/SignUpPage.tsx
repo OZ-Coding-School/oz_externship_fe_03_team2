@@ -23,28 +23,48 @@ export interface Form {
   phoneCode: string
 }
 
+const FORM_STATE: Form = {
+  name: '',
+  nickname: '',
+  birth: '',
+  gender: 'none',
+  email: '',
+  phone: '',
+  password: '',
+  passwordConfirm: '',
+  emailCode: '',
+  phoneCode: '',
+}
+
+const CONFIRM_STATE = {
+  emailSent: false,
+  emailVerify: false,
+  phoneSent: false,
+  phoneVerify: false,
+  nickConfirm: false,
+}
+
+const switchInput = (name: string, value: string): string => {
+  const numberOnly = value.replace(/\D/g, '')
+
+  switch (name) {
+    case 'birth':
+      return numberOnly.slice(0, 8)
+    case 'phone':
+      return numberOnly.slice(0, 11)
+    case 'emailCode':
+    case 'phoneCode':
+      return numberOnly.slice(0, 6)
+    default:
+      return value
+  }
+}
+
 function SignUpPage() {
   const navigate = useNavigate()
-  const [form, setForm] = useState<Form>({
-    name: '',
-    nickname: '',
-    birth: '',
-    gender: 'none',
-    email: '',
-    phone: '',
-    password: '',
-    passwordConfirm: '',
-    emailCode: '',
-    phoneCode: '',
-  })
+  const [form, setForm] = useState<Form>(FORM_STATE)
 
-  const [confirm, setConfirm] = useState({
-    emailSent: false,
-    emailVerify: false,
-    phoneSent: false,
-    phoneVerify: false,
-    nickConfirm: false,
-  }) // 인증번호 전송 및 확인
+  const [confirm, setConfirm] = useState(CONFIRM_STATE) // 인증번호 전송 및 확인
 
   const [error, setError] = useState<Record<string, string>>({})
 
@@ -59,14 +79,7 @@ function SignUpPage() {
     const { name, value } = e.target
     setForm((prev) => ({
       ...prev,
-      [name]:
-        name === 'birth'
-          ? value.replace(/\D/g, '').slice(0, 8)
-          : name === 'phone'
-            ? value.replace(/\D/g, '').slice(0, 11)
-            : name === 'emailCode' || name === 'phoneCode'
-              ? value.replace(/\D/g, '').slice(0, 6)
-              : value,
+      [name]: switchInput(name, value),
     }))
 
     if (error[name]) {
@@ -93,25 +106,8 @@ function SignUpPage() {
     }
 
     //제출되었으니 초기화
-    setForm({
-      name: '',
-      nickname: '',
-      birth: '',
-      gender: 'none',
-      email: '',
-      phone: '',
-      password: '',
-      passwordConfirm: '',
-      emailCode: '',
-      phoneCode: '',
-    })
-    setConfirm({
-      emailSent: false,
-      emailVerify: false,
-      phoneSent: false,
-      phoneVerify: false,
-      nickConfirm: false,
-    })
+    setForm(FORM_STATE)
+    setConfirm(CONFIRM_STATE)
     setError({})
     toast.custom(() => <Toast title="제출" message="성공" type="success" />)
   }
@@ -138,25 +134,27 @@ function SignUpPage() {
     toast.custom(() => <Toast title="폰" message="코드" type="success" />)
   }
 
-  const formSubmit = //제출 버튼 disabled
-    !error['name'] &&
-    form.name &&
-    !error['nickname'] &&
-    form.nickname &&
-    !error['birth'] &&
-    form.birth &&
-    !error['email'] &&
-    form.email &&
-    !error['phone'] &&
-    form.phone &&
-    !error['password'] &&
-    form.password &&
-    !error['passwordConfirm'] &&
-    form.passwordConfirm &&
-    form.gender !== 'none' &&
-    confirm.emailVerify &&
-    confirm.phoneVerify &&
-    confirm.nickConfirm
+  const isFormValid = () => {
+    const requiredFields = [
+      'name',
+      'nickname',
+      'birth',
+      'email',
+      'phone',
+      'password',
+      'passwordConfirm',
+    ] as const
+    const hasAllFields = requiredFields.every(
+      (field) => form[field] && !error[field]
+    )
+    const hasGender = form.gender !== 'none'
+    const hasVerifications =
+      confirm.emailVerify && confirm.phoneVerify && confirm.nickConfirm
+
+    return hasAllFields && hasGender && hasVerifications
+  }
+
+  const formSubmit = isFormValid()
 
   return (
     <div className="bg-gray-50">
