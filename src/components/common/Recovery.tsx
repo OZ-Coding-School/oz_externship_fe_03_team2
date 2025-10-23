@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import { X, Check } from 'lucide-react'
+import { X, Check, Annoyed, RotateCw } from 'lucide-react'
 import Button from './Button'
 import InputWithLabel from './InputWithLabel'
 
 const NeutralEmojiIcon = () => (
   <div className="mb-6 flex justify-center">
     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 p-3 text-yellow-600">
-      <span className="text-4xl">😐</span>
+      <span className="text-4xl">
+        <Annoyed />
+      </span>
     </div>
   </div>
 )
@@ -95,7 +97,9 @@ function Recovery({ onClose }: RecoveryProps) {
           <div className="relative">
             <div className="mb-6 flex justify-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 p-3 text-yellow-600">
-                <span className="text-4xl">🔄</span>
+                <span className="text-4xl">
+                  <RotateCw />
+                </span>
               </div>
             </div>
 
