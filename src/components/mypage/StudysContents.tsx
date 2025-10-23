@@ -10,7 +10,7 @@ const STUDY_APPLICATIONS_DATA = [
     participants: 5,
     deadline: '2025-10-03.',
     curriculum: [
-      'AWS 클라우드 아키텍처 - 인프라구드',
+      'AWS 클라우드 아키텍처 - 한클라우드',
       'Docker & Kubernetes - 이데브옵스',
     ],
     tags: ['DevOps', 'AWS', '클라우드', '인프라'],
@@ -30,18 +30,6 @@ const STUDY_APPLICATIONS_DATA = [
     tags: ['딥러닝', 'AI', '머신러닝', 'Python'],
     appliedAt: '2024. 01. 25. 오전 11:15',
     status: 'success' as const,
-  },
-  {
-    id: 3,
-    title: 'React Native 모바일 앱 개발 스터디',
-    image:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    participants: 4,
-    deadline: '2025-3-15.',
-    curriculum: ['React Native 기초 - 이모바일', '실전 앱 출시 - 박앱스토어'],
-    tags: ['React Native', '모바일', 'JavaScript', 'iOS', 'Android'],
-    appliedAt: '2024. 03. 05. 오후 03:20',
-    status: 'rejected' as const,
   },
 ]
 
