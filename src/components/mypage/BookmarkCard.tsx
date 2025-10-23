@@ -1,6 +1,6 @@
 import Button from '../common/Button'
 import Badge from '../common/Badge'
-import { User, Calendar, Eye, Bookmark } from 'lucide-react'
+import { User, Calendar, Eye, Bookmark, Clock } from 'lucide-react'
 
 // 공고용 타입
 interface JobBookmarkData {
@@ -28,7 +28,6 @@ interface CourseBookmarkData {
   level: string
   price: number
   originalPrice?: number
-  tags?: string[]
 }
 
 type BookmarkData = JobBookmarkData | CourseBookmarkData
@@ -133,7 +132,97 @@ function JobBookmarkCard({
   )
 }
 
-// 강의 카드 추가 예정
+// 강의 카드
+function CourseBookmarkCard({
+  data,
+  onBookmarkToggle,
+  onViewClick,
+}: {
+  data: CourseBookmarkData
+  onBookmarkToggle: (id: number) => void
+  onViewClick?: (id: number) => void
+}) {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md">
+      <div className="flex gap-4">
+        {/* 이미지 */}
+        <div className="flex h-auto w-40 flex-shrink-0 items-center">
+          <img
+            src={data.image}
+            alt={data.title}
+            className="max-h-24 w-full rounded-lg object-cover"
+          />
+        </div>
+
+        {/* 컨텐츠 */}
+        <div className="flex flex-1 flex-col">
+          {/* 타이틀 */}
+          <div className="mb-2">
+            <h3 className="mb-1 text-lg font-semibold text-gray-900">
+              {data.title}
+            </h3>
+            <p className="text-gray-600">{data.instructor}</p>
+          </div>
+
+          {/* 플랫폼, 레벨 */}
+          <div className="mb-3 flex items-center gap-2">
+            <Badge
+              variant={data.platform === 'Inflearn' ? 'success' : 'pupple'}
+              size="sm"
+            >
+              {data.platform}
+            </Badge>
+            <Badge
+              variant={
+                data.level === '초급'
+                  ? 'default'
+                  : data.level === '중급'
+                    ? 'primary'
+                    : 'danger'
+              }
+              size="sm"
+            >
+              {data.level}
+            </Badge>
+            <span className="flex items-center gap-1 text-xs text-gray-600">
+              <Clock className="h-3 w-3" />
+              {data.duration}
+            </span>
+          </div>
+        </div>
+
+        {/* 가격, 버튼 */}
+        <div className="flex flex-shrink-0 flex-col items-end justify-between">
+          <div className="text-right">
+            <p className="text-lg font-bold text-gray-900">
+              ₩{data.price.toLocaleString()}
+            </p>
+            {data.originalPrice && (
+              <p className="text-sm text-gray-500 line-through">
+                ₩{data.originalPrice.toLocaleString()}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => onBookmarkToggle(data.id)}
+              className="cursor-pointer transition-transform hover:scale-110"
+            >
+              <Bookmark className="fill-primary-500 text-primary-500 h-5 w-5" />
+            </button>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => onViewClick?.(data.id)}
+            >
+              강의 보기
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // 메인 북마크 카드 컴포넌트 (타입별로 분기)
 export default function BookmarkCard({
@@ -150,4 +239,12 @@ export default function BookmarkCard({
       />
     )
   }
+
+  return (
+    <CourseBookmarkCard
+      data={data}
+      onBookmarkToggle={onBookmarkToggle}
+      onViewClick={onViewClick}
+    />
+  )
 }
