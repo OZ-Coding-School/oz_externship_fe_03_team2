@@ -34,12 +34,12 @@
 // }
 
 import { useSimpleMutation } from '../useSimpleMutation'
-import * as T from '../interface/authInterface'
 import { api } from '../client'
 import Toast from '../../components/common/toast/Toast'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
+import * as T from '../interface/authInterface'
 // 인터페이스를 다른 파일로 뻈으니 그걸 하나하나 import 해오려면 너무너무 길어짐...
 // 저 파일의 모듈 전체를 T라는 네임스페이스로 묶어서 ?
 // 모든 타입들을 T.접두사 붙여가지고 import해오는 거임
