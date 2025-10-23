@@ -8,7 +8,15 @@ type ButtonVariant =
   | 'danger'
   | 'text'
   | 'signup'
-type ButtonSize = 'md' | 'sm' | 'lg' | 'ml' | 'freeWidthLg' | 'freeWidthMd'
+  | 'login'
+type ButtonSize =
+  | 'md'
+  | 'sm'
+  | 'lg'
+  | 'ml'
+  | 'freeWidthLg'
+  | 'freeWidthMd'
+  | 'freeLogin'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
@@ -34,6 +42,8 @@ const variantStyles: Record<ButtonVariant, string> = {
   text: 'text-primary-600 hover:text-primary-700 active:text-primary-800',
   signup:
     'text-primary-600 bg-primary-100 hover:bg-primary-200 active:bg-primary-300 disabled:text-gray-800 disabled:bg-gray-300',
+  login:
+    'bg-secondary-200 hover:bg-secondary-300 active:bg-secondary-400 disabled:bg-secondary-200 text-[#303030]',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -43,6 +53,7 @@ const sizeStyles: Record<ButtonSize, string> = {
   lg: 'px-6 py-3 text-base h-12 min-w-24 rounded-lg',
   freeWidthMd: 'px-4 py-2.5 text-sm h-10 min-w-full rounded-lg',
   freeWidthLg: 'px-4 py-2.5 text-sm h-12 min-w-full rounded-lg',
+  freeLogin: 'px-4 py-2.5 text-base h-12 min-w-full rounded-lg',
 }
 
 function Button({

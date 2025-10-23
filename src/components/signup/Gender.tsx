@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Form } from '../../../pages/SignUpPage'
+import type { Form } from '../../pages/SignUpPage'
 
 interface GenderProps {
   form: Form

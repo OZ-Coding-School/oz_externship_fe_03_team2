@@ -99,6 +99,8 @@ function validateAll(form: Partial<Form>, submit: boolean = false) {
   ] as const // 리터럴 값으로 바꿔주고 readonly로 변경시켜줌
 
   for (const key of fields) {
+    if (!(key in form)) continue
+
     const fieldError = validateField(
       key,
       String(form[key] ?? ''),
