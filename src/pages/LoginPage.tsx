@@ -58,25 +58,31 @@ function LoginPage() {
   }
 
   return (
-    <div className="bg-secondary-50 min-h-screen">
+    <div className="bg-secondary-50 flex min-h-screen flex-col">
       <Header />
-      <div className="mx-auto flex w-[21.75rem] flex-col items-center justify-center">
-        <h1>로그인</h1>
-        <div className="flex gap-3">
-          <p>아직 계정이 없으신가요?</p>
-          <Link to={'/signup'}>회원가입하기</Link>
+      <div className="m-auto flex w-[21.75rem] flex-col items-center justify-center">
+        <h1 className="text-secondary-900 mb-2 text-center text-3xl font-bold">
+          로그인
+        </h1>
+        <div className="mb-8 flex gap-1">
+          <p className="text-secondary-600 text-sm">아직 계정이 없으신가요?</p>
+          <Link to={'/signup'} className="text-primary-600 text-sm">
+            회원가입하기
+          </Link>
         </div>
-        <div className="mb-10 flex flex-col gap-3">
-          <button className="text-[000000 85%] bg-[#FEE500]">
+        <div className="mb-10 flex w-full flex-col justify-center gap-3">
+          <button className="flex h-[3.25rem] items-center justify-center gap-1 rounded-lg bg-[#FEE500] text-[#391C1A]">
+            <img src="src/assets/kakao.svg" className="p-1" />
             카카오 간편 로그인 / 가입
           </button>
-          <button className="bg-[#03C75A] text-white">
+          <button className="flex h-[3.25rem] items-center justify-center gap-1 rounded-lg bg-[#03C75A] text-white">
+            <img src="src/assets/naver.svg" className="p-1" />
             네이버 간편 로그인 / 가입
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="flex flex-col gap-3">
+          <div className="mb-2 flex flex-col gap-3">
             <InputWithLabel
               name="email"
               type="email"
@@ -95,10 +101,17 @@ function LoginPage() {
             />
           </div>
 
-          <Link to={'/emailfind'}>아이디 찾기</Link>
-          <Link to={'/passwordfind'}>비밀번호 찾기</Link>
+          <div className="mb-3">
+            <Link to={'/emailfind'} className="text-primary-600 text-sm">
+              아이디 찾기
+            </Link>
+            <span className="text-primary-600 p-2 text-sm">|</span>
+            <Link to={'/passwordfind'} className="text-primary-600 text-sm">
+              비밀번호 찾기
+            </Link>
+          </div>
 
-          <Button type="submit" size="freeWidthLg">
+          <Button type="submit" size="freeLogin" variant="login">
             일반회원 로그인
           </Button>
         </form>
