@@ -15,7 +15,7 @@
 //    })
 // }
 // =========================================
-// =========================================
+//
 // 그 외 요청은 useSimpleMutation 씌워서 이용
 // useMutation 훅 중 속성 mutate()에다가 넣음
 // query문 작성할 때도 mutation함수에다가 data 전달함
@@ -25,13 +25,44 @@
 // 그래서 api 명세서 보고 인자를 여러 개 넘겨줘야 한다 하면 훅에서도 받은 객체를 분해해서 써야 함.
 // - - - - - - - - - -
 // export const 함수이름 = () => {
-//    return useSimpleMutation<타입>(
+//    return useSimpleMutation<T: 응답데이터 타입, TError: 에러 타입, TVariables: 요청데이터 타입>(
 //      (data) => api.메서드(`/엔드포인트`, data),
 //      {
 //        onSuccess: () => {}
 //      }
 //    )
 // }
+
+import { useSimpleMutation } from '../useSimpleMutation'
+import * as T from '../interface/authInterface'
+import { api } from '../client'
+import Toast from '../../components/common/toast/Toast'
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router'
+// 인터페이스를 다른 파일로 뻈으니 그걸 하나하나 import 해오려면 너무너무 길어짐...
+// 저 파일의 모듈 전체를 T라는 네임스페이스로 묶어서 ?
+// 모든 타입들을 T.접두사 붙여가지고 import해오는 거임
+export const showToast = (
+  title: string,
+  message: string,
+  type: 'error' | 'warning' | 'success'
+) => {
+  toast.custom((t) => (
+    <Toast id={t} title={title} message={message} type={type} />
+  ))
+}
+
 export const useSignup = () => {
-  return
+  const navigate = useNavigate()
+
+  return useSimpleMutation<
+    T.SignupResponse,
+    T.ComplexErrors,
+    T.SignupRequestBody
+  >((body) => api.post('/users', body), {
+    onSuccess: () => {
+      showToast('회원가입에 성공했습니다', '로그인을 시도해주세요.', 'success')
+      navigate('/login')
+    },
+  })
 }
