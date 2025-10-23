@@ -7,7 +7,6 @@ export default function ToastContainer() {
     <Toaster
       position="top-center"
       duration={4000}
-      // 토스트 너비 지정 시 필요할 수 있는 내용임.
       toastOptions={{
         className: 'max-w-[18rem] w-full',
       }}
