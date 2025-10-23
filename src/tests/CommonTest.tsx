@@ -402,7 +402,7 @@ function CommonTest() {
                 toast.custom((t) => (
                   <Toast
                     id={t}
-                    title="카테고리 선택"
+                    // title="카테고리 선택"
                     message={`${value} 선택했습니다`}
                     type="success"
                   />

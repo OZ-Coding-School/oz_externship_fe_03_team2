@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 
 interface ToastType {
   id?: string | number //x버튼으로 닫기 할 거면 이것도 써넣기..
-  title: string
+  title?: string
   message: string
   type: 'error' | 'warning' | 'success'
 }
@@ -37,14 +37,14 @@ export default function Toast({ id, title, message, type }: ToastType) {
 
   return (
     <div
-      className={`relative flex w-auto max-w-[28rem] items-start justify-between gap-3 rounded-lg border p-[.875rem] text-[.875rem] [word-break:keep-all] select-none ${toastUi[type].border} ${toastUi[type].bg}`}
+      className={`relative flex w-full items-start justify-between gap-3 rounded-lg border p-[.875rem] text-[.875rem] [word-break:keep-all] select-none ${toastUi[type].border} ${toastUi[type].bg}`}
     >
       <div className="flex gap-[.75rem]">
         <span className={`${toastUi[type].iconColor}`}>
           {toastUi[type].icon}
         </span>
         <div className={`${toastUi[type].textColor}`}>
-          <p className="font-semibold">{title}</p>
+          {title && <p className="font-semibold">{title}</p>}
           <p>{message}</p>
         </div>
       </div>
