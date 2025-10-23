@@ -1,3 +1,4 @@
+import { birthdayFormat } from '../../utils/dateFormat'
 import Badge from '../common/Badge'
 
 interface StudyApplicationData {
@@ -9,7 +10,7 @@ interface StudyApplicationData {
   curriculum: string[]
   tags: string[]
   appliedAt: string
-  status: 'pending' | 'accepted' | 'rejected'
+  status: 'pending' | 'success' | 'rejected'
 }
 
 interface StudyApplicationCardProps {
@@ -23,7 +24,7 @@ export default function StudyApplicationCard({
     switch (data.status) {
       case 'pending':
         return { variant: 'default' as const, text: '대기중' }
-      case 'accepted':
+      case 'success':
         return { variant: 'success' as const, text: '승인됨' }
       case 'rejected':
         return { variant: 'danger' as const, text: '거절됨' }
@@ -71,7 +72,8 @@ export default function StudyApplicationCard({
               {data.participants}명
             </p>
             <p className="text-sm text-gray-700">
-              <span className="font-medium">마감일:</span> {data.deadline}
+              <span className="font-medium">마감일:</span>{' '}
+              {birthdayFormat(data.deadline)}
             </p>
           </div>
 

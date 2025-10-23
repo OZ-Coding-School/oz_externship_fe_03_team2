@@ -8,7 +8,7 @@ const STUDY_APPLICATIONS_DATA = [
     image:
       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
     participants: 5,
-    deadline: '2025. 10. 3.',
+    deadline: '2025-10-03.',
     curriculum: [
       'AWS 클라우드 아키텍처 - 인프라구드',
       'Docker & Kubernetes - 이데브옵스',
@@ -22,14 +22,14 @@ const STUDY_APPLICATIONS_DATA = [
     title: '딥러닝 AI 프로젝트 스터디팀 모집',
     image: '',
     participants: 3,
-    deadline: '2024. 5. 12.',
+    deadline: '2024-05-12.',
     curriculum: [
       '딥러닝 완벽 마스터 - 김딥러닝',
       'TensorFlow 실전 - 박텐서플로',
     ],
     tags: ['딥러닝', 'AI', '머신러닝', 'Python'],
     appliedAt: '2024. 01. 25. 오전 11:15',
-    status: 'accepted' as const,
+    status: 'success' as const,
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const STUDY_APPLICATIONS_DATA = [
     image:
       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
     participants: 4,
-    deadline: '2025. 3. 15.',
+    deadline: '2025-3-15.',
     curriculum: ['React Native 기초 - 이모바일', '실전 앱 출시 - 박앱스토어'],
     tags: ['React Native', '모바일', 'JavaScript', 'iOS', 'Android'],
     appliedAt: '2024. 03. 05. 오후 03:20',
