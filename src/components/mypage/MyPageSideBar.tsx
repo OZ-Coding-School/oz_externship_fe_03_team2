@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router'
 import Avatar from '../common/Avatar'
+import { yearMonthFormat } from '../../utils/dateFormat'
 
 interface MenuItem {
   id: string
@@ -68,7 +69,9 @@ function MyPageSideBar({ menuItems, currentActive }: MyPageSidebarProps) {
             <div className="text-center">
               <h3 className="text-lg font-semibold">김개발</h3>
               <p className="text-sm text-gray-600">kim.dev@example.com</p>
-              <p className="mt-1 text-xs text-gray-500">가입일: 2024년 1월</p>
+              <p className="mt-1 text-xs text-gray-500">
+                가입일: {yearMonthFormat('2025-01-10')}
+              </p>
             </div>
           </div>
         </div>

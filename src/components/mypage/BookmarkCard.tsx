@@ -143,14 +143,14 @@ function CourseBookmarkCard({
   onViewClick?: (id: number) => void
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md">
+    <div className="rounded-xl border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md">
       <div className="flex gap-4">
         {/* 이미지 */}
-        <div className="flex h-24 w-40 flex-shrink-0 items-center overflow-hidden">
+        <div className="flex h-auto w-40 flex-shrink-0 items-center">
           <img
             src={data.image}
             alt={data.title}
-            className="h-full w-full rounded-lg object-cover"
+            className="max-h-24 w-full rounded-lg object-cover"
           />
         </div>
 

@@ -5,6 +5,7 @@ import ProfileEditModal from './ProfileEditModal'
 import { PROFILE_FIELDS } from '../../constants/myPageProfile'
 import PasswordChangeModal from './PasswordChangeModal'
 import UserLeaveModal from './UserLeaveModal'
+import { birthdayFormat } from '../../utils/dateFormat'
 
 interface ProfileData {
   name: string
@@ -23,7 +24,7 @@ function ProfileContents() {
     nickname: 'ozdev',
     email: 'kim.dev@example.com',
     phone: '010-1234-5678',
-    birthDay: '1990. 5. 15.',
+    birthDay: birthdayFormat('1990-5-15'),
   })
 
   const handleSave = (newData: ProfileData) => {
