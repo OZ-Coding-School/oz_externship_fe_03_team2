@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
-import { Mail, X, CheckCircle, Send, User } from 'lucide-react'
+import { X, Check } from 'lucide-react'
 import Button from './Button'
 import InputWithLabel from './InputWithLabel'
-
-const SuccessIcon = () => (
-  <CheckCircle size={48} className="mx-auto text-yellow-500" />
-)
 
 const NeutralEmojiIcon = () => (
   <div className="mb-6 flex justify-center">
@@ -27,34 +23,28 @@ function Recovery({ onClose }: RecoveryProps) {
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isEmailSent, setIsEmailSent] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
   const [showToast, setShowToast] = useState(false)
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }))
-    }
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }))
   }
 
-  const handleStartRecovery = () => {
-    setStep(2)
-  }
+  const handleStartRecovery = () => setStep(2)
 
   const handleSendCode = () => {
     if (!formData.email) {
       setErrors({ email: '이메일을 입력해주세요' })
       return
     }
-
     setIsEmailSent(true)
+    setIsVerified(false)
     setErrors({})
-
     setShowToast(true)
-
-    setTimeout(() => {
-      setShowToast(false)
-    }, 3000)
+    setTimeout(() => setShowToast(false), 3000)
   }
 
   const handleVerificationCheck = () => {
@@ -62,12 +52,20 @@ function Recovery({ onClose }: RecoveryProps) {
       setErrors({ verifyCode: '인증번호를 입력해주세요' })
       return
     }
-    setStep(3)
+    if (formData.verifyCode.length === 6) {
+      setIsVerified(true)
+      setErrors({})
+    } else {
+      setErrors({ verifyCode: '인증번호 6자리를 정확히 입력해주세요.' })
+      setIsVerified(false)
+    }
   }
 
-  const handleFinalSuccess = () => {
-    onClose()
+  const handleNextStep = () => {
+    if (isVerified) setShowSuccessOverlay(true)
   }
+
+  const handleFinalSuccess = () => onClose()
 
   const renderStepContent = () => {
     switch (step) {
@@ -75,27 +73,26 @@ function Recovery({ onClose }: RecoveryProps) {
         return (
           <>
             <NeutralEmojiIcon />
-
             <h2 className="mb-2 text-center text-xl font-bold text-gray-800">
               해당 계정은 탈퇴된 상태예요.
             </h2>
-            <div className="mb-6 px-2 text-center text-sm whitespace-pre-line text-gray-600">
+            <p className="mb-6 px-2 text-center text-sm whitespace-pre-line text-gray-600">
               2025년 9월 20일 이후, 계정 정보는 완전히 삭제돼요.{'\n'}
               계정을 다시 사용하려면 아래 버튼을 눌러 복구를 진행해주세요.
-            </div>
-
-            <button
+            </p>
+            <Button
+              size="freeWidthLg"
+              variant="signup"
               onClick={handleStartRecovery}
-              className="h-12 w-full rounded-lg bg-yellow-500 font-semibold text-gray-800 shadow-md transition duration-150 hover:bg-yellow-600"
             >
               계정 다시 사용하기
-            </button>
+            </Button>
           </>
         )
 
       case 2:
         return (
-          <>
+          <div className="relative">
             <div className="mb-6 flex justify-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 p-3 text-yellow-600">
                 <span className="text-4xl">🔄</span>
@@ -105,104 +102,56 @@ function Recovery({ onClose }: RecoveryProps) {
             <h2 className="mb-1 text-center text-lg font-bold text-gray-800">
               계정 다시 사용하기
             </h2>
-            <div className="mb-6 text-center text-sm text-gray-600">
+            <p className="mb-6 text-center text-sm text-gray-600">
               입력하신 이메일로 인증번호를 보내드릴게요.
-            </div>
+            </p>
 
             <div className="space-y-4">
-              <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-bold text-gray-800"
-                >
-                  이메일*
-                </label>
-                <div className="flex items-center space-x-2">
-                  <div className="relative flex-grow">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="가입한 이메일을 입력해 주세요."
-                      className={`h-10 w-full border px-3 py-2 ${errors['email'] ? 'border-red-500' : 'border-gray-300'} rounded-lg text-sm focus:border-yellow-500 focus:ring-yellow-500 disabled:bg-gray-50`}
-                      disabled={isEmailSent}
-                    />
-                    {errors['email'] && (
-                      <p className="mt-1 text-xs text-red-500">
-                        {errors['email']}
-                      </p>
-                    )}
-                  </div>
-                  <button
-                    onClick={handleSendCode}
-                    className={`flex-shrink-0 rounded-lg px-3 py-2 text-sm font-semibold whitespace-nowrap shadow-sm transition duration-150 ${isEmailSent ? 'cursor-not-allowed bg-gray-200 text-gray-500' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                    disabled={isEmailSent}
-                  >
-                    인증코드 전송
-                  </button>
-                </div>
-              </div>
+              <InputWithLabel
+                label="이메일"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="가입한 이메일을 입력해 주세요."
+                error={errors.email}
+                disabled={isEmailSent}
+                button={{
+                  label: '인증코드 전송',
+                  onClick: handleSendCode,
+                  variant: 'secondary',
+                  size: 'sm',
+                  disabled: isEmailSent,
+                  countdown: 300,
+                }}
+              />
 
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <div className="relative flex-grow">
-                    <input
-                      id="verifyCode"
-                      name="verifyCode"
-                      type="text"
-                      value={formData.verifyCode}
-                      onChange={handleChange}
-                      placeholder="인증번호 6자리를 입력해주세요."
-                      className={`h-10 w-full border px-3 py-2 ${errors['verifyCode'] ? 'border-red-500' : 'border-gray-300'} rounded-lg text-sm focus:border-yellow-500 focus:ring-yellow-500`}
-                    />
-                    {errors['verifyCode'] && (
-                      <p className="mt-1 text-xs text-red-500">
-                        {errors['verifyCode']}
-                      </p>
-                    )}
+              <InputWithLabel
+                label="인증번호"
+                name="verifyCode"
+                value={formData.verifyCode}
+                onChange={handleChange}
+                placeholder="인증번호 6자리를 입력해주세요."
+                error={errors.verifyCode}
+                disabled={!isEmailSent || isVerified}
+                button={{
+                  label: isVerified ? '인증완료' : '인증코드 확인',
+                  onClick: handleVerificationCheck,
+                  variant: 'secondary',
+                  size: 'sm',
+                  disabled: isVerified || !isEmailSent,
+                }}
+              />
 
-                    {isEmailSent && (
-                      <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 transform text-xs font-bold text-red-500">
-                        05:00
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    onClick={handleVerificationCheck}
-                    className="flex-shrink-0 rounded-lg bg-gray-200 px-3 py-2 text-sm font-semibold whitespace-nowrap text-gray-700 shadow-sm transition duration-150 hover:bg-gray-300"
-                  >
-                    인증코드 확인
-                  </button>
-                </div>
-                <button
-                  onClick={handleFinalSuccess}
-                  className="mt-4 h-12 w-full rounded-lg bg-yellow-500 font-semibold text-gray-800 shadow-md transition duration-150 hover:bg-yellow-600"
-                >
-                  확인
-                </button>
-              </div>
+              <Button
+                onClick={handleNextStep}
+                disabled={!isVerified}
+                size="freeWidthLg"
+                variant={isVerified ? 'signup' : 'secondary'}
+              >
+                확인
+              </Button>
             </div>
-          </>
-        )
-
-      case 3:
-        return (
-          <div className="py-6 text-center">
-            <SuccessIcon />
-            <h2 className="mt-4 mb-2 text-xl font-bold text-gray-800">
-              계정 복구 완료!
-            </h2>
-            <p className="mb-6 text-sm text-gray-600">
-              지금 바로 로그인해 보세요.
-            </p>
-            <button
-              onClick={handleFinalSuccess}
-              className="h-12 w-full rounded-lg bg-yellow-500 font-semibold text-gray-800 shadow-md transition duration-150 hover:bg-yellow-600"
-            >
-              확인
-            </button>
           </div>
         )
 
@@ -214,23 +163,66 @@ function Recovery({ onClose }: RecoveryProps) {
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
       <div className="relative flex flex-col items-center">
+        {showSuccessOverlay && (
+          <div className="bg-opacity-40 fixed inset-0 z-50 flex items-center justify-center bg-black">
+            <div className="animate-fadeIn relative flex w-80 flex-col items-center rounded-2xl bg-white p-8 text-center shadow-2xl sm:w-96">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                <Check className="text-green-500" size={28} strokeWidth={3} />
+              </div>
+              <h3 className="mb-1 text-xl font-bold text-gray-800">
+                계정 복구 완료!
+              </h3>
+              <p className="mb-6 text-sm text-gray-600">
+                지금 바로 로그인해 보세요
+              </p>
+              <Button
+                onClick={handleFinalSuccess}
+                size="freeWidthLg"
+                variant="signup"
+              >
+                확인
+              </Button>
+              <button
+                onClick={handleFinalSuccess}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              >
+                <X size={22} />
+              </button>
+            </div>
+          </div>
+        )}
+
         {showToast && (
-          <div className="mb-4 flex items-center space-x-2 rounded-lg border border-green-200 bg-white p-3 shadow-xl transition-opacity duration-300">
-            <CheckCircle size={18} className="text-green-500" />
+          <div className="mb-4 flex transform items-center space-x-2 rounded-lg border border-green-200 bg-white p-3 shadow-lg transition-all duration-300">
+            <svg
+              className="h-5 w-5 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
             <span className="text-sm font-semibold whitespace-nowrap text-gray-700">
               전송 완료! 이메일을 확인해주세요.
             </span>
           </div>
         )}
 
-        <div className="relative w-full max-w-sm rounded-xl bg-white p-8 shadow-2xl">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 transition hover:text-gray-600"
-          >
-            <X size={24} />
-          </button>
-
+        <div className="relative w-full max-w-md rounded-xl bg-white p-8 shadow-2xl sm:max-w-lg">
+          {!showSuccessOverlay && (
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 text-gray-400 transition hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          )}
           {renderStepContent()}
         </div>
       </div>
