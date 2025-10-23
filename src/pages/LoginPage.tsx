@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Header from '../components/layout/Header'
 import InputWithLabel from '../components/common/InputWithLabel'
 import Button from '../components/common/Button'
@@ -13,11 +13,16 @@ interface Form {
   password: string
 }
 
+const TEST_MAIL = { email: 'test@email.com', password: 'Qwer1234!' }
+
+const FORM_STATE: Form = {
+  email: '',
+  password: '',
+}
+
 function LoginPage() {
-  const [form, setForm] = useState<Form>({
-    email: '',
-    password: '',
-  })
+  const navigate = useNavigate()
+  const [form, setForm] = useState<Form>(FORM_STATE)
 
   const [error, setError] = useState<Record<string, string>>({})
 
@@ -30,10 +35,7 @@ function LoginPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setForm((prev) => ({ ...prev, [name]: value }))
 
     if (error[name]) {
       setError((prev) => ({ ...prev, [name]: '' }))
@@ -42,19 +44,45 @@ function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const newErrors = validateAll(form, true)
 
+    const newErrors = validateAll(form, true)
     if (Object.keys(newErrors).length > 0) {
       setError(newErrors)
       return
     }
 
-    setForm({
-      email: '',
-      password: '',
-    })
-    setError({})
-    toast.custom(() => <Toast title="제출" message="성공" type="success" />)
+    if (
+      TEST_MAIL.email === form.email &&
+      TEST_MAIL.password === form.password
+    ) {
+      setForm(FORM_STATE)
+
+      setError({})
+
+      toast.custom(() => <Toast title="로그인" message="성공" type="success" />)
+      navigate('/')
+    } else {
+      toast.custom(() => <Toast title="로그인" message="실패" type="error" />)
+    }
+  }
+
+  const isFormValid = () => {
+    const requiredFields = ['email', 'password'] as const
+    const hasAllFields = requiredFields.every(
+      (field) => form[field] && !error[field]
+    )
+
+    return hasAllFields
+  }
+
+  const formSubmit = isFormValid()
+
+  //추후 API 연결
+  const kakaoLogin = () => {
+    navigate('/')
+  }
+  const naverLogin = () => {
+    navigate('/')
   }
 
   return (
@@ -70,12 +98,19 @@ function LoginPage() {
             회원가입하기
           </Link>
         </div>
+
         <div className="mb-10 flex w-full flex-col justify-center gap-3">
-          <button className="flex h-[3.25rem] items-center justify-center gap-1 rounded-lg bg-[#FEE500] text-[#391C1A]">
+          <button
+            className="flex h-[3.25rem] cursor-pointer items-center justify-center gap-1 rounded-lg bg-[#FEE500] text-[#391C1A]"
+            onClick={kakaoLogin}
+          >
             <img src="src/assets/kakao.svg" className="p-1" />
             카카오 간편 로그인 / 가입
           </button>
-          <button className="flex h-[3.25rem] items-center justify-center gap-1 rounded-lg bg-[#03C75A] text-white">
+          <button
+            className="flex h-[3.25rem] cursor-pointer items-center justify-center gap-1 rounded-lg bg-[#03C75A] text-white"
+            onClick={naverLogin}
+          >
             <img src="src/assets/naver.svg" className="p-1" />
             네이버 간편 로그인 / 가입
           </button>
@@ -111,7 +146,12 @@ function LoginPage() {
             </Link>
           </div>
 
-          <Button type="submit" size="freeLogin" variant="login">
+          <Button
+            type="submit"
+            size="freeLogin"
+            variant="login"
+            disabled={!formSubmit}
+          >
             일반회원 로그인
           </Button>
         </form>
