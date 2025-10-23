@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { X, Check, Annoyed, RotateCw } from 'lucide-react'
+import { toast } from 'sonner'
 import Button from './Button'
 import InputWithLabel from './InputWithLabel'
+import Toast from '../common/toast/Toast'
 
 const NeutralEmojiIcon = () => (
   <div className="mb-6 flex justify-center">
     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 p-3 text-yellow-600">
-      <span className="text-4xl">
-        <Annoyed />
-      </span>
+      <Annoyed size={36} />
     </div>
   </div>
 )
@@ -26,8 +26,6 @@ function Recovery({ onClose }: RecoveryProps) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isEmailSent, setIsEmailSent] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
-  const [showToast, setShowToast] = useState(false)
-  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -45,8 +43,15 @@ function Recovery({ onClose }: RecoveryProps) {
     setIsEmailSent(true)
     setIsVerified(false)
     setErrors({})
-    setShowToast(true)
-    setTimeout(() => setShowToast(false), 3000)
+
+    toast.custom((t) => (
+      <Toast
+        id={t}
+        title="전송 완료!"
+        message="이메일을 확인해주세요."
+        type="success"
+      />
+    ))
   }
 
   const handleVerificationCheck = () => {
@@ -64,10 +69,8 @@ function Recovery({ onClose }: RecoveryProps) {
   }
 
   const handleNextStep = () => {
-    if (isVerified) setShowSuccessOverlay(true)
+    if (isVerified) setStep(3)
   }
-
-  const handleFinalSuccess = () => onClose()
 
   const renderStepContent = () => {
     switch (step) {
@@ -84,7 +87,7 @@ function Recovery({ onClose }: RecoveryProps) {
             </p>
             <Button
               size="freeWidthLg"
-              variant="signup"
+              variant="primary"
               onClick={handleStartRecovery}
             >
               계정 다시 사용하기
@@ -97,9 +100,7 @@ function Recovery({ onClose }: RecoveryProps) {
           <div className="relative">
             <div className="mb-6 flex justify-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 p-3 text-yellow-600">
-                <span className="text-4xl">
-                  <RotateCw />
-                </span>
+                <RotateCw size={36} />
               </div>
             </div>
 
@@ -126,7 +127,6 @@ function Recovery({ onClose }: RecoveryProps) {
                   variant: 'secondary',
                   size: 'sm',
                   disabled: isEmailSent,
-                  countdown: 300,
                 }}
               />
 
@@ -151,11 +151,29 @@ function Recovery({ onClose }: RecoveryProps) {
                 onClick={handleNextStep}
                 disabled={!isVerified}
                 size="freeWidthLg"
-                variant={isVerified ? 'signup' : 'secondary'}
+                variant={isVerified ? 'primary' : 'secondary'}
               >
                 확인
               </Button>
             </div>
+          </div>
+        )
+
+      case 3:
+        return (
+          <div className="flex flex-col items-center">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+              <Check className="text-green-500" size={28} strokeWidth={3} />
+            </div>
+            <h3 className="mb-1 text-xl font-bold text-gray-800">
+              계정 복구 완료!
+            </h3>
+            <p className="mb-6 text-sm text-gray-600">
+              지금 바로 로그인해 보세요
+            </p>
+            <Button onClick={onClose} size="freeWidthLg" variant="primary">
+              확인
+            </Button>
           </div>
         )
 
@@ -165,70 +183,15 @@ function Recovery({ onClose }: RecoveryProps) {
   }
 
   return (
-    <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
-      <div className="relative flex flex-col items-center">
-        {showSuccessOverlay && (
-          <div className="bg-opacity-40 fixed inset-0 z-50 flex items-center justify-center bg-black">
-            <div className="animate-fadeIn relative flex w-80 flex-col items-center rounded-2xl bg-white p-8 text-center shadow-2xl sm:w-96">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                <Check className="text-green-500" size={28} strokeWidth={3} />
-              </div>
-              <h3 className="mb-1 text-xl font-bold text-gray-800">
-                계정 복구 완료!
-              </h3>
-              <p className="mb-6 text-sm text-gray-600">
-                지금 바로 로그인해 보세요
-              </p>
-              <Button
-                onClick={handleFinalSuccess}
-                size="freeWidthLg"
-                variant="signup"
-              >
-                확인
-              </Button>
-              <button
-                onClick={handleFinalSuccess}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              >
-                <X size={22} />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {showToast && (
-          <div className="mb-4 flex transform items-center space-x-2 rounded-lg border border-green-200 bg-white p-3 shadow-lg transition-all duration-300">
-            <svg
-              className="h-5 w-5 text-green-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-            <span className="text-sm font-semibold whitespace-nowrap text-gray-700">
-              전송 완료! 이메일을 확인해주세요.
-            </span>
-          </div>
-        )}
-
-        <div className="relative w-full max-w-md rounded-xl bg-white p-8 shadow-2xl sm:max-w-lg">
-          {!showSuccessOverlay && (
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-gray-400 transition hover:text-gray-600"
-            >
-              <X size={24} />
-            </button>
-          )}
-          {renderStepContent()}
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="relative w-full max-w-md rounded-xl bg-white p-8 shadow-2xl sm:max-w-lg">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 transition hover:text-gray-600"
+        >
+          <X size={24} />
+        </button>
+        {renderStepContent()}
       </div>
     </div>
   )
