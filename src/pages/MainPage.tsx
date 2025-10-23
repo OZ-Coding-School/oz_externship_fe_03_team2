@@ -113,7 +113,7 @@ function MainPage() {
                 key={i}
                 {...course}
                 size="w-full sm:w-[384px] h-[17.375rem]"
-                onClick={() => navigate('/popularcourses')}
+                onClick={() => navigate('/courses')}
               />
             ))}
           </div>
