@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import InputWithLabel from '../components/common/InputWithLabel'
 import Header from '../components/layout/Header'
 import Button from '../components/common/Button'
-import { Link, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import Gender from '../components/signup/Gender'
 import Toast from '../components/common/toast/Toast'
 import { toast } from 'sonner'
@@ -61,7 +61,6 @@ const switchInput = (name: string, value: string): string => {
 }
 
 function SignUpPage() {
-  const navigate = useNavigate()
   const [form, setForm] = useState<Form>(FORM_STATE)
 
   const [confirm, setConfirm] = useState(CONFIRM_STATE) // 인증번호 전송 및 확인
