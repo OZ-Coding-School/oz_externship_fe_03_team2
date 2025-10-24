@@ -10,7 +10,7 @@ const JOBS_DATA = [
   {
     type: 'job' as const,
     id: 101,
-    uuid: '550e8400-e29b-41d4-a716-446655440001',
+    uuid: 'uuid-0001',
     title: 'Vue.js 프론트엔드 개발팀 모집',
     introduction: 'Vue.js로 프로젝트를 함께 진행할 팀원을 모집합니다.',
     thumbnail:
@@ -31,7 +31,7 @@ const JOBS_DATA = [
   {
     type: 'job' as const,
     id: 102,
-    uuid: '550e8400-e29b-41d4-a716-446655440002',
+    uuid: 'uuid-0002',
     title: '딥러닝 AI 프로젝트 스터디팀 모집',
     introduction:
       '딥러닝과 AI 기술을 함께 학습하고 프로젝트를 진행할 스터디원을 모집합니다.',
@@ -53,7 +53,7 @@ const JOBS_DATA = [
   {
     type: 'job' as const,
     id: 103,
-    uuid: '550e8400-e29b-41d4-a716-446655440003',
+    uuid: 'uuid-0003',
     title: 'Unity 게임 개발 프로젝트팀 멤버 모집',
     introduction: 'Unity를 활용한 3D 게임 개발 프로젝트 팀원을 모집합니다.',
     thumbnail:
