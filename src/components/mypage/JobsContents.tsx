@@ -4,52 +4,72 @@ import BookmarkCard from './BookmarkCard'
 import useDebounce from '../../hooks/useDebounce'
 import { toast } from 'sonner'
 import Toast from '../common/toast/Toast'
+import { birthdayFormat } from '../../utils/dateFormat'
 
 const JOBS_DATA = [
   {
     type: 'job' as const,
-    id: 1,
+    id: 101,
+    uuid: '550e8400-e29b-41d4-a716-446655440001',
     title: 'Vue.js 프론트엔드 개발팀 모집',
-    image:
+    introduction: 'Vue.js로 프로젝트를 함께 진행할 팀원을 모집합니다.',
+    thumbnail:
       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    participants: 4,
-    deadline: '2024. 4. 15.',
-    views: 245,
-    bookmarks: 38,
-    curriculum: ['Vue.js 완벽 가이드 - 정복', 'Nuxt.js 실전 - 김패스트'],
+    max_headcount: 4,
+    start_at: '2025-11-01T10:00:00Z',
+    end_at: birthdayFormat('2025-12-15T18:00:00Z'),
+    status: 'PENDING' as const,
+    courses: [
+      { name: 'Vue.js 완벽 가이드', instructor: '정복' },
+      { name: 'Nuxt.js 실전', instructor: '김패스트' },
+    ],
     tags: ['Vue.js', '프론트엔드', '팀프로젝트'],
+    views: 245,
+    bookmark_count: 38,
+    bookmarked_at: '2025-10-16T14:00:00Z',
   },
   {
     type: 'job' as const,
-    id: 2,
+    id: 102,
+    uuid: '550e8400-e29b-41d4-a716-446655440002',
     title: '딥러닝 AI 프로젝트 스터디팀 모집',
-    image:
+    introduction:
+      '딥러닝과 AI 기술을 함께 학습하고 프로젝트를 진행할 스터디원을 모집합니다.',
+    thumbnail:
       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    participants: 3,
-    deadline: '2024. 5. 12.',
-    views: 289,
-    bookmarks: 62,
-    curriculum: [
-      '딥러닝 완벽 마스터 - 김딥러닝',
-      'TensorFlow 실전 - 박텐서플로',
+    max_headcount: 3,
+    start_at: '2025-11-10T10:00:00Z',
+    end_at: birthdayFormat('2025-12-12T18:00:00Z'),
+    status: 'ACTIVE' as const,
+    courses: [
+      { name: '딥러닝 완벽 마스터', instructor: '김딥러닝' },
+      { name: 'TensorFlow 실전', instructor: '박텐서플로' },
     ],
     tags: ['딥러닝', 'AI', '머신러닝'],
+    views: 289,
+    bookmark_count: 62,
+    bookmarked_at: '2025-10-17T09:30:00Z',
   },
   {
     type: 'job' as const,
-    id: 3,
+    id: 103,
+    uuid: '550e8400-e29b-41d4-a716-446655440003',
     title: 'Unity 게임 개발 프로젝트팀 멤버 모집',
-    image:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=cro',
-    participants: 6,
-    deadline: '2025. 2. 28.',
-    views: 412,
-    bookmarks: 105,
-    curriculum: [
-      'Unity 게임 개발 마스터 - 박유니티',
-      'C# 게임 프로그래밍 - 김씨샵',
+    introduction: 'Unity를 활용한 3D 게임 개발 프로젝트 팀원을 모집합니다.',
+    thumbnail:
+      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+    max_headcount: 6,
+    start_at: '2025-11-15T10:00:00Z',
+    end_at: birthdayFormat('2026-02-28T18:00:00Z'),
+    status: 'PENDING' as const,
+    courses: [
+      { name: 'Unity 게임 개발 마스터', instructor: '박유니티' },
+      { name: 'C# 게임 프로그래밍', instructor: '김씨샵' },
     ],
     tags: ['Unity', 'C#', '게임개발', '3D개발'],
+    views: 412,
+    bookmark_count: 105,
+    bookmarked_at: '2025-10-18T11:20:00Z',
   },
 ]
 

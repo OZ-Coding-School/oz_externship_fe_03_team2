@@ -6,28 +6,25 @@ import { PROFILE_FIELDS } from '../../constants/myPageProfile'
 import PasswordChangeModal from './PasswordChangeModal'
 import UserLeaveModal from './UserLeaveModal'
 import { birthdayFormat } from '../../utils/dateFormat'
-
-interface ProfileData {
-  name: string
-  nickname: string
-  email: string
-  phone: string
-  birthDay: string
-}
+import type { UserProfileData } from '../../types/userType'
+import { phoneFormat } from '../../utils/phoneFormat'
 
 function ProfileContents() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
-  const [formData, setFormData] = useState<ProfileData>({
-    name: '김 개발',
-    nickname: 'ozdev',
+  const [formData, setFormData] = useState<UserProfileData>({
+    id: 1,
     email: 'kim.dev@example.com',
-    phone: '010-1234-5678',
-    birthDay: birthdayFormat('1990-5-15'),
+    nickname: 'ozdev',
+    name: '김개발',
+    phone_number: phoneFormat('01012345678'),
+    birthday: birthdayFormat('1998-01-23'),
+    profile_image_url: 'https://cdn.example.com/u/1.png',
+    created_at: '2025-01-01T10:00:00Z',
   })
 
-  const handleSave = (newData: ProfileData) => {
+  const handleSave = (newData: UserProfileData) => {
     setFormData(newData)
     setIsModalOpen(false)
   }
@@ -80,7 +77,7 @@ function ProfileContents() {
                 {field.label}
               </label>
               <div className="rounded-md bg-gray-50 px-4 py-2.5 text-gray-900">
-                {formData[field.key as keyof ProfileData]}
+                {formData[field.key as keyof UserProfileData]}
               </div>
             </div>
           ))}
