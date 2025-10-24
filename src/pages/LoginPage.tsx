@@ -89,6 +89,14 @@ function LoginPage() {
     <div className="bg-secondary-50 flex min-h-screen flex-col">
       <Header />
       <div className="m-auto flex w-[21.75rem] flex-col items-center justify-center">
+        <div className="mb-5 flex">
+          <span className="bg-primary-500 mr-2 flex h-8 w-8 items-center justify-center rounded-lg font-bold text-white">
+            S
+          </span>
+          <span className="text-primary-600 font-[Roboto] text-3xl leading-[28px] font-bold">
+            StudyHub
+          </span>
+        </div>
         <h1 className="text-secondary-900 mb-2 text-center text-3xl font-bold">
           로그인
         </h1>
