@@ -44,9 +44,9 @@ import * as T from '../interface/authInterface'
 // 저 파일의 모듈 전체를 T라는 네임스페이스로 묶어서 ?
 // 모든 타입들을 T.접두사 붙여가지고 import해오는 거임
 export const showToast = (
-  title: string,
   message: string,
-  type: 'error' | 'warning' | 'success'
+  type: 'error' | 'warning' | 'success',
+  title?: string
 ) => {
   toast.custom((t) => (
     <Toast id={t} title={title} message={message} type={type} />
@@ -63,7 +63,7 @@ export const useSignup = () => {
     T.SignupRequestBody
   >((body) => api.post('/users', body), {
     onSuccess: () => {
-      showToast('회원가입에 성공했습니다', '로그인을 시도해주세요.', 'success')
+      showToast('로그인을 시도해주세요.', 'success', '회원가입에 성공했습니다')
       navigate('/login')
     },
   })
@@ -88,5 +88,15 @@ export const useCheckNickname = (nickname: string, enabled = false) => {
       ),
     enabled: enabled && nickname.length > 0,
     retry: false,
+  })
+}
+
+export const usePhonePublicSendCode = () => {
+  return useSimpleMutation<
+    T.PhoneSendCodeResponse,
+    T.SimpleError,
+    T.PhonePublicSendCodeRequest
+  >((body) => api.post('/phone-verifications/signup/send-code', body), {
+    onSuccess: () => showToast('로그인을 시도해주세요.', 'success'),
   })
 }
