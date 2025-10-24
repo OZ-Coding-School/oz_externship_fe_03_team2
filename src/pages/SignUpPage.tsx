@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import InputWithLabel from '../components/common/InputWithLabel'
 import Header from '../components/layout/Header'
 import Button from '../components/common/Button'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Gender from '../components/signup/Gender'
 import Toast from '../components/common/toast/Toast'
 import { toast } from 'sonner'
@@ -166,13 +166,9 @@ function SignUpPage() {
         <h1 className="mb-4 text-center text-3xl font-bold">회원가입</h1>
         <div className="mb-9 flex justify-center gap-4 text-sm font-normal">
           <p className="text-gray-600">이미 계정이 있으신가요?</p>
-          <button
-            type="button"
-            className="text-primary-600 cursor-pointer"
-            onClick={() => navigate('/login')}
-          >
+          <Link to={'/login'} className="text-primary-600 cursor-pointer">
             로그인하기
-          </button>
+          </Link>
         </div>
         <div className="mb-9 flex flex-col gap-11">
           <InputWithLabel
