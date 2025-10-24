@@ -6,21 +6,13 @@ import Modal from '../common/Modal'
 import { phoneFormat } from '../../utils/phoneFormat'
 import { toast } from 'sonner'
 import Toast from '../common/toast/Toast'
-
-interface ProfileData {
-  name: string
-  nickname: string
-  email: string
-  phone: string
-  birthDay: string
-  profileImageUrl?: string
-}
+import type { UserProfileData } from '../../types/userType'
 
 interface ProfileEditModalProps {
   isOpen: boolean
-  profileData: ProfileData
+  profileData: UserProfileData
   onClose: () => void
-  onSave: (data: ProfileData) => void
+  onSave: (data: UserProfileData) => void
 }
 
 function ProfileEditModal({
@@ -29,7 +21,7 @@ function ProfileEditModal({
   onClose,
   onSave,
 }: ProfileEditModalProps) {
-  const [tempData, setTempData] = useState<ProfileData>(profileData)
+  const [tempData, setTempData] = useState<UserProfileData>(profileData)
   const [showVerificationInput, setShowVerificationInput] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
   const [isVerified, setIsVerified] = useState(false)
@@ -157,7 +149,7 @@ function ProfileEditModal({
           <InputWithLabel
             label="휴대폰 번호"
             name="phone"
-            value={tempData.phone}
+            value={tempData.phone_number}
             onChange={handleInputChange}
             placeholder="휴대폰 번호를 입력하세요"
             button={{

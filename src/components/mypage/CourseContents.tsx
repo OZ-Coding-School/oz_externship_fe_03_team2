@@ -9,55 +9,82 @@ const COURSES_DATA = [
   {
     type: 'course' as const,
     id: 1,
-    title: 'React 완벽 마스터 강의 - 기초부터 고급까지',
-    image:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    instructor: '김개발',
-    platform: 'Inflearn',
-    duration: '12:30',
-    level: '초급',
-    price: 59000,
-    originalPrice: 89000,
-    tags: ['React', '프론트엔드', 'JavaScript'],
+    lecture_info: {
+      uuid: 'uuid-001',
+      title: 'React 완벽 마스터 강의 - 기초부터 고급까지',
+      instructor: '김개발',
+      thumbnail_img_url:
+        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+      platform: 'Inflearn',
+      description: 'React의 기초부터 고급 기술까지 완벽하게 마스터하는 강의',
+      difficulty: 'BEGINNER' as const, // BEGINNER, NORMAL, ADVANCED
+      duration: '12:30',
+      original_price: 89000,
+      discount_price: 59000,
+      average_rating: 4.8,
+      url_link: 'https://inflearn.com/course/react-perfect',
+    },
+    created_at: '2025-10-01T12:00:00Z',
   },
   {
     type: 'course' as const,
     id: 2,
-    title: 'Node.js 백엔드 개발 완주 - 실무 프로젝트까지',
-    image:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    instructor: '박서버',
-    platform: 'Udemy',
-    duration: '18:45',
-    level: '중급',
-    price: 79000,
-    originalPrice: 120000,
+    lecture_info: {
+      uuid: 'uuid-002',
+      title: 'Node.js 백엔드 개발 완주 - 실무 프로젝트까지',
+      instructor: '박서버',
+      thumbnail_img_url:
+        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+      platform: 'Udemy',
+      description: 'Node.js를 활용한 백엔드 개발 실무 프로젝트',
+      difficulty: 'NORMAL' as const,
+      duration: '18:45',
+      original_price: 120000,
+      discount_price: 79000,
+      average_rating: 4.5,
+      url_link: 'https://udemy.com/course/nodejs-backend',
+    },
+    created_at: '2025-10-02T14:30:00Z',
   },
   {
     type: 'course' as const,
     id: 3,
-    title: 'Python 데이터 사이언스 마스터클래스',
-    image:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    instructor: '이데이터',
-    platform: 'Inflearn',
-    duration: '25:15',
-    level: '고급',
-    price: 99000,
-    originalPrice: 150000,
+    lecture_info: {
+      uuid: 'uuid-003',
+      title: 'Python 데이터 사이언스 마스터클래스',
+      instructor: '이데이터',
+      thumbnail_img_url:
+        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+      platform: 'Inflearn',
+      description: 'Python을 활용한 데이터 분석 및 머신러닝 실무',
+      difficulty: 'ADVANCED' as const,
+      duration: '25:15',
+      original_price: 150000,
+      discount_price: 99000,
+      average_rating: 4.9,
+      url_link: 'https://inflearn.com/course/python-data-science',
+    },
+    created_at: '2025-10-03T09:15:00Z',
   },
   {
     type: 'course' as const,
     id: 4,
-    title: 'JavaScript ES6+ 완벽 가이드 - 모던 자바스크립트',
-    image:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    instructor: '최자바',
-    platform: 'Udemy',
-    duration: '15:20',
-    level: '초급',
-    price: 49000,
-    originalPrice: 75000,
+    lecture_info: {
+      uuid: 'uuid-004',
+      title: 'JavaScript ES6+ 완벽 가이드 - 모던 자바스크립트',
+      instructor: '최자바',
+      thumbnail_img_url:
+        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+      platform: 'Udemy',
+      description: 'ES6+의 모든 기능을 활용한 모던 JavaScript 완벽 가이드',
+      difficulty: 'BEGINNER' as const,
+      duration: '15:20',
+      original_price: 75000,
+      discount_price: 49000,
+      average_rating: 4.7,
+      url_link: 'https://udemy.com/course/javascript-es6',
+    },
+    created_at: '2025-10-04T16:45:00Z',
   },
 ]
 
@@ -93,8 +120,10 @@ function CourseContents() {
 
   const filterCourses = courses.filter(
     (course) =>
-      course.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-      course.instructor
+      course.lecture_info.title
+        .toLowerCase()
+        .includes(debouncedSearchQuery.toLowerCase()) ||
+      course.lecture_info.instructor
         .toLowerCase()
         .includes(debouncedSearchQuery.toLowerCase())
   )
