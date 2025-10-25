@@ -33,13 +33,15 @@
 //    )
 // }
 
-import { useSimpleMutation } from '../useSimpleMutation'
+import { useSimpleMutation } from '../Helper/useSimpleMutation'
 import { api } from '../client'
 import Toast from '../../components/common/toast/Toast'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import * as T from '../interface/authInterface'
+import { useSimpleQuery } from '../Helper/useSimpleQuery'
+import { useToken } from '../../store/useTokenStore'
 // 인터페이스를 다른 파일로 뻈으니 그걸 하나하나 import 해오려면 너무너무 길어짐...
 // 저 파일의 모듈 전체를 T라는 네임스페이스로 묶어서 ?
 // 모든 타입들을 T.접두사 붙여가지고 import해오는 거임
@@ -70,7 +72,7 @@ export const useSignup = () => {
 }
 
 // 닉네임 중복 확인
-export const useCheckNickname = (nickname: string, enabled = false) => {
+export const useCheckNick = (nickname: string, enabled = false) => {
   // 굳이 enabled = false를 내려주는 이유가 뭘까?
   // 사실 안 내려도 밑에 옵션에서 닉네임을 입력했을 때만 함수가 실행되도록 해서 안 써도 됨
   // 하지만 ? 쿼리 실행 여부를 컴포넌트로 직접 제어하려면 매개변수에 넣어야 됨
@@ -79,17 +81,18 @@ export const useCheckNickname = (nickname: string, enabled = false) => {
   // 그래서 '중복확인' 버튼에 refetch를 달면 ? 버튼 눌렀을 때 즉시 실행됨.
   // const { data, refetch } = useCheckNickname(nickname, false)
   // <button onClick={() => refetch()}>중복확인</button>
-
-  return useQuery<T.CheckNicknameResponse, T.SimpleError>({
-    queryKey: ['/users/check-nickname', nickname],
-    queryFn: () =>
+  return useSimpleQuery<T.CheckNicknameResponse, T.SimpleError>(
+    ['/users/check-nickname', nickname],
+    () =>
       api.get(
         `/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
       ),
-    enabled: enabled && nickname.length > 0,
-    staleTime: 0,
-    retry: false,
-  })
+    {
+      enabled: enabled && nickname.length > 0,
+      staleTime: 0,
+      retry: false,
+    }
+  )
 }
 
 // 휴대폰 인증코드 전송 (회원가입)
@@ -134,10 +137,14 @@ export const useEmailConfirmCode = () => {
 
 // 로그인
 export const useLogin = () => {
+  const navigate = useNavigate()
+  const { setAccessToken } = useToken()
   return useSimpleMutation<T.LoginResponse, T.SimpleError, T.LoginRequest>(
     (body) => api.post('v1/auth/login', body),
     {
-      onSuccess: () => showToast('로그인하였습니다.', 'success', '반가워요!'),
-    }
+      onSuccess: (data) => {
+        queryClient
+        showToast('로그인하였습니다.', 'success', '반가워요!'),
+    }}
   )
 }

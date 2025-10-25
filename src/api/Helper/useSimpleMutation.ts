@@ -11,6 +11,7 @@ export function useSimpleMutation<
   mutationFn: (variables: TVariables) => Promise<T>,
   options?: {
     invalidateKeys?: string[]
+    removeKeys?: string[]
     onSuccess?: (data: T, variables: TVariables) => void
     onError?: (error: TError) => void
     onSettled?: (
@@ -21,7 +22,11 @@ export function useSimpleMutation<
   }
 ) {
   const queryClient = useQueryClient()
-  const { invalidateKeys = [], ...mutationOptions } = options || {}
+  const {
+    invalidateKeys = [],
+    removeKeys = [],
+    ...mutationOptions
+  } = options || {}
   // options가 undefined일 떄도 빈 객체를 기본값으로 지정 => 구조분해할 때 오류 안나게끔...
 
   return useMutation<T, TError, TVariables>({
@@ -29,12 +34,18 @@ export function useSimpleMutation<
     mutationFn,
     onSuccess: (data, variables) => {
       invalidateKeys.forEach((key) => {
+        // 캐시 무효화. (ex: 내용 변경 후 재조회)
         // invalidateKeys 배열을 순회하면서 각 키마다 캐시 무효화 실행함.
         // ex:
         // useSimpleMutation(loginApi, {
         //   invalidateKeys: ['/v1/me', '/posts'], <= 얘네 배열
         // })
         queryClient.invalidateQueries({ queryKey: [key] })
+      })
+
+      removeKeys.forEach((key) => {
+        // 캐시 삭제 (ex: 로그아웃)
+        queryClient.removeQueries({ queryKey: [key] })
       })
       mutationOptions.onSuccess?.(data, variables)
       // 미리 정의해 둔 onSuccess의 콜백이 있으면 실행, 없으면 말고..
