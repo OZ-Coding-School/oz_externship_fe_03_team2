@@ -47,6 +47,7 @@ export function useSimpleMutation<
         // 캐시 삭제 (ex: 로그아웃)
         queryClient.removeQueries({ queryKey: [key] })
       })
+
       mutationOptions.onSuccess?.(data, variables)
       // 미리 정의해 둔 onSuccess의 콜백이 있으면 실행, 없으면 말고..
       // ex:

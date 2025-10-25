@@ -1,4 +1,4 @@
-// 1. 사용자 회원 가입
+// 사용자 회원 가입
 
 export interface SignupRequestBody {
   email: string
@@ -32,12 +32,8 @@ export interface SignupResponse {
   }
 }
 
-export interface Detail {
-  detail: string
-}
-
 // - - - - - - - -
-// 2. 닉네임 중복 확인
+// 닉네임 중복 확인
 
 export interface CheckNicknameResponse {
   detail: string
@@ -50,7 +46,7 @@ export interface CheckNicknameResponse {
 }
 
 // - - - - - - - - -
-// 3-1. 이메일 인증코드 전송
+// 이메일 인증코드 전송
 export interface EmailSendCodeRequest {
   email: string
   purpose: 'signup' | 'restore_user'
@@ -64,7 +60,7 @@ export interface EmailSendCodeResponse {
   }
 }
 
-// 3-2. 이메일 인증코드 확인
+// 이메일 인증코드 확인
 export interface EmailConfirmCodeRequest {
   email: string
   code: number
@@ -84,14 +80,14 @@ export interface EmailConfirmCodeResponse {
 }
 
 // - - - -- - - --
-// 4-1. 휴대폰 인증코드 전송 (회원가입/아이디 찾기) - 공개용
+//  휴대폰 인증코드 전송 (회원가입/아이디 찾기) - 공개용
 export interface PhonePublicSendCodeRequest {
   phone_number: string
   purpose: 'signup' | 'find_email'
 }
 
 export interface PhoneSendCodeResponse {
-  // 얘는 4-3 휴대폰 인증코드 전송(휴대폰번호 변경) - 인증용의 response랑 똑같으니 둘 다 이 타입 쓰면 됨
+  // 얘는 휴대폰 인증코드 전송(휴대폰번호 변경) - 인증용의 response랑 똑같으니 둘 다 이 타입 쓰면 됨
   detail: string
   data: {
     request_id: string
@@ -101,7 +97,7 @@ export interface PhoneSendCodeResponse {
   }
 }
 
-//4-2. 휴대폰 인증코드 확인 (회원가입/아이디찾기) - 공개용
+// 휴대폰 인증코드 확인 (회원가입/아이디찾기) - 공개용
 export interface PhonePublicConfirmCodeRequest {
   phone_number: string
   purpose: 'signup' | 'find_email'
@@ -118,12 +114,12 @@ export interface PhoneConfirmCodeResponse {
   }
 }
 
-//4-3. 휴대폰 인증코드 전송 (휴대폰 번호 변경)- 인증용
+// 휴대폰 인증코드 전송 (휴대폰 번호 변경)- 인증용
 export interface PhoneChangeSendCodeRequest {
   phone_number: string
 }
 
-// 4-4. 휴대폰 인증코드 확인 (휴대폰 번호 변경) - 인증용
+// 휴대폰 인증코드 확인 (휴대폰 번호 변경) - 인증용
 export interface PhoneChangeConfirmCodeRequest {
   phone_number: string
   code: string
@@ -131,7 +127,7 @@ export interface PhoneChangeConfirmCodeRequest {
 }
 
 // - - - - - - - - - - - -
-// 5. 사용자 로그인
+// 사용자 로그인
 export interface LoginRequest {
   email: string
   password: string
@@ -147,8 +143,8 @@ export interface LoginResponse {
 }
 
 // - - - - - - - - - - -
-// 6. 액세스 토큰 갱신
-// 쿠키에서 토큰 가져와서 request는 타입 지정 필요 없음
+// 액세스 토큰 갱신
+// 쿠키에서 토큰 가져와서 request는 타입 지정 필요 없음 (void로 하면 됨)
 export interface RefreshResponse {
   detail: string
   data: {
@@ -158,61 +154,10 @@ export interface RefreshResponse {
   }
 }
 
-// - - - - - - - - - - -
-// 8. 비밀번호 재설정
-export interface RecoveryPassword {
-  new_password: string
-  new_password_confirm: string
-}
-
 //- - - - - - - - - - - -
-// 9. 아이디(이메일) 찾기
-export interface RecoveryEmailResponse {
-  detail: string
-  data: {
-    email: string
-  }
-}
-
-// - - - - - - - - - - - -
-// 10-1. 내 정보 조회
-export interface meResponse {
-  detail: string
-  data: User
-}
-
-// 10-2. 내 정보 수정 - 일반 정보 수정
-export interface UpdateMeRequest {
-  nickname?: string
-  profile_image_url?: string
-  phone_number?: string
-  verify_token?: string
-}
-
-export interface UpdateMeResponse {
-  detail: string
-  data: User
-}
-
-// 10-3. 내 정보 수정 - 비밀번호 변경
-export interface UpdatePasswordRequest {
-  current_password: string
-  new_password: string
-  new_password_confirm: string
-}
-
-// - - - - - - - - - - - - - -
-// 11. 회원 탈퇴
-export interface MeWithDraw {
-  reason: string
-  reason_detail: string
-}
-
-// - - - - - - - - - - - - - -
-// 12. 탈퇴 계정 복구
-export interface RecoveryAccount {
-  verify_token: string
-}
+// 로그아웃
+// 얘는 request도 토큰에서 가져와서 타입 지정 필요 없고
+// response도 detail로 하면 됨
 
 // - - - - - - - - - - - - - -
 // 13. 소셜 회원가입, 로그인 (카카오)
@@ -239,14 +184,21 @@ export interface SocialNaverRequest {
 }
 
 // - - - - - - - - - - - - - -
-// 에러
+// 단순한 에러 응답
 export interface SimpleError {
   error: string
 }
 
+// 복잡한 에러 응답
 export interface ComplexErrors {
   error: string
   errors?: {
     [field: string]: string[]
+    // string들이 모인 배열이다..
   }
+}
+
+// 단순한 응답
+export interface Detail {
+  detail: string
 }
