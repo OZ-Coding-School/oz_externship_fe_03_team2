@@ -87,16 +87,57 @@ export const useCheckNickname = (nickname: string, enabled = false) => {
         `/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
       ),
     enabled: enabled && nickname.length > 0,
+    staleTime: 0,
     retry: false,
   })
 }
 
+// 휴대폰 인증코드 전송 (회원가입)
 export const usePhonePublicSendCode = () => {
   return useSimpleMutation<
     T.PhoneSendCodeResponse,
     T.SimpleError,
     T.PhonePublicSendCodeRequest
-  >((body) => api.post('/phone-verifications/signup/send-code', body), {
-    onSuccess: () => showToast('로그인을 시도해주세요.', 'success'),
+  >((body) => api.post('/v1/phone-verifications/signup/send-code', body), {
+    onSuccess: () => showToast('인증번호를 전송했습니다', 'success'),
   })
+}
+
+// 휴대폰 인증코드 확인 (회원가입)
+export const usePhonePublicConfirmCode = () => {
+  return useSimpleMutation<
+    T.PhoneConfirmCodeResponse,
+    T.SimpleError,
+    T.PhonePublicConfirmCodeRequest
+  >((body) => api.post('v1/phone-verifications/signup/confirm-code', body))
+}
+
+// 이메일 인증코드 전송
+export const useEmailSendCode = () => {
+  return useSimpleMutation<
+    T.EmailSendCodeResponse,
+    T.SimpleError,
+    T.EmailSendCodeRequest
+  >((body) => api.post('/v1/email/verifications/send-code', body), {
+    onSuccess: () => showToast('인증번호를 전송했습니다', 'success'),
+  })
+}
+
+// 이메일 인증코드 확인
+export const useEmailConfirmCode = () => {
+  return useSimpleMutation<
+    T.EmailConfirmCodeResponse,
+    T.SimpleError,
+    T.EmailConfirmCodeRequest
+  >((body) => api.post('/v1/email/verifications/confirm-code', body))
+}
+
+// 로그인
+export const useLogin = () => {
+  return useSimpleMutation<T.LoginResponse, T.SimpleError, T.LoginRequest>(
+    (body) => api.post('v1/auth/login', body),
+    {
+      onSuccess: () => showToast('로그인하였습니다.', 'success', '반가워요!'),
+    }
+  )
 }
