@@ -1,12 +1,17 @@
 import { create } from 'zustand'
 
-interface UserType {
+export interface UserType {
+  // 로그인 시 필수 필드
   id: number
   email: string
-  userName: string
-  profileImage: string
-  createdAt: string
-  lastLogin: string
+  nickname: string
+
+  // /v1/users/me에서 추가로 오는 필드 (옵셔널)
+  name?: string
+  phone_number?: string
+  birthday?: string
+  profile_image_url?: string
+  created_at?: string
 }
 
 interface UserStoreType {
@@ -21,10 +26,7 @@ export const useUserStore = create<UserStoreType>((set) => ({
   user: {
     id: 1001,
     email: 'user@example.com',
-    userName: '홍길동',
-    profileImage: 'https://example.com/profile/1001.jpg',
-    createdAt: '2025-10-10T10:30:00Z',
-    lastLogin: '2025-10-10T10:30:00Z',
+    nickname: '김개발',
   },
 
   setUser: (user) => set({ user }),
@@ -33,8 +35,7 @@ export const useUserStore = create<UserStoreType>((set) => ({
       // TanStack Query 로그인 함수 호출 => 추후에 탠스택 쓰면 구체적으로 수정
       // const response = await fetchUserProfile()
       // set({user: response.data})
-    } catch (error) {
-      console.error(error)
+    } catch {
       set({ user: null })
     }
   },
