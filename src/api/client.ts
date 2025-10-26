@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance } from 'axios'
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { setupInterceptors } from './interceptors'
 
 const url = import.meta.env.VITE_API_BASE_URL
@@ -14,17 +14,18 @@ setupInterceptors(apiClient)
 
 // api 호출
 export const api = {
-  get: <T>(url: string) => apiClient.get<T>(url).then((res) => res.data),
+  get: <T>(url: string, config?: AxiosRequestConfig) =>
+    apiClient.get<T>(url, config).then((res) => res.data),
 
-  post: <T, D = unknown>(url: string, data?: D) =>
-    apiClient.post<T>(url, data).then((res) => res.data),
+  post: <T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) =>
+    apiClient.post<T>(url, data, config).then((res) => res.data),
 
-  put: <T, D = unknown>(url: string, data: D) =>
-    apiClient.put<T>(url, data).then((res) => res.data),
+  put: <T, D = unknown>(url: string, data: D, config?: AxiosRequestConfig) =>
+    apiClient.put<T>(url, data, config).then((res) => res.data),
 
-  patch: <T, D = unknown>(url: string, data?: D) =>
-    apiClient.patch<T>(url, data).then((res) => res.data),
+  patch: <T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) =>
+    apiClient.patch<T>(url, data, config).then((res) => res.data),
 
-  delete: <T = void>(url: string) =>
-    apiClient.delete<T>(url).then((res) => res.data),
+  delete: <T = void>(url: string, config?: AxiosRequestConfig) =>
+    apiClient.delete<T>(url, config).then((res) => res.data),
 }
