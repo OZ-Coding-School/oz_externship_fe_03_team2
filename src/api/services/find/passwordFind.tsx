@@ -10,9 +10,15 @@ export const useEmailVerificationSendCode = () => {
     T.EmailVerificationSendCodeResponse,
     T.SimpleError,
     T.EmailVerificationConfirmCodeRequest
-  >((body) => api.post('/v1/email/verifications/send-code', body), {
-    onSuccess: () => showToast('인증코드를 보냈습니다.', 'success'),
-  })
+  >(
+    (body) =>
+      api.post('/v1/email/verifications/send-code', body, {
+        skipAuth: true,
+      }),
+    {
+      onSuccess: () => showToast('인증코드를 보냈습니다.', 'success'),
+    }
+  )
 }
 
 // 비밀번호 찾기 전 인증 - 이메일 인증코드 확인
@@ -21,7 +27,11 @@ export const useEmailVerificationConfirmCode = () => {
     T.EmailVerificationConfirmCodeResponse,
     T.SimpleError,
     T.EmailVerificationConfirmCodeRequest
-  >((body) => api.post('/v1/email/verifications/confirm-code', body))
+  >((body) =>
+    api.post('/v1/email/verifications/confirm-code', body, {
+      skipAuth: true,
+    })
+  )
 }
 
 // 비밀번호 재설정 - 토큰 검증 후 새 비밀번호로 변경
@@ -41,6 +51,7 @@ export const useRecoveryPassword = () => {
       //  })
       return api.post('/v1/recovery/password/', body, {
         headers: { 'X-Verify-Token': verifyToken },
+        skipAuth: true,
       })
     },
     {
