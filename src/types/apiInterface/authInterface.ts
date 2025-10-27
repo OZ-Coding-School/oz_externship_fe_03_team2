@@ -185,3 +185,13 @@ export interface NaverLoginResponse {
     access_token_expires_in: number
   }
 }
+
+//오류
+export interface Errors {
+  error: string
+  errors?: {
+    email?: string[]
+    nickname?: string[]
+    birthday?: string[]
+  }
+}
