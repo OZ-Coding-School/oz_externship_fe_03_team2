@@ -49,7 +49,6 @@ const API_TESTS: ApiTest[] = [
       verify_token: 'eyJhbGciOi...', // 휴대폰 변경 시에만 필수
     },
   },
-
   {
     id: 'updatePasswrod',
     name: '내정보 수정 - 비밀번호 변경',
@@ -59,6 +58,16 @@ const API_TESTS: ApiTest[] = [
       current_password: 'old',
       new_password: 'New!234',
       new_password_confirm: 'New!234',
+    },
+  },
+
+  {
+    id: 'sendEmailAuthCode',
+    name: '이메일 인증코드 전송 (이메일 변경)',
+    method: 'post',
+    url: '/v1/email-verifications/email-change/send-code',
+    body: {
+      email: 'example@example.com',
     },
   },
 ]
@@ -242,7 +251,7 @@ export default function ApiTestPage() {
   method: 'post', // HTTP 메서드 (get, post, put, patch, delete)
   url: '/v1/endpoint', // API 엔드포인트 경로
   body: { key: 'value' }, // 요청 값 (payload)
-  skipAuth: true // 인증 요청이 필요없는 경우 true, 
+  skipAuth: true // 인증 요청이 필요없는 경우 true, 필요한 경우 생략
 }`}
         </pre>
       </div>
