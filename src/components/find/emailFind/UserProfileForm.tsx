@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import type { FormData } from '../../../pages/EmailFindPage'
 import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
+import { useFindEmailSendCode } from '../../../api/services/find/emailFind'
 
 interface UserProfileFormProps {
   formData: FormData
@@ -20,6 +21,7 @@ export default function UserProfileForm({
   setFormData,
   onNext,
 }: UserProfileFormProps) {
+  const { mutate } = useFindEmailSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !phoneReg) {
@@ -33,6 +35,7 @@ export default function UserProfileForm({
       ))
       return
     }
+    mutate({ phone_number: formData.phone })
     onNext()
   }
   // 전화번호 유효성 검사
