@@ -106,11 +106,32 @@ export default function ApiTestPage() {
       onSuccess: (data, variables) => {
         console.log('성공:', variables.name)
         console.log('Response:', data)
+
+        // 실제 사용 예시
+        // showToast('로그인 성공', 'success', '로그인이 완료되었습니다')
+        // setAccessToken(data.access_token)
+        // navigate('/')
       },
       onError: (error) => {
         console.error(`실패`)
         console.error('Error:', error)
+
+        // onError: API 요청이 실패했을 때 실행되는 콜백
+        // 주로 사용하는 경우
+        // - 에러 토스트 메시지 표시
+        // - 에러 로깅
+        // - 특정 에러에 따른 처리 (401 → 로그인 페이지 이동)
+        // - 폼 에러 상태 업데이트
+        // showToast('로그인 실패', 'error', error)
       },
+
+      // invalidateKeys: 성공 후 자동으로 갱신할 쿼리 키 목록
+      // 예시 : 리뷰 작성 후 리뷰 새로고침
+      // invalidateKeys: ['/v1/reviews'],
+
+      // removeKeys: 성공 후 캐시에서 제거할 쿼리 키 목록
+      // 예 : 로그아웃 후 유저 정보 캐시 삭제
+      // removeKeys: ['/v1/me'],
     }
   )
 
@@ -246,11 +267,11 @@ export default function ApiTestPage() {
         <pre className="text-success-500 overflow-x-auto rounded-md bg-black p-3 text-xs">
           {`// API_TESTS 배열에 추가
 {
-  id: 'my-api-id', // TanStack Query의 queryKey로 사용 (캐싱 및 리페칭 식별자)
-  name: 'API 이름', // 테스트 페이지에 표시될 API 이름
+  id: 'my-api-id', // 테스트 페이지 내부 id
+  name: 'API 이름', // 화면에 표시될 이름
   method: 'post', // HTTP 메서드 (get, post, put, patch, delete)
-  url: '/v1/endpoint', // API 엔드포인트 경로
-  body: { key: 'value' }, // 요청 값 (payload)
+  url: '/v1/endpoint', // API 엔드포인트
+  body: { key: 'value' }, // 요청 BODY => 값 (payload)
   skipAuth: true // 인증 요청이 필요없는 경우 true, 필요한 경우 생략
 }`}
         </pre>

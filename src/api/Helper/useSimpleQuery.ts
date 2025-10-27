@@ -4,6 +4,10 @@ import {
   type UseQueryOptions,
 } from '@tanstack/react-query'
 
+// useQuery > 데이터를 가져와서 캐싱(저장) = GET
+// - 자동 실행 (컴포넌트 마운트 시)
+// - 자동 캐싱 및 재사용
+// - queryKey로 캐시 관리
 export function useSimpleQuery<T = unknown, TError = Error>(
   queryKey: QueryKey,
   queryFn: () => Promise<T>,

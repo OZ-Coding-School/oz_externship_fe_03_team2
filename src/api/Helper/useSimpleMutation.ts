@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+// useMutation > 데이터를 변경하고, 다른 캐시를 무효화 = POST, PUT PATCH, DELETE
+// - 수동 실행 (mutate() 호출)
+// - 캐싱 안함 (일회성)
+// - invalidateKeys로 다른 쿼리 캐시 무효화
 export function useSimpleMutation<
   T = unknown,
   TError = Error,
