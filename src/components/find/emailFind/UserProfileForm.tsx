@@ -22,6 +22,7 @@ export default function UserProfileForm({
   onNext,
 }: UserProfileFormProps) {
   const { mutate } = useFindEmailSendCode()
+  // const { isError } = useFindEmailSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !phoneReg) {
@@ -35,7 +36,18 @@ export default function UserProfileForm({
       ))
       return
     }
-    mutate({ phone_number: formData.phone })
+    mutate(
+      { phone_number: formData.phone },
+      {
+        onSuccess: (data) => {
+          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
+          onNext()
+          // 에러 없을 때만 다음 페이지 넘어가게..
+          // 아직은 api 연결 안 돼서 무조건 오류 뜨니까 일단 주석 해두고 나중에 풀고 밑에 줄 없애기
+        },
+      }
+    )
     onNext()
   }
   // 전화번호 유효성 검사

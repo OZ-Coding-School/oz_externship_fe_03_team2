@@ -4,6 +4,7 @@ import InputWithLabel from '../../common/InputWithLabel'
 import type { FormData } from '../../../pages/EmailFindPage'
 import Toast from '../../common/toast/Toast'
 import { Phone } from 'lucide-react'
+import { useFindEmailConfirmCode } from '../../../api/services/find/emailFind'
 
 interface PhoneAuthProps {
   formData: FormData
@@ -18,8 +19,9 @@ export default function PhoneAuthentication({
   onNext,
   onPrev,
 }: PhoneAuthProps) {
+  const { mutate } = useFindEmailConfirmCode()
   const handleSubmit = () => {
-    if (!formData.authCode) {
+    if (!formData.code) {
       toast.custom((t) => (
         <Toast
           id={t}
@@ -28,8 +30,23 @@ export default function PhoneAuthentication({
           type="warning"
         />
       ))
-      return
     }
+    mutate(
+      {
+        phone_number: formData.phone,
+        code: formData.code,
+        request_id: formData.request_id,
+      },
+      {
+        onSuccess: () => {
+          setFormData(
+            (prev) => ({ ...prev, verify_token: formData.verify_token })
+            // onNext()
+          )
+        },
+      }
+      // 실제 api 연결 시 위에 주석 해제, 아래 코드 삭제
+    )
     onNext()
   }
 
@@ -44,7 +61,7 @@ export default function PhoneAuthentication({
     ))
   }
 
-  const authReg = /^[0-9]{4}$/.test(formData.authCode)
+  const authReg = /^[0-9]{4}$/.test(formData.code)
 
   return (
     <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
@@ -65,10 +82,10 @@ export default function PhoneAuthentication({
           <InputWithLabel
             label="인증코드"
             name="authCode"
-            value={formData.authCode}
+            value={formData.code}
             placeholder="4자리 인증코드 입력"
             onChange={(e) =>
-              setFormData((prev) => ({ ...prev, authCode: e.target.value }))
+              setFormData((prev) => ({ ...prev, code: e.target.value }))
             }
           />
         </div>
