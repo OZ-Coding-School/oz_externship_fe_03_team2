@@ -41,7 +41,7 @@ const API_TESTS: ApiTest[] = [
     id: 'updateProfile',
     name: '내정보 수정 - 일반정보수정',
     method: 'patch',
-    url: '/v1/users/me',
+    url: '/v1/me',
     body: {
       nickname: 'ozdev2',
       profile_image_url: 'https://cdn.example.com/u/ozdev2.png',
