@@ -1,5 +1,5 @@
 import { toast } from 'sonner'
-import Toast from '../../components/common/toast/Toast'
+import Toast from '../components/common/toast/Toast'
 
 export const showToast = (
   message: string,

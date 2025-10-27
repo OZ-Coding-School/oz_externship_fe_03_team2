@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { useToken } from './store/useTokenStore'
 import { useUserStore } from './store/useUserStore'
 import { api } from './api/client'
+import ApiTestPage from './tests/ApiTestPage'
 
 function App() {
   const [isCheck, setIsCheck] = useState(true)
@@ -35,7 +36,7 @@ function App() {
           }
         }>('/v1/auth/refresh', {}, { skipAuth: true })
 
-        setAccessToken(res.data.access_token) // data 객체 안의 access_token 사용
+        setAccessToken(res.data.access_token) // data 객체 안의 access_token 사용z
 
         // accessToken으로 user 정보 조회
         const userRes = await api.get<{
@@ -76,6 +77,7 @@ function App() {
     { path: '/login', element: <LoginPage /> },
     { path: '/signup', element: <SignUpPage /> },
     { path: '/test', element: <CommonTest /> },
+    { path: '/api-test', element: <ApiTestPage /> },
     { path: '/emailfind', element: <EmailFindPage /> },
     { path: '/passwordfind', element: <PasswordFindPage /> },
     { path: '*', element: <NotFoundPage /> },
