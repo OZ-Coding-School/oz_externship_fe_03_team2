@@ -1,8 +1,8 @@
 import { useSimpleMutation } from '../../Helper/useSimpleMutation'
 import * as T from '../../../types/apiInterface/findInterface'
 import { api } from '../../client'
-import { showToast } from '../showToast'
 import { useNavigate } from 'react-router'
+import { showToast } from '../../../utils/showToast'
 
 // 비밀번호 찾기 전 인증 - 이메일 인증코드 전송
 export const useEmailVerificationSendCode = () => {
