@@ -22,9 +22,9 @@ const fetchPopularLecturesMock = async () => {
   }))
 }
 
-export const usePopularLectures = () => {
+export const usePopularCourses = () => {
   return useQuery({
-    queryKey: ['popularLectures'],
+    queryKey: ['popularCourses'],
     queryFn: fetchPopularLecturesMock,
   })
 }
