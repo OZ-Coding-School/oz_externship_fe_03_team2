@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { api } from '../api/client'
 import { useToken } from '../store/useTokenStore'
-import { useUserStore } from '../store/useUserStore'
+import { useUserStore, type UserType } from '../store/useUserStore'
 import { useSimpleMutation } from '../api/Helper/useSimpleMutation'
 import Button from '../components/common/Button'
 
@@ -12,6 +12,11 @@ interface ApiTest {
   url: string
   body?: Record<string, unknown>
   skipAuth?: boolean
+}
+
+interface LoginResponse {
+  access_token: string
+  user: UserType
 }
 
 // 여기다가 추가해서 테스트
@@ -67,22 +72,38 @@ const API_TESTS: ApiTest[] = [
     method: 'post',
     url: '/v1/email-verifications/email-change/send-code',
     body: {
-      email: 'example@example.com',
+      email: 'abc@test.com',
     },
   },
 ]
 
 export default function ApiTestPage() {
   const [selectedId, setSelectedId] = useState<string>('')
-  const { accessToken, setAccessToken } = useToken()
-  const { user, setUser } = useUserStore()
+  const { accessToken, setAccessToken, clearAccessToken } = useToken()
+  const { user, setUser, clearUser } = useUserStore()
 
-  // 더미 로그인
-  const handleMockLogin = () => {
-    const token = 'access_token_' + Date.now()
-    setAccessToken(token)
-    setUser({ id: 1, email: 'test@test.com', nickname: '테스트' })
-  }
+  // 로그인
+  const loginMutation = useSimpleMutation<LoginResponse, Error, void>(
+    async () => {
+      const response = await api.post<LoginResponse>(
+        '/v1/auth/login',
+        { email: 'test@test.com', password: 'password123' },
+        { skipAuth: true }
+      )
+      return response
+    },
+    {
+      onSuccess: (data) => {
+        console.log('로그인 성공:', data)
+        setAccessToken(data.access_token)
+        setUser(data.user)
+      },
+      onError: (error) => {
+        // eslint-disable-next-line no-console
+        console.error('로그인 실패:', error)
+      },
+    }
+  )
 
   // api 테스트 Mutation
   const testMutation = useSimpleMutation<unknown, Error, ApiTest>(
@@ -107,10 +128,31 @@ export default function ApiTestPage() {
         console.log('성공:', variables.name)
         console.log('Response:', data)
 
-        // 실제 사용 예시
-        // showToast('로그인 성공', 'success', '로그인이 완료되었습니다')
-        // setAccessToken(data.access_token)
-        // navigate('/')
+        // 로그인 성공 시 토큰과 유저 정보 저장
+        if (variables.id === 'login' && data) {
+          const loginData = data as {
+            access_token: string
+            user: { id: number; email: string; nickname: string }
+          }
+          setAccessToken(loginData.access_token)
+          setUser(loginData.user)
+        }
+
+        // 로그아웃 성공 시 토큰과 유저 정보 삭제
+        if (variables.id === 'logout') {
+          clearAccessToken()
+          clearUser()
+        }
+
+        // 내 정보 조회 성공 시 유저 정보 업데이트
+        if (variables.id === 'getUserMe' && data) {
+          setUser(data as UserType)
+        }
+
+        // 프로필 수정 성공 시 유저 정보 업데이트
+        if (variables.id === 'updateProfile' && data) {
+          setUser(data as UserType)
+        }
       },
       onError: (error) => {
         console.error(`실패`)
@@ -164,8 +206,12 @@ export default function ApiTestPage() {
             </span>
           </p>
         </div>
-        <Button variant="primary" onClick={handleMockLogin} size="freeWidthMd">
-          더미 로그인 (테스트용)
+        <Button
+          variant="primary"
+          onClick={() => loginMutation.mutate()}
+          size="freeWidthMd"
+        >
+          로그인 하기
         </Button>
       </div>
 
