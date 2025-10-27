@@ -13,10 +13,10 @@ import { phoneFormat } from '../utils/phoneFormat'
 export interface Form {
   name: string
   nickname: string
-  birth: string
+  birthday: string
   gender: 'male' | 'female' | 'none'
   email: string
-  phone: string
+  phone_number: string
   password: string
   passwordConfirm: string
   emailCode: string
@@ -26,10 +26,10 @@ export interface Form {
 const FORM_STATE: Form = {
   name: '',
   nickname: '',
-  birth: '',
+  birthday: '',
   gender: 'none',
   email: '',
-  phone: '',
+  phone_number: '',
   password: '',
   passwordConfirm: '',
   emailCode: '',
@@ -137,9 +137,9 @@ function SignUpPage() {
     const requiredFields = [
       'name',
       'nickname',
-      'birth',
+      'birthday',
       'email',
-      'phone',
+      'phone_number',
       'password',
       'passwordConfirm',
     ] as const
@@ -200,7 +200,7 @@ function SignUpPage() {
           <InputWithLabel
             label="생년월일"
             name="birth"
-            value={form.birth}
+            value={form.birthday}
             error={error['birth']}
             required
             placeholder="8자리 입력해주세요 (ex.20001004)"
@@ -262,7 +262,7 @@ function SignUpPage() {
                 label="휴대전화"
                 name="phone"
                 type="tel"
-                value={phoneFormat(form.phone)}
+                value={phoneFormat(form.phone_number)}
                 error={error['phone']}
                 required
                 placeholder="01012345678"
@@ -272,7 +272,7 @@ function SignUpPage() {
                   onClick: phoneSent,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !(form.phone && !error['phone']),
+                  disabled: !(form.phone_number && !error['phone']),
                 }}
               />
             </div>

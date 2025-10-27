@@ -89,9 +89,9 @@ function validateAll(form: Partial<Form>, submit: boolean = false) {
   const fields = [
     'name',
     'nickname',
-    'birth',
+    'birthday',
     'email',
-    'phone',
+    'phone_number',
     'password',
     'passwordConfirm',
     'emailCode',
