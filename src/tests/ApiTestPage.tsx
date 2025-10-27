@@ -239,10 +239,10 @@ export default function ApiTestPage() {
 {
   id: 'my-api-id', // TanStack Query의 queryKey로 사용 (캐싱 및 리페칭 식별자)
   name: 'API 이름', // 테스트 페이지에 표시될 API 이름
-  method: 'post', // HTTP 메서드 (get, post, put, delete 등)
+  method: 'post', // HTTP 메서드 (get, post, put, patch, delete)
   url: '/v1/endpoint', // API 엔드포인트 경로
-  body: { key: 'value' }, // 요청 바디 (POST, PUT일 때 사용)
-  skipAuth: false // 토큰 인증 필요시 false, 공개 API는 true
+  body: { key: 'value' }, // 요청 값 (payload)
+  skipAuth: true // 인증 요청이 필요없는 경우 true, 
 }`}
         </pre>
       </div>
