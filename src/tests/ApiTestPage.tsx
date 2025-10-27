@@ -49,6 +49,18 @@ const API_TESTS: ApiTest[] = [
       verify_token: 'eyJhbGciOi...', // 휴대폰 변경 시에만 필수
     },
   },
+
+  {
+    id: 'updatePasswrod',
+    name: '내정보 수정 - 비밀번호 변경',
+    method: 'patch',
+    url: '/v1/me/password',
+    body: {
+      current_password: 'old',
+      new_password: 'New!234',
+      new_password_confirm: 'New!234',
+    },
+  },
 ]
 
 export default function ApiTestPage() {
@@ -87,7 +99,6 @@ export default function ApiTestPage() {
         console.log('Response:', data)
       },
       onError: (error) => {
-        // variables가 undefined일 수 있으므로 optional chaining 사용
         console.error(`실패`)
         console.error('Error:', error)
       },
@@ -102,7 +113,7 @@ export default function ApiTestPage() {
       <div>
         <h1 className="text-2xl font-bold">API 테스트</h1>
         <p className="mt-1 text-sm text-gray-600">
-          F12 → Network 탭에서 요청 확인
+          F12 - Network 탭에서 요청 확인
         </p>
       </div>
 
@@ -209,7 +220,7 @@ export default function ApiTestPage() {
           <li>테스트할 API 선택</li>
           <li>실행하기 버튼 클릭</li>
           <li>
-            <span className="font-medium">F12 → Network 탭</span>에서 요청 확인
+            <span className="font-medium">F12 - Network 탭</span>에서 요청 확인
           </li>
           <li>
             <span className="font-medium">Headers</span>에서 Authorization 확인
@@ -226,12 +237,12 @@ export default function ApiTestPage() {
         <pre className="text-success-500 overflow-x-auto rounded-md bg-black p-3 text-xs">
           {`// API_TESTS 배열에 추가
 {
-  id: 'my-api',
-  name: '내 API 이름',
-  method: 'post',
-  url: '/v1/my/endpoint',
-  body: { key: 'value' },
-  skipAuth: false // 토큰 필요시 false
+  id: 'my-api-id', // TanStack Query의 queryKey로 사용 (캐싱 및 리페칭 식별자)
+  name: 'API 이름', // 테스트 페이지에 표시될 API 이름
+  method: 'post', // HTTP 메서드 (get, post, put, delete 등)
+  url: '/v1/endpoint', // API 엔드포인트 경로
+  body: { key: 'value' }, // 요청 바디 (POST, PUT일 때 사용)
+  skipAuth: false // 토큰 인증 필요시 false, 공개 API는 true
 }`}
         </pre>
       </div>
