@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
 import ImageCards from '../components/common/ImageCards'
-import { FeaturesData, CoursesData } from '../components/mainpage'
+import { FeaturesData } from '../components/mainpage'
+import { usePopularCourses } from '../store/usePopularCourses'
 
 function MainPage() {
   const navigate = useNavigate()
+  const { data: courses, isLoading, isError } = usePopularCourses()
   const normalizeBreaks = (text: string) => text.replace(/<br\s*\/?>/gi, '\n')
 
   return (
@@ -107,13 +109,28 @@ function MainPage() {
             </button>
           </div>
 
+          {/* 로딩, 에러, 데이터 표시 */}
+          {isLoading && (
+            <p className="py-8 text-center text-gray-500">
+              인기 강의 불러오는 중...
+            </p>
+          )}
+          {isError && (
+            <p className="py-8 text-center text-red-500">
+              인기 강의를 불러오지 못했습니다.
+            </p>
+          )}
+
           <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
-            {CoursesData.map((course, i) => (
+            {courses?.map((course) => (
               <ImageCards
-                key={i}
-                {...course}
+                key={course.uuid}
+                title={course.title}
+                description={course.instructor_name}
+                date={course.price}
+                imageUrl={course.thumbnail_url}
                 size="w-full sm:w-[384px] h-[17.375rem]"
-                onClick={() => navigate('/courses')}
+                onClick={() => navigate(`/courses/${course.uuid}`)}
               />
             ))}
           </div>
