@@ -31,3 +31,19 @@ export function fullDateFormat(dateValue: string): string {
 
   return `${year}.${month}.${day} ${period} ${displayHours}:${minutes}`
 }
+
+// 시작일과 종료일을 받아 개월 수를 계산 (3개월 이런식)
+export const calculateDurationFormat = (
+  startDate: string,
+  endDate: string
+): string => {
+  if (!startDate || !endDate) return '-'
+
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  const months = Math.round(
+    (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 30)
+  )
+
+  return `${months}개월`
+}

@@ -38,7 +38,7 @@ function StudyDetailModal({
   onClose,
   applicationId,
 }: StudyDetailModalProps) {
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<ApplicationDetail | null>(null)
 
   // 모달이 열릴때 api호출할 예정
@@ -54,7 +54,7 @@ function StudyDetailModal({
   }, [isOpen, applicationId])
 
   const fetchApplicationDetail = async (_id: number) => {
-    setLoading(true)
+    setIsLoading(true)
     try {
       // 더미데이터
       await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -85,7 +85,7 @@ function StudyDetailModal({
     } catch {
       setData(null)
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -107,7 +107,7 @@ function StudyDetailModal({
         </>
       }
     >
-      {loading ? (
+      {isLoading ? (
         <Loading />
       ) : data ? (
         <div className="space-y-6">
