@@ -82,7 +82,6 @@ function App() {
     { path: '/email-find', element: <EmailFindPage /> },
     { path: '/password-find', element: <PasswordFindPage /> },
     { path: '*', element: <NotFoundPage /> },
-    { path: '/loading', element: <Loading /> },
   ])
 
   if (isCheck) return
