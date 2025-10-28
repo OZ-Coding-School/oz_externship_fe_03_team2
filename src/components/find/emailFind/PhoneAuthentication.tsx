@@ -55,7 +55,7 @@ export default function PhoneAuthentication({
     codeResendMutate({ phone_number: formData.phone })
   }
 
-  const authReg = /^[0-9]{4}$/.test(formData.code)
+  const authReg = /^[0-9]{6}$/.test(formData.code)
 
   return (
     <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
@@ -77,7 +77,7 @@ export default function PhoneAuthentication({
             label="인증코드"
             name="authCode"
             value={formData.code}
-            placeholder="4자리 인증코드 입력"
+            placeholder="6자리 인증코드 입력"
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, code: e.target.value }))
             }
