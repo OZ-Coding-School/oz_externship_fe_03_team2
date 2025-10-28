@@ -27,13 +27,18 @@ export default function PasswordFindFinish({
       )
       return
     }
-    mutate({
-      body: {
-        new_password: formData.password,
-        new_password_confirm: formData.password,
+    mutate(
+      {
+        body: {
+          new_password: formData.password,
+          new_password_confirm: formData.password,
+        },
+        verifyToken: formData.verify_token,
       },
-      verifyToken: formData.verify_token,
-    })
+      {
+        onSuccess: () => navigate('/login'),
+      }
+    )
   }
 
   const debouncedPassword = useDebounce(formData.password)
