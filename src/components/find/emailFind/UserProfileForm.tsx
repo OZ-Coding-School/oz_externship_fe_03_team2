@@ -1,8 +1,6 @@
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
 import { UserRoundSearch } from 'lucide-react'
-import Toast from '../../common/toast/Toast'
-import { toast } from 'sonner'
 import type { FormData } from '../../../pages/EmailFindPage'
 import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
