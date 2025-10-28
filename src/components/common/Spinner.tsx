@@ -4,12 +4,12 @@ export function Spinner() {
   return (
     <div className="sweet-loading">
       <ClipLoader
-        color="#c4c4c4"
+        color="#EAB308"
         loading
-        size={40}
+        size={57}
         aria-label="Loading Spinner"
         data-testid="loader"
-        speedMultiplier={0.58}
+        speedMultiplier={0.57}
       />
     </div>
   )

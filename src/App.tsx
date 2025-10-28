@@ -15,6 +15,7 @@ import { useToken } from './store/useTokenStore'
 import { useUserStore } from './store/useUserStore'
 import { api } from './api/client'
 import ApiTestPage from './tests/ApiTestPage'
+import { Loading } from './components/common/Loading'
 
 function App() {
   const [isCheck, setIsCheck] = useState(true)
@@ -78,9 +79,10 @@ function App() {
     { path: '/signup', element: <SignUpPage /> },
     { path: '/test', element: <CommonTest /> },
     { path: '/api-test', element: <ApiTestPage /> },
-    { path: '/emailfind', element: <EmailFindPage /> },
-    { path: '/passwordfind', element: <PasswordFindPage /> },
+    { path: '/email-find', element: <EmailFindPage /> },
+    { path: '/password-find', element: <PasswordFindPage /> },
     { path: '*', element: <NotFoundPage /> },
+    { path: '/loading', element: <Loading /> },
   ])
 
   if (isCheck) return
