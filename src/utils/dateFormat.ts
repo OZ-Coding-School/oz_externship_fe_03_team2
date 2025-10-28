@@ -15,3 +15,19 @@ export function yearMonthFormat(dateValue: string): string {
   const month = date.getMonth() + 1
   return `${year}년 ${month}월`
 }
+
+// 2025.10.28. 오전 11:11 형식
+export function fullDateFormat(dateValue: string): string {
+  const date = new Date(dateValue)
+
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = date.getHours()
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+
+  const period = hours < 12 ? '오전' : '오후'
+  const displayHours = hours % 12 || 12
+
+  return `${year}.${month}.${day} ${period} ${displayHours}:${minutes}`
+}

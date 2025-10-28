@@ -8,6 +8,8 @@ type ModalProps = {
   onClose: () => void
   children: React.ReactNode
   footer?: React.ReactNode
+  width?: string
+  maxHeight?: string
 }
 
 function Modal({
@@ -17,6 +19,8 @@ function Modal({
   onClose,
   children,
   footer,
+  width = 'max-w-md',
+  maxHeight = 'max-h-[95vh]',
 }: ModalProps) {
   if (!isOpen) return
 
@@ -29,7 +33,9 @@ function Modal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onClick={handleOutClick}
     >
-      <div className="w-full max-w-md rounded-xl bg-white shadow-lg">
+      <div
+        className={`w-full ${width} ${maxHeight} overflow-y-auto rounded-xl bg-white shadow-lg`}
+      >
         {/* 헤더 */}
         <div className="flex items-center justify-between border-b border-gray-200 p-6">
           <div className="flex-1">
