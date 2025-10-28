@@ -78,7 +78,7 @@ export default function UserProfileForm({
           value={formData.name}
           placeholder="실명을 입력해주세요"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, name: e.target.value }))
+            setFormData((prev) => ({ ...prev, name: e.target.value.trim() }))
           }
           error={NameError}
         />
@@ -88,7 +88,7 @@ export default function UserProfileForm({
           value={formData.phone}
           placeholder="01012345678"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, phone: e.target.value }))
+            setFormData((prev) => ({ ...prev, phone: e.target.value.trim() }))
           }
           error={phoneError}
         />

@@ -79,7 +79,7 @@ export default function PhoneAuthentication({
             value={formData.code}
             placeholder="6자리 인증코드 입력"
             onChange={(e) =>
-              setFormData((prev) => ({ ...prev, code: e.target.value }))
+              setFormData((prev) => ({ ...prev, code: e.target.value.trim() }))
             }
           />
         </div>

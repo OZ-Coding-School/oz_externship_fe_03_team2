@@ -82,7 +82,7 @@ export default function EmailAuthentication({
             onChange={(e) =>
               setFormData((prev) => ({
                 ...prev,
-                verificationCode: e.target.value,
+                verificationCode: e.target.value.trim(),
               }))
             }
           />

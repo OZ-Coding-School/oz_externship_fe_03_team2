@@ -71,7 +71,7 @@ export default function PasswordFindEmailForm({
           value={formData.email}
           placeholder="example@email.com"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, email: e.target.value }))
+            setFormData((prev) => ({ ...prev, email: e.target.value.trim() }))
           }
           error={emailError}
         />

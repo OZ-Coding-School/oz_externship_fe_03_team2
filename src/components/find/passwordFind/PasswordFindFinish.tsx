@@ -74,7 +74,7 @@ export default function PasswordFindFinish({
         value={formData.password}
         placeholder="8자 이상 입력해주세요"
         onChange={(e) =>
-          setFormData((prev) => ({ ...prev, password: e.target.value }))
+          setFormData((prev) => ({ ...prev, password: e.target.value.trim() }))
         }
         error={passwordError}
       />
@@ -85,7 +85,10 @@ export default function PasswordFindFinish({
         value={formData.passwordConfirm}
         placeholder="새 비밀번호를 다시 입력해주세요"
         onChange={(e) =>
-          setFormData((prev) => ({ ...prev, passwordConfirm: e.target.value }))
+          setFormData((prev) => ({
+            ...prev,
+            passwordConfirm: e.target.value.trim(),
+          }))
         }
         error={passwordConfirmError}
       />
