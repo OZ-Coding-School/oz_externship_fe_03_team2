@@ -1,15 +1,25 @@
 import { ClipLoader } from 'react-spinners'
 
-export function Spinner() {
+interface propsType {
+  size?: number
+  color?: string
+  speedMultiplier?: number
+}
+
+export function Spinner({
+  size = 57,
+  color = '#EAB308',
+  speedMultiplier = 0.57,
+}: propsType) {
   return (
     <div className="sweet-loading">
       <ClipLoader
-        color="#EAB308"
+        color={color}
         loading
-        size={57}
+        size={size}
         aria-label="Loading Spinner"
         data-testid="loader"
-        speedMultiplier={0.57}
+        speedMultiplier={speedMultiplier}
       />
     </div>
   )
