@@ -180,7 +180,7 @@ function StudyDetailModal({
             ) : (
               <div className="rounded-lg bg-gray-50 p-4">
                 <Badge variant="default" size="sm">
-                  경험 있음
+                  경험 없음
                 </Badge>
                 {data.study_experience && (
                   <p className="mt-2 text-sm leading-relaxed text-gray-700">
