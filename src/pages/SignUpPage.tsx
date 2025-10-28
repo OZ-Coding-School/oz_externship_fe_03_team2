@@ -9,6 +9,8 @@ import { toast } from 'sonner'
 import useDebounce from '../hooks/useDebounce'
 import validateAll from '../utils/validators'
 import { phoneFormat } from '../utils/phoneFormat'
+import { useEmailSend } from '../api/services/Auth'
+import { birthdayFormat2 } from '../utils/dateFormat'
 
 export interface Form {
   name: string
@@ -48,9 +50,9 @@ const switchInput = (name: string, value: string): string => {
   const numberOnly = value.replace(/\D/g, '')
 
   switch (name) {
-    case 'birth':
+    case 'birthday':
       return numberOnly.slice(0, 8)
-    case 'phone':
+    case 'phone_number':
       return numberOnly.slice(0, 11)
     case 'emailCode':
     case 'phoneCode':
@@ -69,6 +71,7 @@ function SignUpPage() {
 
   const debounceForm = useDebounce(form)
 
+  const { mutate: sendEmail } = useEmailSend()
   useEffect(() => {
     const validator = validateAll(debounceForm)
     setError((prev) => ({ ...prev, ...validator }))
@@ -76,10 +79,20 @@ function SignUpPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm((prev) => ({
-      ...prev,
-      [name]: switchInput(name, value),
-    }))
+    if (name === 'birthday') {
+      const digitsOnly = switchInput(name, value)
+      const formatted = birthdayFormat2(digitsOnly)
+
+      setForm((prev) => ({
+        ...prev,
+        birthday: formatted,
+      }))
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: switchInput(name, value),
+      }))
+    }
 
     if (error[name]) {
       setError((prev) => ({ ...prev, [name]: '' }))
@@ -90,7 +103,7 @@ function SignUpPage() {
     if (name === 'email') {
       setConfirm((prev) => ({ ...prev, emailSent: false, emailVerify: false }))
     }
-    if (name === 'phone') {
+    if (name === 'phone_number') {
       setConfirm((prev) => ({ ...prev, phoneSent: false, phoneVerify: false }))
     }
   }
@@ -117,8 +130,8 @@ function SignUpPage() {
     toast.custom(() => <Toast title="닉네임" message="중복" type="success" />)
   }
   const emailSend = () => {
+    sendEmail({ email: form.email })
     setConfirm((prev) => ({ ...prev, emailSent: true }))
-    toast.custom(() => <Toast title="이메일" message="보냄" type="success" />)
   }
   const emailVerify = () => {
     setConfirm((prev) => ({ ...prev, emailVerify: true }))
@@ -199,9 +212,9 @@ function SignUpPage() {
           </div>
           <InputWithLabel
             label="생년월일"
-            name="birth"
-            value={form.birthday}
-            error={error['birth']}
+            name="birthday"
+            value={birthdayFormat2(form.birthday)}
+            error={error['birthday']}
             required
             placeholder="8자리 입력해주세요 (ex.20001004)"
             onChange={handleChange}
@@ -260,10 +273,10 @@ function SignUpPage() {
             <div className="flex items-end gap-3">
               <InputWithLabel
                 label="휴대전화"
-                name="phone"
+                name="phone_number"
                 type="tel"
                 value={phoneFormat(form.phone_number)}
-                error={error['phone']}
+                error={error['phone_number']}
                 required
                 placeholder="01012345678"
                 onChange={handleChange}
