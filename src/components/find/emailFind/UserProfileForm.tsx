@@ -7,6 +7,7 @@ import type { FormData } from '../../../pages/EmailFindPage'
 import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
 import { useFindEmailSendCode } from '../../../api/services/find/emailFind'
+import { showToast } from '../../../utils/showToast'
 
 interface UserProfileFormProps {
   formData: FormData
@@ -26,14 +27,11 @@ export default function UserProfileForm({
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !phoneReg) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="일부 정보가 누락되었습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+      showToast(
+        '일부 정보가 누락되었습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
       return
     }
     mutate(

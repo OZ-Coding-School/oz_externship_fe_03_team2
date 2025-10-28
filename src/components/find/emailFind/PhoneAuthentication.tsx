@@ -1,10 +1,12 @@
-import { toast } from 'sonner'
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
 import type { FormData } from '../../../pages/EmailFindPage'
-import Toast from '../../common/toast/Toast'
 import { Phone } from 'lucide-react'
-import { useFindEmailConfirmCode } from '../../../api/services/find/emailFind'
+import {
+  useFindEmailConfirmCode,
+  useFindEmailSendCode,
+} from '../../../api/services/find/emailFind'
+import { showToast } from '../../../utils/showToast'
 
 interface PhoneAuthProps {
   formData: FormData
@@ -20,16 +22,15 @@ export default function PhoneAuthentication({
   onPrev,
 }: PhoneAuthProps) {
   const { mutate } = useFindEmailConfirmCode()
+  const { mutate: codeResendMutate } = useFindEmailSendCode()
   const handleSubmit = () => {
     if (!formData.code) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="인증번호가 누락되었습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+      showToast(
+        '인증번호가 누락되었습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
+      return
     }
     mutate(
       {
@@ -51,14 +52,7 @@ export default function PhoneAuthentication({
   }
 
   const handleAuthCode = () => {
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="인증번호를 재발송하였습니다"
-        message="재발송된 인증번호를 확인 후 다시 시도해주세요."
-        type="success"
-      />
-    ))
+    codeResendMutate({ phone_number: formData.phone })
   }
 
   const authReg = /^[0-9]{4}$/.test(formData.code)

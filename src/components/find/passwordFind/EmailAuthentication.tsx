@@ -1,9 +1,12 @@
-import { toast } from 'sonner'
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import Toast from '../../common/toast/Toast'
 import { MailCheck } from 'lucide-react'
 import type { PasswordFormData } from '../../../pages/PasswordFindPage'
+import { showToast } from '../../../utils/showToast'
+import {
+  useEmailVerificationConfirmCode,
+  useEmailVerificationSendCode,
+} from '../../../api/services/find/passwordFind'
 
 interface EmailAuthProps {
   formData: PasswordFormData
@@ -18,33 +21,42 @@ export default function EmailAuthentication({
   onNext,
   onPrev,
 }: EmailAuthProps) {
+  const { mutate } = useEmailVerificationConfirmCode()
+  const { mutate: codeResendMutate } = useEmailVerificationSendCode()
   const handleSubmit = () => {
-    if (!formData.authCode) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="인증번호가 누락되었습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+    if (!formData.verificationCode) {
+      showToast(
+        '인증번호가 누락되었습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
       return
     }
+    mutate(
+      {
+        email: formData.email,
+        verification_code: formData.verificationCode,
+        request_id: formData.requestId,
+      },
+      {
+        onSuccess: () => {
+          setFormData(
+            (prev) => ({ ...prev, verify_token: formData.verify_token })
+            // onNext()
+          )
+        },
+      }
+    )
     onNext()
   }
 
   const handleAuthCode = () => {
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="인증번호를 재발송하였습니다"
-        message="재발송된 인증번호를 확인 후 다시 시도해주세요."
-        type="success"
-      />
-    ))
+    codeResendMutate({
+      email: formData.email,
+    })
   }
 
-  const authReg = /^[0-9]{6}$/.test(formData.authCode)
+  const authReg = /^[0-9]{6}$/.test(formData.verificationCode)
 
   return (
     <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
@@ -65,10 +77,13 @@ export default function EmailAuthentication({
           <InputWithLabel
             label="인증코드"
             name="authCode"
-            value={formData.authCode}
+            value={formData.verificationCode}
             placeholder="6자리 인증코드 입력"
             onChange={(e) =>
-              setFormData((prev) => ({ ...prev, authCode: e.target.value }))
+              setFormData((prev) => ({
+                ...prev,
+                verificationCode: e.target.value,
+              }))
             }
           />
         </div>

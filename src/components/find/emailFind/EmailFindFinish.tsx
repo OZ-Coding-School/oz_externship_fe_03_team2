@@ -25,7 +25,7 @@ export default function EmailFindFinish({ formData }: EmailFindFinishProps) {
         </div>
         <div className="flex flex-col items-center gap-[.5rem]">
           <p className="text-[1.125rem] font-semibold">
-            {/* 나중에 api 나오면 성공/에러 로직 나누기? */}
+            {/* 나중에 api 나오면 성공/에러 로직 다시 확인하기? */}
             {isPending
               ? '이메일을 찾는 중...'
               : isError
