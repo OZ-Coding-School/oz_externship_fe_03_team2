@@ -4,6 +4,7 @@ import Badge from '../common/Badge'
 import Button from '../common/Button'
 import { fullDateFormat } from '../../utils/dateFormat'
 import { getStatusBadge } from '../../utils/statusBadge'
+import { Loading } from '../common/Loading'
 
 interface Recruitment {
   id: number
@@ -56,7 +57,7 @@ function StudyDetailModal({
     setLoading(true)
     try {
       // 더미데이터
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       const mockData: ApplicationDetail = {
         id: 101,
         status: 'APPLIED',
@@ -107,7 +108,7 @@ function StudyDetailModal({
       }
     >
       {loading ? (
-        <div className="py-8 text-center text-gray-500">로딩 중...</div>
+        <Loading />
       ) : data ? (
         <div className="space-y-6">
           {/* 지원 상태 & 지원 일시 */}
@@ -179,7 +180,7 @@ function StudyDetailModal({
             ) : (
               <div className="rounded-lg bg-gray-50 p-4">
                 <Badge variant="default" size="sm">
-                  경험 없음
+                  경험 있음
                 </Badge>
                 {data.study_experience && (
                   <p className="mt-2 text-sm leading-relaxed text-gray-700">
