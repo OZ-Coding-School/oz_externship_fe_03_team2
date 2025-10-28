@@ -79,6 +79,17 @@ type EmailVerificationResponse = {
   verify_token: string
 }
 
+// 인기 강의 조회
+type GetPopularCoursesResponse = {
+  results: {
+    uuid: string
+    title: string
+    instructor_name: string
+    price: string
+    thumbnail_url: string
+  }[]
+}
+
 // ===================================
 // 더미 데이터
 let mockUser: UserType = {
@@ -87,6 +98,35 @@ let mockUser: UserType = {
   nickname: '김개발',
   profile_image_url: 'https://oz.com/image/ozdev.png',
   phone_number: '01012345678',
+}
+
+const mockPopularCourses: GetPopularCoursesResponse = {
+  results: [
+    {
+      uuid: '1',
+      title: 'React 완전 마스터 강의',
+      instructor_name: '김개발',
+      price: '₩59,000원',
+      thumbnail_url:
+        'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      uuid: '2',
+      title: 'Python 데이터 사이언스',
+      instructor_name: '이분석',
+      price: '₩99,000원',
+      thumbnail_url:
+        'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      uuid: '3',
+      title: 'AWS 클라우드 아키텍처',
+      instructor_name: '한클라우드',
+      price: '₩129,000원',
+      thumbnail_url:
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop',
+    },
+  ],
 }
 
 // 핸들러 배열
@@ -196,4 +236,10 @@ export const handlers: HttpHandler[] = [
       })
     }
   ),
+
+  http.get(`${url}/v1/lectures`, () => {
+    console.log('인기 강의 mock API 호출')
+    return HttpResponse.json<GetPopularCoursesResponse>(mockPopularCourses)
+  }),
 ]
+export type { GetPopularCoursesResponse }
