@@ -75,6 +75,16 @@ const API_TESTS: ApiTest[] = [
       email: 'abc@test.com',
     },
   },
+  {
+    id: 'EmailFindSendCode',
+    name: '이메일 찾기 - 휴대폰 인증코드 전송',
+    method: 'post',
+    url: '/v1/phone-verifications/find-email/send-code',
+    body: {
+      phone_number: '01000000001',
+    },
+    skipAuth: true,
+  },
 ]
 
 export default function ApiTestPage() {
