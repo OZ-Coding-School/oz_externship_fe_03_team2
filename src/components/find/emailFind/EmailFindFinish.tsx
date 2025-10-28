@@ -57,7 +57,7 @@ export default function EmailFindFinish({ formData }: EmailFindFinishProps) {
         </div>
       </div>
 
-      <div className="s flex gap-2">
+      <div className="flex gap-2">
         <button
           onClick={() => navigate('/login')}
           className="bg-success-500 h-12 w-[11.0625rem] rounded-lg text-white"
