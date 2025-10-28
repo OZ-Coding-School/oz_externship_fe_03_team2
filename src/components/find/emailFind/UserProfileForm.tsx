@@ -1,11 +1,11 @@
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
 import { UserRoundSearch } from 'lucide-react'
-import Toast from '../../common/toast/Toast'
-import { toast } from 'sonner'
 import type { FormData } from '../../../pages/EmailFindPage'
 import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
+import { useFindEmailSendCode } from '../../../api/services/find/emailFind'
+import { showToast } from '../../../utils/showToast'
 
 interface UserProfileFormProps {
   formData: FormData
@@ -20,19 +20,30 @@ export default function UserProfileForm({
   setFormData,
   onNext,
 }: UserProfileFormProps) {
+  const { mutate } = useFindEmailSendCode()
+  // const { isError } = useFindEmailSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !phoneReg) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="일부 정보가 누락되었습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+      showToast(
+        '일부 정보가 누락되었습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
       return
     }
+    mutate(
+      { phone_number: formData.phone },
+      {
+        onSuccess: (data) => {
+          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
+          onNext()
+          // 에러 없을 때만 다음 페이지 넘어가게..
+          // 아직은 api 연결 안 돼서 무조건 오류 뜨니까 일단 주석 해두고 나중에 풀고 밑에 줄 없애기
+        },
+      }
+    )
     onNext()
   }
   // 전화번호 유효성 검사
@@ -67,7 +78,7 @@ export default function UserProfileForm({
           value={formData.name}
           placeholder="실명을 입력해주세요"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, name: e.target.value }))
+            setFormData((prev) => ({ ...prev, name: e.target.value.trim() }))
           }
           error={NameError}
         />
@@ -77,7 +88,7 @@ export default function UserProfileForm({
           value={formData.phone}
           placeholder="01012345678"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, phone: e.target.value }))
+            setFormData((prev) => ({ ...prev, phone: e.target.value.trim() }))
           }
           error={phoneError}
         />

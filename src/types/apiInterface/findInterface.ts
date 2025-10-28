@@ -43,14 +43,16 @@ export interface RecoveryEmailResponse {
 // 비밀번호 : 이메일 인증코드 전송 (회원가입/정보찾기/정보수정) - 입력된 이메일 주소로 인증코드를 발송 (POST)
 export interface EmailVerificationSendCodeRequest {
   email: string
-  purpose: 'signup' | 'restore_user'
 }
 
 export interface EmailVerificationSendCodeResponse {
   detail: string
+  purpose: 'signup' | 'reset_password' | 'restore_user' | 'change_email'
   data: {
+    request_id: string
     expires_in: number
     cooldown: number
+    max_attempts: number
   }
 }
 
@@ -58,18 +60,15 @@ export interface EmailVerificationSendCodeResponse {
 // 비밀번호: 이메일 인증코드 확인 - 발송된 인증코드를 검증하여 해당 이메일의 인증 상태를 확정
 export interface EmailVerificationConfirmCodeRequest {
   email: string
-  code: string
-  purpose?: 'signup' | 'restore_user'
-  request_id?: string
+  verification_code: string
+  request_id: string
 }
 
 export interface EmailVerificationConfirmCodeResponse {
   detail: string
+  purpose: string
   data: {
-    email: string
-    verified: boolean
-    purpose?: 'signup' | 'restore_user'
-    verification_token: string
+    verify_token: string
     expires_in: number
   }
 }

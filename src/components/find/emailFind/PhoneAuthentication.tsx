@@ -1,9 +1,12 @@
-import { toast } from 'sonner'
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
 import type { FormData } from '../../../pages/EmailFindPage'
-import Toast from '../../common/toast/Toast'
 import { Phone } from 'lucide-react'
+import {
+  useFindEmailConfirmCode,
+  useFindEmailSendCode,
+} from '../../../api/services/find/emailFind'
+import { showToast } from '../../../utils/showToast'
 
 interface PhoneAuthProps {
   formData: FormData
@@ -18,33 +21,41 @@ export default function PhoneAuthentication({
   onNext,
   onPrev,
 }: PhoneAuthProps) {
+  const { mutate } = useFindEmailConfirmCode()
+  const { mutate: codeResendMutate } = useFindEmailSendCode()
   const handleSubmit = () => {
-    if (!formData.authCode) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="인증번호가 누락되었습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+    if (!formData.code) {
+      showToast(
+        '인증번호가 누락되었습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
       return
     }
+    mutate(
+      {
+        phone_number: formData.phone,
+        code: formData.code,
+        request_id: formData.request_id,
+      },
+      {
+        onSuccess: () => {
+          setFormData(
+            (prev) => ({ ...prev, verify_token: formData.verify_token })
+            // onNext()
+          )
+        },
+      }
+      // 실제 api 연결 시 위에 주석 해제, 아래 코드 삭제
+    )
     onNext()
   }
 
   const handleAuthCode = () => {
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="인증번호를 재발송하였습니다"
-        message="재발송된 인증번호를 확인 후 다시 시도해주세요."
-        type="success"
-      />
-    ))
+    codeResendMutate({ phone_number: formData.phone })
   }
 
-  const authReg = /^[0-9]{4}$/.test(formData.authCode)
+  const authReg = /^[0-9]{6}$/.test(formData.code)
 
   return (
     <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
@@ -65,10 +76,10 @@ export default function PhoneAuthentication({
           <InputWithLabel
             label="인증코드"
             name="authCode"
-            value={formData.authCode}
-            placeholder="4자리 인증코드 입력"
+            value={formData.code}
+            placeholder="6자리 인증코드 입력"
             onChange={(e) =>
-              setFormData((prev) => ({ ...prev, authCode: e.target.value }))
+              setFormData((prev) => ({ ...prev, code: e.target.value.trim() }))
             }
           />
         </div>

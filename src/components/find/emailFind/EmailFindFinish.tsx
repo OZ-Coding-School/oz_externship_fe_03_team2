@@ -1,9 +1,22 @@
 import { useNavigate } from 'react-router'
 import Button from '../../common/Button'
 import { Check } from 'lucide-react'
+import { useRecoveryEmail } from '../../../api/services/find/emailFind'
+import { useEffect } from 'react'
+import type { FormData } from '../../../pages/EmailFindPage'
 
-export default function EmailFindFinish() {
+interface EmailFindFinishProps {
+  formData: FormData
+}
+
+export default function EmailFindFinish({ formData }: EmailFindFinishProps) {
   const navigate = useNavigate()
+  const { mutate, data, isPending, isError } = useRecoveryEmail()
+
+  useEffect(() => {
+    mutate(formData.verify_token)
+  }, [])
+
   return (
     <div className="flex w-full max-w-[23rem] flex-col gap-[1.5rem] pb-[1.5rem]">
       <div className="flex flex-col items-center gap-4">
@@ -11,18 +24,36 @@ export default function EmailFindFinish() {
           <Check size={30} />
         </div>
         <div className="flex flex-col items-center gap-[.5rem]">
-          <p className="text-[1.125rem] font-semibold">이메일 찾기 완료</p>
+          <p className="text-[1.125rem] font-semibold">
+            {/* 나중에 api 나오면 성공/에러 로직 다시 확인하기? */}
+            {isPending
+              ? '이메일을 찾는 중...'
+              : isError
+                ? '이메일 찾기 실패'
+                : '이메일 찾기 완료'}
+          </p>
           <p className="text-[.875rem] text-gray-600">
-            입력하신 정보로 가입된 이메일을 찾았습니다
+            {isPending
+              ? '입력하신 정보로 가입된 이메일을 찾고 있습니다'
+              : isError
+                ? '입력하신 정보로 가입된 이메일이 없습니다'
+                : '입력하신 정보로 가입된 이메일을 찾았습니다'}
           </p>
         </div>
       </div>
       <div className="flex h-[10.5rem] flex-col justify-start">
-        <div className="flex h-[4.875rem] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-[1.0625rem]">
-          <div>
-            <p>Kim***@gmail.com</p>
-            <p className="text-[.875rem] text-gray-500">가입일: 2024-01-15</p>
-          </div>
+        <div className="flex min-h-[4.875rem] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-[1.0625rem]">
+          {isPending ? (
+            <p className="text-gray-500">조회 중...</p>
+          ) : isError ? (
+            <p className="text-red-500">조회 결과가 없습니다.</p>
+          ) : (
+            <div className="flex flex-col items-center gap-1">
+              <p className="text-xl font-semibold text-gray-900">
+                {data?.data?.email}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

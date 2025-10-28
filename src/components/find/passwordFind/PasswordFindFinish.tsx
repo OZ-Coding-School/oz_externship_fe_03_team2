@@ -5,7 +5,7 @@ import type { PasswordFormData } from '../../../pages/PasswordFindPage'
 import Toast from '../../common/toast/Toast'
 import { toast } from 'sonner'
 import useDebounce from '../../../hooks/useDebounce'
-import { useState } from 'react'
+import { useRecoveryPassword } from '../../../api/services/find/passwordFind'
 
 interface PasswordFinishFormProps {
   formData: PasswordFormData
@@ -17,33 +17,27 @@ export default function PasswordFindFinish({
   setFormData,
 }: PasswordFinishFormProps) {
   const navigate = useNavigate()
+  const { mutate } = useRecoveryPassword()
   const handleSubmit = () => {
-    if (!formData.authCode) {
+    if (!formData.password || !formData.passwordConfirm) {
       toast.custom((t) => (
         <Toast
           id={t}
           title="주의가 필요합니다"
-          message="인증번호가 누락되었습니다. 확인 후 다시 시도해주세요."
+          message="비밀번호가 누락되었습니다. 확인 후 다시 시도해주세요."
           type="warning"
         />
       ))
       return
     }
+    mutate({
+      body: {
+        new_password: formData.password,
+        new_password_confirm: formData.password,
+      },
+      verifyToken: formData.verify_token,
+    })
   }
-  const handlePasswordChange = () => {
-    // 나중에 api 나오면 성공/에러 로직 나누기?
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="비밀번호가 변경되었습니다"
-        message="로그인을 시도해주세요."
-        type="success"
-      />
-    ))
-    return
-  }
-
-  const [passwordConfirm, setPasswordConfirm] = useState('')
 
   const debouncedPassword = useDebounce(formData.password)
   const passwordReg =
@@ -52,7 +46,7 @@ export default function PasswordFindFinish({
       : /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(debouncedPassword)
   const passwordError = passwordReg ? '' : '비밀번호 강도가 약합니다.'
 
-  const passwordConfirmTest = useDebounce(passwordConfirm)
+  const passwordConfirmTest = useDebounce(formData.passwordConfirm)
   const passwordConfirmError =
     passwordConfirmTest === ''
       ? ''
@@ -80,7 +74,7 @@ export default function PasswordFindFinish({
         value={formData.password}
         placeholder="8자 이상 입력해주세요"
         onChange={(e) =>
-          setFormData((prev) => ({ ...prev, password: e.target.value }))
+          setFormData((prev) => ({ ...prev, password: e.target.value.trim() }))
         }
         error={passwordError}
       />
@@ -88,18 +82,22 @@ export default function PasswordFindFinish({
         label="비밀번호 확인"
         type="password"
         name="passwordConfirm"
-        value={passwordConfirm}
+        value={formData.passwordConfirm}
         placeholder="새 비밀번호를 다시 입력해주세요"
-        onChange={(e) => setPasswordConfirm(() => e.target.value)}
+        onChange={(e) =>
+          setFormData((prev) => ({
+            ...prev,
+            passwordConfirm: e.target.value.trim(),
+          }))
+        }
         error={passwordConfirmError}
       />
 
       <div className="flex gap-2">
         <button
           onClick={() => {
-            navigate('/login')
             handleSubmit()
-            handlePasswordChange()
+            navigate('/login')
           }}
           className="bg-success-500 h-12 w-full rounded-lg text-white"
         >

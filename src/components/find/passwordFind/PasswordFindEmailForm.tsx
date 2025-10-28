@@ -1,11 +1,11 @@
 import Button from '../../common/Button'
 import InputWithLabel from '../../common/InputWithLabel'
-import Toast from '../../common/toast/Toast'
-import { toast } from 'sonner'
 import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
 import type { PasswordFormData } from '../../../pages/PasswordFindPage'
 import { LockKeyholeOpen } from 'lucide-react'
+import { useEmailVerificationSendCode } from '../../../api/services/find/passwordFind'
+import { showToast } from '../../../utils/showToast'
 
 interface PasswordFindEmailFormProps {
   formData: PasswordFormData
@@ -18,22 +18,32 @@ export default function PasswordFindEmailForm({
   setFormData,
   onNext,
 }: PasswordFindEmailFormProps) {
+  const { mutate } = useEmailVerificationSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.email || emailError) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="형식이 올바르지 않습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+      showToast(
+        '형식이 올바르지 않습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
       return
     }
+    mutate(
+      {
+        email: formData.email,
+      },
+      {
+        onSuccess: (data) => {
+          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          // onNext()
+          // api 나오면 위에 주석 풀고 아래 삭제
+        },
+      }
+    )
     onNext()
   }
-  // 전화번호 유효성 검사
+  // 이메일 유효성 검사
   const debouncedEmail = useDebounce(formData.email)
   const emailReg =
     debouncedEmail === ''
@@ -61,7 +71,7 @@ export default function PasswordFindEmailForm({
           value={formData.email}
           placeholder="example@email.com"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, email: e.target.value }))
+            setFormData((prev) => ({ ...prev, email: e.target.value.trim() }))
           }
           error={emailError}
         />

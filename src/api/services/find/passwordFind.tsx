@@ -9,10 +9,10 @@ export const useEmailVerificationSendCode = () => {
   return useSimpleMutation<
     T.EmailVerificationSendCodeResponse,
     T.SimpleError,
-    T.EmailVerificationConfirmCodeRequest
+    T.EmailVerificationSendCodeRequest
   >(
     (body) =>
-      api.post('/v1/email/verifications/send-code', body, {
+      api.post('/v1/email-verifications/password-reset/send-code', body, {
         skipAuth: true,
       }),
     {

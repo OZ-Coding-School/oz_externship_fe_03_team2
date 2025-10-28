@@ -6,16 +6,22 @@ import PasswordFindEmailForm from '../components/find/passwordFind/PasswordFindE
 
 export interface PasswordFormData {
   email: string
-  authCode: string
+  verificationCode: string
+  requestId: string
+  verify_token: string
   password: string
+  passwordConfirm: string
 }
 
 export default function PasswordFindPage() {
   const [level, setLevel] = useState(1)
   const [formData, setFormData] = useState<PasswordFormData>({
     email: '',
-    authCode: '',
+    verificationCode: '',
+    requestId: '',
+    verify_token: '',
     password: '',
+    passwordConfirm: '',
   })
 
   const handleNextStep = () => setLevel((prev) => prev + 1)

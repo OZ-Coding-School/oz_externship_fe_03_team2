@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 10,
       gcTime: 1000 * 60 * 10,
-      retry: 1,
+      retry: 1, //useQuery만 해당, useMutation은 기본적으로 retry 하지 않아서 mutation 시키려면 따로 옵션을 mutations: { retry: 0 } 이런 식으로 해야되는데 특정 행동 반복하는 건 위험하니까 안 하는 게 나을 수 있음
       refetchOnWindowFocus: false,
     },
   },
