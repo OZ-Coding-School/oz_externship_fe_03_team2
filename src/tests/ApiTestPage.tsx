@@ -26,7 +26,7 @@ const API_TESTS: ApiTest[] = [
     name: '로그인',
     method: 'post',
     url: '/v1/auth/login',
-    body: { email: 'test@test.com', password: 'password123' },
+    body: { email: 'test@test.com', password: 'Qwe123@@' },
     skipAuth: true,
   },
   {
@@ -87,7 +87,7 @@ export default function ApiTestPage() {
     async () => {
       const response = await api.post<LoginResponse>(
         '/v1/auth/login',
-        { email: 'test@test.com', password: 'password123' },
+        { email: 'test@test.com', password: 'Qwe123@@' },
         { skipAuth: true }
       )
       return response

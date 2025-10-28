@@ -106,7 +106,7 @@ export const handlers: HttpHandler[] = [
 
       return HttpResponse.json(
         { message: '이메일 또는 비밀번호가 잘못되었습니다' },
-        { status: 401 }
+        { status: 409 }
       )
     }
   ),

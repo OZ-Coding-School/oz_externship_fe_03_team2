@@ -15,10 +15,12 @@ interface StudyApplicationData {
 
 interface StudyApplicationCardProps {
   data: StudyApplicationData
+  onClick: () => void
 }
 
 export default function StudyApplicationCard({
   data,
+  onClick,
 }: StudyApplicationCardProps) {
   const getStatusBadge = () => {
     switch (data.status) {
@@ -34,7 +36,10 @@ export default function StudyApplicationCard({
   const statusBadge = getStatusBadge()
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md">
+    <div
+      onClick={onClick}
+      className="cursor-pointer rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md"
+    >
       <div className="flex gap-4">
         {/* 이미지 */}
         <div className="flex h-auto w-40 flex-shrink-0 items-center overflow-hidden rounded-lg">
@@ -54,7 +59,7 @@ export default function StudyApplicationCard({
         <div className="flex flex-1 flex-col">
           {/* 타이틀 + 상태 */}
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="flex-1 text-xl font-bold text-gray-900">
+            <h3 className="flex-1 text-xl font-bold text-gray-900 hover:underline">
               {data.title}
             </h3>
             <div className="flex items-end gap-1">
