@@ -6,6 +6,7 @@ import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
 import type { PasswordFormData } from '../../../pages/PasswordFindPage'
 import { LockKeyholeOpen } from 'lucide-react'
+import { useEmailVerificationSendCode } from '../../../api/services/find/passwordFind'
 
 interface PasswordFindEmailFormProps {
   formData: PasswordFormData
@@ -18,6 +19,7 @@ export default function PasswordFindEmailForm({
   setFormData,
   onNext,
 }: PasswordFindEmailFormProps) {
+  const { mutate } = useEmailVerificationSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.email || emailError) {
@@ -33,7 +35,7 @@ export default function PasswordFindEmailForm({
     }
     onNext()
   }
-  // 전화번호 유효성 검사
+  // 이메일 유효성 검사
   const debouncedEmail = useDebounce(formData.email)
   const emailReg =
     debouncedEmail === ''
