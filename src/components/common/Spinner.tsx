@@ -9,7 +9,7 @@ export function Spinner() {
         size={40}
         aria-label="Loading Spinner"
         data-testid="loader"
-        speedMultiplier={0.55}
+        speedMultiplier={0.58}
       />
     </div>
   )
