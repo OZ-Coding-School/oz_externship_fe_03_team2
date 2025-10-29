@@ -2,10 +2,9 @@ import { useNavigate } from 'react-router'
 import { Key } from 'lucide-react'
 import InputWithLabel from '../../common/InputWithLabel'
 import type { PasswordFormData } from '../../../pages/PasswordFindPage'
-import Toast from '../../common/toast/Toast'
-import { toast } from 'sonner'
 import useDebounce from '../../../hooks/useDebounce'
 import { useRecoveryPassword } from '../../../api/services/find/passwordFind'
+import { showToast } from '../../../utils/showToast'
 
 interface PasswordFinishFormProps {
   formData: PasswordFormData
@@ -20,23 +19,25 @@ export default function PasswordFindFinish({
   const { mutate } = useRecoveryPassword()
   const handleSubmit = () => {
     if (!formData.password || !formData.passwordConfirm) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="주의가 필요합니다"
-          message="비밀번호가 누락되었습니다. 확인 후 다시 시도해주세요."
-          type="warning"
-        />
-      ))
+      showToast(
+        '비밀번호가 누락되었습니다. 확인 후 다시 시도해주세요.',
+        'warning',
+        '주의가 필요합니다'
+      )
       return
     }
-    mutate({
-      body: {
-        new_password: formData.password,
-        new_password_confirm: formData.password,
+    mutate(
+      {
+        body: {
+          new_password: formData.password,
+          new_password_confirm: formData.password,
+        },
+        verifyToken: formData.verify_token,
       },
-      verifyToken: formData.verify_token,
-    })
+      {
+        onSuccess: () => navigate('/login'),
+      }
+    )
   }
 
   const debouncedPassword = useDebounce(formData.password)
@@ -97,7 +98,6 @@ export default function PasswordFindFinish({
         <button
           onClick={() => {
             handleSubmit()
-            navigate('/login')
           }}
           className="bg-success-500 h-12 w-full rounded-lg text-white"
         >
