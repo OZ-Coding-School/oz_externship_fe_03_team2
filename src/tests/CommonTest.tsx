@@ -15,6 +15,7 @@ import { useState } from 'react'
 import Toast from '../components/common/toast/Toast'
 import { toast } from 'sonner'
 import { DropDown } from '../components/common/dropDown'
+import { showToast } from '../utils/showToast'
 
 function CommonTest() {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ function CommonTest() {
     email: '',
     password: '',
     verifyCode: '',
+    timerButton: '',
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -33,6 +35,10 @@ function CommonTest() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }))
     }
+  }
+
+  const handleTimerInputSendCode = () => {
+    showToast('"내용(필수)", "타입(필수)", "제목(옵션)"', 'success')
   }
 
   const handleSendCode = () => {
@@ -81,7 +87,13 @@ function CommonTest() {
         type="success"
       />
     ))
-    setFormData({ fullname: '', email: '', password: '', verifyCode: '' })
+    setFormData({
+      fullname: '',
+      email: '',
+      password: '',
+      verifyCode: '',
+      timerButton: '',
+    })
     setIsEmailSent(false)
     setErrors({})
   }
@@ -319,6 +331,25 @@ function CommonTest() {
                 가입하기
               </Button>
             </div>
+            <InputWithLabel
+              label="타이머버튼"
+              name="timerButton"
+              value={formData.timerButton}
+              placeholder="cooldown 동안은 버튼 비활성화"
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  timerButton: e.target.value.trim(),
+                }))
+              }
+              button={{
+                label: '재전송',
+                onClick: handleTimerInputSendCode,
+                variant: 'primary',
+                countdown: 7, // 인증코드 유효 시간
+                cooldown: 3, // 재전송 막는 시간 (작성 안 하면 countdown 동안 쭉 disabled)
+              }}
+            />
           </form>
         </section>
 
