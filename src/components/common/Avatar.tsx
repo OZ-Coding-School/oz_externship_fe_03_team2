@@ -1,7 +1,7 @@
 import { User } from 'lucide-react'
 import { type HTMLAttributes } from 'react'
 
-type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   name: string
@@ -19,6 +19,17 @@ const sizeStyles: Record<AvatarSize, string> = {
   md: 'w-10 h-10 text-base',
   lg: 'w-12 h-12 text-lg',
   xl: 'w-16 h-16 text-xl',
+  '2xl': 'w-32 h-32 text-4xl ',
+}
+
+// 텍스트 크기 (이미지 없을 때)
+const textSizeStyles: Record<AvatarSize, string> = {
+  xs: 'text-xs',
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-4xl',
 }
 
 export default function Avatar({
@@ -29,19 +40,20 @@ export default function Avatar({
   isHeader = false,
   ...rest
 }: AvatarProps) {
-  const sizeClass = sizeStyles[size]
+  const containerClass = sizeStyles[size]
+  const textClass = textSizeStyles[size]
 
   // 헤더인 경우 아이콘으로 대체
   if (isHeader) {
     return (
-      <div className={`${baseStyles} ${sizeClass} ${className}`} {...rest}>
+      <div className={`${baseStyles} ${containerClass} ${className}`} {...rest}>
         <User className="text-primary-500" size={20} />
       </div>
     )
   }
 
   return (
-    <div className={`${baseStyles} ${sizeClass} ${className}`} {...rest}>
+    <div className={`${baseStyles} ${containerClass} ${className}`} {...rest}>
       {imgUrl ? (
         <img
           src={imgUrl}
@@ -49,7 +61,7 @@ export default function Avatar({
           className="h-full w-full rounded-full object-cover"
         />
       ) : (
-        <span>{name.charAt(0)}</span>
+        <span className={textClass}>{name.charAt(0)}</span>
       )}
     </div>
   )

@@ -94,7 +94,7 @@ export function DropDown({
           }`}
         >
           <p
-            className={`text-sm font-light ${dropDownState ? 'text-black' : 'text-gray-500'}`}
+            className={`text-sm font-light ${dropDownState ? 'text-black' : 'text-gray-700'}`}
           >
             {selectedOption || placeholder}
           </p>

@@ -2,8 +2,7 @@ import { useState } from 'react'
 import Modal from '../common/Modal'
 import Button from '../common/Button'
 import InputWithLabel from '../common/InputWithLabel'
-import { toast } from 'sonner'
-import Toast from '../common/toast/Toast'
+import { showToast } from '../../utils/showToast'
 
 interface PasswordChangeModalProps {
   isOpen: boolean
@@ -96,15 +95,11 @@ function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
 
     if (!isCurrentValid || !isNewValid || !isConfirmValid) return
 
-    // 성공
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="비밀번호 변경 완료"
-        message="비밀번호가 성공적으로 변경되었습니다"
-        type="success"
-      />
-    ))
+    showToast(
+      '비밀번호가 성공적으로 변경되었습니다',
+      'success',
+      '비밀번호 변경 완료'
+    )
 
     handleCancel()
   }

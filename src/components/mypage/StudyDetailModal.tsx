@@ -151,9 +151,7 @@ function StudyDetailModal({
             <p className="mb-2 text-sm font-medium text-gray-700">
               스터디 경험
             </p>
-            <div
-              className={`rounded-lg p-4 ${applicationDetail.study_experience ? 'bg-green-50' : 'bg-gray-50'}`}
-            >
+            <div className="p-4">
               <Badge
                 variant={
                   applicationDetail.study_experience ? 'success' : 'danger'

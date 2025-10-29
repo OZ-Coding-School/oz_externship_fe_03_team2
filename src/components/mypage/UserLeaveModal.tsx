@@ -2,10 +2,9 @@ import { useState } from 'react'
 import Modal from '../common/Modal'
 import Button from '../common/Button'
 import { AlertCircle } from 'lucide-react'
-import { toast } from 'sonner'
-import Toast from '../common/toast/Toast'
 import { useNavigate } from 'react-router'
 import { DropDown } from '../common/dropDown'
+import { showToast } from '../../utils/showToast'
 
 interface UserLeaveModalProps {
   isOpen: boolean
@@ -29,25 +28,11 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
 
   const handleSubmit = () => {
     if (!selectedReason || !detailReason || !isChecked) {
-      toast.custom((t) => (
-        <Toast
-          id={t}
-          title="회원탈퇴 실패"
-          message="모든 항목을 입력해주세요"
-          type="error"
-        />
-      ))
+      showToast('모든 항목을 입력해주세요', 'error', '회원탈퇴 실패')
       return
     }
 
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="회원탈퇴 성공"
-        message="이용해주셔서 감사합니다"
-        type="success"
-      />
-    ))
+    showToast('이용해주셔서 감사합니다', 'success', '회원탈퇴 성공')
     navigate('/')
     onClose()
   }
