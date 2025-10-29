@@ -9,7 +9,7 @@ interface GenderProps {
 }
 
 function Gender({ form, setForm, error, setError }: GenderProps) {
-  const handleGenderSelect = (value: 'male' | 'female') => {
+  const handleGenderSelect = (value: 'M' | 'F') => {
     setForm((prev) => ({ ...prev, gender: value }))
     if (error.gender) {
       setError((prev) => ({ ...prev, gender: '' }))
@@ -24,16 +24,16 @@ function Gender({ form, setForm, error, setError }: GenderProps) {
       <div className="flex gap-5">
         <button
           type="button"
-          className={`${form.gender === 'male' ? 'bg-primary-100 text-primary-600 border-primary-600' : 'border-gray-300 bg-gray-200 text-gray-700'} cursor-pointer items-center justify-center rounded-full border px-[2.0625rem] py-[.5625rem]`}
-          onClick={() => handleGenderSelect('male')}
+          className={`${form.gender === 'M' ? 'bg-primary-100 text-primary-600 border-primary-600' : 'border-gray-300 bg-gray-200 text-gray-700'} cursor-pointer items-center justify-center rounded-full border px-[2.0625rem] py-[.5625rem]`}
+          onClick={() => handleGenderSelect('M')}
         >
           남
         </button>
         <button
           type="button"
           value={'female'}
-          className={`${form.gender === 'female' ? 'bg-primary-100 text-primary-600 border-primary-600' : 'border-gray-300 bg-gray-200 text-gray-700'} cursor-pointer items-center justify-center rounded-full border px-[2.0625rem] py-[.5625rem]`}
-          onClick={() => handleGenderSelect('female')}
+          className={`${form.gender === 'F' ? 'bg-primary-100 text-primary-600 border-primary-600' : 'border-gray-300 bg-gray-200 text-gray-700'} cursor-pointer items-center justify-center rounded-full border px-[2.0625rem] py-[.5625rem]`}
+          onClick={() => handleGenderSelect('F')}
         >
           여
         </button>

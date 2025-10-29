@@ -12,30 +12,11 @@ export interface SignUpRequest {
 
 export interface SignUpResponse {
   detail: string
-  data: {
-    user: {
-      id: number
-      email: string
-      nickname: string
-      name: string
-      phone_number: string
-      birthday: string
-      gender: 'M' | 'F' | ''
-      role?: 'user' | 'staff' | 'superuser'
-      status: string
-      created_at: string
-    }
-  }
 }
 
 //닉네임----------------------------
 export interface NickNameResponse {
   detail: string
-  data: {
-    nickname: string
-    available: boolean
-    reason?: string
-  }
 }
 
 //핸드폰 인증-----------------------
@@ -85,18 +66,16 @@ export interface EmailSendResponse {
 
 export interface EmailConfirmRequest {
   email: string
-  code: string
+  verification_code: string
   purpose?: string
   request_id?: string
 }
 
 export interface EmailConfirmResponse {
   detail: string
+  purpose: string
   data: {
-    email: string
-    verified: boolean
-    purpose: string
-    verification_token: string
+    verify_token: string
     expires_in: number
   }
 }
@@ -191,7 +170,12 @@ export interface Errors {
   error: string
   errors?: {
     email?: string[]
+    password?: string[]
     nickname?: string[]
+    name?: string[]
+    phone_number?: string[]
     birthday?: string[]
+    gender?: string[]
+    role?: string[]
   }
 }

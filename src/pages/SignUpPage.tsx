@@ -10,6 +10,7 @@ import { phoneFormat } from '../utils/phoneFormat'
 import {
   useEmailConfirm,
   useEmailSend,
+  useNickNameConfirm,
   usePhoneConfirm,
   usePhoneSend,
   useSignUp,
@@ -33,6 +34,11 @@ export interface Form {
 interface REQUEST_ID {
   emailRequestId: string
   phoneRequestId: string
+}
+
+interface VERIFYTOKEN {
+  emailToken: string
+  phoneToken: string
 }
 
 const FORM_STATE: Form = {
@@ -61,6 +67,11 @@ const REQUEST_STATE: REQUEST_ID = {
   phoneRequestId: '',
 }
 
+const VERIFYTOKEN_STATE: VERIFYTOKEN = {
+  emailToken: '',
+  phoneToken: '',
+}
+
 const switchInput = (name: string, value: string): string => {
   const numberOnly = value.replace(/\D/g, '')
 
@@ -79,19 +90,41 @@ const switchInput = (name: string, value: string): string => {
 
 function SignUpPage() {
   const navigate = useNavigate()
+
   const [form, setForm] = useState<Form>(FORM_STATE)
-
   const [confirm, setConfirm] = useState(CONFIRM_STATE) // 인증번호 전송 및 확인
-
   const [requestId, setRequestId] = useState(REQUEST_STATE)
-
   const [error, setError] = useState<Record<string, string>>({})
+  const [checkNickname, setCheckNickname] = useState(false)
+  const [verifyToken, setVerifyToken] = useState(VERIFYTOKEN_STATE)
 
+  const {
+    data: nickNameData,
+    error: nicknameError,
+    isError: isNicknameError,
+  } = useNickNameConfirm(form.nickname, checkNickname)
   const { mutate: signUp } = useSignUp()
   const { mutate: sendEmail } = useEmailSend()
   const { mutate: confirmEmail } = useEmailConfirm()
   const { mutate: sendPhone } = usePhoneSend()
   const { mutate: confirmPhone } = usePhoneConfirm()
+
+  useEffect(() => {
+    if (checkNickname) {
+      if (nickNameData) {
+        setConfirm((prev) => ({ ...prev, nickConfirm: true }))
+        showToast(nickNameData.detail, 'success', '닉네임 중복 확인')
+        setCheckNickname(false)
+      } else if (isNicknameError) {
+        showToast(
+          nicknameError?.response?.data?.error || '닉네임 확인 실패',
+          'error',
+          '닉네임 중복 확인'
+        )
+        setCheckNickname(false)
+      }
+    }
+  }, [checkNickname, nickNameData, isNicknameError, nicknameError])
 
   const debounceForm = useDebounce(form)
   useEffect(() => {
@@ -101,20 +134,10 @@ function SignUpPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    if (name === 'birthday') {
-      const digitsOnly = switchInput(name, value)
-      const formatDate = birthdayFormat2(digitsOnly)
-
-      setForm((prev) => ({
-        ...prev,
-        birthday: formatDate,
-      }))
-    } else {
-      setForm((prev) => ({
-        ...prev,
-        [name]: switchInput(name, value),
-      }))
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: switchInput(name, value),
+    }))
 
     if (error[name]) {
       setError((prev) => ({ ...prev, [name]: '' }))
@@ -141,13 +164,19 @@ function SignUpPage() {
 
     signUp(
       {
-        name: form.name,
-        nickname: form.nickname,
-        birthday: form.birthday,
-        gender: form.gender,
-        email: form.email,
-        phone_number: form.phone_number,
-        password: form.password,
+        body: {
+          name: form.name,
+          nickname: form.nickname,
+          birthday: birthdayFormat2(form.birthday),
+          gender: form.gender,
+          email: form.email,
+          phone_number: form.phone_number,
+          password: form.password,
+        },
+        headers: {
+          'X-Email-Verify-Token': verifyToken.emailToken,
+          'X-Phone-Verify-Token': verifyToken.phoneToken,
+        },
       },
       {
         onSuccess: (data) => {
@@ -160,6 +189,17 @@ function SignUpPage() {
         },
         onError: (error) => {
           showToast(`${error.response?.data.error}`, 'error', '회원가입')
+          if (error.response?.data.errors) {
+            const APIError = error.response.data.errors
+            const APIErrors: Record<string, string> = {}
+
+            Object.entries(APIError).forEach(([key, value]) => {
+              if (value && value.length > 0) {
+                APIErrors[key] = value[0]
+              }
+            })
+            setError(APIErrors)
+          }
         },
       }
     )
@@ -167,8 +207,7 @@ function SignUpPage() {
 
   //닉네임 중복 확인--------------
   const nicknameConfirm = () => {
-    setConfirm((prev) => ({ ...prev, nickConfirm: true }))
-    showToast('닉네임', 'success', '중복일까 아닐까')
+    setCheckNickname(true)
   }
   //이메일 코드 전송--------
   const emailSend = () => {
@@ -198,12 +237,16 @@ function SignUpPage() {
     confirmEmail(
       {
         email: form.email,
-        code: form.emailCode,
+        verification_code: form.emailCode,
         request_id: requestId.emailRequestId,
       },
       {
         onSuccess: (data) => {
           setConfirm((prev) => ({ ...prev, emailVerify: true }))
+          setVerifyToken((prev) => ({
+            ...prev,
+            emailToken: data.data.verify_token,
+          }))
           showToast(`${data.detail}`, 'success', '이메일 코드 확인')
         },
         onError: (error) => {
@@ -250,6 +293,10 @@ function SignUpPage() {
       {
         onSuccess: (data) => {
           setConfirm((prev) => ({ ...prev, phoneVerify: true }))
+          setVerifyToken((prev) => ({
+            ...prev,
+            phoneToken: data.data.verify_token,
+          }))
           showToast(`${data.detail}`, 'success', '핸드폰 코드 확인')
         },
         onError: (error) => {
@@ -402,7 +449,7 @@ function SignUpPage() {
                   onClick: phoneSent,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !(form.phone_number && !error['phone']),
+                  disabled: !(form.phone_number && !error['phone_number']),
                 }}
               />
             </div>
