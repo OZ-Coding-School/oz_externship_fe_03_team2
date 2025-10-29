@@ -1,4 +1,4 @@
-export const AllData = {
+export const allData = {
   total: 10,
   items: [
     {
@@ -32,7 +32,7 @@ export const AllData = {
   ],
 }
 
-export const NotReadData = {
+export const notReadData = {
   total: 10,
   items: [
     {
@@ -52,7 +52,7 @@ export const NotReadData = {
   ],
 }
 
-export const ReadData = {
+export const readData = {
   total: 10,
   items: [
     {
