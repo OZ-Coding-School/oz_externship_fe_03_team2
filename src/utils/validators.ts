@@ -114,7 +114,7 @@ function validateAll(form: Partial<Form>, submit: boolean = false) {
     }
   }
 
-  if (submit && form.gender === 'none') {
+  if (submit && form.gender === '') {
     error['gender'] = '성별을 선택해주세요'
   }
   return error

@@ -6,7 +6,7 @@ export interface SignUpRequest {
   name: string
   phone_number: string
   birthday: string
-  gender: 'M' | 'F' | 'none'
+  gender: 'M' | 'F' | ''
   role?: 'user' | 'staff' | 'superuser'
 }
 
@@ -20,7 +20,7 @@ export interface SignUpResponse {
       name: string
       phone_number: string
       birthday: string
-      gender: 'M' | 'F' | 'none'
+      gender: 'M' | 'F' | ''
       role?: 'user' | 'staff' | 'superuser'
       status: string
       created_at: string

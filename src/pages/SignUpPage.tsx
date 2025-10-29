@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 import InputWithLabel from '../components/common/InputWithLabel'
 import Header from '../components/layout/Header'
 import Button from '../components/common/Button'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Gender from '../components/signup/Gender'
-import Toast from '../components/common/toast/Toast'
-import { toast } from 'sonner'
 import useDebounce from '../hooks/useDebounce'
 import validateAll from '../utils/validators'
 import { phoneFormat } from '../utils/phoneFormat'
@@ -23,7 +21,7 @@ export interface Form {
   name: string
   nickname: string
   birthday: string
-  gender: 'M' | 'F' | 'none'
+  gender: 'M' | 'F' | ''
   email: string
   phone_number: string
   password: string
@@ -32,11 +30,16 @@ export interface Form {
   phoneCode: string
 }
 
+interface REQUEST_ID {
+  emailRequestId: string
+  phoneRequestId: string
+}
+
 const FORM_STATE: Form = {
   name: '',
   nickname: '',
   birthday: '',
-  gender: 'none',
+  gender: '',
   email: '',
   phone_number: '',
   password: '',
@@ -51,6 +54,11 @@ const CONFIRM_STATE = {
   phoneSent: false,
   phoneVerify: false,
   nickConfirm: false,
+}
+
+const REQUEST_STATE: REQUEST_ID = {
+  emailRequestId: '',
+  phoneRequestId: '',
 }
 
 const switchInput = (name: string, value: string): string => {
@@ -70,17 +78,20 @@ const switchInput = (name: string, value: string): string => {
 }
 
 function SignUpPage() {
+  const navigate = useNavigate()
   const [form, setForm] = useState<Form>(FORM_STATE)
 
   const [confirm, setConfirm] = useState(CONFIRM_STATE) // 인증번호 전송 및 확인
 
+  const [requestId, setRequestId] = useState(REQUEST_STATE)
+
   const [error, setError] = useState<Record<string, string>>({})
 
-  const { mutate: signUp, data: signUpData } = useSignUp()
-  const { mutate: sendEmail, data: sendEmailData } = useEmailSend()
-  const { mutate: confirmEmail, data: confirmEmailData } = useEmailConfirm()
-  const { mutate: sendPhone, data: sendPhoneData } = usePhoneSend()
-  const { mutate: confirmPhone, data: confirmPhoneData } = usePhoneConfirm()
+  const { mutate: signUp } = useSignUp()
+  const { mutate: sendEmail } = useEmailSend()
+  const { mutate: confirmEmail } = useEmailConfirm()
+  const { mutate: sendPhone } = usePhoneSend()
+  const { mutate: confirmPhone } = usePhoneConfirm()
 
   const debounceForm = useDebounce(form)
   useEffect(() => {
@@ -128,45 +139,49 @@ function SignUpPage() {
       return
     }
 
-    const body = {
-      name: form.name,
-      nickname: form.nickname,
-      birthday: form.birthday,
-      gender: form.gender,
-      email: form.email,
-      phone_number: form.phone_number,
-      password: form.password,
-    }
-
-    signUp({
-      name: form.name,
-      nickname: form.nickname,
-      birthday: form.birthday,
-      gender: form.gender,
-      email: form.email,
-      phone_number: form.phone_number,
-      password: form.password,
-    })
-
-    //제출되었으니 초기화
-    setForm(FORM_STATE)
-    setConfirm(CONFIRM_STATE)
-    setError({})
-    showToast('성공', 'success', '회원가입')
+    signUp(
+      {
+        name: form.name,
+        nickname: form.nickname,
+        birthday: form.birthday,
+        gender: form.gender,
+        email: form.email,
+        phone_number: form.phone_number,
+        password: form.password,
+      },
+      {
+        onSuccess: (data) => {
+          setForm(FORM_STATE)
+          setConfirm(CONFIRM_STATE)
+          setRequestId(REQUEST_STATE)
+          setError({})
+          showToast(`${data.detail}`, 'success', '회원가입')
+          navigate('/')
+        },
+        onError: (error) => {
+          showToast(`${error.response?.data.error}`, 'error', '회원가입')
+        },
+      }
+    )
   }
 
-  //추후 API 연결
+  //닉네임 중복 확인--------------
   const nicknameConfirm = () => {
     setConfirm((prev) => ({ ...prev, nickConfirm: true }))
     showToast('닉네임', 'success', '중복일까 아닐까')
   }
+  //이메일 코드 전송--------
   const emailSend = () => {
     sendEmail(
       { email: form.email },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setConfirm((prev) => ({ ...prev, emailSent: true }))
-          showToast(`${sendEmailData?.detail}`, 'success', '중복일까 아닐까')
+          setRequestId((prev) => ({
+            ...prev,
+            emailRequestId: data.data.request_id,
+          }))
+          showToast(`${data.detail}`, 'success', '이메일 코드 전송')
         },
         onError: (error) => {
           showToast(
@@ -178,17 +193,18 @@ function SignUpPage() {
       }
     )
   }
+  //이메일 코드 확인----------
   const emailVerify = () => {
     confirmEmail(
-      { email: form.email, code: form.emailCode },
       {
-        onSuccess: () => {
+        email: form.email,
+        code: form.emailCode,
+        request_id: requestId.emailRequestId,
+      },
+      {
+        onSuccess: (data) => {
           setConfirm((prev) => ({ ...prev, emailVerify: true }))
-          showToast(
-            `${confirmEmailData?.detail}`,
-            'success',
-            '이메일 코드 확인'
-          )
+          showToast(`${data.detail}`, 'success', '이메일 코드 확인')
         },
         onError: (error) => {
           showToast(
@@ -200,33 +216,51 @@ function SignUpPage() {
       }
     )
   }
+  //핸드폰 코드 전송--------
   const phoneSent = () => {
     sendPhone(
       { phone_number: form.phone_number },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setConfirm((prev) => ({ ...prev, phoneSent: true }))
+          setRequestId((prev) => ({
+            ...prev,
+            phoneRequestId: data.data.request_id,
+          }))
+          showToast(`${data.detail}`, 'success', '핸드폰 코드 전송')
         },
-        onError: () => {},
+        onError: (error) => {
+          showToast(
+            `${error.response?.data.error}`,
+            'error',
+            '핸드폰 코드 전송'
+          )
+        },
       }
     )
   }
+  //핸드폰 코드 확인----------
   const phoneVerify = () => {
     confirmPhone(
       {
         phone_number: form.phone_number,
         code: form.phoneCode,
-        request_id: '123',
+        request_id: requestId.phoneRequestId,
       },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setConfirm((prev) => ({ ...prev, phoneVerify: true }))
+          showToast(`${data.detail}`, 'success', '핸드폰 코드 확인')
         },
-        onError: () => {},
+        onError: (error) => {
+          showToast(
+            `${error.response?.data.error}`,
+            'error',
+            '핸드폰 코드 확인'
+          )
+        },
       }
     )
-
-    toast.custom(() => <Toast title="폰" message="코드" type="success" />)
   }
 
   const isFormValid = () => {
@@ -242,7 +276,7 @@ function SignUpPage() {
     const hasAllFields = requiredFields.every(
       (field) => form[field] && !error[field]
     )
-    const hasGender = form.gender !== 'none'
+    const hasGender = form.gender !== ''
     const hasVerifications =
       confirm.emailVerify && confirm.phoneVerify && confirm.nickConfirm
 
