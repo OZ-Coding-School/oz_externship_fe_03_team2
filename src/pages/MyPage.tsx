@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import MyPageSideBar from '../components/mypage/MyPageSideBar'
 import ProfileContents from '../components/mypage/ProfileContents'
 import JobsContents from '../components/mypage/JobsContents'
@@ -6,12 +6,21 @@ import { MYPAGE_MENU_ITEMS } from '../constants/myPageMenu'
 import CourseContents from '../components/mypage/CourseContents'
 import StudysContents from '../components/mypage/StudysContents'
 import CompletedStudyContents from '../components/mypage/CompletedStudyContents'
+import { useEffect } from 'react'
 
 function MyPage() {
   const location = useLocation()
+  const navigate = useNavigate()
 
   // 현재 경로 기반으로 활성 탭 결정 (기본값: profile)
   const currentActive = location.pathname.split('/mypage/')[1] ?? 'profile'
+
+  // /mypage로 접근 시 /mypage/profile로 리다이렉트
+  useEffect(() => {
+    if (location.pathname === '/mypage' || location.pathname === '/mypage/') {
+      navigate('/mypage/profile', { replace: true })
+    }
+  }, [location.pathname, navigate])
 
   const renderContent = () => {
     switch (currentActive) {

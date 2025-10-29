@@ -9,6 +9,9 @@ type ButtonVariant =
   | 'text'
   | 'signup'
   | 'login'
+  | 'success'
+  | 'gray'
+
 type ButtonSize =
   | 'md'
   | 'sm'
@@ -44,6 +47,9 @@ const variantStyles: Record<ButtonVariant, string> = {
     'text-primary-600 bg-primary-100 hover:bg-primary-200 active:bg-primary-300 disabled:text-gray-800 disabled:bg-gray-300',
   login:
     'bg-secondary-200 hover:bg-secondary-300 active:bg-secondary-400 disabled:bg-secondary-200 text-[#303030]',
+  success:
+    'bg-success-500 text-white hover:bg-success-600 active:bg-success-800 disabled:bg-success-500',
+  gray: 'bg-gray-500 text-white hover:bg-gray-600 active:bg-gary-800 disabled:bg-gray-500',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -72,7 +78,7 @@ function Button({
     <button
       type={type}
       disabled={disabled}
-      className={`${baseStyles} ${variantClass} ${sizeClass}`}
+      className={`${baseStyles} ${variantClass} ${sizeClass} `}
       {...rest}
     >
       {/* 아이콘이 있으면 왼쪽 */}

@@ -20,7 +20,8 @@ function ProfileContents() {
     name: '김개발',
     phone_number: phoneFormat('01012345678'),
     birthday: birthdayFormat('1998-01-23'),
-    profile_image_url: 'https://cdn.example.com/u/1.png',
+    profile_image_url:
+      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
     created_at: '2025-01-01T10:00:00Z',
   })
 
@@ -59,8 +60,8 @@ function ProfileContents() {
         <div className="flex flex-col items-center gap-4">
           <Avatar
             name={formData.name}
-            size="xl"
-            className="h-32 w-32 !text-4xl"
+            size="2xl"
+            imgUrl={formData.profile_image_url}
           />
           <p className="text-center text-lg font-semibold text-gray-900">
             프로필 이미지
@@ -94,7 +95,7 @@ function ProfileContents() {
             </p>
           </div>
           <Button
-            variant="secondary"
+            variant="gray"
             size="md"
             onClick={() => setIsPasswordModalOpen(true)}
           >
@@ -139,6 +140,7 @@ function ProfileContents() {
         onClose={() => setIsPasswordModalOpen(false)}
       />
 
+      {/* 회원탈퇴 모달 */}
       <UserLeaveModal
         isOpen={isWithdrawalModalOpen}
         onClose={() => setIsWithdrawalModalOpen(false)}
