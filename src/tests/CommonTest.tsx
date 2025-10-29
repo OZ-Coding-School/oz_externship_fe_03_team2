@@ -347,7 +347,7 @@ function CommonTest() {
                 onClick: handleTimerInputSendCode,
                 variant: 'primary',
                 countdown: 7, // 인증코드 유효 시간
-                cooldown: 3, // 재전송 막는 시간 (작성 안 하면 countdown 동안 쭉 disabled)
+                cooldown: 3, // 재전송 막는 시간 ( 작성 안 하면 countdown 동안 쭉 disabled )
               }}
             />
           </form>
