@@ -102,8 +102,10 @@ export default function PhoneAuthentication({
         button={{
           label: '재전송',
           onClick: handleAuthCode,
-          variant: 'secondary',
+          variant: 'primary',
           countdown: 180,
+          cooldown: 5,
+          disabled: true,
         }}
       />
 
