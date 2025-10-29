@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
 import ImageCards from '../components/common/ImageCards'
 import { FeaturesData } from '../components/mainpage'
-import { usePopularCourses } from '../store/usePopularCourses'
+import { usePopularCourses } from '../hooks/query/usePopularCourses'
 
 function MainPage() {
   const navigate = useNavigate()

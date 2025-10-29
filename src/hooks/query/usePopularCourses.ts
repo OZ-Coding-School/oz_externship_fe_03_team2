@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { api } from '../api/client'
-import type { GetPopularCoursesResponse } from '../mocks/handlers'
+import { api } from '../../api/client'
+import type { GetPopularCoursesResponse } from '../../mocks/handlers'
 import type { AxiosResponse } from 'axios'
 
 const fetchPopularCourses = async (): Promise<
