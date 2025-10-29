@@ -81,7 +81,7 @@ const API_TESTS: ApiTest[] = [
     method: 'post',
     url: '/v1/phone-verifications/find-email/send-code',
     body: {
-      phone_number: '01000000001',
+      phone_number: '01000000002',
     },
     skipAuth: true,
   },
