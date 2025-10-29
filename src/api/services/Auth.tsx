@@ -98,7 +98,7 @@ export const useLogin = () => {
 }
 
 //리프레쉬------------------------
-export const useRefrersh = () => {
+export const useRefresh = () => {
   return useSimpleMutation<A.Refresh, AxiosError<A.Errors>>(() =>
     api.post('/v1/auth/refresh', { skipAuth: true })
   )
