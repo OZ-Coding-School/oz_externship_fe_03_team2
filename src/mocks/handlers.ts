@@ -1,5 +1,6 @@
 import { http, HttpResponse, type HttpHandler } from 'msw'
 import type { UserType } from '../store/useUserStore'
+import { type FindEmailSendCodeRequest } from '../types/apiInterface/findInterface'
 
 const url = import.meta.env.VITE_API_BASE_URL
 
@@ -241,5 +242,22 @@ export const handlers: HttpHandler[] = [
     console.log('인기 강의 mock API 호출')
     return HttpResponse.json<GetPopularCoursesResponse>(mockPopularCourses)
   }),
+
+  // 이메일 찾기 - 휴대폰 인증코드 전송 (POST)
+  http.post<never, FindEmailSendCodeRequest>(
+    `${url}/v1/phone-verifications/find-email/send-code`,
+    async ({ request }) => {
+      const { phone_number } = await request.json()
+
+      if (phone_number.length < 10) {
+        return HttpResponse.json(
+          { message: '휴대폰 번호 형식이 올바르지 않습니다.' },
+          { status: 400 }
+        )
+      }
+      return HttpResponse.json({ message: '인증 코드가 전송되었습니다' })
+    }
+  ),
 ]
+
 export type { GetPopularCoursesResponse }
