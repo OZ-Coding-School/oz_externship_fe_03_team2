@@ -72,28 +72,25 @@ export default function EmailAuthentication({
         </div>
       </div>
 
-      <div className="flex flex-row items-end gap-2">
-        <div className="w-full min-w-5 overflow-hidden">
-          <InputWithLabel
-            label="인증코드"
-            name="authCode"
-            value={formData.verificationCode}
-            placeholder="6자리 인증코드 입력"
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                verificationCode: e.target.value.trim(),
-              }))
-            }
-          />
-        </div>
-        <button
-          onClick={() => handleAuthCode()}
-          className="bg-primary-100 hover:bg-primary-200 active:bg-primary-300 flex h-[2.625rem] items-center justify-center rounded-md px-[1.5rem] py-[1.25rem] whitespace-nowrap text-[#EAB308]"
-        >
-          재전송
-        </button>
-      </div>
+      <InputWithLabel
+        label="인증코드"
+        name="authCode"
+        value={formData.verificationCode}
+        placeholder="6자리 인증코드 입력"
+        onChange={(e) =>
+          setFormData((prev) => ({
+            ...prev,
+            verificationCode: e.target.value.trim(),
+          }))
+        }
+        button={{
+          label: '재전송',
+          onClick: handleAuthCode,
+          variant: 'primary',
+          countdown: 600,
+          cooldown: 60,
+        }}
+      />
 
       <Button
         variant="primary"

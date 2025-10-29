@@ -35,6 +35,7 @@ type InputWithLabelProps = {
     icon?: React.ReactNode
     disabled?: boolean
     countdown?: number
+    cooldown?: number
   }
 }
 
@@ -62,6 +63,11 @@ function InputWithLabel({
     }
     button?.onClick()
   }
+
+  const countdown = button?.countdown || 0
+  const cooldown = button?.cooldown || countdown
+  const isCooldown = time > countdown - cooldown
+  // ex: countdown=180, cooldown=30일 때, 현재 남은 시간이 150보다 클 때 = 시작한지 30초가 안 됐을 때나,  cooldown을 안내려줬을 땐 비활성화
 
   return (
     <div className="flex w-full flex-col">
@@ -110,7 +116,7 @@ function InputWithLabel({
             size={button.size || 'md'}
             icon={button.icon}
             onClick={handleButtonClick}
-            disabled={button.disabled}
+            disabled={button.disabled || (isRunning && isCooldown)}
           >
             {isRunning && time > 0
               ? `재전송 (${timeFormat(time)})`
