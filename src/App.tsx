@@ -15,7 +15,6 @@ import { useToken } from './store/useTokenStore'
 import { useUserStore } from './store/useUserStore'
 import { api } from './api/client'
 import ApiTestPage from './tests/ApiTestPage'
-import { Loading } from './components/common/Loading'
 
 function App() {
   const [isCheck, setIsCheck] = useState(true)
