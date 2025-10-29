@@ -5,27 +5,7 @@ import Button from '../common/Button'
 import { fullDateFormat } from '../../utils/dateFormat'
 import { getStatusBadge } from '../../utils/statusBadge'
 import { Loading } from '../common/Loading'
-
-interface Recruitment {
-  id: number
-  title: string
-  thumbnail: string
-  expected_headcount: number
-  deadline: string
-}
-
-interface ApplicationDetail {
-  id: number
-  status: string
-  created_at: string
-  self_introduction: string
-  motivation: string
-  objective: string
-  available_time: string
-  has_study_experience: boolean
-  study_experience: string
-  recruitment: Recruitment
-}
+import type { DetailApplicationResponse } from '../../types/apiInterface/mypageInterface'
 
 interface StudyDetailModalProps {
   isOpen: boolean
@@ -39,8 +19,8 @@ function StudyDetailModal({
   applicationId,
 }: StudyDetailModalProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const [data, setData] = useState<ApplicationDetail | null>(null)
-
+  const [applicationDetail, setApplicationDetail] =
+    useState<DetailApplicationResponse | null>(null)
   // 모달이 열릴때 api호출할 예정
   useEffect(() => {
     if (isOpen && applicationId) {
@@ -49,7 +29,7 @@ function StudyDetailModal({
 
     // 모달이 닫힐 때 데이터 초기화
     if (!isOpen) {
-      setData(null)
+      setApplicationDetail(null)
     }
   }, [isOpen, applicationId])
 
@@ -58,7 +38,7 @@ function StudyDetailModal({
     try {
       // 더미데이터
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      const mockData: ApplicationDetail = {
+      const mockData: DetailApplicationResponse = {
         id: 101,
         status: 'APPLIED',
         created_at: '2025-10-16T02:10:00Z',
@@ -81,9 +61,9 @@ function StudyDetailModal({
           deadline: '2025-10-31',
         },
       }
-      setData(mockData)
+      setApplicationDetail(mockData)
     } catch {
-      setData(null)
+      setApplicationDetail(null)
     } finally {
       setIsLoading(false)
     }
@@ -92,7 +72,7 @@ function StudyDetailModal({
   return (
     <Modal
       title="지원 상세 정보"
-      subtitle={data?.recruitment.title || ''}
+      subtitle={applicationDetail?.recruitment.title || ''}
       isOpen={isOpen}
       onClose={onClose}
       width="w-full max-w-[672px]"
@@ -109,20 +89,23 @@ function StudyDetailModal({
     >
       {isLoading ? (
         <Loading />
-      ) : data ? (
+      ) : applicationDetail ? (
         <div className="space-y-6">
           {/* 지원 상태 & 지원 일시 */}
           <div className="flex items-start justify-between rounded-lg bg-gray-50 p-4">
             <div className="flex flex-col gap-2">
               <p className="text-sm text-gray-600">지원 상태</p>
-              <Badge variant={getStatusBadge(data.status).variant} size="sm">
-                {getStatusBadge(data.status).text}
+              <Badge
+                variant={getStatusBadge(applicationDetail.status).variant}
+                size="sm"
+              >
+                {getStatusBadge(applicationDetail.status).text}
               </Badge>
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-right text-sm text-gray-600">지원 일시</p>
               <p className="text-right text-sm font-medium text-gray-900">
-                {fullDateFormat(data.created_at)}
+                {fullDateFormat(applicationDetail.created_at)}
               </p>
             </div>
           </div>
@@ -131,7 +114,7 @@ function StudyDetailModal({
           <div>
             <p className="mb-2 text-sm font-medium text-gray-700">자기소개</p>
             <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {data.self_introduction}
+              {applicationDetail.self_introduction}
             </p>
           </div>
 
@@ -139,7 +122,7 @@ function StudyDetailModal({
           <div>
             <p className="mb-2 text-sm font-medium text-gray-700">지원 동기</p>
             <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {data.motivation}
+              {applicationDetail.motivation}
             </p>
           </div>
 
@@ -149,7 +132,7 @@ function StudyDetailModal({
               스터디 목표
             </p>
             <p className="eading-relaxed rounded-lg bg-gray-50 p-4 text-gray-700">
-              {data.objective}
+              {applicationDetail.objective}
             </p>
           </div>
 
@@ -159,7 +142,7 @@ function StudyDetailModal({
               가능한 시간대
             </p>
             <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {data.available_time}
+              {applicationDetail.available_time}
             </p>
           </div>
 
@@ -168,27 +151,23 @@ function StudyDetailModal({
             <p className="mb-2 text-sm font-medium text-gray-700">
               스터디 경험
             </p>
-            {data.has_study_experience ? (
-              <div className="rounded-lg bg-green-50 p-4">
-                <Badge variant="success" size="sm">
-                  경험 있음
-                </Badge>
-                <p className="eading-relaxed mt-2 text-gray-700">
-                  {data.study_experience}
+            <div
+              className={`rounded-lg p-4 ${applicationDetail.study_experience ? 'bg-green-50' : 'bg-gray-50'}`}
+            >
+              <Badge
+                variant={
+                  applicationDetail.study_experience ? 'success' : 'danger'
+                }
+                size="sm"
+              >
+                {applicationDetail.study_experience ? '경험 있음' : '경험 없음'}
+              </Badge>
+              {applicationDetail.study_experience && (
+                <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                  {applicationDetail.study_experience}
                 </p>
-              </div>
-            ) : (
-              <div className="rounded-lg bg-gray-50 p-4">
-                <Badge variant="default" size="sm">
-                  경험 없음
-                </Badge>
-                {data.study_experience && (
-                  <p className="mt-2 text-sm leading-relaxed text-gray-700">
-                    {data.study_experience}
-                  </p>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       ) : (

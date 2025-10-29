@@ -25,11 +25,13 @@ export default function StudyApplicationCard({
   const getStatusBadge = () => {
     switch (data.status) {
       case 'pending':
-        return { variant: 'default' as const, text: '대기중' }
+        return { variant: 'primary' as const, text: '대기중' }
       case 'success':
         return { variant: 'success' as const, text: '승인됨' }
       case 'rejected':
         return { variant: 'danger' as const, text: '거절됨' }
+      default:
+        return { variant: 'primary' as const, text: '대기중' }
     }
   }
 
