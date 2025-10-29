@@ -2,34 +2,52 @@ import { useEffect, useState } from 'react'
 import InputWithLabel from '../components/common/InputWithLabel'
 import Header from '../components/layout/Header'
 import Button from '../components/common/Button'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Gender from '../components/signup/Gender'
-import Toast from '../components/common/toast/Toast'
-import { toast } from 'sonner'
 import useDebounce from '../hooks/useDebounce'
 import validateAll from '../utils/validators'
 import { phoneFormat } from '../utils/phoneFormat'
+import {
+  useEmailConfirm,
+  useEmailSend,
+  useNickNameConfirm,
+  usePhoneConfirm,
+  usePhoneSend,
+  useSignUp,
+} from '../api/services/Auth'
+import { birthdayFormat2 } from '../utils/dateFormat'
+import { showToast } from '../utils/showToast'
 
 export interface Form {
   name: string
   nickname: string
-  birth: string
-  gender: 'male' | 'female' | 'none'
+  birthday: string
+  gender: 'M' | 'F' | ''
   email: string
-  phone: string
+  phone_number: string
   password: string
   passwordConfirm: string
   emailCode: string
   phoneCode: string
 }
 
+interface REQUEST_ID {
+  emailRequestId: string
+  phoneRequestId: string
+}
+
+interface VERIFYTOKEN {
+  emailToken: string
+  phoneToken: string
+}
+
 const FORM_STATE: Form = {
   name: '',
   nickname: '',
-  birth: '',
-  gender: 'none',
+  birthday: '',
+  gender: '',
   email: '',
-  phone: '',
+  phone_number: '',
   password: '',
   passwordConfirm: '',
   emailCode: '',
@@ -44,13 +62,23 @@ const CONFIRM_STATE = {
   nickConfirm: false,
 }
 
+const REQUEST_STATE: REQUEST_ID = {
+  emailRequestId: '',
+  phoneRequestId: '',
+}
+
+const VERIFYTOKEN_STATE: VERIFYTOKEN = {
+  emailToken: '',
+  phoneToken: '',
+}
+
 const switchInput = (name: string, value: string): string => {
   const numberOnly = value.replace(/\D/g, '')
 
   switch (name) {
-    case 'birth':
+    case 'birthday':
       return numberOnly.slice(0, 8)
-    case 'phone':
+    case 'phone_number':
       return numberOnly.slice(0, 11)
     case 'emailCode':
     case 'phoneCode':
@@ -61,14 +89,44 @@ const switchInput = (name: string, value: string): string => {
 }
 
 function SignUpPage() {
+  const navigate = useNavigate()
+
   const [form, setForm] = useState<Form>(FORM_STATE)
-
   const [confirm, setConfirm] = useState(CONFIRM_STATE) // 인증번호 전송 및 확인
-
+  const [requestId, setRequestId] = useState(REQUEST_STATE)
   const [error, setError] = useState<Record<string, string>>({})
+  const [checkNickname, setCheckNickname] = useState(false)
+  const [verifyToken, setVerifyToken] = useState(VERIFYTOKEN_STATE)
+
+  const {
+    data: nickNameData,
+    error: nicknameError,
+    isError: isNicknameError,
+  } = useNickNameConfirm(form.nickname, checkNickname)
+  const { mutate: signUp } = useSignUp()
+  const { mutate: sendEmail } = useEmailSend()
+  const { mutate: confirmEmail } = useEmailConfirm()
+  const { mutate: sendPhone } = usePhoneSend()
+  const { mutate: confirmPhone } = usePhoneConfirm()
+
+  useEffect(() => {
+    if (checkNickname) {
+      if (nickNameData) {
+        setConfirm((prev) => ({ ...prev, nickConfirm: true }))
+        showToast(nickNameData.detail, 'success', '닉네임 중복 확인')
+        setCheckNickname(false)
+      } else if (isNicknameError) {
+        showToast(
+          nicknameError?.response?.data?.error || '닉네임 확인 실패',
+          'error',
+          '닉네임 중복 확인'
+        )
+        setCheckNickname(false)
+      }
+    }
+  }, [checkNickname, nickNameData, isNicknameError, nicknameError])
 
   const debounceForm = useDebounce(form)
-
   useEffect(() => {
     const validator = validateAll(debounceForm)
     setError((prev) => ({ ...prev, ...validator }))
@@ -90,7 +148,7 @@ function SignUpPage() {
     if (name === 'email') {
       setConfirm((prev) => ({ ...prev, emailSent: false, emailVerify: false }))
     }
-    if (name === 'phone') {
+    if (name === 'phone_number') {
       setConfirm((prev) => ({ ...prev, phoneSent: false, phoneVerify: false }))
     }
   }
@@ -104,49 +162,168 @@ function SignUpPage() {
       return
     }
 
-    //제출되었으니 초기화
-    setForm(FORM_STATE)
-    setConfirm(CONFIRM_STATE)
-    setError({})
-    toast.custom(() => <Toast title="제출" message="성공" type="success" />)
+    signUp(
+      {
+        body: {
+          name: form.name,
+          nickname: form.nickname,
+          birthday: birthdayFormat2(form.birthday),
+          gender: form.gender,
+          email: form.email,
+          phone_number: form.phone_number,
+          password: form.password,
+        },
+        headers: {
+          'X-Email-Verify-Token': verifyToken.emailToken,
+          'X-Phone-Verify-Token': verifyToken.phoneToken,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          setForm(FORM_STATE)
+          setConfirm(CONFIRM_STATE)
+          setRequestId(REQUEST_STATE)
+          setError({})
+          showToast(`${data.detail}`, 'success', '회원가입')
+          navigate('/')
+        },
+        onError: (error) => {
+          showToast(`${error.response?.data.error}`, 'error', '회원가입')
+          if (error.response?.data.errors) {
+            const APIError = error.response.data.errors
+            const APIErrors: Record<string, string> = {}
+
+            Object.entries(APIError).forEach(([key, value]) => {
+              if (value && value.length > 0) {
+                APIErrors[key] = value[0]
+              }
+            })
+            setError(APIErrors)
+          }
+        },
+      }
+    )
   }
 
-  //추후 API 연결
+  //닉네임 중복 확인--------------
   const nicknameConfirm = () => {
-    setConfirm((prev) => ({ ...prev, nickConfirm: true }))
-    toast.custom(() => <Toast title="닉네임" message="중복" type="success" />)
+    setCheckNickname(true)
   }
+  //이메일 코드 전송--------
   const emailSend = () => {
-    setConfirm((prev) => ({ ...prev, emailSent: true }))
-    toast.custom(() => <Toast title="이메일" message="보냄" type="success" />)
+    sendEmail(
+      { email: form.email },
+      {
+        onSuccess: (data) => {
+          setConfirm((prev) => ({ ...prev, emailSent: true }))
+          setRequestId((prev) => ({
+            ...prev,
+            emailRequestId: data.data.request_id,
+          }))
+          showToast(`${data.detail}`, 'success', '이메일 코드 전송')
+        },
+        onError: (error) => {
+          showToast(
+            `${error.response?.data.error}`,
+            'error',
+            '이메일 코드 전송'
+          )
+        },
+      }
+    )
   }
+  //이메일 코드 확인----------
   const emailVerify = () => {
-    setConfirm((prev) => ({ ...prev, emailVerify: true }))
-    toast.custom(() => <Toast title="이메일" message="코드" type="success" />)
+    confirmEmail(
+      {
+        email: form.email,
+        verification_code: form.emailCode,
+        request_id: requestId.emailRequestId,
+      },
+      {
+        onSuccess: (data) => {
+          setConfirm((prev) => ({ ...prev, emailVerify: true }))
+          setVerifyToken((prev) => ({
+            ...prev,
+            emailToken: data.data.verify_token,
+          }))
+          showToast(`${data.detail}`, 'success', '이메일 코드 확인')
+        },
+        onError: (error) => {
+          showToast(
+            `${error.response?.data.error}`,
+            'error',
+            '이메일 코드 확인'
+          )
+        },
+      }
+    )
   }
+  //핸드폰 코드 전송--------
   const phoneSent = () => {
-    setConfirm((prev) => ({ ...prev, phoneSent: true }))
-    toast.custom(() => <Toast title="폰" message="보냄" type="success" />)
+    sendPhone(
+      { phone_number: form.phone_number },
+      {
+        onSuccess: (data) => {
+          setConfirm((prev) => ({ ...prev, phoneSent: true }))
+          setRequestId((prev) => ({
+            ...prev,
+            phoneRequestId: data.data.request_id,
+          }))
+          showToast(`${data.detail}`, 'success', '핸드폰 코드 전송')
+        },
+        onError: (error) => {
+          showToast(
+            `${error.response?.data.error}`,
+            'error',
+            '핸드폰 코드 전송'
+          )
+        },
+      }
+    )
   }
+  //핸드폰 코드 확인----------
   const phoneVerify = () => {
-    setConfirm((prev) => ({ ...prev, phoneVerify: true }))
-    toast.custom(() => <Toast title="폰" message="코드" type="success" />)
+    confirmPhone(
+      {
+        phone_number: form.phone_number,
+        code: form.phoneCode,
+        request_id: requestId.phoneRequestId,
+      },
+      {
+        onSuccess: (data) => {
+          setConfirm((prev) => ({ ...prev, phoneVerify: true }))
+          setVerifyToken((prev) => ({
+            ...prev,
+            phoneToken: data.data.verify_token,
+          }))
+          showToast(`${data.detail}`, 'success', '핸드폰 코드 확인')
+        },
+        onError: (error) => {
+          showToast(
+            `${error.response?.data.error}`,
+            'error',
+            '핸드폰 코드 확인'
+          )
+        },
+      }
+    )
   }
 
   const isFormValid = () => {
     const requiredFields = [
       'name',
       'nickname',
-      'birth',
+      'birthday',
       'email',
-      'phone',
+      'phone_number',
       'password',
       'passwordConfirm',
     ] as const
     const hasAllFields = requiredFields.every(
       (field) => form[field] && !error[field]
     )
-    const hasGender = form.gender !== 'none'
+    const hasGender = form.gender !== ''
     const hasVerifications =
       confirm.emailVerify && confirm.phoneVerify && confirm.nickConfirm
 
@@ -199,9 +376,9 @@ function SignUpPage() {
           </div>
           <InputWithLabel
             label="생년월일"
-            name="birth"
-            value={form.birth}
-            error={error['birth']}
+            name="birthday"
+            value={birthdayFormat2(form.birthday)}
+            error={error['birthday']}
             required
             placeholder="8자리 입력해주세요 (ex.20001004)"
             onChange={handleChange}
@@ -260,10 +437,10 @@ function SignUpPage() {
             <div className="flex items-end gap-3">
               <InputWithLabel
                 label="휴대전화"
-                name="phone"
+                name="phone_number"
                 type="tel"
-                value={phoneFormat(form.phone)}
-                error={error['phone']}
+                value={phoneFormat(form.phone_number)}
+                error={error['phone_number']}
                 required
                 placeholder="01012345678"
                 onChange={handleChange}
@@ -272,7 +449,7 @@ function SignUpPage() {
                   onClick: phoneSent,
                   variant: 'signup',
                   size: 'ml',
-                  disabled: !(form.phone && !error['phone']),
+                  disabled: !(form.phone_number && !error['phone_number']),
                 }}
               />
             </div>

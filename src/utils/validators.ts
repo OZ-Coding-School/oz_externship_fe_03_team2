@@ -62,11 +62,11 @@ function validateField(
       return nicknameRe.test(formdata)
         ? ''
         : '2~12자, 한글/영문/숫자만 가능합니다'
-    case 'birth':
+    case 'birthday':
       return isValidDateYYYYMMDD(formdata) ? '' : '유효한 날짜를 입력해주세요'
     case 'email':
       return emailRe.test(formdata) ? '' : '이메일 형식이 올바르지 않습니다'
-    case 'phone':
+    case 'phone_number':
       return phoneRe.test(formdata) ? '' : '휴대폰 번호를 확인해주세요'
     case 'password':
       return passwordRe.test(formdata)
@@ -89,9 +89,9 @@ function validateAll(form: Partial<Form>, submit: boolean = false) {
   const fields = [
     'name',
     'nickname',
-    'birth',
+    'birthday',
     'email',
-    'phone',
+    'phone_number',
     'password',
     'passwordConfirm',
     'emailCode',
@@ -114,7 +114,7 @@ function validateAll(form: Partial<Form>, submit: boolean = false) {
     }
   }
 
-  if (submit && form.gender === 'none') {
+  if (submit && form.gender === '') {
     error['gender'] = '성별을 선택해주세요'
   }
   return error

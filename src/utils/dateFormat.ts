@@ -8,6 +8,24 @@ export function birthdayFormat(dateValue: string): string {
   return `${year}. ${month}. ${day}.`
 }
 
+// 2025-1-10 형식으로 반환
+export function birthdayFormat2(dateValue: string): string {
+  if (!dateValue) return ''
+  const onlyNum = dateValue.replace(/\D/g, '').slice(0, 8)
+
+  const y = onlyNum.slice(0, 4)
+  const m = onlyNum.slice(4, 6)
+  const d = onlyNum.slice(6, 8)
+
+  if (onlyNum.length <= 4) {
+    return y
+  } else if (onlyNum.length <= 6) {
+    return `${y}-${m}`
+  } else {
+    return `${y}-${m}-${d}`
+  }
+}
+
 // 2025년 1월 형식으로 반환 (가입일에 씀)
 export function yearMonthFormat(dateValue: string): string {
   const date = new Date(dateValue)
