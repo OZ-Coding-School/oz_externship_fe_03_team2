@@ -5,15 +5,14 @@ import Button from '../components/common/Button'
 import { useEffect, useState } from 'react'
 import validateAll from '../utils/validators'
 import useDebounce from '../hooks/useDebounce'
-import Toast from '../components/common/toast/Toast'
-import { toast } from 'sonner'
+import { useLogin } from '../api/services/Auth'
+import { useToken } from '../store/useTokenStore'
+import { showToast } from '../utils/showToast'
 
 interface Form {
   email: string
   password: string
 }
-
-const TEST_MAIL = { email: 'test@email.com', password: 'Qwer1234!' }
 
 const FORM_STATE: Form = {
   email: '',
@@ -23,11 +22,13 @@ const FORM_STATE: Form = {
 function LoginPage() {
   const navigate = useNavigate()
   const [form, setForm] = useState<Form>(FORM_STATE)
-
   const [error, setError] = useState<Record<string, string>>({})
 
-  const debounceForm = useDebounce(form)
+  const { setAccessToken } = useToken()
 
+  const { mutate: LoginMutate } = useLogin()
+
+  const debounceForm = useDebounce(form)
   useEffect(() => {
     const validator = validateAll(debounceForm)
     setError((prev) => ({ ...prev, ...validator }))
@@ -51,19 +52,21 @@ function LoginPage() {
       return
     }
 
-    if (
-      TEST_MAIL.email === form.email &&
-      TEST_MAIL.password === form.password
-    ) {
-      setForm(FORM_STATE)
-
-      setError({})
-
-      toast.custom(() => <Toast title="로그인" message="성공" type="success" />)
-      navigate('/')
-    } else {
-      toast.custom(() => <Toast title="로그인" message="실패" type="error" />)
-    }
+    LoginMutate(
+      { email: form.email, password: form.password },
+      {
+        onSuccess: (data) => {
+          setAccessToken(data.data.access)
+          showToast('로그인 성공 했습니다', 'success', '로그인')
+          setForm(FORM_STATE)
+          setError({})
+          navigate('/')
+        },
+        onError: (error) => {
+          showToast(`${error.response?.data.error}`, 'error', '로그인')
+        },
+      }
+    )
   }
 
   const isFormValid = () => {
