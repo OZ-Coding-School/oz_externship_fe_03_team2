@@ -89,13 +89,7 @@ export interface UserLoginRequest {
 export interface UserLoginResponse {
   detail: string
   data: {
-    access_token: string
-    token_type: string
-    user: {
-      id: number
-      email: string
-      nickname: string
-    }
+    access: string
   }
 }
 

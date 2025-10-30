@@ -4,11 +4,30 @@ import HeaderIsLogin from './HeaderIsLogin'
 import { Menu, X, Users, Megaphone, Book, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import Avatar from '../common/Avatar'
+import { useLogout } from '../../api/services/Auth'
+import { showToast } from '../../utils/showToast'
+import { useToken } from '../../store/useTokenStore'
 
 function Header() {
   const isLogin = true // false일땐 비로그인
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const { mutate: LogoutMutate } = useLogout()
+  const { clearAccessToken } = useToken()
+
+  const logout = () => {
+    LogoutMutate(undefined, {
+      onSuccess: (data) => {
+        clearAccessToken()
+        showToast(`${data.detail}`, 'success', '로그아웃')
+        navigate('/login')
+      },
+      onError: (error) => {
+        showToast(`${error.response?.data.error}`, 'error', '로그아웃')
+      },
+    })
+  }
 
   const userName = '김개발'
   const userEmail = 'kim.dev@example.com'
@@ -186,6 +205,7 @@ function Header() {
               <button
                 onClick={() => {
                   // 로그아웃 로직
+                  logout()
                   setSidebarOpen(false)
                 }}
                 className="hover:text-danger-500 mb-5 flex min-w-58 cursor-pointer items-center justify-center gap-3 border-t border-gray-100 bg-gray-100 px-4 py-2 text-sm text-gray-700 transition hover:bg-red-50"

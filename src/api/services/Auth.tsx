@@ -106,7 +106,7 @@ export const useRefresh = () => {
 
 //로그아웃-----------------------
 export const useLogout = () => {
-  return useSimpleMutation<A.Logout, AxiosError<A.Errors>>(() =>
+  return useSimpleMutation<A.Logout, AxiosError<A.Errors>, void>(() =>
     api.post('/v1/auth/logout')
   )
 }

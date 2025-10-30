@@ -185,7 +185,7 @@ function SignUpPage() {
           setRequestId(REQUEST_STATE)
           setError({})
           showToast(`${data.detail}`, 'success', '회원가입')
-          navigate('/')
+          navigate('/login')
         },
         onError: (error) => {
           showToast(`${error.response?.data.error}`, 'error', '회원가입')
