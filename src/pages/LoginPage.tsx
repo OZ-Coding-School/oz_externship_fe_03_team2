@@ -108,9 +108,9 @@ function LoginPage() {
   const naverLogin = () => {
     const clientId = import.meta.env.VITE_NAVER_CLIENT_ID
     const redirectUri = import.meta.env.VITE_NAVER_REDIRECT_URI
-    const clientSecret = import.meta.env.VITE_NAVER_CLIENT_SECRET
+    const state = Math.random().toString(36).substring(2, 15)
 
-    window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&state=${clientSecret}`
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&state=${state}`
   }
 
   return (
