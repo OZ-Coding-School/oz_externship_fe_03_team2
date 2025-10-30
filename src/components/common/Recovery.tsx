@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { X, Check, Annoyed, RotateCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { useMutation } from '@tanstack/react-query'
@@ -19,20 +19,40 @@ interface RecoveryProps {
   onClose: () => void
 }
 
-// ✅ 이메일 인증코드 전송 API
 const sendCodeAPI = async (email: string) => {
   const res = await axios.post(
-    '/api/v1/email/verifications/send-code',
-    {
-      email,
-      purpose: 'restore_user',
-    },
+    '/api/v1/email-verifications/restore-user/send-code',
+    { email },
     {
       headers: {
         'Content-Type': 'application/json',
         'Idempotency-Key': crypto.randomUUID(),
       },
     }
+  )
+  return res.data
+}
+
+const verifyCodeAPI = async ({
+  email,
+  code,
+}: {
+  email: string
+  code: string
+}) => {
+  const res = await axios.post(
+    '/api/v1/email-verifications/restore-user/confirm-code',
+    { email, code },
+    { headers: { 'Content-Type': 'application/json' } }
+  )
+  return res.data
+}
+
+const recoverAccountAPI = async (email: string) => {
+  const res = await axios.post(
+    '/api/v1/users/recovery-account',
+    { email },
+    { headers: { 'Content-Type': 'application/json' } }
   )
   return res.data
 }
@@ -47,9 +67,8 @@ function Recovery({ onClose }: RecoveryProps) {
   const [isEmailSent, setIsEmailSent] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
 
-  // ✅ TanStack Query mutation
   const sendCodeMutation = useMutation({
-    mutationFn: (email: string) => sendCodeAPI(email),
+    mutationFn: sendCodeAPI,
     onSuccess: (data) => {
       setIsEmailSent(true)
       toast.custom((t) => (
@@ -61,12 +80,55 @@ function Recovery({ onClose }: RecoveryProps) {
         />
       ))
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<any>) => {
       const message =
-        error?.response?.data?.error ||
-        '이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.'
+        error?.response?.data?.error || '이메일 전송에 실패했습니다.'
       toast.custom((t) => (
         <Toast id={t} title="전송 실패" message={message} type="error" />
+      ))
+    },
+  })
+
+  const verifyCodeMutation = useMutation({
+    mutationFn: verifyCodeAPI,
+    onSuccess: () => {
+      setIsVerified(true)
+      setErrors({})
+      toast.custom((t) => (
+        <Toast
+          id={t}
+          title="인증 완료!"
+          message="인증이 완료되었습니다."
+          type="success"
+        />
+      ))
+    },
+    onError: (error: AxiosError<any>) => {
+      setIsVerified(false)
+      const message = error?.response?.data?.error || '인증번호 확인 실패'
+      toast.custom((t) => (
+        <Toast id={t} title="인증 실패" message={message} type="error" />
+      ))
+    },
+  })
+
+  const recoverAccountMutation = useMutation({
+    mutationFn: recoverAccountAPI,
+    onSuccess: () => {
+      setStep(3)
+      toast.custom((t) => (
+        <Toast
+          id={t}
+          title="복구 완료!"
+          message="계정이 복구되었습니다."
+          type="success"
+        />
+      ))
+    },
+    onError: (error: AxiosError<any>) => {
+      const message = error?.response?.data?.error || '계정 복구 실패'
+      toast.custom((t) => (
+        <Toast id={t} title="복구 실패" message={message} type="error" />
       ))
     },
   })
@@ -79,30 +141,29 @@ function Recovery({ onClose }: RecoveryProps) {
 
   const handleStartRecovery = () => setStep(2)
 
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
     if (!formData.email) {
       setErrors({ email: '이메일을 입력해주세요' })
       return
     }
-    sendCodeMutation.mutate(formData.email)
+    await sendCodeMutation.mutateAsync(formData.email)
   }
 
-  const handleVerificationCheck = () => {
+  const handleVerificationCheck = async () => {
     if (!formData.verifyCode) {
       setErrors({ verifyCode: '인증번호를 입력해주세요' })
       return
     }
-    if (formData.verifyCode.length === 6) {
-      setIsVerified(true)
-      setErrors({})
-    } else {
-      setErrors({ verifyCode: '인증번호 6자리를 정확히 입력해주세요.' })
-      setIsVerified(false)
-    }
+    await verifyCodeMutation.mutateAsync({
+      email: formData.email,
+      code: formData.verifyCode,
+    })
   }
 
-  const handleNextStep = () => {
-    if (isVerified) setStep(3)
+  const handleNextStep = async () => {
+    if (isVerified) {
+      await recoverAccountMutation.mutateAsync(formData.email)
+    }
   }
 
   const renderStepContent = () => {
@@ -178,13 +239,14 @@ function Recovery({ onClose }: RecoveryProps) {
                   onClick: handleVerificationCheck,
                   variant: 'secondary',
                   size: 'sm',
-                  disabled: isVerified || !isEmailSent,
+                  disabled:
+                    isVerified || !isEmailSent || verifyCodeMutation.isPending,
                 }}
               />
 
               <Button
                 onClick={handleNextStep}
-                disabled={!isVerified}
+                disabled={!isVerified || recoverAccountMutation.isPending}
                 size="freeWidthLg"
                 variant={isVerified ? 'primary' : 'secondary'}
               >
