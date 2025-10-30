@@ -10,7 +10,7 @@ export interface UserType {
   name?: string
   phone_number?: string
   birthday?: string
-  profile_image_url?: string
+  profile_img_url?: string | null
   created_at?: string
 }
 
@@ -22,12 +22,7 @@ interface UserStoreType {
 }
 
 export const useUserStore = create<UserStoreType>((set) => ({
-  // user: null,
-  user: {
-    id: 1001,
-    email: 'user@example.com',
-    nickname: '김개발',
-  },
+  user: null,
 
   setUser: (user) => set({ user }),
   getUser: async () => {

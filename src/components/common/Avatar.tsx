@@ -5,7 +5,7 @@ type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   name: string
-  imgUrl?: string
+  imgUrl?: string | null
   size?: AvatarSize
   isHeader?: boolean
 }

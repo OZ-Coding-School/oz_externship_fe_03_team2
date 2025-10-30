@@ -4,14 +4,14 @@ import Button from '../common/Button'
 import InputWithLabel from '../common/InputWithLabel'
 import Modal from '../common/Modal'
 import { phoneFormat } from '../../utils/phoneFormat'
-import type { UserProfileData } from '../../types/userType'
 import { showToast } from '../../utils/showToast'
+import type { MeResponse } from '../../types/apiInterface/mypageInterface'
 
 interface ProfileEditModalProps {
   isOpen: boolean
-  profileData: UserProfileData
+  profileData: MeResponse
   onClose: () => void
-  onSave: (data: UserProfileData) => void
+  onSave: (data: MeResponse) => void
 }
 
 function ProfileEditModal({
@@ -20,7 +20,7 @@ function ProfileEditModal({
   onClose,
   onSave,
 }: ProfileEditModalProps) {
-  const [tempData, setTempData] = useState<UserProfileData>(profileData) //모달에서 수정 중인 프로필 데이터
+  const [tempData, setTempData] = useState<MeResponse>(profileData) //모달에서 수정 중인 프로필 데이터
   const [showVerificationInput, setShowVerificationInput] = useState(false) // 휴대폰 인증번호 입력창 표시 여부
   const [verificationCode, setVerificationCode] = useState('') // 인증번호
   const [isVerified, setIsVerified] = useState(false) //인증번호 확인 완료 여부
@@ -85,7 +85,7 @@ function ProfileEditModal({
     // 나중에 api 연결할떄 여기서 S3 presigned URL 받아서 업로드
     // 현재는 미리보기 이미지를 그대로 사용 (로컬 blob URL)
     if (previewImage) {
-      tempData.profile_image_url = previewImage
+      tempData.profile_img_url = previewImage
     }
 
     onSave(tempData)
@@ -129,7 +129,7 @@ function ProfileEditModal({
   const isSaveDisabled = showVerificationInput && !isVerified
 
   // 표시할 이미지: 미리보기 > 기존 프로필 이미지
-  const displayImage = previewImage || tempData.profile_image_url
+  const displayImage = previewImage || tempData.profile_img_url
 
   return (
     <Modal

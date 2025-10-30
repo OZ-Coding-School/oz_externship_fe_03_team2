@@ -3,18 +3,26 @@ import Avatar from '../common/Avatar'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import UserDropdown from '../common/UserDropdown'
 import { useNavigate } from 'react-router'
+import { useUserStore } from '../../store/useUserStore'
+import { useToken } from '../../store/useTokenStore'
+import { useLogout } from '../../api/services/Auth'
+import { showToast } from '../../utils/showToast'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
 }
 
 function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
-  const userName = '김개발'
-  const notificationCount = '3'
   const [open, setOpen] = useState(false)
-
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+
+  const user = useUserStore((state) => state.user)
+  const clearUser = useUserStore((state) => state.clearUser)
+  const { clearAccessToken } = useToken()
+  const { mutate: LogoutMutate } = useLogout()
+
+  const notificationCount = '3' // 알림 하드코딩 되어있는거 나중에 수정해야 함
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (
@@ -39,13 +47,27 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
   }
 
   const handleLogoutClick = () => {
-    setOpen(false)
+    LogoutMutate(undefined, {
+      onSuccess: (data) => {
+        clearAccessToken()
+        clearUser()
+        showToast(`${data.detail}`, 'success', '로그아웃')
+        setOpen(false)
+        navigate('/login')
+      },
+      onError: (error) => {
+        showToast(`${error.response?.data.error}`, 'error', '로그아웃')
+        setOpen(false)
+      },
+    })
   }
 
   const handleUserInfoClick = () => {
-    if (isMobile) return // 모바일이면 종료
+    if (isMobile) return
     setOpen((prev) => !prev)
   }
+
+  if (!user) return null // user가 없으면 null(아무것도 렌더링 안함)
 
   return (
     <div className="relative ml-8 flex items-center" ref={dropdownRef}>
@@ -64,9 +86,9 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
         }`}
         onClick={handleUserInfoClick}
       >
-        <Avatar name={userName} size="sm" isHeader />
+        <Avatar name={user.name ?? user.nickname} size="sm" isHeader />
         <span className="text-primary-600 text-base font-medium">
-          {userName}
+          {user.name ?? user.nickname}
         </span>
       </div>
 

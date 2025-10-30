@@ -97,7 +97,7 @@ let mockUser: UserType = {
   id: 1,
   email: 'test@test.com',
   nickname: '김개발',
-  profile_image_url: 'https://oz.com/image/ozdev.png',
+  profile_img_url: 'https://oz.com/image/ozdev.png',
   phone_number: '01012345678',
 }
 
@@ -239,7 +239,6 @@ export const handlers: HttpHandler[] = [
   ),
 
   http.get(`${url}/v1/lectures`, () => {
-    console.log('인기 강의 mock API 호출')
     return HttpResponse.json<GetPopularCoursesResponse>(mockPopularCourses)
   }),
 
