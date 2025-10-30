@@ -28,7 +28,7 @@ export const useEmailVerificationConfirmCode = () => {
     T.SimpleError,
     T.EmailVerificationConfirmCodeRequest
   >((body) =>
-    api.post('/v1/email/verifications/confirm-code', body, {
+    api.post('/v1/email-verifications/password-reset/confirm-code', body, {
       skipAuth: true,
     })
   )

@@ -40,15 +40,16 @@ export default function PhoneAuthentication({
       },
       {
         onSuccess: () => {
-          setFormData(
-            (prev) => ({ ...prev, verify_token: formData.verify_token })
-            // onNext()
-          )
+          setFormData((prev) => ({
+            ...prev,
+            verify_token: formData.verify_token,
+          }))
+          onNext()
         },
       }
       // 실제 api 연결 시 위에 주석 해제, 아래 코드 삭제
     )
-    onNext()
+    // onNext()
   }
 
   const handleAuthCode = () => {

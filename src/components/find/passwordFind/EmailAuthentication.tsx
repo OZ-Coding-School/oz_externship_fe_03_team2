@@ -40,14 +40,15 @@ export default function EmailAuthentication({
       },
       {
         onSuccess: () => {
-          setFormData(
-            (prev) => ({ ...prev, verify_token: formData.verify_token })
-            // onNext()
-          )
+          setFormData((prev) => ({
+            ...prev,
+            verify_token: formData.verify_token,
+          }))
+          onNext()
         },
       }
     )
-    onNext()
+    // onNext()
   }
 
   const handleAuthCode = () => {

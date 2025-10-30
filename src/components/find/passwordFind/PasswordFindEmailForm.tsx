@@ -36,12 +36,10 @@ export default function PasswordFindEmailForm({
       {
         onSuccess: (data) => {
           setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
-          // onNext()
-          // api 나오면 위에 주석 풀고 아래 삭제
+          onNext()
         },
       }
     )
-    onNext()
   }
   // 이메일 유효성 검사
   const debouncedEmail = useDebounce(formData.email)
