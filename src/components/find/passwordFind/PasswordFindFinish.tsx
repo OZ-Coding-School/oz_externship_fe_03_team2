@@ -29,8 +29,9 @@ export default function PasswordFindFinish({
     mutate(
       {
         body: {
+          email: formData.email,
           new_password: formData.password,
-          new_password_confirm: formData.password,
+          new_password_confirm: formData.passwordConfirm,
         },
         verifyToken: formData.verify_token,
       },

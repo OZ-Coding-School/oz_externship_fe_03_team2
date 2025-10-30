@@ -40,8 +40,6 @@ export default function UserProfileForm({
           // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
           onNext()
         },
-
-        onSettled: () => console.log(formData.request_id),
       }
     )
   }

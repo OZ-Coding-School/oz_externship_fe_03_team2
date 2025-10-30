@@ -76,6 +76,7 @@ export interface EmailVerificationConfirmCodeResponse {
 //- - - - - - - - - - - -
 // 비밀번호 재설정 - 토큰 검증 후 새 비밀번호로 변경
 export interface RecoveryPasswordBody {
+  email: string
   new_password: string
   new_password_confirm: string
 }

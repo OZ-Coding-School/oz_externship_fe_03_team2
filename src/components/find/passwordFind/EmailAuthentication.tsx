@@ -39,12 +39,13 @@ export default function EmailAuthentication({
         request_id: formData.requestId,
       },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setFormData((prev) => ({
             ...prev,
-            verify_token: formData.verify_token,
+            verify_token: data.data.verify_token,
           }))
           onNext()
+          console.log(formData.email)
         },
       }
     )

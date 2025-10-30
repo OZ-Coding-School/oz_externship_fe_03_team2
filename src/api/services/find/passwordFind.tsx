@@ -49,8 +49,8 @@ export const useRecoveryPassword = () => {
       //    },
       //  verifyToken: '~~'
       //  })
-      return api.post('/v1/recovery/password/', body, {
-        headers: { 'X-Verify-Token': verifyToken },
+      return api.post('/v1/users/reset-password', body, {
+        headers: { 'X-Email-Verify-Token': verifyToken },
         skipAuth: true,
       })
     },
