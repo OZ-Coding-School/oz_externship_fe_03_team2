@@ -110,6 +110,7 @@ function LoginPage() {
     const redirectUri = import.meta.env.VITE_NAVER_REDIRECT_URI
     const state = Math.random().toString(36).substring(2, 15)
 
+    sessionStorage.setItem('naver_state', state)
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&state=${state}`
   }
 
