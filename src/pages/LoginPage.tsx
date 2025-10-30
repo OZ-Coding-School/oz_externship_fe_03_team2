@@ -8,6 +8,9 @@ import useDebounce from '../hooks/useDebounce'
 import { useLogin } from '../api/services/Auth'
 import { useToken } from '../store/useTokenStore'
 import { showToast } from '../utils/showToast'
+import { useUserStore } from '../store/useUserStore'
+import { api } from '../api/client'
+import type { MeResponse } from '../types/apiInterface/mypageInterface'
 
 interface Form {
   email: string
@@ -25,10 +28,10 @@ function LoginPage() {
   const [error, setError] = useState<Record<string, string>>({})
 
   const { setAccessToken } = useToken()
-
+  const { setUser } = useUserStore()
   const { mutate: LoginMutate } = useLogin()
 
-  const debounceForm = useDebounce(form)
+  const debounceForm = useDebounce(form, 500)
   useEffect(() => {
     const validator = validateAll(debounceForm)
     setError((prev) => ({ ...prev, ...validator }))
@@ -55,15 +58,30 @@ function LoginPage() {
     LoginMutate(
       { email: form.email, password: form.password },
       {
-        onSuccess: (data) => {
-          setAccessToken(data.data.access)
-          showToast('로그인 성공 했습니다', 'success', '로그인')
-          setForm(FORM_STATE)
-          setError({})
-          navigate('/')
+        onSuccess: async (data) => {
+          try {
+            const accessToken = data.data.access
+            setAccessToken(accessToken)
+
+            // user 정보 가져오기
+            const userRes = await api.get<MeResponse>('/v1/users/me')
+
+            setUser(userRes)
+
+            showToast('로그인 성공 했습니다', 'success', '로그인')
+            setForm(FORM_STATE)
+            setError({})
+            navigate('/')
+          } catch {
+            showToast(
+              '사용자 정보를 불러오는데 실패했습니다',
+              'error',
+              '로그인'
+            )
+          }
         },
-        onError: (error) => {
-          showToast(`${error.response?.data.error}`, 'error', '로그인')
+        onError: (e) => {
+          showToast(`${e.response?.data.error}`, 'error', '로그인')
         },
       }
     )

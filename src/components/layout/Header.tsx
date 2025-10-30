@@ -7,30 +7,33 @@ import Avatar from '../common/Avatar'
 import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
 import { useToken } from '../../store/useTokenStore'
+import { useUserStore } from '../../store/useUserStore'
 
 function Header() {
-  const isLogin = true // false일땐 비로그인
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const { mutate: LogoutMutate } = useLogout()
   const { clearAccessToken } = useToken()
 
+  const user = useUserStore((state) => state.user)
+  const clearUser = useUserStore((state) => state.clearUser)
+
+  const isLogin = !!user
+
   const logout = () => {
     LogoutMutate(undefined, {
       onSuccess: (data) => {
         clearAccessToken()
+        clearUser()
         showToast(`${data.detail}`, 'success', '로그아웃')
-        navigate('/login')
+        navigate('/')
       },
       onError: (error) => {
         showToast(`${error.response?.data.error}`, 'error', '로그아웃')
       },
     })
   }
-
-  const userName = '김개발'
-  const userEmail = 'kim.dev@example.com'
 
   const navLinks = [
     { label: '강의 목록', path: '/ddd', icon: Book },
@@ -182,38 +185,37 @@ function Header() {
               </nav>
             </div>
 
-            {/* 유저 정보 + 로그아웃 */}
-            <div className="border-t border-gray-200">
-              {/* 유저 정보 */}
-              <div
-                className="hover:bg-primary-50 flex cursor-pointer items-center gap-3 px-4 py-4"
-                onClick={() => {
-                  navigate('/mypage')
-                  setSidebarOpen(false)
-                }}
-              >
-                <Avatar name={userName} size="md" />
-                <div className="flex flex-1 flex-col">
-                  <p className="text-sm font-semibold text-gray-900">
-                    {userName}
-                  </p>
-                  <p className="text-xs text-gray-500">{userEmail}</p>
+            {/* 로그인 상태일 때만 유저 정보 + 로그아웃 표시 */}
+            {isLogin && user && (
+              <div className="border-t border-gray-200">
+                <div
+                  className="hover:bg-primary-50 flex cursor-pointer items-center gap-3 px-4 py-4"
+                  onClick={() => {
+                    navigate('/mypage')
+                    setSidebarOpen(false)
+                  }}
+                >
+                  <Avatar name={user.name ?? user.nickname} size="md" />
+                  <div className="flex flex-1 flex-col">
+                    <p className="text-sm font-semibold text-gray-900">
+                      {user.name ?? user.nickname}
+                    </p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
+                  </div>
                 </div>
-              </div>
 
-              {/* 로그아웃 버튼 */}
-              <button
-                onClick={() => {
-                  // 로그아웃 로직
-                  logout()
-                  setSidebarOpen(false)
-                }}
-                className="hover:text-danger-500 mb-5 flex min-w-58 cursor-pointer items-center justify-center gap-3 border-t border-gray-100 bg-gray-100 px-4 py-2 text-sm text-gray-700 transition hover:bg-red-50"
-              >
-                <LogOut size={16} className="rotate-180 transform" />
-                <span>로그아웃</span>
-              </button>
-            </div>
+                <button
+                  onClick={() => {
+                    logout()
+                    setSidebarOpen(false)
+                  }}
+                  className="hover:text-danger-500 mb-5 flex min-w-58 cursor-pointer items-center justify-center gap-3 border-t border-gray-100 bg-gray-100 px-4 py-2 text-sm text-gray-700 transition hover:bg-red-50"
+                >
+                  <LogOut size={16} className="rotate-180 transform" />
+                  <span>로그아웃</span>
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}

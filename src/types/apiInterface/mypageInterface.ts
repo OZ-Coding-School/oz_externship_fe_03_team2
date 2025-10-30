@@ -1,16 +1,13 @@
 // 내 정보 조회 - - - - - - - - - - - -
 export interface MeResponse {
-  detail: string
-  data: {
-    id: number
-    email: string
-    nickname: string
-    name: string
-    phone_number: string
-    birthday: string
-    profile_image_url: string
-    created_at: string
-  }
+  id: number
+  email: string
+  nickname: string
+  name: string
+  phone_number: string
+  birthday: string
+  profile_img_url: string | null
+  created_at: string
 }
 
 // 내 정보 수정 - - - - - - - - - - - -
