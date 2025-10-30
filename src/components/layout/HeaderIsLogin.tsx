@@ -7,6 +7,7 @@ import { useUserStore } from '../../store/useUserStore'
 import { useToken } from '../../store/useTokenStore'
 import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
+import { NotiBoard } from '../NotiBoard'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
@@ -14,6 +15,8 @@ interface HeaderIsLoginProps {
 
 function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
   const [open, setOpen] = useState(false)
+  const [notiOpen, setNotiOpen] = useState(false)
+
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
@@ -73,7 +76,8 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
     <div className="relative ml-8 flex items-center" ref={dropdownRef}>
       {/* 알림은 모바일에서도 클릭 가능 */}
       <div className="hover:text-primary-500 relative flex h-10 w-10 cursor-pointer items-center justify-center text-gray-400">
-        <Bell size={24} />
+        <Bell size={24} onClick={() => setNotiOpen(!notiOpen)} />
+
         <span className="bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-[9999px] text-xs font-semibold text-white">
           {notificationCount}
         </span>
@@ -104,6 +108,9 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
           onClose={() => setOpen(false)}
         />
       )}
+      <div className="absolute top-12 right-30">
+        {notiOpen && <NotiBoard />}
+      </div>
     </div>
   )
 }

@@ -70,6 +70,15 @@ export const calculateDurationFormat = (
   return `${totalMonths}개월`
 }
 
+// 11월 9일 형식
+export function monthDayFormat(dateValue: string): string {
+  const date = new Date(dateValue)
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  return `${month}월 ${day}일`
+}
+
 export const chatDateFormat = (dateValue: string): string => {
   const date = new Date(dateValue)
 

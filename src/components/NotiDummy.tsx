@@ -29,6 +29,20 @@ export const allData = {
       link_url: '/스터디 링크',
       created_at: '2025-10-14 22:00:00',
     },
+    {
+      id: 5,
+      message: '스터디 참여에 대한 알림이 있습니다.',
+      is_read: false,
+      link_url: '/스터디 링크',
+      created_at: '2025-10-14 22:00:00',
+    },
+    {
+      id: 6,
+      message: '스터디 참여에 대한 알림이 있습니다.',
+      is_read: false,
+      link_url: '/스터디 링크',
+      created_at: '2025-10-14 22:00:00',
+    },
   ],
 }
 
