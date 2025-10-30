@@ -15,6 +15,7 @@ import { useState } from 'react'
 import Toast from '../components/common/toast/Toast'
 import { toast } from 'sonner'
 import { DropDown } from '../components/common/dropDown'
+import { showToast } from '../utils/showToast'
 
 function CommonTest() {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ function CommonTest() {
     email: '',
     password: '',
     verifyCode: '',
+    timerButton: '',
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -33,6 +35,10 @@ function CommonTest() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }))
     }
+  }
+
+  const handleTimerInputSendCode = () => {
+    showToast('"내용(필수)", "타입(필수)", "제목(옵션)"', 'success')
   }
 
   const handleSendCode = () => {
@@ -81,7 +87,13 @@ function CommonTest() {
         type="success"
       />
     ))
-    setFormData({ fullname: '', email: '', password: '', verifyCode: '' })
+    setFormData({
+      fullname: '',
+      email: '',
+      password: '',
+      verifyCode: '',
+      timerButton: '',
+    })
     setIsEmailSent(false)
     setErrors({})
   }
@@ -319,6 +331,25 @@ function CommonTest() {
                 가입하기
               </Button>
             </div>
+            <InputWithLabel
+              label="타이머버튼"
+              name="timerButton"
+              value={formData.timerButton}
+              placeholder="cooldown 동안은 버튼 비활성화"
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  timerButton: e.target.value.trim(),
+                }))
+              }
+              button={{
+                label: '재전송',
+                onClick: handleTimerInputSendCode,
+                variant: 'primary',
+                countdown: 7, // 인증코드 유효 시간
+                cooldown: 3, // 재전송 막는 시간 ( 작성 안 하면 countdown 동안 쭉 disabled )
+              }}
+            />
           </form>
         </section>
 
@@ -333,7 +364,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">스몰 사이즈</h2>
             <DropDown
-              title="지역"
+              label="지역"
               placeholder="지역 선택"
               size="sm"
               options={[
@@ -359,7 +390,7 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">미디움 사이즈</h2>
             <DropDown
-              title="언어 선택"
+              label="언어 선택"
               placeholder="언어를 선택하세요"
               size="md"
               options={[
@@ -385,9 +416,10 @@ function CommonTest() {
           <div>
             <h2 className="mb-4 text-lg font-semibold">라지 사이즈</h2>
             <DropDown
-              title="카테고리 선택"
+              label="카테고리 선택"
               placeholder="카테고리를 선택하세요"
               size="lg"
+              // onXButtonClick={()=>()}
               options={[
                 { text: '카테고리1', icon: <Plus size={18} /> },
                 { text: '카테고리2', icon: <Heart size={18} /> },
@@ -396,16 +428,42 @@ function CommonTest() {
                 { text: '카테고리5', icon: <Trash2 size={18} /> },
               ]}
               xButton
+              border
               onSelect={(value) => {
                 toast.custom((t) => (
                   <Toast
                     id={t}
-                    title="카테고리 선택"
+                    // title="카테고리 선택"
                     message={`${value} 선택했습니다`}
                     type="success"
                   />
                 ))
               }}
+            />
+          </div>
+          <div className="w-70">
+            <DropDown
+              label="title/border 없음 + w-full"
+              placeholder="w-full"
+              size="wFree"
+              options={[
+                { text: 'w-full' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+                { text: '제목 없음' },
+              ]}
+            />
+          </div>
+          <div className="w-150">
+            <DropDown
+              label="w-full : 겉 div로 조절.."
+              required
+              placeholder="제목 없음"
+              size="wFree"
+              options={[{ text: '제목 없음' }, { text: 'w-free' }]}
             />
           </div>
         </section>
