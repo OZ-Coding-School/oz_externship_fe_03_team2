@@ -81,7 +81,7 @@ function CompletedStudyReviewModal({
             className="focus:border-primary-500 focus:ring-primary-500 min-h-32 w-full resize-none rounded-lg border border-gray-300 p-3 text-sm font-medium placeholder-gray-400 focus:ring-1 focus:outline-none"
             maxLength={500}
           />
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-gray-500">
             {reviewText.length}/500자
           </p>
         </div>
