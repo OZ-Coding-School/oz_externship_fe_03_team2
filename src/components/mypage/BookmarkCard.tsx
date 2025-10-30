@@ -66,7 +66,7 @@ export function JobBookmarkCard({
             </div>
           </div>
 
-          {/* 버튼 스켈레톤 - 실제와 동일한 구조 */}
+          {/* 버튼 스켈레톤 */}
           <div className="flex flex-shrink-0 flex-col items-start gap-2">
             <div className="flex items-center gap-4">
               <div className="h-5 w-5 rounded bg-gray-200" />
