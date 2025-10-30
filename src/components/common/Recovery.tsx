@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import { X, Check, Annoyed, RotateCw } from 'lucide-react'
 import { toast } from 'sonner'
+import { useMutation } from '@tanstack/react-query'
 import Button from './Button'
 import InputWithLabel from './InputWithLabel'
 import Toast from '../common/toast/Toast'
@@ -17,6 +19,24 @@ interface RecoveryProps {
   onClose: () => void
 }
 
+// ✅ 이메일 인증코드 전송 API
+const sendCodeAPI = async (email: string) => {
+  const res = await axios.post(
+    '/api/v1/email/verifications/send-code',
+    {
+      email,
+      purpose: 'restore_user',
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Idempotency-Key': crypto.randomUUID(),
+      },
+    }
+  )
+  return res.data
+}
+
 function Recovery({ onClose }: RecoveryProps) {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
@@ -26,6 +46,30 @@ function Recovery({ onClose }: RecoveryProps) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isEmailSent, setIsEmailSent] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
+
+  // ✅ TanStack Query mutation
+  const sendCodeMutation = useMutation({
+    mutationFn: (email: string) => sendCodeAPI(email),
+    onSuccess: (data) => {
+      setIsEmailSent(true)
+      toast.custom((t) => (
+        <Toast
+          id={t}
+          title="전송 완료!"
+          message={data?.detail || '이메일을 확인해주세요.'}
+          type="success"
+        />
+      ))
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.error ||
+        '이메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.'
+      toast.custom((t) => (
+        <Toast id={t} title="전송 실패" message={message} type="error" />
+      ))
+    },
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -40,18 +84,7 @@ function Recovery({ onClose }: RecoveryProps) {
       setErrors({ email: '이메일을 입력해주세요' })
       return
     }
-    setIsEmailSent(true)
-    setIsVerified(false)
-    setErrors({})
-
-    toast.custom((t) => (
-      <Toast
-        id={t}
-        title="전송 완료!"
-        message="이메일을 확인해주세요."
-        type="success"
-      />
-    ))
+    sendCodeMutation.mutate(formData.email)
   }
 
   const handleVerificationCheck = () => {
@@ -122,11 +155,13 @@ function Recovery({ onClose }: RecoveryProps) {
                 error={errors.email}
                 disabled={isEmailSent}
                 button={{
-                  label: '인증코드 전송',
+                  label: sendCodeMutation.isPending
+                    ? '전송 중...'
+                    : '인증코드 전송',
                   onClick: handleSendCode,
                   variant: 'secondary',
                   size: 'sm',
-                  disabled: isEmailSent,
+                  disabled: isEmailSent || sendCodeMutation.isPending,
                 }}
               />
 
