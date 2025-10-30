@@ -30,13 +30,11 @@ function App() {
         const res = await api.post<{
           detail: string
           data: {
-            access_token: string
-            token_type: string
-            expires_in: number
+            access: string
           }
         }>('/v1/auth/refresh', {}, { skipAuth: true })
 
-        setAccessToken(res.data.access_token) // data 객체 안의 access_token 사용
+        setAccessToken(res.data.access) // data 객체 안의 access 사용
 
         // accessToken으로 user 정보 조회
         const userRes = await api.get<{
