@@ -95,7 +95,12 @@ export const setupInterceptors = (apiClient: AxiosInstance) => {
 
         try {
           // refreshToken으로 새로운 accessToken 발급
-          const response = await api.post<{ access_token: string }>(
+          const response = await api.post<{
+            detail: string
+            data: {
+              access: string
+            }
+          }>(
             `${import.meta.env.VITE_API_BASE_URL}/v1/auth/refresh`,
             {},
             {
@@ -104,7 +109,7 @@ export const setupInterceptors = (apiClient: AxiosInstance) => {
             }
           )
 
-          const newAccessToken = response.access_token
+          const newAccessToken = response.data.access
           useToken.getState().setAccessToken(newAccessToken)
 
           // 원래 요청에 새 토큰 추가 후 재시도
