@@ -6,26 +6,26 @@ import { PROFILE_FIELDS } from '../../constants/myPageProfile'
 import PasswordChangeModal from './PasswordChangeModal'
 import UserLeaveModal from './UserLeaveModal'
 import { birthdayFormat } from '../../utils/dateFormat'
-import type { UserProfileData } from '../../types/userType'
 import { phoneFormat } from '../../utils/phoneFormat'
+import type { MeResponse } from '../../types/apiInterface/mypageInterface'
 
 function ProfileContents() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
-  const [formData, setFormData] = useState<UserProfileData>({
+  const [formData, setFormData] = useState<MeResponse>({
     id: 1,
     email: 'kim.dev@example.com',
     nickname: 'ozdev',
     name: '김개발',
     phone_number: phoneFormat('01012345678'),
     birthday: birthdayFormat('1998-01-23'),
-    profile_image_url:
+    profile_img_url:
       'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
     created_at: '2025-01-01T10:00:00Z',
   })
 
-  const handleSave = (newData: UserProfileData) => {
+  const handleSave = (newData: MeResponse) => {
     setFormData(newData)
     setIsModalOpen(false)
   }
@@ -61,7 +61,7 @@ function ProfileContents() {
           <Avatar
             name={formData.name}
             size="2xl"
-            imgUrl={formData.profile_image_url}
+            imgUrl={formData.profile_img_url}
           />
           <p className="text-center text-lg font-semibold text-gray-900">
             프로필 이미지
@@ -78,7 +78,7 @@ function ProfileContents() {
                 {field.label}
               </label>
               <div className="rounded-md bg-gray-50 px-4 py-2.5 text-gray-900">
-                {formData[field.key as keyof UserProfileData]}
+                {formData[field.key as keyof MeResponse]}
               </div>
             </div>
           ))}
