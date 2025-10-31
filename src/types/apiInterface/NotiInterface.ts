@@ -1,6 +1,9 @@
 // 헤더 알림
 
-// 쿼리파라미터 is_read: boolean
+export interface NotificationParams {
+  is_read?: boolean
+}
+
 export interface NotiItem {
   id: number
   message: string
@@ -8,10 +11,10 @@ export interface NotiItem {
   link_url: string
   created_at: string
 }
-
+// 알림 목록 조회
 export interface NotificationResponse {
   total: number
   items: NotiItem[]
 }
 
-// error: Detail
+// - - -
