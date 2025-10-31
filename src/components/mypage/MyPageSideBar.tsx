@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import Avatar from '../common/Avatar'
 import { yearMonthFormat } from '../../utils/dateFormat'
+import { useUserStore } from '../../store/useUserStore'
 
 interface MenuItem {
   id: string
@@ -19,6 +20,7 @@ interface MyPageSidebarProps {
 
 function MyPageSideBar({ menuItems, currentActive }: MyPageSidebarProps) {
   const navigate = useNavigate()
+  const user = useUserStore((state) => state.user)
 
   // 모바일용 메뉴 (hiddenOnMobile이 아닌 것들)
   const mobileMenuItems = menuItems.filter((item) => !item.hiddenOnMobile)
@@ -63,18 +65,27 @@ function MyPageSideBar({ menuItems, currentActive }: MyPageSidebarProps) {
       {/* 데스크톱 사이드바 */}
       <div className="hidden w-70 flex-shrink-0 rounded-xl border border-gray-200 bg-white p-[25px] shadow-sm md:block">
         {/* 프로필 */}
-        <div className="mb-8 border-b border-gray-200 pb-6">
-          <div className="flex flex-col items-center gap-4">
-            <Avatar name="김개발" size="xl" />
-            <div className="text-center">
-              <h3 className="text-lg font-semibold">김개발</h3>
-              <p className="text-sm text-gray-600">kim.dev@example.com</p>
-              <p className="mt-1 text-xs text-gray-500">
-                가입일: {yearMonthFormat('2025-01-10')}
-              </p>
+        {user && (
+          <div className="mb-8 border-b border-gray-200 pb-6">
+            <div className="flex flex-col items-center gap-4">
+              <Avatar
+                name={user.name || '사용자'}
+                size="xl"
+                imgUrl={user.profile_img_url}
+              />
+              <div className="text-center">
+                <h3 className="text-lg font-semibold">
+                  {user.name ?? user.nickname ?? '사용자'}
+                </h3>
+                <p className="text-sm text-gray-600">{user.email}</p>
+                <p className="mt-1 text-xs text-gray-500">
+                  가입일:{' '}
+                  {user.created_at ? yearMonthFormat(user.created_at) : '-'}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* 메뉴 */}
         <div className="flex flex-col gap-3">
