@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { allData, notReadData, readData } from './NotiDummy'
 import { Link } from 'react-router'
 import { monthDayFormat } from '../utils/dateFormat'
+import { useAllNotification } from '../api/services/Noti'
 
 export function NotiBoard() {
   const [mode, setMode] = useState<string>('all')
@@ -14,6 +15,8 @@ export function NotiBoard() {
       : mode === 'notRead'
         ? notReadData.items
         : readData.items
+
+  // const { data: allData } = useAllNotification()
 
   return (
     <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">

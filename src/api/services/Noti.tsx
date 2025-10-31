@@ -1,3 +1,4 @@
+import { useToken } from '../../store/useTokenStore'
 import { type SimpleError } from '../../types/apiInterface/findInterface'
 import { type NotificationResponse } from '../../types/apiInterface/NotiInterface'
 import { api } from '../client'
@@ -6,27 +7,33 @@ import { useSimpleQuery } from '../Helper/useSimpleQuery'
 
 // 기존 알림 전체 불러오기
 export const useAllNotification = () => {
+  const { accessToken } = useToken()
   return useSimpleQuery<NotificationResponse, SimpleError>(
     ['/notification'],
-    () => api.get('/v1/notifications/')
+    () => api.get('/v1/notifications/'),
+    { enabled: !!accessToken }
   )
 }
 
-// 기존 알림 안읽음 불러오기
-export const useNotReadNotification = () => {
-  return useSimpleQuery<NotificationResponse, SimpleError>(
-    ['/notification'],
-    () => api.get('/v1/notifications?is_read=false')
-  )
-}
+// // 기존 알림 안읽음 불러오기
+// export const useNotReadNotification = () => {
+//   const { accessToken } = useToken()
+//   return useSimpleQuery<NotificationResponse, SimpleError>(
+//     ['/notification'],
+//     () => api.get('/v1/notifications?is_read=false'),
+//     { enabled: !!accessToken }
+//   )
+// }
 
-// 기존 알림 읽음 불러오기
-export const useReadNotification = () => {
-  return useSimpleQuery<NotificationResponse, SimpleError>(
-    ['/notification'],
-    () => api.get('/v1/notifications?is_read=true')
-  )
-}
+// // 기존 알림 읽음 불러오기
+// export const useReadNotification = () => {
+//   const { accessToken } = useToken()
+//   return useSimpleQuery<NotificationResponse, SimpleError>(
+//     ['/notification'],
+//     () => api.get('/v1/notifications?is_read=true'),
+//     { enabled: !!accessToken }
+//   )
+// }
 
 // 개별 읽음 처리
 export const useNotiPatchRead = (notification_id: number) => {

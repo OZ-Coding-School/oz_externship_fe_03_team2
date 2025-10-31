@@ -4,17 +4,46 @@ export interface NotificationParams {
   is_read?: boolean
 }
 
+// export interface NotiItem {
+//   id: number
+//   message: string
+//   is_read: boolean
+//   link_url: string
+//   created_at: string
+// }
 export interface NotiItem {
   id: number
-  message: string
+  user_id: number
+  type_display: string
+  content: string
+  type:
+    | 'APPLICATION_CREATED'
+    | 'APPLICATION_STATUS_APPROVAL'
+    | 'APPLICATION_STATUS_REJECTION'
+    | 'STUDY_MEMBER_JOINED'
+    | 'STUDY_REVIEW_REQUEST'
+    | 'STUDY_SCHEDULE_UPCOMING'
+    | 'STUDY_SCHEDULE_TODAY'
+    | 'STUDY_RECORD_CREATED'
+    | 'SYSTEM'
+    | 'CUSTOM'
   is_read: boolean
-  link_url: string
-  created_at: string
+  back_url_link: string
+  user: number
+  //이거 뭐임
 }
+
 // 알림 목록 조회
+// export interface NotificationResponse {
+//   total: number
+//   items: NotiItem[]
+// }
+
 export interface NotificationResponse {
-  total: number
-  items: NotiItem[]
+  count: number
+  next: string
+  previous: string
+  results: NotiItem[]
 }
 
 // - - -
