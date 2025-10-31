@@ -26,49 +26,53 @@ function SocialCallback() {
       return
     }
 
-    if (state) {
-      if (state !== naverState) {
-        showToast('오류가 발생했습니다.', 'error', '로그인')
-        sessionStorage.clear()
-        navigate('/login')
-        return
-      }
-
-      naverLogin(
-        { code, state },
-        {
-          onSuccess: (data) => {
-            showToast(`${data.detail}`, 'success', '로그인')
-            setUser(data.data.user)
-            setAccessToken(data.data.access_token)
-            sessionStorage.clear()
-            navigate('/')
-          },
-          onError: (error) => {
-            showToast(`${error.response?.data.error}`, 'error', '로그인')
-            sessionStorage.clear()
-            navigate('/login')
-          },
-        }
-      )
-    } else {
-      kakaoLogin(
-        { code },
-        {
-          onSuccess: (data) => {
-            showToast(`${data.detail}`, 'success', '로그인')
-            setUser(data.data.user)
-            setAccessToken(data.data.access_token)
-            navigate('/')
-          },
-          onError: (error) => {
-            showToast(`${error.response?.data.error}`, 'error', '로그인')
-            navigate('/login')
-          },
-        }
-      )
+    if (state && state !== naverState) {
+      showToast('오류가 발생했습니다.', 'error', '로그인')
+      sessionStorage.clear()
+      navigate('/login')
+      return
     }
-  }, [])
+
+    const handleLogin = () => {
+      if (state) {
+        naverLogin(
+          { code, state },
+          {
+            onSuccess: (data) => {
+              showToast(`${data.detail}`, 'success', '로그인')
+              setUser(data.data.user)
+              setAccessToken(data.data.access_token)
+              sessionStorage.clear()
+              navigate('/')
+            },
+            onError: (error) => {
+              showToast(`${error.response?.data.error}`, 'error', '로그인')
+              sessionStorage.clear()
+              navigate('/login')
+            },
+          }
+        )
+      } else {
+        kakaoLogin(
+          { code },
+          {
+            onSuccess: (data) => {
+              showToast(`${data.detail}`, 'success', '로그인')
+              setUser(data.data.user)
+              setAccessToken(data.data.access_token)
+              navigate('/')
+            },
+            onError: (error) => {
+              showToast(`${error.response?.data.error}`, 'error', '로그인')
+              navigate('/login')
+            },
+          }
+        )
+      }
+    }
+
+    handleLogin()
+  }, [navigate, setAccessToken, setUser, naverLogin, kakaoLogin])
   return (
     <div className="flex h-screen flex-col bg-gray-50">
       <Header />
