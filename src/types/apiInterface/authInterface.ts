@@ -110,7 +110,7 @@ export interface Logout {
 
 //소셜 로그인 - 카카오----------------
 export interface KakaoLoginRequest {
-  access_token: string
+  code: string
 }
 
 export interface KakaoLoginResponse {

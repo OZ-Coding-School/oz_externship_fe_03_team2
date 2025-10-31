@@ -16,6 +16,7 @@ import { useUserStore } from './store/useUserStore'
 import { api } from './api/client'
 import ApiTestPage from './tests/ApiTestPage'
 import { useGetUserMe } from './api/services/mypage/profile'
+import SocialCallback from './pages/SocialCallback'
 
 function App() {
   const [isCheck, setIsCheck] = useState(true) //ture는 인증 확인중 / false는 인증 확인 완료
@@ -103,6 +104,7 @@ function App() {
       ],
     },
     { path: '/login', element: <LoginPage /> },
+    { path: '/social-callback', element: <SocialCallback /> },
     { path: '/signup', element: <SignUpPage /> },
     { path: '/test', element: <CommonTest /> },
     { path: '/api-test', element: <ApiTestPage /> },
