@@ -6,8 +6,6 @@ import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
 import { useFindEmailSendCode } from '../../../api/services/find/emailFind'
 import { showToast } from '../../../utils/showToast'
-import { useEffect } from 'react'
-
 interface UserProfileFormProps {
   formData: FormData
   setFormData: React.Dispatch<React.SetStateAction<FormData>>
@@ -21,9 +19,6 @@ export default function UserProfileForm({
   setFormData,
   onNext,
 }: UserProfileFormProps) {
-  useEffect(() => {
-    console.log(formData)
-  }, [formData])
   const { mutate } = useFindEmailSendCode()
   // const { isError } = useFindEmailSendCode()
   const navigate = useNavigate()

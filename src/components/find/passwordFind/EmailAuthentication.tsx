@@ -45,7 +45,6 @@ export default function EmailAuthentication({
             verify_token: data.data.verify_token,
           }))
           onNext()
-          console.log(formData.email)
         },
       }
     )
