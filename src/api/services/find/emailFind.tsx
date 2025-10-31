@@ -42,8 +42,8 @@ export const useRecoveryEmail = () => {
     T.SimpleError,
     string
   >((verifyToken) => {
-    return api.get('/v1/recovery/email/', {
-      headers: { 'X-Verify-Token': verifyToken },
+    return api.get('/v1/users/find-email', {
+      headers: { 'X-Phone-Verify-Token': verifyToken },
       // 받은 verify-token을 헤더에 실어서 보냄
       skipAuth: true,
     })

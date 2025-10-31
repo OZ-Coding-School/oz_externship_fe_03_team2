@@ -7,6 +7,7 @@ import {
   useFindEmailSendCode,
 } from '../../../api/services/find/emailFind'
 import { showToast } from '../../../utils/showToast'
+import { useEffect } from 'react'
 
 interface PhoneAuthProps {
   formData: FormData
@@ -21,6 +22,9 @@ export default function PhoneAuthentication({
   onNext,
   onPrev,
 }: PhoneAuthProps) {
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
   const { mutate } = useFindEmailConfirmCode()
   const { mutate: codeResendMutate } = useFindEmailSendCode()
   const handleSubmit = () => {
@@ -39,10 +43,10 @@ export default function PhoneAuthentication({
         request_id: formData.request_id,
       },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setFormData((prev) => ({
             ...prev,
-            verify_token: formData.verify_token,
+            verify_token: data.data.verify_token,
           }))
           onNext()
         },

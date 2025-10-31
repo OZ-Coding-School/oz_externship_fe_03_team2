@@ -6,6 +6,7 @@ import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
 import { useFindEmailSendCode } from '../../../api/services/find/emailFind'
 import { showToast } from '../../../utils/showToast'
+import { useEffect } from 'react'
 
 interface UserProfileFormProps {
   formData: FormData
@@ -20,6 +21,9 @@ export default function UserProfileForm({
   setFormData,
   onNext,
 }: UserProfileFormProps) {
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
   const { mutate } = useFindEmailSendCode()
   // const { isError } = useFindEmailSendCode()
   const navigate = useNavigate()
@@ -36,13 +40,15 @@ export default function UserProfileForm({
       { phone_number: formData.phone },
       {
         onSuccess: (data) => {
-          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          setFormData((prev) => ({ ...prev, request_id: data.data.request_id }))
           // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
           onNext()
         },
       }
     )
   }
+  //저장되는지 확인
+
   // 전화번호 유효성 검사
   const debouncedPhone = useDebounce(formData.phone)
   const phoneReg =
