@@ -173,11 +173,11 @@ function LoginPage() {
           </div>
 
           <div className="mb-3">
-            <Link to={'/emailfind'} className="text-primary-600 text-sm">
+            <Link to={'/email-find'} className="text-primary-600 text-sm">
               아이디 찾기
             </Link>
             <span className="text-primary-600 p-2 text-sm">|</span>
-            <Link to={'/passwordfind'} className="text-primary-600 text-sm">
+            <Link to={'/password-find'} className="text-primary-600 text-sm">
               비밀번호 찾기
             </Link>
           </div>

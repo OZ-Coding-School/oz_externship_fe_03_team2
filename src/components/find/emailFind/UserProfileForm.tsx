@@ -6,7 +6,6 @@ import useDebounce from '../../../hooks/useDebounce'
 import { useNavigate } from 'react-router'
 import { useFindEmailSendCode } from '../../../api/services/find/emailFind'
 import { showToast } from '../../../utils/showToast'
-
 interface UserProfileFormProps {
   formData: FormData
   setFormData: React.Dispatch<React.SetStateAction<FormData>>
@@ -36,16 +35,14 @@ export default function UserProfileForm({
       { phone_number: formData.phone },
       {
         onSuccess: (data) => {
-          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          setFormData((prev) => ({ ...prev, request_id: data.data.request_id }))
           // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
           onNext()
-          // 에러 없을 때만 다음 페이지 넘어가게..
-          // 아직은 api 연결 안 돼서 무조건 오류 뜨니까 일단 주석 해두고 나중에 풀고 밑에 줄 없애기
         },
       }
     )
-    onNext()
   }
+
   // 전화번호 유효성 검사
   const debouncedPhone = useDebounce(formData.phone)
   const phoneReg =

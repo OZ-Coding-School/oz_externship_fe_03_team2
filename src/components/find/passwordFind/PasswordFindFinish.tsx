@@ -29,8 +29,9 @@ export default function PasswordFindFinish({
     mutate(
       {
         body: {
+          email: formData.email,
           new_password: formData.password,
-          new_password_confirm: formData.password,
+          new_password_confirm: formData.passwordConfirm,
         },
         verifyToken: formData.verify_token,
       },
@@ -44,7 +45,9 @@ export default function PasswordFindFinish({
   const passwordReg =
     debouncedPassword === ''
       ? true
-      : /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(debouncedPassword)
+      : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(
+          debouncedPassword
+        )
   const passwordError = passwordReg ? '' : '비밀번호 강도가 약합니다.'
 
   const passwordConfirmTest = useDebounce(formData.passwordConfirm)
