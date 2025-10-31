@@ -17,7 +17,7 @@ type InputWithLabelProps = {
   label?: string
   name: string
   type?: string
-  value: string
+  value: string | undefined
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
   placeholder?: string

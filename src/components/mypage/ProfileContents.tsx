@@ -7,26 +7,27 @@ import PasswordChangeModal from './PasswordChangeModal'
 import UserLeaveModal from './UserLeaveModal'
 import { birthdayFormat } from '../../utils/dateFormat'
 import { phoneFormat } from '../../utils/phoneFormat'
-import type { MeResponse } from '../../types/apiInterface/mypageInterface'
+import { useUserStore, type UserType } from '../../store/useUserStore'
+import { useGetUserMe } from '../../api/services/mypage/profile'
 
 function ProfileContents() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
-  const [formData, setFormData] = useState<MeResponse>({
-    id: 1,
-    email: 'kim.dev@example.com',
-    nickname: 'ozdev',
-    name: '김개발',
-    phone_number: phoneFormat('01012345678'),
-    birthday: birthdayFormat('1998-01-23'),
-    profile_img_url:
-      'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-    created_at: '2025-01-01T10:00:00Z',
-  })
 
-  const handleSave = (newData: MeResponse) => {
-    setFormData(newData)
+  // zustand store에서 user 정보 가져오기
+  const user = useUserStore((state) => state.user)
+  const setUser = useUserStore((state) => state.setUser)
+
+  // 필요시 refetch할 수 있도록 query 준비 (기본적으로는 실행하지 않음)
+  const { refetch } = useGetUserMe(false)
+
+  const handleSave = async (_newData: UserType) => {
+    // 저장 성공 후 최신 데이터 refetch
+    const { data } = await refetch()
+    if (data) {
+      setUser(data)
+    }
     setIsModalOpen(false)
   }
 
@@ -36,6 +37,21 @@ function ProfileContents() {
 
   const handleEditClick = () => {
     setIsModalOpen(true)
+  }
+
+  const formatFieldValue = (fieldKey: string, value: unknown): string => {
+    switch (fieldKey) {
+      case 'birthday':
+        return value && typeof value === 'string' ? birthdayFormat(value) : '-'
+      case 'phone_number':
+        return value && typeof value === 'string' ? phoneFormat(value) : '-'
+      default:
+        return value ? String(value) : '-'
+    }
+  }
+
+  if (!user) {
+    return <div>로그인이 필요합니다.</div>
   }
 
   return (
@@ -59,9 +75,9 @@ function ProfileContents() {
       <div className="border-b border-gray-200 px-8 py-8">
         <div className="flex flex-col items-center gap-4">
           <Avatar
-            name={formData.name}
+            name={user.name ?? user.nickname}
             size="2xl"
-            imgUrl={formData.profile_img_url}
+            imgUrl={user.profile_img_url}
           />
           <p className="text-center text-lg font-semibold text-gray-900">
             프로필 이미지
@@ -78,7 +94,7 @@ function ProfileContents() {
                 {field.label}
               </label>
               <div className="rounded-md bg-gray-50 px-4 py-2.5 text-gray-900">
-                {formData[field.key as keyof MeResponse]}
+                {formatFieldValue(field.key, user[field.key as keyof UserType])}
               </div>
             </div>
           ))}
@@ -129,7 +145,7 @@ function ProfileContents() {
       {/* 프로필 수정 모달 */}
       <ProfileEditModal
         isOpen={isModalOpen}
-        profileData={formData}
+        profileData={user}
         onClose={handleCancel}
         onSave={handleSave}
       />

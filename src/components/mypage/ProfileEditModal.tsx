@@ -5,13 +5,13 @@ import InputWithLabel from '../common/InputWithLabel'
 import Modal from '../common/Modal'
 import { phoneFormat } from '../../utils/phoneFormat'
 import { showToast } from '../../utils/showToast'
-import type { MeResponse } from '../../types/apiInterface/mypageInterface'
+import type { UserType } from '../../store/useUserStore'
 
 interface ProfileEditModalProps {
   isOpen: boolean
-  profileData: MeResponse
+  profileData: UserType
   onClose: () => void
-  onSave: (data: MeResponse) => void
+  onSave: (data: UserType) => void
 }
 
 function ProfileEditModal({
@@ -20,7 +20,7 @@ function ProfileEditModal({
   onClose,
   onSave,
 }: ProfileEditModalProps) {
-  const [tempData, setTempData] = useState<MeResponse>(profileData) //모달에서 수정 중인 프로필 데이터
+  const [tempData, setTempData] = useState<UserType>(profileData) //모달에서 수정 중인 프로필 데이터
   const [showVerificationInput, setShowVerificationInput] = useState(false) // 휴대폰 인증번호 입력창 표시 여부
   const [verificationCode, setVerificationCode] = useState('') // 인증번호
   const [isVerified, setIsVerified] = useState(false) //인증번호 확인 완료 여부
@@ -155,7 +155,11 @@ function ProfileEditModal({
       <div className="flex flex-col items-center gap-6">
         {/* 프로필 이미지 */}
         <div className="flex flex-col items-center gap-2">
-          <Avatar name={tempData.name} size="xl" imgUrl={displayImage} />
+          <Avatar
+            name={tempData.name ?? tempData.nickname}
+            size="xl"
+            imgUrl={displayImage}
+          />
           <button
             type="button"
             onClick={handleProfileImageClick}
