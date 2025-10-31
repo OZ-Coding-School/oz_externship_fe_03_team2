@@ -16,10 +16,9 @@ export function NotiBoard() {
         : readData.items
 
   return (
-    <div className="flex h-[550px] w-[450px] flex-col overflow-hidden rounded-md border border-gray-200 bg-white">
+    <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
       <div className="y-15 m-1 flex w-full justify-between p-4">
         <p className="text-lg font-semibold">알림</p>
-        {/* <Button variant="text">모두 읽음</Button> */}
         <button className="text-primary-600 hover:text-primary-700 active:text-primary-800 text-sm">
           모두 읽음
         </button>
