@@ -42,7 +42,6 @@ export default function UserProfileForm({
       }
     )
   }
-  //저장되는지 확인
 
   // 전화번호 유효성 검사
   const debouncedPhone = useDebounce(formData.phone)

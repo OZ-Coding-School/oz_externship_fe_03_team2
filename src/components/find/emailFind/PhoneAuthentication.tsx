@@ -47,9 +47,7 @@ export default function PhoneAuthentication({
           onNext()
         },
       }
-      // 실제 api 연결 시 위에 주석 해제, 아래 코드 삭제
     )
-    // onNext()
   }
 
   const handleAuthCode = () => {

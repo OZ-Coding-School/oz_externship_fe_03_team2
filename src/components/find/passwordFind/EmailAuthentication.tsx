@@ -48,7 +48,6 @@ export default function EmailAuthentication({
         },
       }
     )
-    // onNext()
   }
 
   const handleAuthCode = () => {

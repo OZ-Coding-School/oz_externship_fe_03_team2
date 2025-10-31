@@ -40,15 +40,6 @@ export const useRecoveryPassword = () => {
   return useSimpleMutation<T.Detail, T.SimpleError, T.RecoveryPasswordRequest>(
     (data) => {
       const { body, verifyToken } = data
-      // 데이터 보낼 때는
-      // const { mutate: RecoveryPasswordMutate, isPending: RecoveryPasswordPending } = useRecoveryPassword()
-      // RecoveryPasswordMutate({ \
-      // body: {
-      //  new_password: '~~',
-      //  new_password_confirm: '~~'
-      //    },
-      //  verifyToken: '~~'
-      //  })
       return api.post('/v1/users/reset-password', body, {
         headers: { 'X-Email-Verify-Token': verifyToken },
         skipAuth: true,
