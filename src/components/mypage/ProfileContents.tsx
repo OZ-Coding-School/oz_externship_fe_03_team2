@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 import ProfileEditModal from './ProfileEditModal'
@@ -9,6 +9,7 @@ import { birthdayFormat } from '../../utils/dateFormat'
 import { phoneFormat } from '../../utils/phoneFormat'
 import { useUserStore, type UserType } from '../../store/useUserStore'
 import { useGetUserMe } from '../../api/services/mypage/profile'
+import { useNavigate } from 'react-router'
 
 function ProfileContents() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -22,12 +23,20 @@ function ProfileContents() {
   // 필요시 refetch할 수 있도록 query 준비 (기본적으로는 실행하지 않음)
   const { refetch } = useGetUserMe(false)
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login') // user가 없으면 로그인 페이지로 이동
+    }
+  }, [user, navigate])
+
   const handleSave = async (_newData: UserType) => {
     // 저장 성공 후 최신 데이터 refetch
     const { data } = await refetch()
-    if (data) {
-      setUser(data)
-    }
+
+    if (data) setUser(data)
+
     setIsModalOpen(false)
   }
 
@@ -50,9 +59,7 @@ function ProfileContents() {
     }
   }
 
-  if (!user) {
-    return <div>로그인이 필요합니다.</div>
-  }
+  if (!user) return null
 
   return (
     <div className="w-full rounded-lg bg-white">
