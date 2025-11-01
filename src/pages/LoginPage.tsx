@@ -27,7 +27,7 @@ function LoginPage() {
   const navigate = useNavigate()
   const [form, setForm] = useState<Form>(FORM_STATE)
   const [error, setError] = useState<Record<string, string>>({})
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const { setAccessToken } = useToken()
   const { setUser } = useUserStore()
