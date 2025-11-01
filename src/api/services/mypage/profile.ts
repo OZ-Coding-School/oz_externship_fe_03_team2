@@ -8,6 +8,8 @@ import type {
   PhoneVerificationConfirmResponse,
   UpdateMeRequest,
   UpdateProfileResponse,
+  UpdatePasswordRequest,
+  UpdatePasswordResponse,
 } from '../../../types/apiInterface/mypageInterface'
 import { useSimpleMutation } from '../../Helper/useSimpleMutation'
 import { useUserStore } from '../../../store/useUserStore'
@@ -76,4 +78,19 @@ export const useUpdateProfile = () => {
       invalidateKeys: ['/v1/users/me'], // 캐시무효화
     }
   )
+}
+
+// 비밀번호 변경 (PATCH)
+export const useChangePassword = () => {
+  return useSimpleMutation<
+    UpdatePasswordResponse,
+    Error,
+    UpdatePasswordRequest
+  >(async (data: UpdatePasswordRequest) => {
+    const res = await api.patch<{ data: UpdatePasswordResponse }>(
+      '/v1/users/change-password',
+      data
+    )
+    return res.data
+  })
 }
