@@ -10,3 +10,8 @@ export const useChatRooms = () => {
     })
   )
 }
+
+// 메시지 검색
+export const useChatSearch = () => {
+  return useSimpleQuery
+}
