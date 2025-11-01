@@ -14,14 +14,66 @@ interface StudyApplicationData {
 }
 
 interface StudyApplicationCardProps {
-  data: StudyApplicationData
-  onClick: () => void
+  data?: StudyApplicationData
+  onClick?: () => void
+  isLoading?: boolean
 }
 
 export default function StudyApplicationCard({
   data,
   onClick,
+  isLoading,
 }: StudyApplicationCardProps) {
+  if (isLoading) {
+    return (
+      <div className="animate-pulse rounded-lg border border-gray-200 bg-white p-6">
+        <div className="flex gap-4">
+          {/* 이미지 스켈레톤 */}
+          <div className="flex h-auto w-40 flex-shrink-0 items-center">
+            <div className="h-24 w-full rounded-lg bg-gray-200" />
+          </div>
+
+          {/* 컨텐츠 스켈레톤 */}
+          <div className="flex flex-1 flex-col">
+            {/* 타이틀 + 상태 */}
+            <div className="mb-3 flex items-center justify-between">
+              <div className="h-7 w-2/3 rounded bg-gray-200" />
+              <div className="flex items-end gap-1">
+                <div className="h-5 w-32 rounded bg-gray-200" />
+                <div className="h-6 w-16 rounded bg-gray-200" />
+              </div>
+            </div>
+
+            {/* 모집인원, 마감일 */}
+            <div className="mb-3 flex items-center justify-between">
+              <div className="h-5 w-24 rounded bg-gray-200" />
+              <div className="h-5 w-32 rounded bg-gray-200" />
+            </div>
+
+            {/* 강의 목록 */}
+            <div className="mb-3">
+              <div className="mb-2 h-5 w-20 rounded bg-gray-200" />
+              <div className="space-y-1">
+                <div className="h-4 w-64 rounded bg-gray-200" />
+                <div className="h-4 w-56 rounded bg-gray-200" />
+              </div>
+            </div>
+
+            {/* 태그 */}
+            <div className="flex flex-wrap gap-2">
+              <div className="h-6 w-16 rounded bg-gray-200" />
+              <div className="h-6 w-20 rounded bg-gray-200" />
+              <div className="h-6 w-24 rounded bg-gray-200" />
+              <div className="h-6 w-20 rounded bg-gray-200" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!data) return
+
   const getStatusBadge = () => {
     switch (data.status) {
       case 'pending':

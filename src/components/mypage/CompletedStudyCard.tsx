@@ -27,15 +27,59 @@ export interface StudyGroup {
 }
 
 interface CompletedStudyCardProps {
-  study: StudyGroup
+  study?: StudyGroup
+  isLoading?: boolean
 }
 
-function CompletedStudyCard({ study }: CompletedStudyCardProps) {
+function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
   const handleReviewClick = () => {
     setIsReviewModalOpen(true)
   }
+
+  if (isLoading) {
+    return (
+      <div className="flex max-w-95.5 animate-pulse flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+        {/* 이미지 스켈레톤 */}
+        <div className="h-54 w-full bg-gray-200" />
+
+        {/* 컨텐츠 영역 스켈레톤 */}
+        <div className="flex flex-1 flex-col p-5">
+          {/* 헤더 */}
+          <div className="mb-4 flex items-center justify-between gap-2">
+            <div className="h-7 w-2/3 rounded bg-gray-200" />
+            <div className="h-6 w-16 rounded bg-gray-200" />
+          </div>
+
+          {/* 정보 */}
+          <div className="mb-4 flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 rounded bg-gray-200" />
+              <div className="h-5 w-48 rounded bg-gray-200" />
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 rounded bg-gray-200" />
+              <div className="h-5 w-40 rounded bg-gray-200" />
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 rounded bg-gray-200" />
+              <div className="h-5 w-32 rounded bg-gray-200" />
+            </div>
+          </div>
+
+          {/* 리뷰 영역 */}
+          <div className="mt-auto">
+            <div className="rounded-lg bg-gray-50 p-4">
+              <div className="mt-2 h-20 w-full rounded bg-gray-200" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!study) return
 
   return (
     <>
