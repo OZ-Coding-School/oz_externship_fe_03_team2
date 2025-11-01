@@ -4,6 +4,8 @@ import InputWithLabel from '../common/InputWithLabel'
 import Button from '../common/Button'
 import useDebounce from '../../hooks/useDebounce'
 import validateAll from '../../utils/validators'
+import { showToast } from '../../utils/showToast'
+import SuccessModal from './SuccessModal'
 
 interface SEND {
   email: string
@@ -25,6 +27,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
   const [send, setSend] = useState(SEND_STATE)
   const [error, setError] = useState<Record<string, string>>({})
   const [emailSent, SetEmailSent] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const debounceForm = useDebounce(send, 500)
   useEffect(() => {
@@ -58,7 +61,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('제출')
-    handleClose()
+    setIsSuccess(true)
   }
 
   const handleClose = () => {
@@ -71,6 +74,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
 
   const sendEmail = () => {
     console.log('보냄')
+    showToast('성공', 'success', '인증코드전송')
     SetEmailSent(true)
   }
   const sendEmailCode = () => {
@@ -156,6 +160,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
           </form>
         </RestoreModal>
       )}
+      {isSuccess && <SuccessModal onClose={handleClose} />}
     </div>
   )
 }
