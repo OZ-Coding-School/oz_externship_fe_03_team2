@@ -369,7 +369,7 @@ function SignUpPage() {
                 label: '중복확인',
                 onClick: nicknameConfirm,
                 variant: 'signup',
-                size: 'ml',
+                size: 'signup',
                 disabled: !(form.nickname && !error['nickname']),
               }}
             />
@@ -407,8 +407,10 @@ function SignUpPage() {
                   label: '인증코드전송',
                   onClick: emailSend,
                   variant: 'signup',
-                  size: 'ml',
+                  size: 'signup',
                   disabled: !(form.email && !error['email']),
+                  countdown: 600,
+                  cooldown: 60,
                 }}
               />
             </div>
@@ -423,7 +425,7 @@ function SignUpPage() {
                   label: '인증코드확인',
                   onClick: emailVerify,
                   variant: 'signup',
-                  size: 'ml',
+                  size: 'signup',
                   disabled: !(
                     form.emailCode &&
                     !error['emailCode'] &&
@@ -448,8 +450,10 @@ function SignUpPage() {
                   label: '인증코드전송',
                   onClick: phoneSent,
                   variant: 'signup',
-                  size: 'ml',
+                  size: 'signup',
                   disabled: !(form.phone_number && !error['phone_number']),
+                  countdown: 180,
+                  cooldown: 30,
                 }}
               />
             </div>
@@ -465,7 +469,7 @@ function SignUpPage() {
                   label: '인증코드확인',
                   onClick: phoneVerify,
                   variant: 'signup',
-                  size: 'ml',
+                  size: 'signup',
                   disabled: !(
                     form.phoneCode &&
                     !error['phoneCode'] &&
