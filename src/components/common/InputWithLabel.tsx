@@ -11,7 +11,14 @@ type ButtonVariant =
   | 'danger'
   | 'text'
   | 'signup'
-type ButtonSize = 'md' | 'sm' | 'lg' | 'ml' | 'freeWidthLg' | 'freeWidthMd'
+type ButtonSize =
+  | 'md'
+  | 'sm'
+  | 'lg'
+  | 'ml'
+  | 'freeWidthLg'
+  | 'freeWidthMd'
+  | 'signup'
 
 type InputWithLabelProps = {
   label?: string
