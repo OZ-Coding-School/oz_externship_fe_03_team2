@@ -8,7 +8,6 @@ import UserLeaveModal from './UserLeaveModal'
 import { birthdayFormat } from '../../utils/dateFormat'
 import { phoneFormat } from '../../utils/phoneFormat'
 import { useUserStore, type UserType } from '../../store/useUserStore'
-import { useGetUserMe } from '../../api/services/mypage/profile'
 import { useNavigate } from 'react-router'
 
 function ProfileContents() {
@@ -18,10 +17,6 @@ function ProfileContents() {
 
   // zustand store에서 user 정보 가져오기
   const user = useUserStore((state) => state.user)
-  const setUser = useUserStore((state) => state.setUser)
-
-  // 필요시 refetch할 수 있도록 query 준비 (기본적으로는 실행하지 않음)
-  const { refetch } = useGetUserMe(false)
 
   const navigate = useNavigate()
 
@@ -30,15 +25,6 @@ function ProfileContents() {
       navigate('/login') // user가 없으면 로그인 페이지로 이동
     }
   }, [user, navigate])
-
-  const handleSave = async (_newData: UserType) => {
-    // 저장 성공 후 최신 데이터 refetch
-    const { data } = await refetch()
-
-    if (data) setUser(data)
-
-    setIsModalOpen(false)
-  }
 
   const handleCancel = () => {
     setIsModalOpen(false)
@@ -154,7 +140,6 @@ function ProfileContents() {
         isOpen={isModalOpen}
         profileData={user}
         onClose={handleCancel}
-        onSave={handleSave}
       />
 
       {/* 비밀번호 변경 모달 */}

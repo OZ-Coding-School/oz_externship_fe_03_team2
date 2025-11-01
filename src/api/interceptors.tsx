@@ -6,7 +6,6 @@ import {
 import { toast } from 'sonner'
 import Toast from '../components/common/toast/Toast'
 import {
-  ERROR_MESSAGES,
   NETWORK_ERROR_MESSAGES,
   type ErrorResponse,
   type ErrorInfo,
@@ -31,27 +30,8 @@ const showErrorToast = (title: string, message: string) => {
 
 // 에러핸들러
 const handleError = (error: AxiosError<ErrorResponse>) => {
-  // 서버 응답이 있는 경우
-  if (error.response) {
-    const status = error.response.status
-    const serverMessage = error.response.data?.message
-
-    const errorInfo: ErrorInfo = ERROR_MESSAGES[status] ?? {
-      title: '요청 오류',
-      message: '요청 처리 중 오류가 발생했습니다',
-    }
-
-    const finalMessage = serverMessage ?? errorInfo.message
-    showErrorToast(errorInfo.title, finalMessage)
-
-    if (status === 401) {
-      useToken.getState().clearAccessToken()
-      window.location.href = '/login' // 401 에러 로그인 페이지로 이동
-    }
-  }
-
   // 요청은 만들어졌지만 응답이 없는 경우 (네트워크 에러, 타임아웃)
-  else if (error.request) {
+  if (error.request) {
     const errorCode = error.code ?? 'ERR_NETWORK'
     const errorInfo: ErrorInfo = NETWORK_ERROR_MESSAGES[errorCode] ?? {
       title: '네트워크 오류',
@@ -61,7 +41,7 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
     showErrorToast(errorInfo.title, errorInfo.message)
   }
 
-  return Promise.reject(error)
+  return Promise.reject(error) // 4xx랑 5xx는 컴포넌트에서 처리하도록 그냥 전달
 }
 
 // 인터셉터 설정

@@ -13,7 +13,7 @@ export interface MeResponse {
 // 내 정보 수정 - - - - - - - - - - - -
 export interface UpdateMeRequest {
   nickname?: string
-  profile_image_url?: string
+  profile_img_url?: string | null
   phone_number?: string
   verify_token?: string
 }
@@ -328,4 +328,41 @@ export interface PresignedError {
   error: {
     [field: string]: string
   }
+}
+
+// 휴대폰 변경 인증코드 전송 요청
+export interface PhoneVerificationSendRequest {
+  phone_number: string
+}
+
+// 휴대폰 변경 인증코드 전송 응답
+export interface PhoneVerificationSendResponse {
+  detail: string
+  data: {
+    request_id: string
+    expires_in: number
+    cooldown: number
+    max_attempts: number
+  }
+}
+
+// 휴대폰 변경 인증코드 확인 요청
+export interface PhoneVerificationConfirmRequest {
+  phone_number: string
+  request_id: string
+  code: string
+}
+
+// 휴대폰 변경 인증코드 확인 응답
+export interface PhoneVerificationConfirmResponse {
+  detail: string
+  data: {
+    verify_token: string
+  }
+}
+
+// 프로필 업데이트 응답
+export interface UpdateProfileResponse {
+  detail: string
+  data: MeResponse
 }
