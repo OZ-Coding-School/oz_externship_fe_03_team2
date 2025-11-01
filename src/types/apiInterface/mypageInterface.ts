@@ -25,7 +25,16 @@ export interface UpdatePasswordRequest {
   new_password: string
   new_password_confirm: string
 }
-// 응답 = detail
+
+// 비밀번호 변경 성공
+export interface UpdatePasswordResponse {
+  detail: string
+}
+
+// 비밀번호 변경 실패
+export interface PasswordChangeErrorResponse {
+  error: string
+}
 
 // 회원 탈퇴 - - - - - - - - - - - - -
 export interface MeWithDrawRequest {
