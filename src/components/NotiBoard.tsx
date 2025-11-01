@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
-import { allData, notReadData, readData } from './NotiDummy'
+import { allData } from './NotiDummy'
 import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
-import { useAllNotification } from '../api/services/Noti'
+// import { useAllNotification } from '../api/services/Noti'
 import { useSSE } from '../hooks/useSSE'
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
-  const { data: allData } = useAllNotification()
+  // const { data: allData } = useAllNotification()
   useSSE()
 
   const filterData = useMemo(() => {
@@ -23,8 +23,15 @@ export function NotiBoard() {
     }
   }, [allData, mode])
 
+  const notReadCount = [...allData.results].filter(
+    (data) => data.is_read === false
+  ).length
+  const readCount = [...allData.results].filter(
+    (data) => data.is_read === true
+  ).length
+
   return (
-    <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+    <div className="shadow-normal flex h-[550px] w-[450px] cursor-none flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
       <div className="y-15 m-1 flex w-full justify-between p-4">
         <p className="text-lg font-semibold">알림</p>
         <button className="text-primary-600 hover:text-primary-700 active:text-primary-800 text-sm">
@@ -40,14 +47,12 @@ export function NotiBoard() {
         <div
           className={`${mode === 'notRead' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
         >
-          <p onClick={() => setMode('notRead')}>
-            읽지 않음 ({filterData.length})
-          </p>
+          <p onClick={() => setMode('notRead')}>읽지 않음 ({notReadCount})</p>
         </div>
         <div
           className={`${mode === 'read' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
         >
-          <p onClick={() => setMode('read')}>읽음 ({filterData.length})</p>
+          <p onClick={() => setMode('read')}>읽음 ({readCount})</p>
         </div>
       </div>
       <div className="flex w-full flex-col overflow-y-scroll">
