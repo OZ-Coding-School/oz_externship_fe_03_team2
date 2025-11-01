@@ -126,7 +126,7 @@ function SignUpPage() {
     }
   }, [checkNickname, nickNameData, isNicknameError, nicknameError])
 
-  const debounceForm = useDebounce(form)
+  const debounceForm = useDebounce(form, 500)
   useEffect(() => {
     const validator = validateAll(debounceForm)
     setError((prev) => ({ ...prev, ...validator }))
