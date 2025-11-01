@@ -1,21 +1,27 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { allData, notReadData, readData } from './NotiDummy'
 import { Link } from 'react-router'
-import { monthDayFormat } from '../utils/dateFormat'
+// import { monthDayFormat } from '../utils/dateFormat'
 import { useAllNotification } from '../api/services/Noti'
+import { useSSE } from '../hooks/useSSE'
 
 export function NotiBoard() {
-  const [mode, setMode] = useState<string>('all')
+  const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
   const { data: allData } = useAllNotification()
-  const sortAllData = allData?.results.sort((a, b) => {
-    return Number(a.is_read) - Number(b.is_read)
-  })
-  const filterData =
-    mode === 'all'
-      ? sortAllData
-      : mode === 'notRead'
-        ? allData?.results.filter((data) => data.is_read === false)
-        : allData?.results.filter((data) => data.is_read === true)
+  useSSE()
+
+  const filterData = useMemo(() => {
+    if (!allData?.results) return []
+    if (mode === 'all') {
+      return [...allData.results].sort((a, b) => {
+        return Number(a.is_read) - Number(b.is_read)
+      })
+    } else if (mode === 'notRead') {
+      return allData.results.filter((data) => data.is_read === false)
+    } else {
+      return allData.results.filter((data) => data.is_read === true)
+    }
+  }, [allData, mode])
 
   return (
     <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
@@ -35,13 +41,13 @@ export function NotiBoard() {
           className={`${mode === 'notRead' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
         >
           <p onClick={() => setMode('notRead')}>
-            읽지 않음 ({notReadData.total})
+            읽지 않음 ({filterData.length})
           </p>
         </div>
         <div
           className={`${mode === 'read' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
         >
-          <p onClick={() => setMode('read')}>읽음 ({readData.total})</p>
+          <p onClick={() => setMode('read')}>읽음 ({filterData.length})</p>
         </div>
       </div>
       <div className="flex w-full flex-col overflow-y-scroll">
