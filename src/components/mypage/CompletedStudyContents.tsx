@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import CompletedStudyCard, { type StudyGroup } from './CompletedStudyCard'
-import { Loading } from '../common/Loading'
 
 interface completedResponse {
   status: number
@@ -103,10 +102,6 @@ function CompletedStudyContents() {
     fetchCompletedStudies()
   }, [])
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
     <div className="min-h-screen rounded-xl border border-gray-200 bg-white p-8">
       <div className="mx-auto max-w-7xl">
@@ -121,7 +116,13 @@ function CompletedStudyContents() {
         </div>
 
         {/* 스터디 카드 그리드 */}
-        {studyGroups.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {[...Array(4)].map((_, index) => (
+              <CompletedStudyCard key={index} isLoading />
+            ))}
+          </div>
+        ) : studyGroups.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {studyGroups.map((study) => (
               <CompletedStudyCard key={study.id} study={study} />
