@@ -87,10 +87,10 @@ export const useChangePassword = () => {
     Error,
     UpdatePasswordRequest
   >(async (data: UpdatePasswordRequest) => {
-    const res = await api.patch<{ data: UpdatePasswordResponse }>(
+    const res = await api.patch<UpdatePasswordResponse>(
       '/v1/users/change-password',
       data
     )
-    return res.data
+    return res
   })
 }

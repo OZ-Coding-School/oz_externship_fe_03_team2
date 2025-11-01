@@ -3,30 +3,27 @@ import Modal from '../common/Modal'
 import Button from '../common/Button'
 import InputWithLabel from '../common/InputWithLabel'
 import { showToast } from '../../utils/showToast'
+import { useChangePassword } from '../../api/services/mypage/profile'
+import { validatePasswordChangeField } from '../../utils/passwordValidation'
+import type { AxiosError } from 'axios'
+import type { PasswordChangeErrorResponse } from '../../types/apiInterface/mypageInterface'
+import {
+  INIT_FORM_DATA,
+  INIT_ERRORS,
+} from '../../constants/profilepasswordChange'
 
 interface PasswordChangeModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-// 폼데이터 초기값
-const INIT_FORM_DATA = {
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: '',
-}
-
-// 에러 초기값
-const INIT_ERRORS = {
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: '',
-}
-
 function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
   const [formData, setFormData] = useState(INIT_FORM_DATA)
 
   const [errors, setErrors] = useState(INIT_ERRORS)
+
+  // 비밀번호 변경 api 훅
+  const { mutate: changePassword, isPending } = useChangePassword()
 
   const handleInputChange =
     (field: keyof typeof formData) =>
@@ -37,71 +34,58 @@ function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
       }
     }
 
-  const validateCurrentPassword = () => {
-    if (!formData.currentPassword) {
-      setErrors((prev) => ({
-        ...prev,
-        currentPassword: '현재 비밀번호를 입력하세요',
-      }))
-      return false
-    }
+  // 각 필드 유효성 검사
+  const validateFormField = (field: keyof typeof formData) => {
+    const { isValid, errorMessage } = validatePasswordChangeField(
+      field,
+      formData[field],
+      formData
+    )
 
-    setErrors((prev) => ({ ...prev, currentPassword: '' }))
-    return true
-  }
+    if (!isValid) setErrors((prev) => ({ ...prev, [field]: errorMessage }))
+    else setErrors((prev) => ({ ...prev, [field]: '' }))
 
-  const validateNewPassword = () => {
-    if (!formData.newPassword) {
-      setErrors((prev) => ({
-        ...prev,
-        newPassword: '새 비밀번호를 입력하세요',
-      }))
-      return false
-    }
-    if (formData.newPassword.length < 8) {
-      setErrors((prev) => ({
-        ...prev,
-        newPassword: '비밀번호는 8자 이상이어야 합니다',
-      }))
-      return false
-    }
-    setErrors((prev) => ({ ...prev, newPassword: '' }))
-    return true
-  }
-
-  const validateConfirmPassword = () => {
-    if (!formData.confirmPassword) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword: '비밀번호 확인을 입력하세요',
-      }))
-      return false
-    }
-    if (formData.newPassword !== formData.confirmPassword) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword: '새 비밀번호가 일치하지 않습니다',
-      }))
-      return false
-    }
-    setErrors((prev) => ({ ...prev, confirmPassword: '' }))
-    return true
+    return isValid
   }
 
   const handleSave = () => {
-    const isCurrentValid = validateCurrentPassword()
-    const isNewValid = validateNewPassword()
-    const isConfirmValid = validateConfirmPassword()
+    const isCurrentValid = validateFormField('currentPassword')
+    const isNewValid = validateFormField('newPassword')
+    const isConfirmValid = validateFormField('confirmPassword')
 
     if (!isCurrentValid || !isNewValid || !isConfirmValid) return
 
-    showToast(
-      '비밀번호가 성공적으로 변경되었습니다',
-      'success',
-      '비밀번호 변경 완료'
-    )
+    // api 호출
+    changePassword(
+      {
+        current_password: formData.currentPassword,
+        new_password: formData.newPassword,
+        new_password_confirm: formData.confirmPassword,
+      },
+      {
+        onSuccess: (data) => {
+          showToast(data.detail, 'success', '비밀번호 변경 완료')
+          handleCancel()
+        },
 
-    handleCancel()
+        onError: (error: Error) => {
+          const axiosError = error as AxiosError<PasswordChangeErrorResponse>
+          const errorMessage =
+            axiosError?.response?.data.error ?? '비밀번호 변경에 실패했습니다' // error 필드에서 메시지 추출
+
+          // 현재 비밀번호 오류 감지해서 에러메세지
+          if (errorMessage.includes('현재 비밀번호')) {
+            setErrors((prev) => ({
+              ...prev,
+              currentPassword: errorMessage,
+            }))
+            showToast(errorMessage, 'error', '비밀번호 오류')
+          } else {
+            showToast(errorMessage, 'error', '비밀번호 변경 실패')
+          }
+        },
+      }
+    )
   }
 
   const handleCancel = () => {
@@ -130,9 +114,9 @@ function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
             variant="primary"
             size="md"
             onClick={handleSave}
-            disabled={isCheckField}
+            disabled={isCheckField || isPending}
           >
-            변경하기
+            {isPending ? '변경 중...' : '변경하기'}
           </Button>
         </>
       }
@@ -145,10 +129,11 @@ function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
           type="password"
           value={formData.currentPassword}
           onChange={handleInputChange('currentPassword')}
-          onBlur={validateCurrentPassword}
+          onBlur={() => validateFormField('currentPassword')}
           placeholder="현재 비밀번호를 입력하세요"
           error={errors.currentPassword}
           required
+          disabled={isPending}
         />
 
         {/* 새 비밀번호 */}
@@ -158,10 +143,11 @@ function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
           type="password"
           value={formData.newPassword}
           onChange={handleInputChange('newPassword')}
-          onBlur={validateNewPassword}
+          onBlur={() => validateFormField('newPassword')}
           placeholder="새 비밀번호를 입력하세요 (8자 이상)"
           error={errors.newPassword}
           required
+          disabled={isPending}
         />
 
         {/* 새비밀번호 확인 */}
@@ -171,10 +157,11 @@ function PasswordChangeModal({ isOpen, onClose }: PasswordChangeModalProps) {
           type="password"
           value={formData.confirmPassword}
           onChange={handleInputChange('confirmPassword')}
-          onBlur={validateConfirmPassword}
+          onBlur={() => validateFormField('confirmPassword')}
           placeholder="새 비밀번호를 다시 입력하세요"
           error={errors.confirmPassword}
           required
+          disabled={isPending}
         />
       </div>
     </Modal>
