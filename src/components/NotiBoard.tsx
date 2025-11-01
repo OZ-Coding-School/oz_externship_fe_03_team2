@@ -4,11 +4,19 @@ import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
 // import { useAllNotification } from '../api/services/Noti'
 import { useSSE } from '../hooks/useSSE'
+import { useNotiPatchAllRead, useNotiPatchRead } from '../api/services/Noti'
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
   // const { data: allData } = useAllNotification()
+  // api 나오면 더미데이터 빼고 이거 주석 풀기
   useSSE()
+
+  const { mutate: patchRead } = useNotiPatchRead()
+  const handleRead = (notification_id: number) => {
+    patchRead(notification_id)
+  }
+  const { mutate: patchAllRead } = useNotiPatchAllRead()
 
   const filterData = useMemo(() => {
     if (!allData?.results) return []
@@ -31,10 +39,13 @@ export function NotiBoard() {
   ).length
 
   return (
-    <div className="shadow-normal flex h-[550px] w-[450px] cursor-none flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+    <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white select-none">
       <div className="y-15 m-1 flex w-full justify-between p-4">
         <p className="text-lg font-semibold">알림</p>
-        <button className="text-primary-600 hover:text-primary-700 active:text-primary-800 text-sm">
+        <button
+          onClick={() => patchAllRead()}
+          className="text-primary-600 hover:text-primary-700 active:text-primary-800 text-sm"
+        >
           모두 읽음
         </button>
       </div>
@@ -60,6 +71,7 @@ export function NotiBoard() {
           <Link
             key={item.id}
             to={item.back_url_link}
+            onClick={() => !item.is_read && handleRead(item.id)}
             className={`flex w-full border-b border-gray-100 ${!item.is_read && 'bg-primary-50'} gap-3 p-4`}
           >
             <div className="h-8 w-8 rounded-full bg-[#DBEAFE]">

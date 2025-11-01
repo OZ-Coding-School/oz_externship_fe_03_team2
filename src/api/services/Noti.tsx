@@ -36,8 +36,8 @@ export const useAllNotification = () => {
 // }
 
 // 개별 읽음 처리
-export const useNotiPatchRead = (notification_id: number) => {
-  return useSimpleMutation<void, SimpleError>(() =>
+export const useNotiPatchRead = () => {
+  return useSimpleMutation<void, SimpleError, number>((notification_id) =>
     api.patch(`/v1/notifications/${notification_id}/read/`)
   )
 }
