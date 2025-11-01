@@ -15,6 +15,7 @@ export interface NotiItem {
   id: number
   user_id: number
   type_display: string
+  //이거뭐임
   content: string
   type:
     | 'APPLICATION_CREATED'
@@ -31,6 +32,8 @@ export interface NotiItem {
   back_url_link: string
   user: number
   //이거 뭐임
+  //이중에서 보낸 사람 이름은 뭐지?
+  //created_at 왜 없지
 }
 
 // 알림 목록 조회

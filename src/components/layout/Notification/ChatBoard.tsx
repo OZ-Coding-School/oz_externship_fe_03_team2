@@ -10,15 +10,21 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
   const { notiMessage } = useNotificationStore()
   const notiCount = notiMessage.count
   return (
-    <div className="w-full max-w-[19.875rem] border bg-amber-400 shadow">
+    <div className="w-full max-w-[19.875rem] border bg-white shadow">
       <div className="flex w-full justify-between">
-        <div className="flex flex-col items-start justify-center">
-          <p>채팅방</p>
-          {notiCount > 0 && (
-            <p className="text-[.75rem]">{notiCount}개의 읽지 않은 메시지</p>
+        <div className="flex flex-col items-start justify-center bg-gray-50 p-1">
+          <p className="font-semibold">채팅방</p>
+          {notiCount > 0 ? (
+            <p className="text-primary-600 text-xs">
+              {notiCount}개의 읽지 않은 메시지
+            </p>
+          ) : (
+            <p></p>
           )}
         </div>
-        <X size={55} />
+        <div className="text-gray-400 hover:text-gray-500 active:text-gray-600">
+          <X size={55} onClick={() => setChatOpen(false)} />
+        </div>
       </div>
     </div>
   )

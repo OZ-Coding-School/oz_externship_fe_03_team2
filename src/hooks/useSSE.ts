@@ -2,11 +2,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useToken } from '../store/useTokenStore'
 import { useEffect } from 'react'
 import { useUserStore } from '../store/useUserStore'
+
+import { showToast } from '../utils/showToast'
 import type {
   NotificationResponse,
   NotiItem,
-} from '../types/apiInterface/NotiInterface'
-import { showToast } from '../utils/showToast'
+} from '../types/apiInterface/notiInterface'
 
 export function useSSE() {
   const { accessToken } = useToken()
