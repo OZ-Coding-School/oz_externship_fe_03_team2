@@ -6,17 +6,16 @@ import { useAllNotification } from '../api/services/Noti'
 
 export function NotiBoard() {
   const [mode, setMode] = useState<string>('all')
-  const sortAllData = allData.items.sort((a, b) => {
+  const { data: allData } = useAllNotification()
+  const sortAllData = allData?.results.sort((a, b) => {
     return Number(a.is_read) - Number(b.is_read)
   })
   const filterData =
     mode === 'all'
       ? sortAllData
       : mode === 'notRead'
-        ? notReadData.items
-        : readData.items
-
-  // const { data: allData } = useAllNotification()
+        ? allData?.results.filter((data) => data.is_read === false)
+        : allData?.results.filter((data) => data.is_read === true)
 
   return (
     <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
@@ -30,7 +29,7 @@ export function NotiBoard() {
         <div
           className={`${mode === 'all' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
         >
-          <p onClick={() => setMode('all')}>전체보기 ({allData.total})</p>
+          <p onClick={() => setMode('all')}>전체보기 ({allData?.count})</p>
         </div>
         <div
           className={`${mode === 'notRead' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
@@ -49,16 +48,17 @@ export function NotiBoard() {
         {filterData?.map((item) => (
           <Link
             key={item.id}
-            to={item.link_url}
+            to={item.back_url_link}
             className={`flex w-full border-b border-gray-100 ${!item.is_read && 'bg-primary-50'} gap-3 p-4`}
           >
             <div className="h-8 w-8 rounded-full bg-[#DBEAFE]">
               {/* 아이콘 */}
             </div>
             <div className="flex flex-1 flex-col gap-1">
-              <p className="text-sm">{item.message}</p>
+              <p className="text-sm">{item.content}</p>
               <p className="text-xs text-gray-500">
-                {monthDayFormat(item.created_at)}
+                {/* {monthDayFormat(item.created_at)} */}
+                {/* 없어졌나? */}
               </p>
             </div>
             {!item.is_read && (
