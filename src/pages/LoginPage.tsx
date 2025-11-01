@@ -11,7 +11,6 @@ import { showToast } from '../utils/showToast'
 import { useUserStore } from '../store/useUserStore'
 import { api } from '../api/client'
 import type { MeResponse } from '../types/apiInterface/mypageInterface'
-import RestoreModal from '../components/restore/RestoreModal'
 import Restore from '../components/restore/Restore'
 
 interface Form {
