@@ -93,3 +93,12 @@ body {
 @theme {
   --shadow-normal: 0 1px 5px #00000015;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
