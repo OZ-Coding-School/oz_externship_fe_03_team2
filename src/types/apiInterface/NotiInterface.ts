@@ -15,7 +15,7 @@ export interface NotiItem {
   id: number
   user_id: number
   type_display: string
-  //이거뭐임
+  //이거 뭐임
   content: string
   type:
     | 'APPLICATION_CREATED'

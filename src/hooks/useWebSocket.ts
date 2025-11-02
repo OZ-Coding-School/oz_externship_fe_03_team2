@@ -1,4 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
+import type {
+  Chat,
+  ChatSearchResponse,
+} from '../types/apiInterface/chatInterface'
 
 interface WebSocketMessageType {
   message_id: number
@@ -18,8 +23,8 @@ interface WebSocketResponseType {
 
 export const useWebSocket = (study_group_id: number) => {
   const socketRef = useRef<WebSocket | null>(null)
-  const [newMessage, setNewMessage] = useState<WebSocketMessageType[]>([])
   const [isError, setIsError] = useState<boolean>(false)
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL
@@ -47,7 +52,8 @@ export const useWebSocket = (study_group_id: number) => {
         // 변수에 안 담고 바로 ...prev, response.data 했더니
         // undefined일 수 있다고 오류 뜸
         // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함
-        setNewMessage((prev) => [...prev, newMsg])
+        //! 채팅목록 가져오는 api 나오면 인터페이스/탠스택 만들고 타입/쿼리키 연결해서
+        //! 받아온 newMsg텍스트 캐시에 추가하는 로직 작성
         setIsError(false)
       }
     }
@@ -112,7 +118,6 @@ export const useWebSocket = (study_group_id: number) => {
     }
   }
   return {
-    newMessage,
     sendMessage,
     isError,
   }

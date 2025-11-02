@@ -4,10 +4,10 @@ import { useEffect } from 'react'
 import { useUserStore } from '../store/useUserStore'
 
 import { showToast } from '../utils/showToast'
-import type {
-  NotificationResponse,
-  NotiItem,
-} from '../types/apiInterface/notiInterface'
+import {
+  type NotificationResponse,
+  type NotiItem,
+} from '../types/apiInterface/NotiInterface'
 
 export function useSSE() {
   const { accessToken } = useToken()

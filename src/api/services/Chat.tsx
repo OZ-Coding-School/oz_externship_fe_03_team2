@@ -23,7 +23,7 @@ export const useChatSearch = ({
   size = 20,
 }: ChatSearchParameter) => {
   return useSimpleQuery<ChatSearchResponse>(
-    ['chatSearch', study_group_id, keyword, page, size],
+    ['chatRooms', study_group_id, keyword, page, size],
     () =>
       api.get(`/v1/study_group/${study_group_id}/messages`, {
         params: { keyword, page, size },
