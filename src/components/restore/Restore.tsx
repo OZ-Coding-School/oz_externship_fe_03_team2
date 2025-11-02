@@ -26,7 +26,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
   const [step, setStep] = useState(0)
   const [send, setSend] = useState(SEND_STATE)
   const [error, setError] = useState<Record<string, string>>({})
-  const [emailSent, SetEmailSent] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
   const debounceForm = useDebounce(send, 500)
@@ -36,7 +36,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
     setError((prev) => ({ ...prev, ...validator }))
   }, [debounceForm, isOpen])
 
-  if (!isOpen) return
+  if (!isOpen) return null
 
   const handleStep = () => {
     setStep(1)
@@ -69,13 +69,14 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
     setStep(0)
     setSend(SEND_STATE)
     setError({})
-    SetEmailSent(false)
+    setEmailSent(false)
+    setIsSuccess(false)
   }
 
   const sendEmail = () => {
     console.log('보냄')
     showToast('성공', 'success', '인증코드전송')
-    SetEmailSent(true)
+    setEmailSent(true)
   }
   const sendEmailCode = () => {
     console.log('코드')
