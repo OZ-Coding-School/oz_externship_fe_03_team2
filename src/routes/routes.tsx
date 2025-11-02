@@ -10,6 +10,7 @@ import SocialCallback from '../pages/SocialCallback'
 import NotFoundPage from '../pages/NotFoundPage'
 import CommonTest from '../tests/CommonTest'
 import ApiTestPage from '../tests/ApiTestPage'
+import ProtectedRoute from './ProtectedRoute'
 
 export const routesConfig: RouteObject[] = [
   {
@@ -17,15 +18,54 @@ export const routesConfig: RouteObject[] = [
     element: <LayoutPage />,
     children: [
       { index: true, element: <MainPage /> },
-      { path: 'mypage/*', element: <MyPage /> },
+      {
+        path: 'mypage/*',
+        element: (
+          <ProtectedRoute requireAuth>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
-  { path: '/login', element: <LoginPage /> },
-  { path: '/social-callback', element: <SocialCallback /> },
-  { path: '/signup', element: <SignUpPage /> },
+  {
+    path: '/login',
+    element: (
+      <ProtectedRoute requireAuth={false}>
+        <LoginPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/signup',
+    element: (
+      <ProtectedRoute requireAuth={false}>
+        <SignUpPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/email-find',
+    element: (
+      <ProtectedRoute requireAuth={false}>
+        <EmailFindPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/password-find',
+    element: (
+      <ProtectedRoute requireAuth={false}>
+        <PasswordFindPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/social-callback',
+    element: <SocialCallback />,
+  },
+
   { path: '/test', element: <CommonTest /> },
   { path: '/api-test', element: <ApiTestPage /> },
-  { path: '/email-find', element: <EmailFindPage /> },
-  { path: '/password-find', element: <PasswordFindPage /> },
   { path: '*', element: <NotFoundPage /> },
 ]
