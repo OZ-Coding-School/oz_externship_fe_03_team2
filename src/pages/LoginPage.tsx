@@ -11,6 +11,7 @@ import { showToast } from '../utils/showToast'
 import { useUserStore } from '../store/useUserStore'
 import { api } from '../api/client'
 import type { MeResponse } from '../types/apiInterface/mypageInterface'
+import Restore from '../components/restore/Restore'
 
 interface Form {
   email: string
@@ -26,6 +27,7 @@ function LoginPage() {
   const navigate = useNavigate()
   const [form, setForm] = useState<Form>(FORM_STATE)
   const [error, setError] = useState<Record<string, string>>({})
+  const [isOpen, setIsOpen] = useState(false)
 
   const { setAccessToken } = useToken()
   const { setUser } = useUserStore()
@@ -81,6 +83,10 @@ function LoginPage() {
           }
         },
         onError: (e) => {
+          if (e.status === 403) {
+            setIsOpen(true)
+            return
+          }
           showToast(`${e.response?.data.error}`, 'error', '로그인')
         },
       }
@@ -193,6 +199,7 @@ function LoginPage() {
           </Button>
         </form>
       </div>
+      <Restore isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   )
 }
