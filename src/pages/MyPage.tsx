@@ -7,6 +7,7 @@ import CourseContents from '../components/mypage/CourseContents'
 import StudysContents from '../components/mypage/StudysContents'
 import CompletedStudyContents from '../components/mypage/CompletedStudyContents'
 import { useEffect } from 'react'
+import ProfileContentsContainer from '../components/mypage/container/ProfileContentsContainer'
 
 function MyPage() {
   const location = useLocation()
@@ -25,7 +26,7 @@ function MyPage() {
   const renderContent = () => {
     switch (currentActive) {
       case 'profile':
-        return <ProfileContents />
+        return <ProfileContentsContainer />
       case 'jobs':
         return <JobsContents />
       case 'course':

@@ -1,7 +1,7 @@
 import { User } from 'lucide-react'
 import { type HTMLAttributes } from 'react'
 
-type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'xlMobile'
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   name: string
@@ -19,6 +19,7 @@ const sizeStyles: Record<AvatarSize, string> = {
   md: 'w-10 h-10 text-base',
   lg: 'w-12 h-12 text-lg',
   xl: 'w-16 h-16 text-xl',
+  xlMobile: 'w-20 h-20 text-2xl',
   '2xl': 'w-32 h-32 text-4xl ',
 }
 
@@ -29,6 +30,7 @@ const textSizeStyles: Record<AvatarSize, string> = {
   md: 'text-base',
   lg: 'text-lg',
   xl: 'text-xl',
+  xlMobile: 'text-2xl',
   '2xl': 'text-4xl',
 }
 
