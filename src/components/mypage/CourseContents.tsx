@@ -4,8 +4,10 @@ import useDebounce from '../../hooks/useDebounce'
 import { CourseBookmarkCard } from './BookmarkCard'
 import { showToast } from '../../utils/showToast'
 import type { LectureBookmark } from '../../types/apiInterface/mypageInterface'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 function CourseContents() {
+  useDocumentTitle('북마크한 강의')
   const [courses, setCourses] = useState<LectureBookmark[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebounce(searchQuery)

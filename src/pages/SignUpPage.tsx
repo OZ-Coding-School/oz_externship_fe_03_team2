@@ -17,6 +17,7 @@ import {
 } from '../api/services/Auth'
 import { birthdayFormat2 } from '../utils/dateFormat'
 import { showToast } from '../utils/showToast'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 export interface Form {
   name: string
@@ -89,6 +90,7 @@ const switchInput = (name: string, value: string): string => {
 }
 
 function SignUpPage() {
+  useDocumentTitle('회원가입')
   const navigate = useNavigate()
 
   const [form, setForm] = useState<Form>(FORM_STATE)
