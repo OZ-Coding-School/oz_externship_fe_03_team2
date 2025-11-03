@@ -1,6 +1,6 @@
 import { useToken } from '../../store/useTokenStore'
 import { type SimpleError } from '../../types/apiInterface/findInterface'
-import { type NotificationResponse } from '../../types/apiInterface/notiInterface'
+import { type NotificationResponse } from '../../types/apiInterface/NotiInterface'
 import { api } from '../client'
 import { useSimpleMutation } from '../Helper/useSimpleMutation'
 import { useSimpleQuery } from '../Helper/useSimpleQuery'

@@ -39,3 +39,14 @@ export const useChatSearch = ({
 //   page: 1,
 //   size: 20,
 // })
+
+export const useChatDetail = (study_group_id: number) => {
+  return useSimpleQuery(
+    ['chatRooms', study_group_id],
+    () => api.get(`/냥/${study_group_id}`),
+    {
+      enabled: !!study_group_id,
+    }
+  )
+}
+// 실제 채팅내역 불러오는 api 나오면 수정 기

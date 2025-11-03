@@ -1,6 +1,8 @@
 import { X } from 'lucide-react'
 import { chatData } from '../../NotiDummy'
 import { monthDayFormat } from '../../../utils/dateFormat'
+import { useState } from 'react'
+import { ChatDetail } from './DetailChatBoard'
 
 interface ChatOpenType {
   setChatOpen: (chatOpen: boolean) => void
@@ -10,6 +12,20 @@ interface ChatOpenType {
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
   // const { data: chatData } = useChatRooms()
   const chatCount = chatData.data.pagination.total_count
+  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null)
+  const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
+
+  if (selectedRoomId) {
+    return (
+      <ChatDetail
+        studyGroupId={selectedRoomId}
+        setChatOpen={setChatOpen}
+        studyGroupName={selectedRoomName}
+        setSelectedRoomId={setSelectedRoomId}
+      />
+    )
+  }
+
   return (
     <div className="flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none">
       <div className="flex w-full justify-between border-b border-gray-200 bg-gray-50 p-4">
@@ -31,6 +47,9 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
         {chatData.data.messages.map((msg) => (
           <div
             key={msg.id}
+            onClick={() => {
+              setSelectedRoomId(msg.study_group_id)
+            }}
             className="flex flex-col gap-1 border-b border-gray-200 p-3 hover:bg-gray-50 active:bg-gray-100"
           >
             <div className="flex items-start justify-between gap-3">
@@ -41,7 +60,7 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
                 </p>
                 {!msg.is_read && (
                   <div className="bg-danger-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white">
-                    1
+                    1{/* 안 읽은 수 나오면 그거로 변경 */}
                   </div>
                 )}
               </div>
