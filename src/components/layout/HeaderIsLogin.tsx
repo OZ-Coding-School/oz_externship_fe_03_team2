@@ -8,6 +8,7 @@ import { useToken } from '../../store/useTokenStore'
 import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
 import { NotiBoard } from '../NotiBoard'
+import { NotiBadge } from './Notification/NotiBadge'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
@@ -125,6 +126,7 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
           <NotiBoard />
         </div>
       )}
+      <NotiBadge />
     </div>
   )
 }
