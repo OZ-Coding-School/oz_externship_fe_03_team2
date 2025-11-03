@@ -4,6 +4,7 @@ import { useToken } from '../store/useTokenStore'
 import { useUserStore, type UserType } from '../store/useUserStore'
 import { useSimpleMutation } from '../api/Helper/useSimpleMutation'
 import Button from '../components/common/Button'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 interface ApiTest {
   id: string
@@ -88,6 +89,7 @@ const API_TESTS: ApiTest[] = [
 ]
 
 export default function ApiTestPage() {
+  useDocumentTitle('API 테스트')
   const [selectedId, setSelectedId] = useState<string>('')
   const { accessToken, setAccessToken, clearAccessToken } = useToken()
   const { user, setUser, clearUser } = useUserStore()

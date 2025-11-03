@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import CompletedStudyCard, { type StudyGroup } from './CompletedStudyCard'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 interface completedResponse {
   status: number
@@ -10,6 +11,7 @@ interface completedResponse {
 }
 
 function CompletedStudyContents() {
+  useDocumentTitle('완료된 스터디')
   const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([])
   const [isLoading, setIsLoading] = useState(false)
 

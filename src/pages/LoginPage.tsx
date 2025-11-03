@@ -12,6 +12,7 @@ import { useUserStore } from '../store/useUserStore'
 import { api } from '../api/client'
 import type { MeResponse } from '../types/apiInterface/mypageInterface'
 import Restore from '../components/restore/Restore'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 interface Form {
   email: string
@@ -24,6 +25,7 @@ const FORM_STATE: Form = {
 }
 
 function LoginPage() {
+  useDocumentTitle('로그인')
   const navigate = useNavigate()
   const [form, setForm] = useState<Form>(FORM_STATE)
   const [error, setError] = useState<Record<string, string>>({})

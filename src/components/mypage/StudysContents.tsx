@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import StudyApplicationCard from './StudyApplicationCard'
 import StudyDetailModal from './StudyDetailModal'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 interface StudyApplication {
   id: number
@@ -23,6 +24,7 @@ interface ApplicationsResponse {
 }
 
 function StudysContents() {
+  useDocumentTitle('지원 내역')
   const [applications, setApplications] = useState<StudyApplication[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedApplicationId, setSelectedApplicationId] = useState<

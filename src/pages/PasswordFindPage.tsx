@@ -3,6 +3,7 @@ import Stepper from '../components/find/Stepper'
 import EmailAuthentication from '../components/find/passwordFind/EmailAuthentication'
 import PasswordFindFinish from '../components/find/passwordFind/PasswordFindFinish'
 import PasswordFindEmailForm from '../components/find/passwordFind/PasswordFindEmailForm'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 export interface PasswordFormData {
   email: string
@@ -14,6 +15,7 @@ export interface PasswordFormData {
 }
 
 export default function PasswordFindPage() {
+  useDocumentTitle('비밀번호 찾기')
   const [level, setLevel] = useState(1)
   const [formData, setFormData] = useState<PasswordFormData>({
     email: '',

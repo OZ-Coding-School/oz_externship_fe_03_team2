@@ -4,6 +4,7 @@ import PhoneAuthentication from '../components/find/emailFind/PhoneAuthenticatio
 import Stepper from '../components/find/Stepper'
 import EmailFindFinish from '../components/find/emailFind/EmailFindFinish'
 import UserProfileForm from '../components/find/emailFind/UserProfileForm'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 export interface FormData {
   name: string
@@ -14,6 +15,7 @@ export interface FormData {
 }
 
 export default function EmailFindPage() {
+  useDocumentTitle('이메일 찾기')
   const [level, setLevel] = useState(1)
   const [formData, setFormData] = useState<FormData>({
     name: '',

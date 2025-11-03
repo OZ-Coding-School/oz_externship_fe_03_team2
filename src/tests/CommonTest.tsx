@@ -16,8 +16,10 @@ import Toast from '../components/common/toast/Toast'
 import { toast } from 'sonner'
 import { DropDown } from '../components/common/dropDown'
 import { showToast } from '../utils/showToast'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 function CommonTest() {
+  useDocumentTitle('공통 컴포넌트')
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',

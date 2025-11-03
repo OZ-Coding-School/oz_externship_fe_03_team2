@@ -5,8 +5,10 @@ import { birthdayFormat } from '../../utils/dateFormat'
 import { JobBookmarkCard } from './BookmarkCard'
 import { showToast } from '../../utils/showToast'
 import type { StudyJobs } from '../../types/apiInterface/mypageInterface'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 function JobsContents() {
+  useDocumentTitle('북마크한 공고')
   const [jobs, setJobs] = useState<StudyJobs[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebounce(searchQuery)

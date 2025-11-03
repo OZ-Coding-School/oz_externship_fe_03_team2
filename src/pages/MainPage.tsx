@@ -3,8 +3,10 @@ import Button from '../components/common/Button'
 import ImageCards from '../components/common/ImageCards'
 import { FeaturesData } from '../components/mainpage'
 import { usePopularCourses } from '../hooks/query/usePopularCourses'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 function MainPage() {
+  useDocumentTitle()
   const navigate = useNavigate()
   const { data: courses, isLoading, isError } = usePopularCourses()
   const normalizeBreaks = (text: string) => text.replace(/<br\s*\/?>/gi, '\n')

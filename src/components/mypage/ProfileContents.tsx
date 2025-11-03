@@ -9,8 +9,10 @@ import { birthdayFormat } from '../../utils/dateFormat'
 import { phoneFormat } from '../../utils/phoneFormat'
 import { useUserStore, type UserType } from '../../store/useUserStore'
 import { useNavigate } from 'react-router'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 function ProfileContents() {
+  useDocumentTitle('내 정보')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
