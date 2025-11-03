@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Avatar from '../common/Avatar'
 import Button from '../common/Button'
 import ProfileEditModal from './ProfileEditModal'
@@ -8,25 +8,14 @@ import UserLeaveModal from './UserLeaveModal'
 import { birthdayFormat } from '../../utils/dateFormat'
 import { phoneFormat } from '../../utils/phoneFormat'
 import { useUserStore, type UserType } from '../../store/useUserStore'
-import { useNavigate } from 'react-router'
-import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 function ProfileContents() {
-  useDocumentTitle('내 정보')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false)
 
   // zustand store에서 user 정보 가져오기
   const user = useUserStore((state) => state.user)
-
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login') // user가 없으면 로그인 페이지로 이동
-    }
-  }, [user, navigate])
 
   const handleCancel = () => {
     setIsModalOpen(false)

@@ -298,6 +298,10 @@ function ProfileEditModal({
   const isPhoneValid = tempData.phone_number
     ? isValidPhoneNumber(tempData.phone_number)
     : false
+
+  // 닉네임이 현재닉네임이면 false
+  const isNicknameUnchanged = tempData.nickname === profileData.nickname
+
   return (
     <Modal
       title="프로필 수정"
@@ -365,7 +369,7 @@ function ProfileEditModal({
                   }
                   setNickname((prev) => ({ ...prev, needsCheck: true }))
                 },
-                disabled: isNicknameLoading,
+                disabled: isNicknameLoading || isNicknameUnchanged, // 기존값과 같으면 비활성화
               }}
             />
             {/* 닉네임 확인 상태 메시지 */}
