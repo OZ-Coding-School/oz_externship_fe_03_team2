@@ -1,145 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Search } from 'lucide-react'
 import useDebounce from '../../hooks/useDebounce'
 import { CourseBookmarkCard } from './BookmarkCard'
 import { showToast } from '../../utils/showToast'
-import type { LectureBookmark } from '../../types/apiInterface/mypageInterface'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
+import { useGetLectureBookmarks } from '../../api/services/mypage/profile'
 
 function CourseContents() {
   useDocumentTitle('북마크한 강의')
-  const [courses, setCourses] = useState<LectureBookmark[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const debouncedSearchQuery = useDebounce(searchQuery)
-  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      setIsLoading(true)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      try {
-        // 더미 데이터
-        const mockData: LectureBookmark[] = [
-          {
-            id: 1,
-            lecture_info: {
-              id: 1,
-              uuid: 'uuid-001',
-              title: 'React 완벽 마스터 강의 - 기초부터 고급까지',
-              instructor: '김개발',
-              thumbnail_img_url: '',
-              categories: [
-                {
-                  id: 1,
-                  name: '카테고리1',
-                },
-              ],
-              platform: 'Inflearn',
-              difficulty: 'EASY',
-              duration: '12:30',
-              original_price: 89000,
-              discount_price: 59000,
-              average_rating: 4.8,
-              url_link: 'https://inflearn.com/course/react-perfect',
-            },
-            created_at: '2025-10-01T12:00:00Z',
-          },
-          {
-            id: 2,
-            lecture_info: {
-              id: 2,
-              uuid: 'uuid-002',
-              title: 'Node.js 백엔드 개발 완주 - 실무 프로젝트까지',
-              instructor: '박서버',
-              thumbnail_img_url:
-                'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-              categories: [
-                {
-                  id: 1,
-                  name: '카테고리1',
-                },
-              ],
-              platform: 'Udemy',
-              difficulty: 'NORMAL',
-              duration: '18:45',
-              original_price: 120000,
-              discount_price: 79000,
-              average_rating: 4.5,
-              url_link: 'https://udemy.com/course/nodejs-backend',
-            },
-            created_at: '2025-10-02T14:30:00Z',
-          },
-          {
-            id: 3,
-            lecture_info: {
-              id: 3,
-              uuid: 'uuid-003',
-              title: 'Python 데이터 사이언스 마스터클래스',
-              instructor: '이데이터',
-              thumbnail_img_url:
-                'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-              categories: [
-                {
-                  id: 1,
-                  name: '카테고리1',
-                },
-              ],
-              platform: 'Inflearn',
-              difficulty: 'HARD',
-              duration: '25:15',
-              original_price: 150000,
-              discount_price: 99000,
-              average_rating: 4.9,
-              url_link: 'https://inflearn.com/course/python-data-science',
-            },
-            created_at: '2025-10-03T09:15:00Z',
-          },
-          {
-            id: 4,
-            lecture_info: {
-              id: 4,
-              uuid: 'uuid-004',
-              title: 'JavaScript ES6+ 완벽 가이드 - 모던 자바스크립트',
-              instructor: '최자바',
-              thumbnail_img_url:
-                'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-              categories: [
-                {
-                  id: 1,
-                  name: '카테고리1',
-                },
-              ],
-              platform: 'Udemy',
-              difficulty: 'EASY',
-              duration: '15:20',
-              original_price: 75000,
-              discount_price: 49000,
-              average_rating: 4.7,
-              url_link: 'https://udemy.com/course/javascript-es6',
-            },
-            created_at: '2025-10-04T16:45:00Z',
-          },
-        ]
-        setCourses(mockData)
-      } catch {
-        setIsLoading(false)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+  // api 호출
+  const { data: response, isLoading } = useGetLectureBookmarks()
+  const courses = response?.data?.results || []
 
-    fetchCourses()
-  }, [])
-
-  const handleBookmarkToggle = (courseId: number) => {
-    setCourses((prevCourses) =>
-      prevCourses.filter((course) => course.id !== courseId)
-    )
+  const handleBookmarkToggle = () => {
+    // api 삭제 만들어야함
     showToast('북마크가 삭제되었습니다', 'success', '북마크 삭제')
   }
 
-  const handleViewClick = (courseId: number) => {
-    showToast(`강의 id : ${courseId}`, 'success', '강의보기 클릭')
+  const handleViewClick = (courseUrl: string) => {
+    if (courseUrl) window.open(courseUrl, '_blank') // 새탭에서 열기
   }
 
   const filterCourses = courses.filter(
@@ -198,7 +80,9 @@ function CourseContents() {
                 key={course.id}
                 data={course}
                 onBookmarkToggle={handleBookmarkToggle}
-                onViewClick={handleViewClick}
+                onViewClick={() =>
+                  handleViewClick(course.lecture_info.url_link)
+                }
               />
             ))
           )}

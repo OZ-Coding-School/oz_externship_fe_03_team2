@@ -258,7 +258,8 @@ export function CourseBookmarkCard({
               }
               size="sm"
             >
-              {data.lecture_info.platform}
+              {data.lecture_info.platform.charAt(0).toUpperCase() +
+                data.lecture_info.platform.slice(1).toLowerCase()}
             </Badge>
             <Badge
               variant={
