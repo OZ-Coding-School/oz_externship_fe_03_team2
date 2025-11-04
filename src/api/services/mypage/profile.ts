@@ -10,6 +10,7 @@ import type {
   UpdateProfileResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
+  LectureBookmarksResponse,
 } from '../../../types/apiInterface/mypageInterface'
 import { useSimpleMutation } from '../../Helper/useSimpleMutation'
 import { useUserStore } from '../../../store/useUserStore'
@@ -93,4 +94,23 @@ export const useChangePassword = () => {
     )
     return res
   })
+}
+
+// 북마크 강의 조회 (GET)
+export const useGetLectureBookmarks = (
+  page?: number,
+  page_size?: number,
+  enabled = true
+) => {
+  return useSimpleQuery<LectureBookmarksResponse>(
+    ['/v1/lectures/bookmarks', page, page_size], // 캐시 키에 파라미터 포함
+    () =>
+      api.get<LectureBookmarksResponse>('/v1/lectures/bookmarks', {
+        params: {
+          ...(page !== null && { page }),
+          ...(page_size !== null && { page_size }),
+        },
+      }),
+    { enabled }
+  )
 }

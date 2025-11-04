@@ -23,13 +23,12 @@ function CourseContents() {
           {
             id: 1,
             lecture_info: {
+              id: 1,
               uuid: 'uuid-001',
               title: 'React 완벽 마스터 강의 - 기초부터 고급까지',
               instructor: '김개발',
               thumbnail_img_url: '',
               platform: 'Inflearn',
-              description:
-                'React의 기초부터 고급 기술까지 완벽하게 마스터하는 강의',
               difficulty: 'EASY',
               duration: '12:30',
               original_price: 89000,
@@ -42,13 +41,13 @@ function CourseContents() {
           {
             id: 2,
             lecture_info: {
+              id: 2,
               uuid: 'uuid-002',
               title: 'Node.js 백엔드 개발 완주 - 실무 프로젝트까지',
               instructor: '박서버',
               thumbnail_img_url:
                 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
               platform: 'Udemy',
-              description: 'Node.js를 활용한 백엔드 개발 실무 프로젝트',
               difficulty: 'NORMAL',
               duration: '18:45',
               original_price: 120000,
@@ -61,13 +60,13 @@ function CourseContents() {
           {
             id: 3,
             lecture_info: {
+              id: 3,
               uuid: 'uuid-003',
               title: 'Python 데이터 사이언스 마스터클래스',
               instructor: '이데이터',
               thumbnail_img_url:
                 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
               platform: 'Inflearn',
-              description: 'Python을 활용한 데이터 분석 및 머신러닝 실무',
               difficulty: 'HARD',
               duration: '25:15',
               original_price: 150000,
@@ -80,14 +79,13 @@ function CourseContents() {
           {
             id: 4,
             lecture_info: {
+              id: 4,
               uuid: 'uuid-004',
               title: 'JavaScript ES6+ 완벽 가이드 - 모던 자바스크립트',
               instructor: '최자바',
               thumbnail_img_url:
                 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
               platform: 'Udemy',
-              description:
-                'ES6+의 모든 기능을 활용한 모던 JavaScript 완벽 가이드',
               difficulty: 'EASY',
               duration: '15:20',
               original_price: 75000,
