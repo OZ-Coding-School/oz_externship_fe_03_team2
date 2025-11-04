@@ -1,4 +1,9 @@
-type BadgeVariant = 'default' | 'primary' | 'success' | 'danger' | 'pupple'
+export type BadgeVariant =
+  | 'default'
+  | 'primary'
+  | 'success'
+  | 'danger'
+  | 'pupple'
 type BadgeSize = 'sm' | 'page' | 'md' | 'lg'
 type BadgeRadius = 'sm' | 'full'
 

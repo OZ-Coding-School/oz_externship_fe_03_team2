@@ -5,6 +5,12 @@ import type {
   LectureBookmark,
   StudyJobs,
 } from '../../types/apiInterface/mypageInterface'
+import {
+  firstUppercaseFormat,
+  getDifficultyLabel,
+  getDifficultyVariant,
+  getPlatformVariant,
+} from '../../utils/badgeFormat'
 
 interface JobBookmarkCardProps {
   data?: StudyJobs
@@ -253,29 +259,16 @@ export function CourseBookmarkCard({
           {/* 플랫폼, 레벨 */}
           <div className="mb-3 flex items-center gap-2">
             <Badge
-              variant={
-                data.lecture_info.platform === 'Inflearn' ? 'success' : 'pupple'
-              }
+              variant={getPlatformVariant(data.lecture_info.platform)}
               size="sm"
             >
-              {data.lecture_info.platform.charAt(0).toUpperCase() +
-                data.lecture_info.platform.slice(1).toLowerCase()}
+              {firstUppercaseFormat(data.lecture_info.platform)}
             </Badge>
             <Badge
-              variant={
-                data.lecture_info.difficulty === 'EASY'
-                  ? 'success'
-                  : data.lecture_info.difficulty === 'NORMAL'
-                    ? 'primary'
-                    : 'danger'
-              }
+              variant={getDifficultyVariant(data.lecture_info.difficulty)}
               size="sm"
             >
-              {data.lecture_info.difficulty === 'EASY'
-                ? '초급'
-                : data.lecture_info.difficulty === 'NORMAL'
-                  ? '중급'
-                  : '고급'}
+              {getDifficultyLabel(data.lecture_info.difficulty)}
             </Badge>
             <span className="flex items-center gap-1 text-xs text-gray-600">
               <Clock className="h-3 w-3" />
