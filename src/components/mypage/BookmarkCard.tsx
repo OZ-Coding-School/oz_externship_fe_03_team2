@@ -15,7 +15,7 @@ interface JobBookmarkCardProps {
 
 interface CourseBookmarkCardProps {
   data?: LectureBookmark
-  onBookmarkToggle?: (id: number) => void
+  onBookmarkToggle?: (uuid: string) => void
   onViewClick?: (id: number) => void
   isLoading?: boolean
 }
@@ -298,7 +298,7 @@ export function CourseBookmarkCard({
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => onBookmarkToggle?.(data.id)}
+              onClick={() => onBookmarkToggle?.(data.lecture_info.uuid)}
               className="cursor-pointer transition-transform hover:scale-110"
             >
               <Bookmark className="fill-primary-500 text-primary-500 h-5 w-5" />

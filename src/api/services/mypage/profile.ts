@@ -114,3 +114,19 @@ export const useGetLectureBookmarks = (
     { enabled }
   )
 }
+
+// 북마크 강의 삭제 (DELETE)
+export const useRemoveLectureBookmark = () => {
+  return useSimpleMutation<
+    void,
+    Error,
+    string // lecture_uuid를 파라미터로 받음
+  >(
+    async (lectureUuid: string) => {
+      await api.delete<void>(`/v1/lectures/bookmarks/${lectureUuid}`)
+    },
+    {
+      invalidateKeys: ['/v1/lectures/bookmarks'], // 북마크 리스트 캐시 무효화
+    }
+  )
+}

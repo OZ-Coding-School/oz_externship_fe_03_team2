@@ -4,7 +4,10 @@ import useDebounce from '../../hooks/useDebounce'
 import { CourseBookmarkCard } from './BookmarkCard'
 import { showToast } from '../../utils/showToast'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
-import { useGetLectureBookmarks } from '../../api/services/mypage/profile'
+import {
+  useGetLectureBookmarks,
+  useRemoveLectureBookmark,
+} from '../../api/services/mypage/profile'
 
 function CourseContents() {
   useDocumentTitle('북마크한 강의')
@@ -13,11 +16,19 @@ function CourseContents() {
 
   // api 호출
   const { data: response, isLoading } = useGetLectureBookmarks()
-  const courses = response?.data?.results || []
+  const courses = response?.data.results || []
 
-  const handleBookmarkToggle = () => {
-    // api 삭제 만들어야함
-    showToast('북마크가 삭제되었습니다', 'success', '북마크 삭제')
+  const { mutate: removeBookmark } = useRemoveLectureBookmark()
+
+  const handleBookmarkToggle = (lectureUuid: string) => {
+    removeBookmark(lectureUuid, {
+      onSuccess: () => {
+        showToast('북마크가 삭제되었습니다', 'success', '북마크 삭제')
+      },
+      onError: () => {
+        showToast('북마크 삭제 실패', 'error', '오류 발생')
+      },
+    })
   }
 
   const handleViewClick = (courseUrl: string) => {
