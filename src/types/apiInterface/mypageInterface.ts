@@ -46,18 +46,26 @@ export interface MeWithDrawRequest {
 // 북마크한 강의 목록 조희 - - - - - - - -
 // 강의
 export interface LectureInfo {
+  id: number
   uuid: string
   title: string
   instructor: string
   thumbnail_img_url: string
+  categories: LectureCategory[]
   platform: string
-  description: string
   difficulty: 'EASY' | 'NORMAL' | 'HARD'
   duration: string
   original_price: number
   discount_price: number
-  average_rating: number
+  average_rating: number | string
   url_link: string
+  is_bookmarked?: boolean
+}
+
+// 카테고리
+export interface LectureCategory {
+  id: number
+  name: string
 }
 
 export interface LectureBookmark {
