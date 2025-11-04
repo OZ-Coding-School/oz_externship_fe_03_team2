@@ -1,8 +1,14 @@
-import { ArrowLeft, X } from 'lucide-react'
+import { ArrowLeft, Ellipsis, X } from 'lucide-react'
 // import { useChatDetail } from '../../../api/services/Chat'
 import { useUserStore } from '../../../store/useUserStore'
-import { chatMessagesData_10, chatMessagesData_20 } from '../../NotiDummy'
+import {
+  chatMessagesData_10,
+  chatMessagesData_20,
+  online,
+} from '../../NotiDummy'
 import { timeFormat } from '../../../utils/dateFormat'
+import { PeopleBoard } from './PeopleBoard'
+import { useState } from 'react'
 
 interface ChatDetailType {
   studyGroupName: string | null
@@ -18,22 +24,11 @@ export function ChatDetail({
 }: ChatDetailType) {
   // const { data: chatData } = useChatDetail(studyGroupId)
   const { user } = useUserStore()
+  const [openPeople, setOpenPeople] = useState<boolean>(false)
   let chatData
   if (selectedRoomId === 20) chatData = chatMessagesData_20
   else if (selectedRoomId === 10) chatData = chatMessagesData_10
 
-  // 온라인 어케 되나 일단 나중에 api 나오면 이거 지우기
-  const online = {
-    total: 3,
-    people: [
-      { id: 5, name: '민현서', is_online: true },
-      { id: 8, name: '김민섭', is_online: true },
-      { id: 3, name: '이프론트', is_online: false },
-      { id: 4, name: '최자바', is_online: true },
-      { id: 7, name: '왁왁왁', is_online: false },
-      { id: 6, name: '이야호', is_online: true },
-    ],
-  }
   return (
     <div className="flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none">
       {/* 상단바 */}
@@ -56,22 +51,32 @@ export function ChatDetail({
       </div>
 
       {/* 접속중 온라인 여부 어케 되나 */}
-      <div className="scrollbar-thin flex gap-2 overflow-x-scroll border-y border-gray-200 bg-gray-50 whitespace-nowrap">
-        {online.people.map((person) => (
-          <div
-            key={person.id}
-            className="flex h-auto w-auto items-center justify-center gap-1 rounded-full bg-white px-2 py-1"
-          >
+      <div className="relative flex justify-between gap-2 border-y border-gray-200 bg-gray-500 p-2 whitespace-nowrap">
+        <div className="flex gap-2">
+          {online.people.slice(0, 3).map((person) => (
             <div
-              className={`${person.is_online ? 'bg-success-500' : 'bg-gray-300'} h-2 w-2 rounded-full`}
-            ></div>
-            <p
-              className={`${user?.id === person.id ? 'text-primary-600' : 'text-gray-700'} text-xs`}
+              key={person.id}
+              className="flex h-auto w-auto flex-0 items-center justify-center gap-1 rounded-full bg-white px-2 py-1"
             >
-              {person.name}
-            </p>
+              <div
+                className={`${person.is_online ? 'bg-success-500' : 'bg-gray-300'} h-2 w-2 rounded-full`}
+              ></div>
+              <p
+                className={`${user?.id === person.id ? 'text-primary-600' : 'text-gray-700'} text-xs`}
+              >
+                {person.name}
+              </p>
+            </div>
+          ))}
+        </div>
+        {online.people.length > 3 && (
+          <Ellipsis onClick={() => setOpenPeople(true)} />
+        )}
+        {openPeople && (
+          <div className="absolute top-0 right-0">
+            <PeopleBoard setOpenPeople={setOpenPeople} />
           </div>
-        ))}
+        )}
       </div>
 
       {/* 채팅내역 */}

@@ -540,3 +540,21 @@ export const chatMessagesData_10 = {
     },
   },
 }
+
+export const online = {
+  total: 7,
+  people: [
+    { id: 5, name: '민현서', is_online: true },
+    { id: 8, name: '김민섭', is_online: true },
+    { id: 1, name: '이프론트', is_online: false },
+    { id: 2, name: '최자바', is_online: true },
+    { id: 3, name: '왁왁왁', is_online: false },
+    { id: 4, name: '이야호', is_online: true },
+    { id: 6, name: '김현진', is_online: false },
+    { id: 7, name: '김미진', is_online: true },
+    { id: 9, name: '정승윤', is_online: false },
+    { id: 10, name: '강아지', is_online: true },
+    { id: 11, name: '고양이', is_online: false },
+    { id: 12, name: '오잉', is_online: true },
+  ],
+}
