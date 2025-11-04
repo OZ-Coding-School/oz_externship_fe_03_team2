@@ -427,7 +427,7 @@ export const chatMessagesData_10 = {
         sender_id: 5,
         sender_nickname: '민현서',
         study_group_id: 10,
-        content: '반갑습니다',
+        content: '민서비이 반갑습니다',
         file_url: null,
         is_read: true,
         created_at: '2025-10-29T08:30:00Z',
@@ -532,26 +532,49 @@ export const chatMessagesData_10 = {
         is_read: true,
         created_at: '2025-10-29T14:20:00Z',
       },
+      {
+        id: 213,
+        sender_id: 30,
+        sender_nickname: '정승윤',
+        study_group_id: 10,
+        content: '사실 뻥이지롱ㅋㅋ',
+        file_url: null,
+        is_read: true,
+        created_at: '2025-10-29T14:20:00Z',
+      },
     ],
     pagination: {
       page: 1,
       page_size: 300,
-      total_count: 12,
+      total_count: 13,
     },
   },
 }
 
+export const chatMessagesData_5 = {
+  status: 'success',
+  code: 'SUCCESS',
+  message: '메시지 내역 조회 성공',
+  data: {
+    messages: [],
+    pagination: {
+      page: 1,
+      page_size: 300,
+      total_count: 0,
+    },
+  },
+}
 export const online = {
   total: 7,
   people: [
-    { id: 5, name: '민현서', is_online: true },
-    { id: 8, name: '김민섭', is_online: true },
     { id: 1, name: '이프론트', is_online: false },
     { id: 2, name: '최자바', is_online: true },
     { id: 3, name: '왁왁왁', is_online: false },
     { id: 4, name: '이야호', is_online: true },
+    { id: 5, name: '민현서', is_online: true },
     { id: 6, name: '김현진', is_online: false },
     { id: 7, name: '김미진', is_online: true },
+    { id: 8, name: '김민섭', is_online: true },
     { id: 9, name: '정승윤', is_online: false },
     { id: 10, name: '강아지', is_online: true },
     { id: 11, name: '고양이', is_online: false },
