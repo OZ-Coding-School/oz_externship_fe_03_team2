@@ -79,6 +79,15 @@ export function monthDayFormat(dateValue: string): string {
   return `${month}월 ${day}일`
 }
 
+// 09:00  형식
+export function timeFormat(dateValue: string): string {
+  const date = new Date(dateValue)
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} `
+}
+
 export const chatDateFormat = (dateValue: string): string => {
   const date = new Date(dateValue)
 

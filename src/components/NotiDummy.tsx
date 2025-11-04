@@ -130,7 +130,7 @@ export const chatData = {
         sender_id: 5,
         sender_nickname: '김민섭',
         study_group_id: 10,
-        study_group_name: '안냐아ㅏㅏㅏㅏ아ㅏㅇ아아아아아ㅏ아옹',
+        study_group_name: '안냐아ㅏㅇ아아아아ㅏ아아아ㅏ아옹',
         content: '안녕하세요.',
         file_url: null,
         is_read: false,

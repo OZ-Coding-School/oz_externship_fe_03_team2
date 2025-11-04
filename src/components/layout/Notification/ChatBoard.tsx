@@ -18,7 +18,7 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
   if (selectedRoomId) {
     return (
       <ChatDetail
-        studyGroupId={selectedRoomId}
+        selectedRoomId={selectedRoomId}
         setChatOpen={setChatOpen}
         studyGroupName={selectedRoomName}
         setSelectedRoomId={setSelectedRoomId}
@@ -49,6 +49,7 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
             key={msg.id}
             onClick={() => {
               setSelectedRoomId(msg.study_group_id)
+              setSelectedRoomName(msg.study_group_name)
             }}
             className="flex flex-col gap-1 border-b border-gray-200 p-3 hover:bg-gray-50 active:bg-gray-100"
           >
