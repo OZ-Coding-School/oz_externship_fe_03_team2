@@ -51,13 +51,21 @@ export interface LectureInfo {
   title: string
   instructor: string
   thumbnail_img_url: string
+  categories: LectureCategory[]
   platform: string
   difficulty: 'EASY' | 'NORMAL' | 'HARD'
   duration: string
   original_price: number
   discount_price: number
-  average_rating: number
+  average_rating: number | string
   url_link: string
+  is_bookmarked?: boolean
+}
+
+// 카테고리
+export interface LectureCategory {
+  id: number
+  name: string
 }
 
 export interface LectureBookmark {

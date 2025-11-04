@@ -28,6 +28,12 @@ function CourseContents() {
               title: 'React 완벽 마스터 강의 - 기초부터 고급까지',
               instructor: '김개발',
               thumbnail_img_url: '',
+              categories: [
+                {
+                  id: 1,
+                  name: '카테고리1',
+                },
+              ],
               platform: 'Inflearn',
               difficulty: 'EASY',
               duration: '12:30',
@@ -47,6 +53,12 @@ function CourseContents() {
               instructor: '박서버',
               thumbnail_img_url:
                 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+              categories: [
+                {
+                  id: 1,
+                  name: '카테고리1',
+                },
+              ],
               platform: 'Udemy',
               difficulty: 'NORMAL',
               duration: '18:45',
@@ -66,6 +78,12 @@ function CourseContents() {
               instructor: '이데이터',
               thumbnail_img_url:
                 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+              categories: [
+                {
+                  id: 1,
+                  name: '카테고리1',
+                },
+              ],
               platform: 'Inflearn',
               difficulty: 'HARD',
               duration: '25:15',
@@ -85,6 +103,12 @@ function CourseContents() {
               instructor: '최자바',
               thumbnail_img_url:
                 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
+              categories: [
+                {
+                  id: 1,
+                  name: '카테고리1',
+                },
+              ],
               platform: 'Udemy',
               difficulty: 'EASY',
               duration: '15:20',
