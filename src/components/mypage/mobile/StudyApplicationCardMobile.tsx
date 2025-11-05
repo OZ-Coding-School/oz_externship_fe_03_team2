@@ -94,7 +94,6 @@ function StudyApplicationCardMobile({
           {/* 정보 */}
           <div className="mb-2 flex items-center justify-between text-xs text-gray-600">
             <span>모집 {data.participants}명</span>
-            <span className="text-gray-300">|</span>
             <span>{data.appliedAt}</span>
           </div>
 
