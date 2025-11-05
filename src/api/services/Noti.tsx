@@ -15,26 +15,6 @@ export const useAllNotification = () => {
   )
 }
 
-// // 기존 알림 안읽음 불러오기
-// export const useNotReadNotification = () => {
-//   const { accessToken } = useToken()
-//   return useSimpleQuery<NotificationResponse, SimpleError>(
-//     ['/notification'],
-//     () => api.get('/v1/notifications?is_read=false'),
-//     { enabled: !!accessToken }
-//   )
-// }
-
-// // 기존 알림 읽음 불러오기
-// export const useReadNotification = () => {
-//   const { accessToken } = useToken()
-//   return useSimpleQuery<NotificationResponse, SimpleError>(
-//     ['/notification'],
-//     () => api.get('/v1/notifications?is_read=true'),
-//     { enabled: !!accessToken }
-//   )
-// }
-
 // 개별 읽음 처리
 export const useNotiPatchRead = () => {
   return useSimpleMutation<void, SimpleError, number>((notification_id) =>

@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { ChevronUp, X } from 'lucide-react'
 import { useUserStore } from '../../../store/useUserStore'
 import { online } from '../../NotiDummy'
 interface PeopleBoardType {
@@ -7,9 +7,9 @@ interface PeopleBoardType {
 export function PeopleBoard({ setOpenPeople }: PeopleBoardType) {
   const { user } = useUserStore()
   return (
-    <div className="shadow-normal flex h-82 w-22 flex-col rounded-br-md bg-gray-50">
-      <div className="flex justify-end text-gray-400 hover:text-gray-500 active:text-gray-600">
-        <X size={18} onClick={() => setOpenPeople(false)} />
+    <div className="shadow-normal flex h-82 w-27 flex-col rounded-br-md bg-gray-50">
+      <div className="flex justify-end pt-1 pr-2 text-gray-400 hover:text-gray-500 active:text-gray-600">
+        <ChevronUp onClick={() => setOpenPeople(false)} />
       </div>
       <div className="scrollbar-hide flex flex-col items-start gap-1.5 overflow-y-scroll px-1">
         {online.people.map((person) => (

@@ -2,7 +2,7 @@ import { MessageCircle } from 'lucide-react'
 import { useState } from 'react'
 import { ChatBoard } from './ChatBoard'
 import { chatData } from '../../NotiDummy'
-export function NotiBadge() {
+export function ChatBadge() {
   const [chatOpen, setChatOpen] = useState(false)
   const chatCount = chatData.data.pagination.total_count
 

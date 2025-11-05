@@ -1,4 +1,4 @@
-import { ArrowLeft, Ellipsis, Send, X } from 'lucide-react'
+import { ArrowLeft, ChevronDown, Ellipsis, Send, X } from 'lucide-react'
 // import { useChatDetail } from '../../../api/services/Chat'
 import { useUserStore } from '../../../store/useUserStore'
 import {
@@ -30,7 +30,7 @@ export function ChatDetail({
   let chatData
   if (selectedRoomId === 20) chatData = chatMessagesData_20
   else if (selectedRoomId === 10) chatData = chatMessagesData_10
-  else if (selectedRoomId === 5) chatData = chatMessagesData_5
+  else chatData = chatMessagesData_5
 
   const CSS = {
     me: 'bg-primary-500 text-white rounded-xl rounded-br-sm',
@@ -79,7 +79,7 @@ export function ChatDetail({
         </div>
         {online.people.length > 4 && (
           <div className="text-gray-400 hover:text-gray-500 active:text-gray-600">
-            <Ellipsis onClick={() => setOpenPeople(true)} />
+            <ChevronDown onClick={() => setOpenPeople(true)} />
           </div>
         )}
         {openPeople && (
@@ -90,7 +90,12 @@ export function ChatDetail({
       </div>
 
       {/* 채팅내역 */}
-      <div className="scrollbar-hide flex flex-col gap-3.5 overflow-x-scroll p-3">
+      <div className="scrollbar-hide flex flex-1 flex-col gap-3.5 overflow-x-scroll p-3">
+        {chatData?.data.pagination.total_count === 0 && (
+          <div className="flex h-full w-full items-center justify-center text-sm text-gray-400">
+            대화 내역이 없습니다.
+          </div>
+        )}
         {chatData?.data.messages.map((msg) => (
           <div
             key={msg.id}
@@ -120,7 +125,7 @@ export function ChatDetail({
           value={sendMessage}
           onChange={(e) => setSendMessage(e.target.value)}
         />
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white hover:bg-gray-400 active:bg-gray-500">
           <Send size={18} />
         </div>
       </div>

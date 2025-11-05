@@ -4,7 +4,11 @@ import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
 // import { useAllNotification } from '../api/services/Noti'
 import { useSSE } from '../hooks/useSSE'
-import { useNotiPatchAllRead, useNotiPatchRead } from '../api/services/Noti'
+import {
+  // useAllNotification,
+  useNotiPatchAllRead,
+  useNotiPatchRead,
+} from '../api/services/Noti'
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
@@ -31,12 +35,9 @@ export function NotiBoard() {
     }
   }, [allData, mode])
 
-  const notReadCount = [...allData.results].filter(
-    (data) => data.is_read === false
-  ).length
-  const readCount = [...allData.results].filter(
-    (data) => data.is_read === true
-  ).length
+  const notReadCount =
+    allData?.results.filter((data) => !data.is_read).length || 0
+  const readCount = allData?.results.filter((data) => data.is_read).length || 0
 
   return (
     <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white select-none">

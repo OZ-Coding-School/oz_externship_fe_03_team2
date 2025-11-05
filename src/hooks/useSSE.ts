@@ -8,6 +8,7 @@ import {
   type NotificationResponse,
   type NotiItem,
 } from '../types/apiInterface/NotiInterface'
+import { EventSourcePolyfill } from 'event-source-polyfill'
 
 export function useSSE() {
   const { accessToken } = useToken()
@@ -18,15 +19,20 @@ export function useSSE() {
   useEffect(() => {
     if (!accessToken) return
 
-    const eventSource = new EventSource(
-      `/api/v1/notification/stream/${user_id}?token=${accessToken}`
-      // 토큰을 쿼리파라미터로 전달하는 경우
+    const eventSource = new EventSourcePolyfill(
+      `/api/v1/notification/stream/${user_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        // withCredentials: true
+        // 얘도 필요한지 나중에 보고 ㄱㄱ
+      }
     )
 
-    // const evtSource = new EventSource(`/api/v1/notification/stream/${user_id}`, {
-    //   withCredentials: true,
-    // })
-    // 쿠키로 전달하는 경우..
+    eventSource.onopen = () => {
+      showToast('SSE 연결 성공', 'success')
+    }
 
     eventSource.onmessage = (e) => {
       const newNoti: NotiItem = JSON.parse(e.data)
@@ -48,10 +54,12 @@ export function useSSE() {
           }
         }
       )
+      // 여기에 showNotiToast 이런 거 추가..
     }
     eventSource.onerror = () => {
       showToast('SSE 연결 오류', 'error')
     }
+    // EventSourcePolyfill은 자동 재연결 시도함
 
     return () => {
       eventSource.close()
