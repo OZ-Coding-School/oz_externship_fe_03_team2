@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import StudyApplicationCard from './StudyApplicationCard'
-import StudyDetailModal from './StudyDetailModal'
+import StudyApplicationCardMobile from './StudyApplicationCardMobile'
+import StudyDetailModal from '../StudyDetailModal'
 
 interface StudyApplication {
   id: number
@@ -22,7 +22,7 @@ interface ApplicationsResponse {
   }
 }
 
-function StudysContents() {
+function StudysContentsMobile() {
   const [applications, setApplications] = useState<StudyApplication[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedApplicationId, setSelectedApplicationId] = useState<
@@ -35,7 +35,6 @@ function StudysContents() {
       setIsLoading(true)
       await new Promise((resolve) => setTimeout(resolve, 1000))
       try {
-        // 더미 데이터
         const mockData: ApplicationsResponse = {
           status: 200,
           message: '스터디 지원 내역 조회에 성공했습니다.',
@@ -96,29 +95,29 @@ function StudysContents() {
 
   return (
     <>
-      <div className="min-h-screen rounded-xl border border-gray-200 bg-white p-8">
-        <div className="mx-auto max-w-5xl">
-          {/* 헤더 */}
-          <div className="mb-6">
-            <h1 className="mb-2 text-2xl font-bold text-gray-900">지원 내역</h1>
-            <p className="text-gray-600">
-              내가 지원한 스터디 구인 공고들을 확인하세요
-            </p>
-          </div>
+      <div className="min-h-screen rounded-xl border border-gray-200 bg-white">
+        {/* 헤더 */}
+        <div className="px-4 py-4">
+          <h1 className="text-lg font-semibold text-gray-900">지원 내역</h1>
+          <p className="mt-1 text-sm text-gray-600">
+            내가 지원한 스터디 구인 공고들을 확인하세요
+          </p>
+        </div>
 
-          {/* 지원 내역 리스트 */}
-          <div className="space-y-4">
+        {/* 지원 내역 리스트 */}
+        <div className="p-4">
+          <div className="space-y-3">
             {isLoading ? (
               [...Array(3)].map((_, index) => (
-                <StudyApplicationCard key={index} isLoading />
+                <StudyApplicationCardMobile key={index} isLoading />
               ))
             ) : applications.length === 0 ? (
-              <div className="py-12 text-center text-gray-500">
+              <div className="py-20 text-center text-gray-500">
                 지원한 스터디가 없습니다
               </div>
             ) : (
               applications.map((application) => (
-                <StudyApplicationCard
+                <StudyApplicationCardMobile
                   key={application.id}
                   data={application}
                   onClick={() => handleCardClick(application)}
@@ -138,4 +137,4 @@ function StudysContents() {
   )
 }
 
-export default StudysContents
+export default StudysContentsMobile

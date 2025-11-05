@@ -4,10 +4,10 @@ import ProfileContents from '../components/mypage/ProfileContents'
 import JobsContents from '../components/mypage/JobsContents'
 import { MYPAGE_MENU_ITEMS } from '../constants/myPageMenu'
 import CourseContents from '../components/mypage/CourseContents'
-import StudysContents from '../components/mypage/StudysContents'
 import CompletedStudyContents from '../components/mypage/CompletedStudyContents'
 import { useEffect } from 'react'
 import ProfileContentsContainer from '../components/mypage/container/ProfileContentsContainer'
+import StudyContentsContainer from '../components/mypage/container/StudyContentsContainer'
 
 function MyPage() {
   const location = useLocation()
@@ -32,7 +32,7 @@ function MyPage() {
       case 'course':
         return <CourseContents />
       case 'study':
-        return <StudysContents />
+        return <StudyContentsContainer />
       case 'completed-study':
         return <CompletedStudyContents />
       default:
