@@ -43,7 +43,7 @@ export interface PhoneConfirmRequest {
 export interface PhoneConfirmResponse {
   detail: string
   data: {
-    verify_token: string
+    phone_verify_token: string
     expires_in: number
   }
 }
@@ -75,7 +75,7 @@ export interface EmailConfirmResponse {
   detail: string
   purpose: string
   data: {
-    verify_token: string
+    email_verify_token: string
     expires_in: number
   }
 }
