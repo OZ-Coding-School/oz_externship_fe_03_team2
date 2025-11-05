@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
 import { useUserStore } from '../../../store/useUserStore'
 import ProfileContents from '../ProfileContents'
 import ProfileContentsMobile from '../mobile/ProfileContentsMobile'
@@ -9,14 +7,7 @@ import useMediaQuery from '../../../hooks/useMediaQuery'
 function ProfileContentsContainer() {
   useDocumentTitle('내 정보')
   const user = useUserStore((state) => state.user)
-  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 768px)') //화면이 768px 이하인지 확인
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login')
-    }
-  }, [user, navigate])
 
   if (!user) return null
 
