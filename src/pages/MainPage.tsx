@@ -14,7 +14,7 @@ function MainPage() {
   return (
     <main className="bg-primary-50 flex flex-col items-center justify-center">
       {/* Hero Section */}
-      <section className="flex w-full max-w-[1440px] flex-col items-center justify-center gap-10 px-6 py-12 sm:flex-row sm:justify-between sm:gap-12 sm:px-8 sm:py-20">
+      <section className="flex w-full max-w-7xl flex-col items-center justify-center gap-10 px-6 py-12 sm:flex-row sm:justify-between sm:gap-12 sm:px-8 sm:py-20">
         {/* 왼쪽 텍스트 */}
         <div className="flex w-full max-w-[584px] flex-col text-center sm:text-left">
           <h1 className="mb-4 text-[32px] leading-[42px] font-extrabold sm:mb-6 sm:text-[48px] sm:leading-[60px]">
