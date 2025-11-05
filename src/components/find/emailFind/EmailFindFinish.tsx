@@ -8,13 +8,12 @@ import type { FormData } from '../../../pages/EmailFindPage'
 interface EmailFindFinishProps {
   formData: FormData
 }
-
 export default function EmailFindFinish({ formData }: EmailFindFinishProps) {
   const navigate = useNavigate()
   const { mutate, data, isPending, isError } = useRecoveryEmail()
 
   useEffect(() => {
-    mutate(formData.verify_token)
+    mutate(formData.phone_verify_token)
   }, [])
 
   return (
@@ -68,7 +67,7 @@ export default function EmailFindFinish({ formData }: EmailFindFinishProps) {
           <Button
             variant="outline"
             size="freeWidthLg"
-            onClick={() => navigate('/passwordfind')}
+            onClick={() => navigate('/password-find')}
           >
             비밀번호 찾기
           </Button>

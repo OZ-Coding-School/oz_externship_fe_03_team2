@@ -23,6 +23,7 @@ export default function PhoneAuthentication({
 }: PhoneAuthProps) {
   const { mutate } = useFindEmailConfirmCode()
   const { mutate: codeResendMutate } = useFindEmailSendCode()
+
   const handleSubmit = () => {
     if (!formData.code) {
       showToast(
@@ -42,7 +43,7 @@ export default function PhoneAuthentication({
         onSuccess: (data) => {
           setFormData((prev) => ({
             ...prev,
-            verify_token: data.data.verify_token,
+            phone_verify_token: data.data.phone_verify_token,
           }))
           onNext()
         },

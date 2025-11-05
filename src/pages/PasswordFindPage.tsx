@@ -9,7 +9,7 @@ export interface PasswordFormData {
   email: string
   verificationCode: string
   requestId: string
-  verify_token: string
+  email_verify_token: string
   password: string
   passwordConfirm: string
 }
@@ -21,7 +21,7 @@ export default function PasswordFindPage() {
     email: '',
     verificationCode: '',
     requestId: '',
-    verify_token: '',
+    email_verify_token: '',
     password: '',
     passwordConfirm: '',
   })
