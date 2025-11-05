@@ -1,72 +1,75 @@
 import { Link } from 'react-router'
-import type { LinkGroup } from '../../types/typeFooter'
 
-const SERVICE_LINKS: LinkGroup = {
-  title: '서비스',
-  links: [
-    { text: '강의 목록', url: '/courses' },
-    { text: '스터디 그룹', url: '/studies' },
-    { text: '구인 공고', url: '/jobs' },
-  ],
+interface FooterLink {
+  label: string
+  path: string
 }
 
-const SUPPORT_LINKS: LinkGroup = {
-  title: '지원',
-  links: [
-    { text: '고객센터', url: '/support' },
-    { text: 'FAQ', url: '/faq' },
-    { text: '개인정보처리방침', url: '/privacy' },
-  ],
+interface FooterSection {
+  title: string
+  links: FooterLink[]
 }
 
-function LinkSection(props: LinkGroup) {
-  const { title, links } = props
-
-  return (
-    <div className="flex flex-col">
-      <h3 className="mb-4 text-lg font-semibold text-gray-400">{title}</h3>
-      <ul className="space-y-3">
-        {links.map((link) => (
-          <li key={link.text}>
-            <Link
-              to={link.url}
-              className="hover:text-primary-400 text-sm text-gray-200 transition-colors duration-150"
-            >
-              {link.text}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+const FOOTER_SECTIONS: FooterSection[] = [
+  {
+    title: '서비스',
+    links: [
+      { label: '강의 목록', path: '/' },
+      { label: '스터디 그룹', path: '/' },
+      { label: '구인 공고', path: '/' },
+    ],
+  },
+  {
+    title: '지원',
+    links: [
+      { label: '고객센터', path: '/' },
+      { label: 'FAQ', path: '/' },
+      { label: '개인정보처리방침', path: '/' },
+    ],
+  },
+]
 
 function Footer() {
-  const currentYear = 2025
-
   return (
-    <footer className="bg-gray-900 p-10 text-gray-200 md:px-16">
-      <div className="mx-auto mb-8 max-w-[1280px] border-b border-gray-700 pb-10">
-        <div className="flex flex-col justify-between gap-10 md:flex-row md:gap-20">
-          <div className="flex w-full flex-col md:w-1/3">
-            <Link to="/" className="text-primary-400 mb-3 text-2xl font-bold">
+    <footer className="relative bg-gray-900 text-white">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="md:gap-1z2 mb-12 flex flex-col gap-8 md:flex-row lg:gap-12">
+          {/* 왼쪽 StudyHub */}
+          <div className="max-w-148 flex-2">
+            <h2 className="text-primary-400 mb-4 text-2xl font-bold">
               StudyHub
-            </Link>
-            <p className="max-w-sm text-sm leading-relaxed text-gray-400">
+            </h2>
+            <p className="leading-nomal text-gray-300">
               IT 전문가로 성장하는 여정에 함께합니다. 최고의 강의와 스터디
               그룹으로 실무 역량을 키워보세요.
             </p>
           </div>
 
-          <LinkSection {...SERVICE_LINKS} />
-          <LinkSection {...SUPPORT_LINKS} />
+          {/* 오른쪽 섹션 */}
+          {FOOTER_SECTIONS.map((section) => (
+            <div key={section.title} className="flex-1">
+              <h3 className="mb-5 text-base font-semibold">{section.title}</h3>
+              <div className="space-y-3">
+                {section.links.map((link) => (
+                  <div key={link.label}>
+                    <Link
+                      to={link.path}
+                      className="hover:text-primary-400 text-gray-300 transition-colors duration-200"
+                    >
+                      {link.label}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
 
-      <div className="mx-auto max-w-[1280px] text-center">
-        <p className="text-xs text-gray-500">
-          © {currentYear} StudyHub. All rights reserved.
-        </p>
+        <div className="border-t border-gray-800 pt-8">
+          <p className="text-center text-sm text-gray-400">
+            © 2024 StudyHub. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   )
