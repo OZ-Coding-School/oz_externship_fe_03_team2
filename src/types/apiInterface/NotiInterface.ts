@@ -11,13 +11,10 @@ export interface NotificationParams {
 //   link_url: string
 //   created_at: string
 // }
+
 export interface NotiItem {
   id: number
-  user_id: number
-  type_display: string
-  //이거 뭐임
-  content: string
-  type:
+  type?:
     | 'APPLICATION_CREATED'
     | 'APPLICATION_STATUS_APPROVAL'
     | 'APPLICATION_STATUS_REJECTION'
@@ -28,12 +25,11 @@ export interface NotiItem {
     | 'STUDY_RECORD_CREATED'
     | 'SYSTEM'
     | 'CUSTOM'
-  is_read: boolean
+  content: string
+  created_at: string
   back_url_link: string
-  user: number
-  //이거 뭐임
-  //이중에서 보낸 사람 이름은 뭐지?
-  //created_at 왜 없지
+  is_read: boolean
+  user_id: number
 }
 
 // 알림 목록 조회

@@ -9,6 +9,7 @@ import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
 import { NotiBoard } from '../NotiBoard'
 import { ChatBadge } from './Notification/ChatBadge'
+import { allData } from '../NotiDummy'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
@@ -28,7 +29,9 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
   const { clearAccessToken } = useToken()
   const { mutate: LogoutMutate } = useLogout()
 
-  const notificationCount = '3' // 알림 하드코딩 되어있는거 나중에 수정해야 함
+  const notificationCount =
+    allData?.results.filter((data) => !data.is_read).length || 0
+  // 알림 더미로 되어있는 거 나중에 수정해야 함
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (

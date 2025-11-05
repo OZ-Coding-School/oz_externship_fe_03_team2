@@ -5,6 +5,7 @@ import { chatData } from '../../NotiDummy'
 export function ChatBadge() {
   const [chatOpen, setChatOpen] = useState(false)
   const chatCount = chatData.data.pagination.total_count
+  // 나중에 api 확인하고 안 읽은 수 고치기
 
   return (
     <div className="fixed right-4 bottom-4 z-1000 lg:right-5 lg:bottom-5">
