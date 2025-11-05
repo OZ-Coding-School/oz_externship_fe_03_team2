@@ -15,7 +15,7 @@ export interface UpdateMeRequest {
   nickname?: string
   profile_img_url?: string | null
   phone_number?: string
-  verify_token?: string
+  phone_verify_token?: string
 }
 // 응답 = MeResponse
 
@@ -374,7 +374,7 @@ export interface PhoneVerificationConfirmRequest {
 export interface PhoneVerificationConfirmResponse {
   detail: string
   data: {
-    verify_token: string
+    phone_verify_token: string
   }
 }
 
