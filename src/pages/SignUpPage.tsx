@@ -247,7 +247,7 @@ function SignUpPage() {
           setConfirm((prev) => ({ ...prev, emailVerify: true }))
           setVerifyToken((prev) => ({
             ...prev,
-            emailToken: data.data.verify_token,
+            emailToken: data.data.email_verify_token,
           }))
           showToast(`${data.detail}`, 'success', '이메일 코드 확인')
         },
@@ -297,7 +297,7 @@ function SignUpPage() {
           setConfirm((prev) => ({ ...prev, phoneVerify: true }))
           setVerifyToken((prev) => ({
             ...prev,
-            phoneToken: data.data.verify_token,
+            phoneToken: data.data.phone_verify_token,
           }))
           showToast(`${data.detail}`, 'success', '핸드폰 코드 확인')
         },
