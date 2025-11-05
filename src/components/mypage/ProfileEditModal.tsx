@@ -204,7 +204,7 @@ function ProfileEditModal({
           setVerification((prev) => ({
             ...prev,
             isVerified: true,
-            verifyToken: response.verify_token || '', // 토큰 저장
+            verifyToken: response.phone_verify_token || '', // 토큰 저장
             errorMessage: '',
           }))
           showToast('인증이 완료되었습니다', 'success', '인증 완료')
@@ -271,7 +271,7 @@ function ProfileEditModal({
     // 전화번호가 변경되었을때만 포함
     if (isPhoneNumberChanged) {
       updateData.phone_number = removePhoneFormat(tempData.phone_number || '')
-      updateData.verify_token = verification.verifyToken
+      updateData.phone_verify_token = verification.verifyToken
     }
 
     // api 호출
@@ -301,6 +301,11 @@ function ProfileEditModal({
 
   // 닉네임이 현재닉네임이면 false
   const isNicknameUnchanged = tempData.nickname === profileData.nickname
+
+  // 휴대폰 번호가 현재 번호와 같으면 true
+  const isPhoneNumberUnchanged =
+    removePhoneFormat(tempData.phone_number || '') ===
+    removePhoneFormat(profileData.phone_number || '')
 
   return (
     <Modal
@@ -398,7 +403,8 @@ function ProfileEditModal({
               onClick: handleVerificationSend,
               variant: 'secondary',
               countdown: verification.showInput ? 180 : undefined,
-              disabled: isSendingCode || !isPhoneValid,
+              disabled:
+                isSendingCode || !isPhoneValid || isPhoneNumberUnchanged,
             }}
           />
 
