@@ -33,7 +33,16 @@ export function ChatDetail({
   else chatData = chatMessagesData_5
 
   const lastReadMessageRef = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  // '여기까지읽음' 표시선 가리키는 ref..
+  const scrollRef = useRef<HTMLDivElement>(null)
+  // 채팅 내역 감싼 div 가리키는 ref..
+  //마지막으로 읽은 위치로 이동하게 만들 ref..
+
+  const lastReadIndex = chatData?.data?.messages.findIndex(
+    (msg) => !msg.is_read
+  )
+  // 안 읽은 메시지 중에 가장 오래된 거 찾기.. 안읽은 메시지가 가장 처음 나오는 순서
+  // 안 읽은 메시지가 없으면 -1 반환.
 
   useEffect(() => {
     if (lastReadIndex !== -1 && lastReadMessageRef.current) {
@@ -41,17 +50,17 @@ export function ChatDetail({
       lastReadMessageRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
+        // 해당 요소를  중앙에 위치시키게끔..
       })
-    } else if (scrollContainerRef.current) {
+    } else if (scrollRef.current) {
       // 전부 읽은 상태는 맨 아래로 이동
-      const scrollElement = scrollContainerRef.current
-      scrollElement.scrollTop = scrollElement.scrollHeight
+      const scrollDiv = scrollRef.current
+      scrollDiv.scrollTop = scrollDiv.scrollHeight
+      // scrollTop : 현재 스크롤의 세로 위치
+      // scrollHeight : 스크롤 가능한 총 높이
+      // => 현재스크롤바를 맨 아래로 옮겨라. = 가장 최신 메시지로 이동해라
     }
   }, [chatData])
-
-  const lastReadIndex = chatData?.data?.messages.findIndex(
-    (msg) => !msg.is_read
-  )
 
   const CSS = {
     me: 'bg-primary-500 text-white rounded-xl rounded-br-sm',
@@ -112,7 +121,7 @@ export function ChatDetail({
 
       {/* 채팅내역 */}
       <div
-        ref={scrollContainerRef}
+        ref={scrollRef}
         className="scrollbar-hide flex flex-1 flex-col gap-3.5 overflow-x-scroll p-3"
       >
         {chatData?.data.pagination.total_count === 0 ? (

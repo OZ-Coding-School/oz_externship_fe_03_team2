@@ -1,4 +1,4 @@
-import { ChevronUp, X } from 'lucide-react'
+import { ChevronUp } from 'lucide-react'
 import { useUserStore } from '../../../store/useUserStore'
 import { online } from '../../NotiDummy'
 interface PeopleBoardType {
