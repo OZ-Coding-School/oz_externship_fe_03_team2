@@ -7,7 +7,6 @@ import {
   useEmailVerificationConfirmCode,
   useEmailVerificationSendCode,
 } from '../../../api/services/find/passwordFind'
-import { useEffect } from 'react'
 
 interface EmailAuthProps {
   formData: PasswordFormData
