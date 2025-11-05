@@ -354,7 +354,7 @@ export const chatMessagesData_20 = {
         study_group_id: 20,
         content: '다음 스터디 언제인가요?',
         file_url: null,
-        is_read: false,
+        is_read: true,
         created_at: '2025-10-29T14:00:00Z',
       },
       {
@@ -364,7 +364,7 @@ export const chatMessagesData_20 = {
         study_group_id: 20,
         content: '다음주 화요일 7시입니다',
         file_url: null,
-        is_read: false,
+        is_read: true,
         created_at: '2025-10-29T14:05:00Z',
       },
       {
@@ -374,7 +374,7 @@ export const chatMessagesData_20 = {
         study_group_id: 20,
         content: '감사합니다!',
         file_url: null,
-        is_read: false,
+        is_read: true,
         created_at: '2025-10-29T14:30:00Z',
       },
       {
@@ -384,7 +384,7 @@ export const chatMessagesData_20 = {
         study_group_id: 20,
         content: '오늘 배운 내용 정리해서 공유드릴게요',
         file_url: null,
-        is_read: false,
+        is_read: true,
         created_at: '2025-10-29T15:00:00Z',
       },
       {
@@ -394,8 +394,18 @@ export const chatMessagesData_20 = {
         study_group_id: 20,
         content: '내일 회의 있나요?',
         file_url: null,
-        is_read: false,
+        is_read: true,
         created_at: '2025-10-29T15:30:00Z',
+      },
+      {
+        id: 121,
+        sender_id: 6,
+        sender_nickname: '홍길동',
+        study_group_id: 20,
+        content: '새 메시지 추가',
+        file_url: null,
+        is_read: true,
+        created_at: '2025-10-29T15:31:00Z',
       },
     ],
     pagination: {
@@ -519,7 +529,7 @@ export const chatMessagesData_10 = {
         study_group_id: 10,
         content: '자료 공유 감사합니다',
         file_url: null,
-        is_read: true,
+        is_read: false,
         created_at: '2025-10-29T12:00:00Z',
       },
       {
@@ -529,7 +539,7 @@ export const chatMessagesData_10 = {
         study_group_id: 10,
         content: '과제 제출했습니다',
         file_url: null,
-        is_read: true,
+        is_read: false,
         created_at: '2025-10-29T14:20:00Z',
       },
       {
@@ -539,7 +549,7 @@ export const chatMessagesData_10 = {
         study_group_id: 10,
         content: '사실 뻥이지롱ㅋㅋ',
         file_url: null,
-        is_read: true,
+        is_read: false,
         created_at: '2025-10-29T14:20:00Z',
       },
     ],

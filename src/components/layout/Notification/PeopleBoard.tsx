@@ -11,7 +11,7 @@ export function PeopleBoard({ setOpenPeople }: PeopleBoardType) {
       <div className="flex justify-end pt-1 pr-2 text-gray-400 hover:text-gray-500 active:text-gray-600">
         <ChevronUp onClick={() => setOpenPeople(false)} />
       </div>
-      <div className="scrollbar-hide flex flex-col items-start gap-1.5 overflow-y-scroll px-1">
+      <div className="scrollbar-hide flex flex-col items-start gap-1.5 overflow-y-scroll px-1 pb-8">
         {online.people.map((person) => (
           <div
             key={person.id}

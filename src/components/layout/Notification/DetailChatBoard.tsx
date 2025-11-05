@@ -9,7 +9,7 @@ import {
 } from '../../NotiDummy'
 import { timeFormat } from '../../../utils/dateFormat'
 import { PeopleBoard } from './PeopleBoard'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ChatDetailType {
   studyGroupName: string | null
@@ -31,6 +31,27 @@ export function ChatDetail({
   if (selectedRoomId === 20) chatData = chatMessagesData_20
   else if (selectedRoomId === 10) chatData = chatMessagesData_10
   else chatData = chatMessagesData_5
+
+  const lastReadMessageRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (lastReadIndex !== -1 && lastReadMessageRef.current) {
+      // 안 읽은 메시지가 있을 때는 그 위치로 이동
+      lastReadMessageRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    } else if (scrollContainerRef.current) {
+      // 전부 읽은 상태는 맨 아래로 이동
+      const scrollElement = scrollContainerRef.current
+      scrollElement.scrollTop = scrollElement.scrollHeight
+    }
+  }, [chatData])
+
+  const lastReadIndex = chatData?.data?.messages.findIndex(
+    (msg) => !msg.is_read
+  )
 
   const CSS = {
     me: 'bg-primary-500 text-white rounded-xl rounded-br-sm',
@@ -90,30 +111,57 @@ export function ChatDetail({
       </div>
 
       {/* 채팅내역 */}
-      <div className="scrollbar-hide flex flex-1 flex-col gap-3.5 overflow-x-scroll p-3">
-        {chatData?.data.pagination.total_count === 0 && (
+      <div
+        ref={scrollContainerRef}
+        className="scrollbar-hide flex flex-1 flex-col gap-3.5 overflow-x-scroll p-3"
+      >
+        {chatData?.data.pagination.total_count === 0 ? (
           <div className="flex h-full w-full items-center justify-center text-sm text-gray-400">
             대화 내역이 없습니다.
           </div>
+        ) : (
+          chatData?.data.messages.map((msg, idx) => {
+            const isMe = msg.sender_id === user?.id
+            const isLastRead = idx === lastReadIndex - 1
+
+            return (
+              <div key={msg.id}>
+                {/* 마지막으로 읽은 메시지가 어딘지 알려주는 그 구분선.. */}
+                {isLastRead && lastReadIndex !== -1 && (
+                  <div
+                    ref={lastReadMessageRef}
+                    className="my-4 flex items-center gap-2"
+                  >
+                    <div className="bg-primary-500 h-px flex-1"></div>
+                    <span className="text-primary-600 text-xs font-medium whitespace-nowrap">
+                      여기까지 읽음
+                    </span>
+                    <div className="bg-primary-500 h-px flex-1"></div>
+                  </div>
+                )}
+
+                {/* 메시지 */}
+                <div
+                  className={`${isMe ? 'items-end' : 'items-start'} flex flex-col gap-1`}
+                >
+                  {!isMe && (
+                    <p className="text-xs text-gray-500">
+                      {msg.sender_nickname}
+                    </p>
+                  )}
+                  <div
+                    className={`${isMe ? CSS.me : CSS.you} max-w-[80%] px-3 py-2 text-sm`}
+                  >
+                    {msg.content}
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {timeFormat(msg.created_at)}
+                  </p>
+                </div>
+              </div>
+            )
+          })
         )}
-        {chatData?.data.messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`${msg.sender_id === user?.id ? 'items-end' : 'items-start'} flex flex-col gap-1`}
-          >
-            {msg.sender_id !== user?.id && (
-              <p className="text-xs text-gray-500">{msg.sender_nickname}</p>
-            )}
-            <div
-              className={`${msg.sender_id === user?.id ? `${CSS.me}` : `${CSS.you}`} flex flex-col px-3 py-2 text-sm`}
-            >
-              {msg.content}
-            </div>
-            <p className="text-xs text-gray-500">
-              {timeFormat(msg.created_at)}
-            </p>
-          </div>
-        ))}
       </div>
 
       {/* 입력창 */}
