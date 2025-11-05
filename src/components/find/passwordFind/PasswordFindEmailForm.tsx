@@ -18,7 +18,7 @@ export default function PasswordFindEmailForm({
   setFormData,
   onNext,
 }: PasswordFindEmailFormProps) {
-  const { mutate } = useEmailVerificationSendCode()
+  const { mutate, isPending } = useEmailVerificationSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.email || emailError) {
@@ -75,8 +75,8 @@ export default function PasswordFindEmailForm({
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit}>
-          인증코드 전송
+        <Button size="freeWidthLg" onClick={handleSubmit} disabled={isPending}>
+          {isPending ? '인증코드 전송 중..' : '인증코드 전송'}
         </Button>
         <Button size="lg" variant="text" onClick={() => navigate('/login')}>
           로그인으로 돌아가기

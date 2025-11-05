@@ -11,7 +11,7 @@ export interface FormData {
   phone: string
   code: string
   request_id: string
-  verify_token: string
+  phone_verify_token: string
 }
 
 export default function EmailFindPage() {
@@ -22,7 +22,7 @@ export default function EmailFindPage() {
     phone: '',
     code: '',
     request_id: '',
-    verify_token: '',
+    phone_verify_token: '',
   })
 
   const handleNextStep = () => setLevel((prev) => prev + 1)

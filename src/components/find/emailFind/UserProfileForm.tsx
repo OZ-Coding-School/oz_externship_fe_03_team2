@@ -19,8 +19,7 @@ export default function UserProfileForm({
   setFormData,
   onNext,
 }: UserProfileFormProps) {
-  const { mutate } = useFindEmailSendCode()
-  // const { isError } = useFindEmailSendCode()
+  const { mutate, isPending } = useFindEmailSendCode()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (!formData.name || !formData.phone || !phoneReg) {
@@ -91,8 +90,8 @@ export default function UserProfileForm({
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit}>
-          다음 단계
+        <Button size="freeWidthLg" onClick={handleSubmit} disabled={isPending}>
+          {isPending ? '인증코드 전송 중..' : '다음 단계'}
         </Button>
         <Button size="lg" variant="text" onClick={() => navigate('/login')}>
           로그인으로 돌아가기

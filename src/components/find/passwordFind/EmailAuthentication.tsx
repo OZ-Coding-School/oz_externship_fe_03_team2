@@ -23,6 +23,7 @@ export default function EmailAuthentication({
 }: EmailAuthProps) {
   const { mutate } = useEmailVerificationConfirmCode()
   const { mutate: codeResendMutate } = useEmailVerificationSendCode()
+
   const handleSubmit = () => {
     if (!formData.verificationCode) {
       showToast(
@@ -42,7 +43,7 @@ export default function EmailAuthentication({
         onSuccess: (data) => {
           setFormData((prev) => ({
             ...prev,
-            verify_token: data.data.verify_token,
+            email_verify_token: data.data.email_verify_token,
           }))
           onNext()
         },

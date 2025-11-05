@@ -25,7 +25,7 @@ export interface FindEmailConfirmCodeRequest {
 export interface FindEmailConfirmCodeResponse {
   detail: string
   data: {
-    verify_token: string
+    phone_verify_token: string
     expires_in: number
   }
 }
@@ -68,7 +68,7 @@ export interface EmailVerificationConfirmCodeResponse {
   detail: string
   purpose: string
   data: {
-    verify_token: string
+    email_verify_token: string
     expires_in: number
   }
 }

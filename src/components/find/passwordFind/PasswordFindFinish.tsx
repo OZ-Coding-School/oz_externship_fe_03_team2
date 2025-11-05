@@ -33,7 +33,7 @@ export default function PasswordFindFinish({
           new_password: formData.password,
           new_password_confirm: formData.passwordConfirm,
         },
-        verifyToken: formData.verify_token,
+        verifyToken: formData.email_verify_token,
       },
       {
         onSuccess: () => navigate('/login'),
