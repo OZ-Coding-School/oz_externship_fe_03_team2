@@ -104,13 +104,18 @@ export const useGetLectureBookmarks = (
 ) => {
   return useSimpleQuery<LectureBookmarksResponse>(
     ['/v1/lectures/bookmarks', page, page_size], // 캐시 키에 파라미터 포함
-    () =>
-      api.get<LectureBookmarksResponse>('/v1/lectures/bookmarks', {
+    async () => {
+      const isError = false // 테스트 플래그, true일 때만 에러 발생
+
+      if (isError) throw new Error('북마크한 강의를 불러오는데 실패했습니다')
+
+      return api.get<LectureBookmarksResponse>('/v1/lectures/bookmarks', {
         params: {
           ...(page !== null && { page }),
           ...(page_size !== null && { page_size }),
         },
-      }),
+      })
+    },
     { enabled }
   )
 }
