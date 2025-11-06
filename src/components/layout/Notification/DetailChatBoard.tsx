@@ -1,4 +1,4 @@
-import { ArrowLeft, ChevronDown, Ellipsis, Send, X } from 'lucide-react'
+import { ArrowLeft, ChevronDown, Send, X } from 'lucide-react'
 // import { useChatDetail } from '../../../api/services/Chat'
 import { useUserStore } from '../../../store/useUserStore'
 import {

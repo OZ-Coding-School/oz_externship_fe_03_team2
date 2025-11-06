@@ -63,6 +63,7 @@ export function useSSE() {
 
     return () => {
       eventSource.close()
+      queryClient.removeQueries({ queryKey: ['/notification', accessToken] })
     }
   }, [accessToken])
 }
