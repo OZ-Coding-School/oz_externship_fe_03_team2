@@ -1,25 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
-import type {
-  Chat,
-  ChatSearchResponse,
-} from '../types/apiInterface/chatInterface'
-
-interface WebSocketMessageType {
-  message_id: number
-  sender_id: number
-  study_group_id: number
-  content: string
-  created_at: string
-}
-
-interface WebSocketResponseType {
-  type: string
-  data?: WebSocketMessageType
-  // 응답 실패 시 data 대신에 code가 옴
-  code?: string
-  message?: string
-}
+import type { WebSocketResponse } from '../types/apiInterface/chatInterface'
 
 export const useWebSocket = (study_group_id: number) => {
   const socketRef = useRef<WebSocket | null>(null)
@@ -35,7 +16,7 @@ export const useWebSocket = (study_group_id: number) => {
     socketRef.current = socket
 
     socket.onmessage = (e) => {
-      const response: WebSocketResponseType = JSON.parse(e.data)
+      const response: WebSocketResponse = JSON.parse(e.data)
       // 여기서 e는 브라우저가 만든 메시지이벤트 객체임
       // MessageEvent {
       //   data: '{"type":"chat.message","data":{...}}',  // ← 서버가 보낸 실제 데이터
@@ -54,6 +35,13 @@ export const useWebSocket = (study_group_id: number) => {
         // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함
         //! 채팅목록 가져오는 api 나오면 인터페이스/탠스택 만들고 타입/쿼리키 연결해서
         //! 받아온 newMsg텍스트 캐시에 추가하는 로직 작성
+        queryClient.setQueryData<WebSocketResponse>(
+          ['chatRooms'],
+          (old) => {
+            if (!old) return old
+            const updatedItems: 
+          }
+        )
         setIsError(false)
       }
     }
@@ -69,6 +57,7 @@ export const useWebSocket = (study_group_id: number) => {
     }
   }, [study_group_id])
 
+  // 메시지 보내는 부분
   const sendMessage = (content: string) => {
     if (socketRef.current?.readyState === WebSocket.OPEN) {
       // readyState: WebSocket 객체에 있는 기본 속성으로 연결 상태를 말함.  연결 중일 때만 전송해라..라는 뜻

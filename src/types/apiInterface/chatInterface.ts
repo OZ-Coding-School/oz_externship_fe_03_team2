@@ -1,43 +1,38 @@
-// Chat_02 채팅방 목록 조회
-export interface ChatType {
-  status: string
-  code: string
-  message: string
-  data: {
-    messages: Chat[]
-    pagination: {
-      page: number
-      page_size: number
-      total_count: number
-    }
-  } | null
+// 채팅방 목록 (배열)
+export interface ChatRoom {
+  uuid: string
+  name: string
+  last_message: {
+    id: number
+    content: string
+    sender_nickname: string
+    created_at: string
+  }
+  unread_message_count: number
 }
 
-export interface Chat {
+// 채팅 내역
+export interface ChatMessage {
   id: number
-  sender_id: number
-  sender_nickname: string
-  study_group_id: number
+  study_group_uuid: string
+  sender: {
+    id: number
+    nickname: string
+  }
   content: string
-  file_url: null
-  is_read: boolean
   created_at: string
 }
 
-// Chat_03 메시지 내역 조회
-export interface ChatSearchParameter {
-  study_group_id: number
-  keyword: string
-  page?: number
-  size?: number
+// 웹소켓 바디
+export interface WebSocketRequest {
+  type: string
+  content: string
 }
 
-export interface ChatSearchResponse {
-  status: 'success' | 'error'
-  code: 'SUCCESS' | 'NOT_FOUND'
-  message: string
-  data: {
-    messages: Chat[]
-    total_count: number
-  } | null
+// 웹소켓 response
+export interface WebSocketResponse {
+  type: 'chat.message' | 'error'
+  data?: ChatMessage
+  code?: string
+  message?: string
 }
