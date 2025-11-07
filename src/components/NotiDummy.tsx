@@ -391,19 +391,6 @@ export const chatMessagesData_10 = [
   },
 ]
 
-export const chatMessagesData_5 = {
-  status: 'success',
-  code: 'SUCCESS',
-  message: '메시지 내역 조회 성공',
-  data: {
-    messages: [],
-    pagination: {
-      page: 1,
-      page_size: 300,
-      total_count: 0,
-    },
-  },
-}
 export const online = {
   total: 7,
   people: [

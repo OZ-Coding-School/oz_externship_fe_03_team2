@@ -9,13 +9,14 @@ import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
 import { NotiBoard } from '../NotiBoard'
 import { ChatBadge } from './Notification/ChatBadge'
-import { allData } from '../NotiDummy'
+import { useAllNotification } from '../../api/services/Noti'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
 }
 
 function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
+  const { data: allData } = useAllNotification()
   const [open, setOpen] = useState(false)
   const [notiOpen, setNotiOpen] = useState(false)
 

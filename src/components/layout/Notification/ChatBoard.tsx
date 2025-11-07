@@ -1,8 +1,8 @@
 import { X } from 'lucide-react'
-import { chatData } from '../../NotiDummy'
 import { monthDayFormat } from '../../../utils/dateFormat'
 import { useState } from 'react'
 import { ChatDetail } from './DetailChatBoard'
+import { useChatRooms } from '../../../api/services/Chat'
 
 interface ChatOpenType {
   setChatOpen: (chatOpen: boolean) => void
@@ -10,8 +10,8 @@ interface ChatOpenType {
 //프롭스로 챗오픈 상태 받아와서 안에서 엑스바튼으로 열었다 닫았다 할 수 있게
 
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
-  // const { data: chatData } = useChatRooms()
-  const chatCount = chatData.reduce(
+  const { data: chatData } = useChatRooms()
+  const chatCount = chatData?.reduce(
     (acc, cur) => acc + cur.unread_message_count,
     0
   )

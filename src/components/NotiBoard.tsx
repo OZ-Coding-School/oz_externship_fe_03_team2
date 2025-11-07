@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
-import { allData } from './NotiDummy'
+import { useEffect, useMemo, useState } from 'react'
+// import { allData } from './NotiDummy'
 import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
 // import { useAllNotification } from '../api/services/Noti'
 import { useSSE } from '../hooks/useSSE'
 import {
+  useAllNotification,
   // useAllNotification,
   useNotiPatchAllRead,
   useNotiPatchRead,
@@ -12,8 +13,10 @@ import {
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
-  // const { data: allData } = useAllNotification()
-  // api 나오면 더미데이터 빼고 이거 주석 풀기
+  const { data: allData } = useAllNotification()
+  useEffect(() => {
+    console.log(allData)
+  }, [allData])
   useSSE()
 
   const { mutate: patchRead } = useNotiPatchRead()

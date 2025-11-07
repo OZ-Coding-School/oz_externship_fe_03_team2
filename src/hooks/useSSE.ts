@@ -1,8 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useToken } from '../store/useTokenStore'
 import { useEffect } from 'react'
-import { useUserStore } from '../store/useUserStore'
-
 import { showToast } from '../utils/showToast'
 import {
   type NotificationResponse,
@@ -12,15 +10,13 @@ import { EventSourcePolyfill } from 'event-source-polyfill'
 
 export function useSSE() {
   const { accessToken } = useToken()
-  const { user } = useUserStore()
-  const user_id = user?.id
   const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!accessToken) return
 
     const eventSource = new EventSourcePolyfill(
-      `/api/v1/notification/stream/${user_id}`,
+      `/api/v1/notifications/stream`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
