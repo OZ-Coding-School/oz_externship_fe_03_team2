@@ -5,6 +5,9 @@ import { AlertCircle } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { DropDown } from '../common/dropDown'
 import { showToast } from '../../utils/showToast'
+import { useUserLeave } from '../../api/services/mypage/profile'
+import { useToken } from '../../store/useTokenStore'
+import type { MeWithDrawRequest } from '../../types/apiInterface/mypageInterface'
 
 interface UserLeaveModalProps {
   isOpen: boolean
@@ -12,11 +15,11 @@ interface UserLeaveModalProps {
 }
 
 const LEAVE_REASONS = [
-  { text: '서비스 불만족' },
-  { text: '탈퇴사유2' },
-  { text: '탈퇴사유3' },
-  { text: '탈퇴사유4' },
-  { text: '기타' },
+  { text: '서비스 불만족', value: '서비스 불만족' },
+  { text: '탈퇴사유2', value: '탈퇴사유2' },
+  { text: '탈퇴사유3', value: '탈퇴사유3' },
+  { text: '탈퇴사유4', value: '탈퇴사유4' },
+  { text: '기타', value: '기타' },
 ]
 
 function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
@@ -26,15 +29,31 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
 
   const navigate = useNavigate()
 
+  const { mutate: userLeave, isPending } = useUserLeave()
+  const { clearAccessToken } = useToken.getState()
+
   const handleSubmit = () => {
     if (!selectedReason || !detailReason || !isChecked) {
       showToast('모든 항목을 입력해주세요', 'error', '회원탈퇴 실패')
       return
     }
 
-    showToast('이용해주셔서 감사합니다', 'success', '회원탈퇴 성공')
-    navigate('/')
-    onClose()
+    const userLeaveData: MeWithDrawRequest = {
+      reason: selectedReason,
+      reason_detail: detailReason,
+    }
+
+    userLeave(userLeaveData, {
+      onSuccess: () => {
+        clearAccessToken()
+        showToast('이용해주셔서 감사합니다', 'success', '회원탈퇴 성공')
+        navigate('/')
+        onClose()
+      },
+      onError: () => {
+        showToast('회원탈퇴 실패', 'error', '다시 시도해주세요')
+      },
+    })
   }
 
   return (
@@ -51,11 +70,21 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
       onClose={onClose}
       footer={
         <>
-          <Button variant="outline" size="md" onClick={onClose}>
+          <Button
+            variant="outline"
+            size="md"
+            onClick={onClose}
+            disabled={isPending}
+          >
             취소
           </Button>
-          <Button variant="danger" size="md" onClick={handleSubmit}>
-            회원 탈퇴
+          <Button
+            variant="danger"
+            size="md"
+            onClick={handleSubmit}
+            disabled={isPending}
+          >
+            {isPending ? '처리 중...' : '회원 탈퇴'}
           </Button>
         </>
       }

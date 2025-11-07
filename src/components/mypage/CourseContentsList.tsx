@@ -1,9 +1,9 @@
 import { CourseBookmarkCard } from './BookmarkCard'
+import { showToast } from '../../utils/showToast'
 import {
   useGetLectureBookmarks,
   useRemoveLectureBookmark,
-} from '../../api/services/mypage/profile'
-import { showToast } from '../../utils/showToast'
+} from '../../api/services/mypage/lecture'
 
 interface CourseBookmarkListProps {
   searchQuery: string

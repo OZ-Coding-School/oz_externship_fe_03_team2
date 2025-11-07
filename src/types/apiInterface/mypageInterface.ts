@@ -41,7 +41,10 @@ export interface MeWithDrawRequest {
   reason: string
   reason_detail: string
 }
-// 응덥 = detail
+
+export interface MeWithDrawResponse {
+  detail: string
+}
 
 // 북마크한 강의 목록 조희 - - - - - - - -
 // 강의
