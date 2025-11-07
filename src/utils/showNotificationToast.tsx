@@ -1,17 +1,15 @@
 import { toast } from 'sonner'
 import NotificationToast from '../components/common/toast/NotificationToast'
 
-export const showChatToast = (
+export const showNotificationToast = (
   title: string,
   user: string,
   content: string,
   date: string,
   type: 'chat' | 'notice'
 ) => {
-  console.log('토스트 호출')
   toast.custom(
     (t) => {
-      console.log('토스트 호출2')
       return (
         <NotificationToast
           id={t}
@@ -28,3 +26,12 @@ export const showChatToast = (
     }
   )
 }
+
+// 사용 예
+// showNotificationToast(
+//       '오즈코딩스쿨',
+//       '오코스',
+//       '5분 뒤 중간 출석이 있을 예정입니다. 정각이 되면 ZEP 학습공간의 초록색 원에 캐릭터를 위치시켜주세요!',
+//       '2025년 11월 08일',
+//       'chat'
+//     )
