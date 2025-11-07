@@ -11,17 +11,20 @@ interface ChatOpenType {
 
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
   // const { data: chatData } = useChatRooms()
-  const chatCount = chatData.data.pagination.total_count
-  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null)
+  const chatCount = chatData.reduce(
+    (acc, cur) => acc + cur.unread_message_count,
+    0
+  )
+  const [selectedRoomUuid, setSelectedRoomUuid] = useState<string | null>(null)
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
 
-  if (selectedRoomId) {
+  if (selectedRoomUuid) {
     return (
       <ChatDetail
-        selectedRoomId={selectedRoomId}
+        selectedRoomUuid={selectedRoomUuid}
         setChatOpen={setChatOpen}
         studyGroupName={selectedRoomName}
-        setSelectedRoomId={setSelectedRoomId}
+        setSelectedRoomUuid={setSelectedRoomUuid}
       />
     )
   }
@@ -44,31 +47,31 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
         </div>
       </div>
       <div className="scrollbar-hide overflow-y-scroll">
-        {chatData.data.messages.map((msg) => (
+        {chatData.map((msg) => (
           <div
-            key={msg.id}
+            key={msg.uuid}
             onClick={() => {
-              setSelectedRoomId(msg.study_group_id)
-              setSelectedRoomName(msg.study_group_name)
+              setSelectedRoomUuid(msg.uuid)
+              setSelectedRoomName(msg.name)
             }}
             className="flex flex-col gap-1 border-b border-gray-200 p-3 hover:bg-gray-50 active:bg-gray-100"
           >
             <div className="flex items-start justify-between gap-3">
-              <p className="flex-1 text-sm">{msg.study_group_name}</p>
+              <p className="flex-1 text-sm">{msg.name}</p>
               <div className="flex items-center gap-1">
                 <p className="text-xs text-gray-500">
-                  {monthDayFormat(msg.created_at)}
+                  {monthDayFormat(msg.last_message.created_at)}
                 </p>
-                {!msg.is_read && (
+                {msg.unread_message_count > 0 && (
                   <div className="bg-danger-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white">
-                    1{/* 안 읽은 수 나오면 그거로 변경 */}
+                    {msg.unread_message_count}
                   </div>
                 )}
               </div>
             </div>
             <div className="flex">
               <p className="mb-2 text-xs text-gray-500">
-                {msg.sender_nickname}: {msg.content}
+                {msg.last_message.sender_nickname}: {msg.last_message.content}
               </p>
             </div>
           </div>

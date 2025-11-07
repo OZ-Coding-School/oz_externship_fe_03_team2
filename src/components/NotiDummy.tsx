@@ -188,6 +188,80 @@ export const allData = {
 //     },
 //   },
 // }
+// export const chatData = {
+//   status: 'success',
+//   code: 'SUCCESS',
+//   message: '채팅방 목록 조회 성공',
+//   data: {
+//     messages: [
+//       {
+//         uuid: 'b91a4b71-23a2-41e3-b55c-001',
+//         name: 'Python 데이터 분석 스터디',
+//         last_message: {
+//           sender_nickname: '홍길동',
+//           content: '채팅더미.',
+//           created_at: '2025-10-15T10:30:00Z',
+//         },
+//         unread_message_count: 0,
+//       },
+//       {
+//         uuid: 'b91a4b71-23a2-41e3-b55c-002',
+//         name: '안냐아ㅏㅇ아아아아ㅏ아아아ㅏ아옹',
+//         last_message: {
+//           sender_nickname: '김민섭',
+//           content: '안녕하세요.',
+//           created_at: '2025-10-15T10:30:00Z',
+//         },
+//         unread_message_count: 2,
+//       },
+//       {
+//         uuid: 'b91a4b71-23a2-41e3-b55c-003',
+//         name: 'AWS 클라우드 아키텍처 스터디',
+//         last_message: {
+//           sender_nickname: '민현서',
+//           content: '채팅방 더미데이터입니다.',
+//           created_at: '2025-10-15T10:30:00Z',
+//         },
+//         unread_message_count: 5,
+//       },
+//       {
+//         uuid: 'b91a4b71-23a2-41e3-b55c-004',
+//         name: 'Node.js 백엔드 개발팀',
+//         last_message: {
+//           sender_nickname: '정승윤',
+//           content: '안니용',
+//           created_at: '2025-10-15T10:30:00Z',
+//         },
+//         unread_message_count: 0,
+//       },
+//       {
+//         uuid: 'b91a4b71-23a2-41e3-b55c-005',
+//         name: '메롱',
+//         last_message: {
+//           sender_nickname: '김미진',
+//           content: '긋쵸',
+//           created_at: '2025-10-15T10:30:00Z',
+//         },
+//         unread_message_count: 1,
+//       },
+//       {
+//         uuid: 'b91a4b71-23a2-41e3-b55c-006',
+//         name: '얏호',
+//         last_message: {
+//           sender_nickname: '김현진',
+//           content: '응애',
+//           created_at: '2025-10-15T10:30:00Z',
+//         },
+//         unread_message_count: 0,
+//       },
+//     ],
+//     pagination: {
+//       page: 1,
+//       page_size: 100,
+//       total_count: 6,
+//     },
+//   },
+// }
 export const chatData = {
   status: 'success',
   code: 'SUCCESS',

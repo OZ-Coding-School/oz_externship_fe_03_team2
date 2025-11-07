@@ -14,22 +14,22 @@ import { useEffect, useRef, useState } from 'react'
 interface ChatDetailType {
   studyGroupName: string | null
   setChatOpen: (chatOpen: boolean) => void
-  selectedRoomId: number
-  setSelectedRoomId: (selectedRoomId: number | null) => void
+  selectedRoomUuid: string
+  setSelectedRoomUuid: (selectedRoomUuid: string | null) => void
 }
 export function ChatDetail({
   studyGroupName,
   setChatOpen,
-  selectedRoomId,
-  setSelectedRoomId,
+  selectedRoomUuid,
+  setSelectedRoomUuid,
 }: ChatDetailType) {
   // const { data: chatData } = useChatDetail(studyGroupId)
   const { user } = useUserStore()
   const [openPeople, setOpenPeople] = useState<boolean>(false)
   const [sendMessage, setSendMessage] = useState<string>('')
   let chatData
-  if (selectedRoomId === 20) chatData = chatMessagesData_20
-  else if (selectedRoomId === 10) chatData = chatMessagesData_10
+  if (selectedRoomUuid === 20) chatData = chatMessagesData_20
+  else if (selectedRoomUuid === 10) chatData = chatMessagesData_10
   else chatData = chatMessagesData_5
 
   const lastReadMessageRef = useRef<HTMLDivElement>(null)
@@ -73,10 +73,10 @@ export function ChatDetail({
       <div className="flex items-center justify-between bg-gray-50 p-3">
         <div className="flex items-center gap-4">
           <div className="text-gray-400 hover:text-gray-500 active:text-gray-600">
-            <ArrowLeft size={18} onClick={() => setSelectedRoomId(null)} />
+            <ArrowLeft size={18} onClick={() => setSelectedRoomUuid(null)} />
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-semibold">{studyGroupName}</p>
+            <p className="font-semUuibold text-sm">{studyGroupName}</p>
             <div className="flex items-center gap-1">
               <div className="bg-success-500 h-2 w-2 rounded-full"></div>
               <p className="text-xs text-gray-600">{online.total}명 온라인</p>
