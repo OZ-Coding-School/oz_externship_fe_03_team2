@@ -15,15 +15,20 @@ interface UserLeaveModalProps {
 }
 
 const LEAVE_REASONS = [
-  { text: '서비스 불만족', value: '서비스 불만족' },
-  { text: '탈퇴사유2', value: '탈퇴사유2' },
-  { text: '탈퇴사유3', value: '탈퇴사유3' },
-  { text: '탈퇴사유4', value: '탈퇴사유4' },
-  { text: '기타', value: '기타' },
+  { text: '서비스 이용할 시간이 없음', value: 'NO_LONGER_NEEDED' },
+  { text: '관심이 사라짐', value: 'LACK_OF_INTEREST' },
+  { text: '서비스를 이용하기가 너무 어려움', value: 'TOO_DIFFICULT' },
+  { text: '더 좋은 대안을 찾음', value: 'FOUND_BETTER_SERVICE' },
+  { text: '개인정보/보안 우려', value: 'PRIVACY_CONCERNS' },
+  { text: '서비스 품질 불만', value: 'POOR_SERVICE_QUALITY' },
+  { text: '기술적 문제(버그 등)', value: 'TECHNICAL_ISSUES' },
+  { text: '원하는 콘텐츠나 기능의 부족', value: 'LACK_OF_CONTENT' },
+  { text: '기타', value: 'OTHER' },
 ]
 
 function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
-  const [selectedReason, setSelectedReason] = useState('')
+  const [selectedReason, setSelectedReason] =
+    useState('서비스 이용할 시간이 없음')
   const [detailReason, setDetailReason] = useState('')
   const [isChecked, setIsChecked] = useState(false)
 
@@ -38,8 +43,10 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
       return
     }
 
+    const selectedOption = LEAVE_REASONS.find((r) => r.text === selectedReason)
+
     const userLeaveData: MeWithDrawRequest = {
-      reason: selectedReason,
+      reason: selectedOption?.value || selectedReason,
       reason_detail: detailReason,
     }
 
@@ -115,7 +122,7 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
         <DropDown
           label="탈퇴 사유"
           required
-          placeholder="서비스 불만족"
+          placeholder="서비스 이용할 시간이 없음"
           options={LEAVE_REASONS}
           size="wFree"
           onSelect={(value) => setSelectedReason(value)}
