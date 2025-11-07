@@ -8,7 +8,8 @@ import useDocumentTitle from '../hooks/useDocumentTitle'
 function MainPage() {
   useDocumentTitle()
   const navigate = useNavigate()
-  const { data: courses, isLoading, isError } = usePopularCourses()
+  const { data: courses = [], isLoading, isError } = usePopularCourses()
+
   const normalizeBreaks = (text: string) => text.replace(/<br\s*\/?>/gi, '\n')
 
   return (
@@ -106,7 +107,10 @@ function MainPage() {
                 지금 가장 많은 사람들이 수강하는 강의들
               </p>
             </div>
-            <button className="text-primary-600 text-[14px] font-medium">
+            <button
+              onClick={() => navigate('/courses')}
+              className="text-primary-600 text-[14px] font-medium"
+            >
               모든 강의 보기 →
             </button>
           </div>
@@ -122,20 +126,21 @@ function MainPage() {
               인기 강의를 불러오지 못했습니다.
             </p>
           )}
-
-          <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
-            {courses?.map((course) => (
-              <ImageCards
-                key={course.uuid}
-                title={course.title}
-                description={course.instructor_name}
-                date={course.price}
-                imageUrl={course.thumbnail_url}
-                size="w-full sm:w-[384px] h-[17.375rem]"
-                onClick={() => navigate(`/courses/${course.uuid}`)}
-              />
-            ))}
-          </div>
+          {!isLoading && !isError && (
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
+              {courses.map((course) => (
+                <ImageCards
+                  key={course.uuid}
+                  title={course.title}
+                  description={course.instructor}
+                  date={`${course.discount_price.toLocaleString()}원`}
+                  imageUrl={course.thumbnail_img_url}
+                  size={`w-full sm:w-[384px] h-[17.375rem]`}
+                  onClick={() => navigate(`/courses/${course.uuid}`)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
