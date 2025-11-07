@@ -5,6 +5,9 @@ import { AlertCircle } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { DropDown } from '../common/dropDown'
 import { showToast } from '../../utils/showToast'
+import { useUserLeave } from '../../api/services/mypage/profile'
+import { useToken } from '../../store/useTokenStore'
+import type { MeWithDrawRequest } from '../../types/apiInterface/mypageInterface'
 
 interface UserLeaveModalProps {
   isOpen: boolean
@@ -12,19 +15,27 @@ interface UserLeaveModalProps {
 }
 
 const LEAVE_REASONS = [
-  { text: '서비스 불만족' },
-  { text: '탈퇴사유2' },
-  { text: '탈퇴사유3' },
-  { text: '탈퇴사유4' },
-  { text: '기타' },
+  { text: '서비스 이용할 시간이 없음', value: 'NO_LONGER_NEEDED' },
+  { text: '관심이 사라짐', value: 'LACK_OF_INTEREST' },
+  { text: '서비스를 이용하기가 너무 어려움', value: 'TOO_DIFFICULT' },
+  { text: '더 좋은 대안을 찾음', value: 'FOUND_BETTER_SERVICE' },
+  { text: '개인정보/보안 우려', value: 'PRIVACY_CONCERNS' },
+  { text: '서비스 품질 불만', value: 'POOR_SERVICE_QUALITY' },
+  { text: '기술적 문제(버그 등)', value: 'TECHNICAL_ISSUES' },
+  { text: '원하는 콘텐츠나 기능의 부족', value: 'LACK_OF_CONTENT' },
+  { text: '기타', value: 'OTHER' },
 ]
 
 function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
-  const [selectedReason, setSelectedReason] = useState('')
+  const [selectedReason, setSelectedReason] =
+    useState('서비스 이용할 시간이 없음')
   const [detailReason, setDetailReason] = useState('')
   const [isChecked, setIsChecked] = useState(false)
 
   const navigate = useNavigate()
+
+  const { mutate: userLeave, isPending } = useUserLeave()
+  const { clearAccessToken } = useToken.getState()
 
   const handleSubmit = () => {
     if (!selectedReason || !detailReason || !isChecked) {
@@ -32,9 +43,24 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
       return
     }
 
-    showToast('이용해주셔서 감사합니다', 'success', '회원탈퇴 성공')
-    navigate('/')
-    onClose()
+    const selectedOption = LEAVE_REASONS.find((r) => r.text === selectedReason)
+
+    const userLeaveData: MeWithDrawRequest = {
+      reason: selectedOption?.value || selectedReason,
+      reason_detail: detailReason,
+    }
+
+    userLeave(userLeaveData, {
+      onSuccess: () => {
+        clearAccessToken()
+        showToast('이용해주셔서 감사합니다', 'success', '회원탈퇴 성공')
+        navigate('/')
+        onClose()
+      },
+      onError: () => {
+        showToast('회원탈퇴 실패', 'error', '다시 시도해주세요')
+      },
+    })
   }
 
   return (
@@ -51,11 +77,21 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
       onClose={onClose}
       footer={
         <>
-          <Button variant="outline" size="md" onClick={onClose}>
+          <Button
+            variant="outline"
+            size="md"
+            onClick={onClose}
+            disabled={isPending}
+          >
             취소
           </Button>
-          <Button variant="danger" size="md" onClick={handleSubmit}>
-            회원 탈퇴
+          <Button
+            variant="danger"
+            size="md"
+            onClick={handleSubmit}
+            disabled={isPending}
+          >
+            {isPending ? '처리 중...' : '회원 탈퇴'}
           </Button>
         </>
       }
@@ -86,7 +122,7 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
         <DropDown
           label="탈퇴 사유"
           required
-          placeholder="서비스 불만족"
+          placeholder="서비스 이용할 시간이 없음"
           options={LEAVE_REASONS}
           size="wFree"
           onSelect={(value) => setSelectedReason(value)}
