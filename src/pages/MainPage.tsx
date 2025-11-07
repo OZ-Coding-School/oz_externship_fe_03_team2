@@ -4,6 +4,8 @@ import ImageCards from '../components/common/ImageCards'
 import { FeaturesData } from '../components/mainpage'
 import { usePopularCourses } from '../hooks/query/usePopularCourses'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
+import { ErrorBoundary } from 'react-error-boundary'
 
 function MainPage() {
   useDocumentTitle()
@@ -108,39 +110,53 @@ function MainPage() {
               </p>
             </div>
             <button
-              onClick={() => navigate('/courses')}
-              className="text-primary-600 text-[14px] font-medium"
+              onClick={() => navigate('/lectures')}
+              className="text-primary-600 text-[14px] font-medium hover:underline"
             >
               모든 강의 보기 →
             </button>
           </div>
 
-          {/* 로딩, 에러, 데이터 표시 */}
-          {isLoading && (
-            <p className="py-8 text-center text-gray-500">
-              인기 강의 불러오는 중...
-            </p>
-          )}
-          {isError && (
-            <p className="py-8 text-center text-red-500">
-              인기 강의를 불러오지 못했습니다.
-            </p>
-          )}
-          {!isLoading && !isError && (
-            <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
-              {courses.map((course) => (
-                <ImageCards
-                  key={course.uuid}
-                  title={course.title}
-                  description={course.instructor}
-                  date={`${course.discount_price.toLocaleString()}원`}
-                  imageUrl={course.thumbnail_img_url}
-                  size={`w-full sm:w-[384px] h-[17.375rem]`}
-                  onClick={() => navigate(`/courses/${course.uuid}`)}
-                />
-              ))}
-            </div>
-          )}
+          <QueryErrorResetBoundary>
+            {({ reset }) => (
+              <ErrorBoundary
+                onReset={reset}
+                FallbackComponent={({ error, resetErrorBoundary }) => (
+                  <div className="py-8 text-center text-red-500">
+                    인기 강의를 불러오는 중 오류가 발생했습니다.{' '}
+                    <button
+                      onClick={resetErrorBoundary}
+                      className="text-primary-600 underline"
+                    >
+                      다시 시도하기
+                    </button>
+                  </div>
+                )}
+              >
+                {isLoading && (
+                  <p className="py-8 text-center text-gray-500">
+                    인기 강의 불러오는 중...
+                  </p>
+                )}
+
+                {!isLoading && !isError && (
+                  <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
+                    {courses.map((course) => (
+                      <ImageCards
+                        key={course.uuid}
+                        title={course.title}
+                        description={course.instructor}
+                        date={`${course.discount_price.toLocaleString()}원`}
+                        imageUrl={course.thumbnail_img_url}
+                        size={`w-full sm:w-[384px] h-[17.375rem]`}
+                        onClick={() => navigate(`/courses/${course.uuid}`)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </ErrorBoundary>
+            )}
+          </QueryErrorResetBoundary>
         </div>
       </section>
 
