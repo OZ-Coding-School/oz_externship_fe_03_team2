@@ -7,12 +7,13 @@ import validateAll from '../utils/validators'
 import useDebounce from '../hooks/useDebounce'
 import { useLogin } from '../api/services/Auth'
 import { useToken } from '../store/useTokenStore'
-import { showChatToast, showToast } from '../utils/showToast'
+import { showToast } from '../utils/showToast'
 import { useUserStore } from '../store/useUserStore'
 import { api } from '../api/client'
 import type { MeResponse } from '../types/apiInterface/mypageInterface'
 import Restore from '../components/restore/Restore'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import { showChatToast } from '../utils/showNotificationToast'
 
 interface Form {
   email: string
@@ -112,7 +113,13 @@ function LoginPage() {
     // const redirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI
 
     // window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`
-    showChatToast('되려나', '개발씨', '테스트 메시지임', '2025년 11월 07일')
+    showChatToast(
+      '되려나',
+      '개발씨',
+      '테스트 메시지임',
+      '2025년 11월 07일',
+      'chat'
+    )
   }
   const naverLogin = () => {
     const clientId = import.meta.env.VITE_NAVER_CLIENT_ID
