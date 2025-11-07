@@ -17,11 +17,13 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
   )
   const [selectedRoomUuid, setSelectedRoomUuid] = useState<string | null>(null)
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
+  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null)
 
-  if (selectedRoomUuid) {
+  if (selectedRoomUuid && selectedRoomId) {
     return (
       <ChatDetail
         selectedRoomUuid={selectedRoomUuid}
+        studyGroupId={selectedRoomId}
         setChatOpen={setChatOpen}
         studyGroupName={selectedRoomName}
         setSelectedRoomUuid={setSelectedRoomUuid}
@@ -53,6 +55,7 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
             onClick={() => {
               setSelectedRoomUuid(msg.uuid)
               setSelectedRoomName(msg.name)
+              setSelectedRoomId(msg.last_message.id)
             }}
             className="flex flex-col gap-1 border-b border-gray-200 p-3 hover:bg-gray-50 active:bg-gray-100"
           >

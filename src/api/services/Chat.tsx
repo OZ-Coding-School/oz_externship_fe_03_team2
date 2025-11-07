@@ -14,19 +14,19 @@ export const useChatRooms = () => {
   )
 }
 
-// 메시지 목록 조회
-export const useChatDetail = (study_group_uuid: number) => {
-  return useSimpleQuery(
-    ['chatRooms', study_group_uuid],
-    () => api.get(`/v1/chat/chatrooms/${study_group_uuid}/messages`),
-    {
-      enabled: !!study_group_uuid,
-    }
-  )
-}
+// // 메시지 목록 조회
+// export const useChatDetail = (study_group_uuid: number) => {
+//   return useSimpleQuery(
+//     ['chatRooms', study_group_uuid],
+//     () => api.get(`/v1/chat/chatrooms/${study_group_uuid}/messages`),
+//     {
+//       enabled: !!study_group_uuid,
+//     }
+//   )
+// }
 
 // 채팅 메시지 무한 스크롤
-export const useChatMessages = (uuid: string) => {
+export const useChatMessages = (uuid: string, id: number) => {
   return useInfiniteQuery<ChatMessage[], SimpleError>({
     queryKey: ['chatMessages', uuid],
     queryFn: async ({ pageParam = 1 }) => {
@@ -36,11 +36,12 @@ export const useChatMessages = (uuid: string) => {
           params: {
             page: pageParam,
             page_size: pageParam === 1 ? 300 : 100,
+            study_group_id: id,
             // 처음 가져올 때는 300개 가져오고 이후에 스크롤 할 때 100개씩 가져옴.
           },
         }
       )
-      return response
+      return response.reverse()
     },
     getNextPageParam: (lastPage, allPages) => {
       // useInfiniteQuery의 getNextPageParam은 더이상 페이지가 없을 때는 undefined를 반환하게 하고, 페이지가 더 있으면 그 숫자를 반환하는 게 표준 패턴이라고 함..
@@ -57,5 +58,34 @@ export const useChatMessages = (uuid: string) => {
     },
     initialPageParam: 1,
     enabled: !!uuid,
+    select: (data) => {
+      const pagesReversed = data.pages.map((page) => page)
+      return {
+        ...data,
+        pages: pagesReversed.reverse(),
+        // 페이지 순서 뒤집기
+      }
+    },
   })
 }
+
+// API 응답
+// 페이지 1: ChatMessage[] (300개)
+// 페이지 2: ChatMessage[] (100개)
+// 페이지 3: ChatMessage[] (100개)
+
+// useInfiniteQuery가 저장하는 형태
+// data = {
+//   pages: [
+//     [메시지500, 메시지499, ..., 메시지201 까지 총 300개],  // 페이지 1. 데이터를 최신순으로 준댔으니
+//     [메시지200, ...메시지101 까지 총 100개],          // 페이지 2
+//     [메시지100, ...메시지1까지 총 100개],          // 페이지 3
+//   ],
+//   pageParams: [1, 2, 3]
+// }
+
+// 합치면
+// const messages = data.pages.flatMap(page => page)
+// 펼치고 모은 걸 그대로 다사ㅣ 반환
+// [메시지1, 메시지2, ...500개]  // 모든 페이지 한번에
+// messages.map(...)
