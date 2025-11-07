@@ -1,7 +1,7 @@
 import { useSimpleQuery } from '../../api/Helper/useSimpleQuery'
 import { api } from '../../api/client'
 
-type Lecture = {
+export interface Lecture {
   id: number
   uuid: string
   title: string
@@ -30,11 +30,11 @@ const fetchPopularCourses = async (): Promise<Lecture[]> => {
 
   const sortedLectures = [...lectures]
     .sort(
-      // 평점 높은 순으로 정렬해서 상위 세가지만 가져오기..
       (prevLecture, nextLecture) =>
         nextLecture.average_rating - prevLecture.average_rating
     )
     .slice(0, 3)
+
   return sortedLectures
 }
 
