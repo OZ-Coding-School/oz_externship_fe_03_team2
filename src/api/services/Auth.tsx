@@ -32,6 +32,7 @@ export const useNickNameConfirm = (nickname: string, enabled = false) => {
     {
       enabled: enabled && nickname.length > 0,
       retry: false,
+      throwOnError: false,
     }
   )
 }
