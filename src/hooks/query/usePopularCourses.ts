@@ -28,11 +28,14 @@ const fetchPopularCourses = async (): Promise<Lecture[]> => {
 
   const lectures = response.results ?? []
 
-  const sorted = [...lectures]
-    .sort((a, b) => b.average_rating - a.average_rating)
+  const sortedLectures = [...lectures]
+    .sort(
+      // 평점 높은 순으로 정렬해서 상위 세가지만 가져오기..
+      (prevLecture, nextLecture) =>
+        nextLecture.average_rating - prevLecture.average_rating
+    )
     .slice(0, 3)
-
-  return sorted
+  return sortedLectures
 }
 
 export const usePopularCourses = () =>
