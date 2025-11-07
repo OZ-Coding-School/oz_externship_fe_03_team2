@@ -12,6 +12,7 @@ import {
 } from '../types/apiType'
 import { useToken } from '../store/useTokenStore'
 import { api } from './client'
+import { showToast } from '../utils/showToast'
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
@@ -37,8 +38,8 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
       title: '네트워크 오류',
       message: '요청을 처리할 수 없습니다. 네트워크를 확인해주세요',
     }
-
-    showErrorToast(errorInfo.title, errorInfo.message)
+    //NotificationToast에 뜨는 현상으로 수정
+    showToast(errorInfo.title, 'error', errorInfo.message)
   }
 
   return Promise.reject(error) // 4xx랑 5xx는 컴포넌트에서 처리하도록 그냥 전달

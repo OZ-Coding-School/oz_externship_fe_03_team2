@@ -6,7 +6,10 @@ export const showToast = (
   type: 'error' | 'warning' | 'success',
   title?: string
 ) => {
-  toast.custom((t) => (
-    <Toast id={t} title={title} message={message} type={type} />
-  ))
+  toast.custom(
+    (t) => <Toast id={t} title={title} message={message} type={type} />,
+    {
+      position: 'top-center',
+    }
+  )
 }

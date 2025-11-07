@@ -13,21 +13,18 @@ export const showChatToast = (
     (t) => {
       console.log('토스트 호출2')
       return (
-        <div className="fixed top-100 z-[999]">
-          <NotificationToast
-            id={t}
-            title={title}
-            user={user}
-            content={content}
-            date={date}
-            type={type}
-          />
-        </div>
+        <NotificationToast
+          id={t}
+          title={title}
+          user={user}
+          content={content}
+          date={date}
+          type={type}
+        />
       )
     },
     {
-      duration: 5000,
-      unstyled: true,
+      position: 'top-right',
     }
   )
 }

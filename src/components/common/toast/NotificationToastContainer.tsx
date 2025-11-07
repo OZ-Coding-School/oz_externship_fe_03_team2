@@ -6,8 +6,7 @@ function NotificationToastContainer() {
       position="top-right"
       duration={4000}
       toastOptions={{
-        className: 'mt-16',
-        unstyled: true,
+        className: 'mt-10',
       }}
     />
   )
