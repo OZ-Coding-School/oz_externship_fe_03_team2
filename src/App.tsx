@@ -3,6 +3,7 @@ import './App.css'
 import ToastContainer from './components/common/toast/ToastContainer'
 import { useAuthInit } from './hooks/useAuthInit'
 import { routesConfig } from './routes/routes'
+import NotificationToastContainer from './components/common/toast/NotificationToastContainer'
 
 function App() {
   const { isAuthCheck, isLoading } = useAuthInit() // 인증 초기화
@@ -14,6 +15,7 @@ function App() {
   return (
     <>
       <ToastContainer />
+      <NotificationToastContainer />
       {routes}
     </>
   )
