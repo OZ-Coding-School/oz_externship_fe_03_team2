@@ -36,7 +36,7 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
       <div className="flex w-full justify-between border-b border-gray-200 bg-gray-50 p-4">
         <div className="flex flex-col items-start justify-center p-1">
           <p className="text-black">채팅방</p>
-          {chatCount > 0 ? (
+          {chatCount && chatCount > 0 ? (
             <p className="text-primary-600 text-xs">
               {chatCount}개의 읽지 않은 메시지
             </p>
@@ -49,7 +49,7 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
         </div>
       </div>
       <div className="scrollbar-hide overflow-y-scroll">
-        {chatData.map((msg) => (
+        {chatData?.map((msg) => (
           <div
             key={msg.uuid}
             onClick={() => {

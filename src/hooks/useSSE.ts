@@ -6,7 +6,6 @@ import {
   type NotificationResponse,
   type NotiItem,
 } from '../types/apiInterface/NotiInterface'
-import { EventSourcePolyfill } from 'event-source-polyfill'
 
 export function useSSE() {
   const { accessToken } = useToken()
@@ -15,15 +14,9 @@ export function useSSE() {
   useEffect(() => {
     if (!accessToken) return
 
-    const eventSource = new EventSourcePolyfill(
-      `/api/v1/notifications/stream`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        // withCredentials: true
-        // 얘도 필요한지 나중에 보고 ㄱㄱ
-      }
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
+    const eventSource = new EventSource(
+      `${BASE_URL}/v1/notifications/stream?token=${accessToken}`
     )
 
     eventSource.onopen = () => {

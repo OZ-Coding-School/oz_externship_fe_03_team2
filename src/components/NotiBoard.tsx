@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 // import { allData } from './NotiDummy'
 import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
@@ -6,7 +6,6 @@ import { Link } from 'react-router'
 import { useSSE } from '../hooks/useSSE'
 import {
   useAllNotification,
-  // useAllNotification,
   useNotiPatchAllRead,
   useNotiPatchRead,
 } from '../api/services/Noti'
@@ -14,9 +13,6 @@ import {
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
   const { data: allData } = useAllNotification()
-  useEffect(() => {
-    console.log(allData)
-  }, [allData])
   useSSE()
 
   const { mutate: patchRead } = useNotiPatchRead()
