@@ -1,10 +1,10 @@
 import { ArrowLeft, ChevronDown, Send, X } from 'lucide-react'
 import { useUserStore } from '../../../store/useUserStore'
-import { online } from '../../NotiDummy'
+import { chatDataDummy, online } from '../../NotiDummy'
 import { timeFormat } from '../../../utils/dateFormat'
 import { PeopleBoard } from './PeopleBoard'
 import { useEffect, useRef, useState } from 'react'
-import { useChatMessages } from '../../../api/services/Chat'
+// import { useChatMessages } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
 
 interface ChatDetailType {
@@ -13,23 +13,27 @@ interface ChatDetailType {
 }
 export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const { studyGroupId, studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
-  const {
-    data: chatData,
-    // 평범한.. 걍 데이터
-    fetchNextPage,
-    // 다음 페이지 패치해오기
-    hasNextPage,
-    // 다음 페이지 있나 없나
-    isFetchingNextPage,
-    // 다음 페이지 가져오는 중이냐 아니냐
-    // 우리집 문서 참고..ㄱ
-  } = useChatMessages(studyGroupUuid, studyGroupId)
+  // const {
+  //   data: chatData,
+  //   // 평범한.. 걍 데이터
+  //   fetchNextPage,
+  //   // 다음 페이지 패치해오기
+  //   hasNextPage,
+  //   // 다음 페이지 있나 없나
+  //   isFetchingNextPage,
+  //   // 다음 페이지 가져오는 중이냐 아니냐
+  //   // 우리집 문서 참고..ㄱ
+  // } = useChatMessages(studyGroupUuid, studyGroupId)
+  const chatData = chatDataDummy
+  const isFetchingNextPage = chatDataDummy.isFetchingNextPage
+  const hasNextPage = chatDataDummy.hasNextPage
+  const fetchNextPage = chatDataDummy.fetchNextPage
   const messages = chatData?.pages.flatMap((page) => page) ?? []
 
   const { user } = useUserStore()
   const [openPeople, setOpenPeople] = useState<boolean>(false)
   const [sendMessage, setSendMessage] = useState<string>('')
-  // const chatData = chatMessagesData_10
+
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const handleScroll = () => {
@@ -133,7 +137,25 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
         ) : (
           messages?.map((msg) => {
             const isMe = msg.sender.id === user?.id
-
+            if (msg.type === 'force_disconnect') {
+              return (
+                <div
+                  key={msg.id}
+                  className="flex h-full w-full items-center justify-center text-sm text-gray-400"
+                >
+                  대화 내역이 없습니다.
+                </div>
+              )
+            } else if (msg.type === 'system_message') {
+              return (
+                <div
+                  key={msg.id}
+                  className="bg-primary-500 flex h-5 w-auto items-center justify-center rounded-full px-3 py-2 text-xs text-white opacity-60"
+                >
+                  {msg.content}
+                </div>
+              )
+            }
             return (
               <div key={msg.id}>
                 {/* 메시지 */}

@@ -258,138 +258,255 @@ export const chatData = [
 ]
 
 // 채팅내역
-export const chatMessagesData_10 = [
-  {
-    id: 201,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 8,
-      nickname: '김민섭',
-    },
-    content: 'React 프로젝트 시작합니다',
-    created_at: '2025-10-29T08:00:00Z',
-  },
-  {
-    id: 202,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 5,
-      nickname: '민현서',
-    },
-    content: '민서비이 반갑습니다',
-    created_at: '2025-10-29T08:30:00Z',
-  },
-  {
-    id: 203,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 25,
-      nickname: '김미진',
-    },
-    content: 'useState 질문 있어요',
-    created_at: '2025-10-29T09:00:00Z',
-  },
-  {
-    id: 204,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 8,
-      nickname: '김민섭',
-    },
-    content: '네 말씀하세요',
-    created_at: '2025-10-29T09:05:00Z',
-  },
-  {
-    id: 205,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 25,
-      nickname: '김미진',
-    },
-    content: 'useState 초기값은 어떻게 설정하나요?',
-    created_at: '2025-10-29T09:10:00Z',
-  },
-  {
-    id: 206,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 8,
-      nickname: '김민섭',
-    },
-    content: 'useState(0) 이런 식으로 괄호 안에 넣으면 됩니다',
-    created_at: '2025-10-29T09:15:00Z',
-  },
-  {
-    id: 207,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 30,
-      nickname: '정승윤',
-    },
-    content: '컴포넌트 분리는 어떻게 하나요?',
-    created_at: '2025-10-29T10:00:00Z',
-  },
-  {
-    id: 208,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 8,
-      nickname: '김민섭',
-    },
-    content: '재사용 가능한 단위로 나누면 됩니다',
-    created_at: '2025-10-29T10:30:00Z',
-  },
-  {
-    id: 209,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 5,
-      nickname: '민현서',
-    },
-    content: '다음 스터디 주제가 뭔가요?',
-    created_at: '2025-10-29T11:00:00Z',
-  },
-  {
-    id: 210,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 8,
-      nickname: '김민섭',
-    },
-    content: 'useEffect와 useContext입니다',
-    created_at: '2025-10-29T11:30:00Z',
-  },
-  {
-    id: 211,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 25,
-      nickname: '김미진',
-    },
-    content: '자료 공유 감사합니다',
-    created_at: '2025-10-29T12:00:00Z',
-  },
-  {
-    id: 212,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 30,
-      nickname: '정승윤',
-    },
-    content: '과제 제출했습니다',
-    created_at: '2025-10-29T14:20:00Z',
-  },
-  {
-    id: 213,
-    study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender: {
-      id: 30,
-      nickname: '정승윤',
-    },
-    content: '사실 뻥이지롱ㅋㅋ',
-    created_at: '2025-10-29T14:22:00Z',
-  },
-]
+// export const chatMessagesData_10 = [
+//   {
+//     id: 201,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 8,
+//       nickname: '김민섭',
+//     },
+//     content: 'React 프로젝트 시작합니다',
+//     created_at: '2025-10-29T08:00:00Z',
+//   },
+//   {
+//     id: 202,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 5,
+//       nickname: '민현서',
+//     },
+//     content: '민서비이 반갑습니다',
+//     created_at: '2025-10-29T08:30:00Z',
+//   },
+//   {
+//     id: 203,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 25,
+//       nickname: '김미진',
+//     },
+//     content: 'useState 질문 있어요',
+//     created_at: '2025-10-29T09:00:00Z',
+//   },
+//   {
+//     id: 204,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 8,
+//       nickname: '김민섭',
+//     },
+//     content: '네 말씀하세요',
+//     created_at: '2025-10-29T09:05:00Z',
+//   },
+//   {
+//     id: 205,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 25,
+//       nickname: '김미진',
+//     },
+//     content: 'useState 초기값은 어떻게 설정하나요?',
+//     created_at: '2025-10-29T09:10:00Z',
+//   },
+//   {
+//     id: 206,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 8,
+//       nickname: '김민섭',
+//     },
+//     content: 'useState(0) 이런 식으로 괄호 안에 넣으면 됩니다',
+//     created_at: '2025-10-29T09:15:00Z',
+//   },
+//   {
+//     id: 207,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 30,
+//       nickname: '정승윤',
+//     },
+//     content: '컴포넌트 분리는 어떻게 하나요?',
+//     created_at: '2025-10-29T10:00:00Z',
+//   },
+//   {
+//     id: 208,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 8,
+//       nickname: '김민섭',
+//     },
+//     content: '재사용 가능한 단위로 나누면 됩니다',
+//     created_at: '2025-10-29T10:30:00Z',
+//   },
+//   {
+//     id: 209,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 5,
+//       nickname: '민현서',
+//     },
+//     content: '다음 스터디 주제가 뭔가요?',
+//     created_at: '2025-10-29T11:00:00Z',
+//   },
+//   {
+//     id: 210,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 8,
+//       nickname: '김민섭',
+//     },
+//     content: 'useEffect와 useContext입니다',
+//     created_at: '2025-10-29T11:30:00Z',
+//   },
+//   {
+//     id: 211,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 25,
+//       nickname: '김미진',
+//     },
+//     content: '자료 공유 감사합니다',
+//     created_at: '2025-10-29T12:00:00Z',
+//   },
+//   {
+//     id: 212,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 30,
+//       nickname: '정승윤',
+//     },
+//     content: '과제 제출했습니다',
+//     created_at: '2025-10-29T14:20:00Z',
+//   },
+//   {
+//     id: 213,
+//     study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//     sender: {
+//       id: 30,
+//       nickname: '정승윤',
+//     },
+//     content: '사실 뻥이지롱ㅋㅋ',
+//     created_at: '2025-10-29T14:22:00Z',
+//   },
+// ]
+
+export const chatDataDummy = {
+  pages: [
+    [
+      {
+        id: 201,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 8, nickname: '김민섭' },
+        content: 'React 프로젝트 시작합니다',
+        created_at: '2025-10-29T08:00:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 202,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 6, nickname: '민현서' },
+        content: '민서비이 반갑습니다',
+        created_at: '2025-10-29T08:30:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 203,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 0, nickname: 'system' },
+        content: '고재성_조교님이 참여하셨습니다',
+        created_at: '2025-10-29T08:31:00Z',
+        type: 'system_message',
+      },
+      {
+        id: 204,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 25, nickname: '김미진' },
+        content: 'useState 질문 있어요',
+        created_at: '2025-10-29T09:00:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 205,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 8, nickname: '김민섭' },
+        content: '네 말씀하세요',
+        created_at: '2025-10-29T09:05:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 206,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 0, nickname: 'system' },
+        content: '고재성_조교님이 탈퇴하셨습니다',
+        created_at: '2025-10-29T09:06:00Z',
+        type: 'system_message',
+      },
+      {
+        id: 207,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 30, nickname: '정승윤' },
+        content: '컴포넌트 분리는 어떻게 하나요?',
+        created_at: '2025-10-29T10:00:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 208,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 8, nickname: '김민섭' },
+        content: '재사용 가능한 단위로 나누면 됩니다',
+        created_at: '2025-10-29T10:30:00Z',
+        type: 'chat.message',
+      },
+    ],
+    [
+      {
+        id: 209,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 6, nickname: '민현서' },
+        content: '다음 스터디 주제가 뭔가요?',
+        created_at: '2025-10-29T11:00:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 210,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 8, nickname: '김민섭' },
+        content: 'useEffect와 useContext입니다',
+        created_at: '2025-10-29T11:30:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 211,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 0, nickname: 'system' },
+        content: '고재성_조교님이 참여하셨습니다',
+        created_at: '2025-10-29T11:35:00Z',
+        type: 'system_message',
+      },
+      {
+        id: 212,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 30, nickname: '정승윤' },
+        content: '과제 제출했습니다',
+        created_at: '2025-10-29T14:20:00Z',
+        type: 'chat.message',
+      },
+      {
+        id: 213,
+        study_group_uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        sender: { id: 30, nickname: '정승윤' },
+        content: '사실 뻥이지롱ㅋㅋ',
+        created_at: '2025-10-29T14:22:00Z',
+        type: 'chat.message',
+      },
+    ],
+  ],
+  pageParams: [1, 2],
+  fetchNextPage: () => Promise.resolve(),
+  hasNextPage: false,
+  isFetchingNextPage: false,
+}
 
 export const online = {
   total: 7,
@@ -398,8 +515,8 @@ export const online = {
     { id: 2, name: '최자바', is_online: true },
     { id: 3, name: '왁왁왁', is_online: false },
     { id: 4, name: '이야호', is_online: true },
-    { id: 5, name: '민현서', is_online: true },
-    { id: 6, name: '김현진', is_online: false },
+    { id: 5, name: '김현진', is_online: false },
+    { id: 6, name: '민현서', is_online: true },
     { id: 7, name: '김미진', is_online: true },
     { id: 8, name: '김민섭', is_online: true },
     { id: 9, name: '정승윤', is_online: false },
