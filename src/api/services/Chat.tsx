@@ -41,7 +41,10 @@ export const useChatMessages = (uuid: string | null, id: number | null) => {
           },
         }
       )
-      return response.reverse()
+      return response.reverse().map((msg) => ({
+        ...msg,
+        type: 'chat.message' as const,
+      }))
     },
     getNextPageParam: (lastPage, allPages) => {
       // useInfiniteQuery의 getNextPageParam은 더이상 페이지가 없을 때는 undefined를 반환하게 하고, 페이지가 더 있으면 그 숫자를 반환하는 게 표준 패턴이라고 함..

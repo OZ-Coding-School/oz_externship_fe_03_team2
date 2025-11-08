@@ -21,6 +21,7 @@ export interface ChatMessage {
   }
   content: string
   created_at: string
+  type?: 'chat.message' | 'system_message'
 }
 
 // 웹소켓 바디

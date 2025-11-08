@@ -33,8 +33,12 @@ export const useWebSocket = (study_group_id: number) => {
       // }
       // 이 중에 data 부분을 찍고 들어가는 거
 
-      if (response.type === 'chat.message' && response.data) {
-        const newMsg = response.data
+      if (response.data) {
+        const newMsg: ChatMessage = {
+          ...response.data,
+          type: response.data.type,
+        }
+
         // 변수에 안 담고 바로 ...prev, response.data 했더니
         // undefined일 수 있다고 오류 뜸
         // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함

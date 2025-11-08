@@ -1,5 +1,4 @@
 import { ArrowLeft, ChevronDown, Send, X } from 'lucide-react'
-// import { useChatDetail } from '../../../api/services/Chat'
 import { useUserStore } from '../../../store/useUserStore'
 import { online } from '../../NotiDummy'
 import { timeFormat } from '../../../utils/dateFormat'
