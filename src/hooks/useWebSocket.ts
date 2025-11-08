@@ -36,7 +36,7 @@ export const useWebSocket = (study_group_id: number) => {
       if (response.data) {
         const newMsg: ChatMessage = {
           ...response.data,
-          type: response.data.type,
+          type: response.type,
         }
 
         // 변수에 안 담고 바로 ...prev, response.data 했더니

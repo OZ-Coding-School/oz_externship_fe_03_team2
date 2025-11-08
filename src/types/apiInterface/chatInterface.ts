@@ -21,7 +21,7 @@ export interface ChatMessage {
   }
   content: string
   created_at: string
-  type?: 'chat.message' | 'system_message'
+  type?: 'chat.message' | 'error' | 'force_disconnect' | 'system_message'
 }
 
 // 웹소켓 바디
@@ -32,7 +32,7 @@ export interface WebSocketRequest {
 
 // 웹소켓 response
 export interface WebSocketResponse {
-  type: 'chat.message' | 'error' | 'force_disconnect'
+  type: 'chat.message' | 'error' | 'force_disconnect' | 'system_message'
   data?: ChatMessage
   code?: string
   message?: string
