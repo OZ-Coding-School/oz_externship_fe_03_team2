@@ -1,11 +1,16 @@
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
-import type { WebSocketResponse } from '../types/apiInterface/chatInterface'
+import type {
+  ChatMessage,
+  WebSocketResponse,
+} from '../types/apiInterface/chatInterface'
+import { useStudyGroupId } from '../store/useStudyGroupId'
 
 export const useWebSocket = (study_group_id: number) => {
   const socketRef = useRef<WebSocket | null>(null)
   const [isError, setIsError] = useState<boolean>(false)
   const queryClient = useQueryClient()
+  const { setStudyGroupUuid } = useStudyGroupId()
 
   useEffect(() => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL
@@ -35,14 +40,28 @@ export const useWebSocket = (study_group_id: number) => {
         // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함
         //! 채팅목록 가져오는 api 나오면 인터페이스/탠스택 만들고 타입/쿼리키 연결해서
         //! 받아온 newMsg텍스트 캐시에 추가하는 로직 작성
-        queryClient.setQueryData<WebSocketResponse>(
-          ['chatRooms'],
+        queryClient.setQueryData<InfiniteData<ChatMessage[]>>(
+          ['chatMessages', study_group_id],
           (old) => {
-            if (!old) return old
-            const updatedItems: 
+            if (!old) {
+              return {
+                pages: [[newMsg]],
+                pageParams: [1],
+              }
+            }
+            const newPages = [...old.pages]
+            const lastPageIndex = newPages.length - 1
+            newPages[lastPageIndex] = [...newPages[lastPageIndex], newMsg]
+            return {
+              ...old,
+              pages: newPages,
+            }
           }
         )
         setIsError(false)
+      } else if (response.type === 'force_disconnect') {
+        socket.close()
+        setStudyGroupUuid(null)
       }
     }
 

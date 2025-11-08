@@ -26,7 +26,7 @@ export const useChatRooms = () => {
 // }
 
 // 채팅 메시지 무한 스크롤
-export const useChatMessages = (uuid: string, id: number) => {
+export const useChatMessages = (uuid: string | null, id: number | null) => {
   return useInfiniteQuery<ChatMessage[], SimpleError>({
     queryKey: ['chatMessages', uuid],
     queryFn: async ({ pageParam = 1 }) => {
@@ -57,13 +57,11 @@ export const useChatMessages = (uuid: string, id: number) => {
       // 다음 페이지 번호 반환
     },
     initialPageParam: 1,
-    enabled: !!uuid,
+    enabled: !!uuid && !!id,
     select: (data) => {
-      const pagesReversed = data.pages.map((page) => page)
       return {
         ...data,
-        pages: pagesReversed.reverse(),
-        // 페이지 순서 뒤집기
+        pages: [...data.pages].reverse(),
       }
     },
   })

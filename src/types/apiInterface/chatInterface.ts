@@ -11,7 +11,7 @@ export interface ChatRoom {
   unread_message_count: number
 }
 
-// 채팅 내역
+// 채팅 내역 하나
 export interface ChatMessage {
   id: number
   study_group_uuid: string
@@ -31,7 +31,7 @@ export interface WebSocketRequest {
 
 // 웹소켓 response
 export interface WebSocketResponse {
-  type: 'chat.message' | 'error'
+  type: 'chat.message' | 'error' | 'force_disconnect'
   data?: ChatMessage
   code?: string
   message?: string

@@ -3,6 +3,7 @@ import { monthDayFormat } from '../../../utils/dateFormat'
 import { useState } from 'react'
 import { ChatDetail } from './DetailChatBoard'
 import { useChatRooms } from '../../../api/services/Chat'
+import { useStudyGroupId } from '../../../store/useStudyGroupId'
 
 interface ChatOpenType {
   setChatOpen: (chatOpen: boolean) => void
@@ -15,19 +16,13 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
     (acc, cur) => acc + cur.unread_message_count,
     0
   )
-  const [selectedRoomUuid, setSelectedRoomUuid] = useState<string | null>(null)
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
-  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null)
+  const { studyGroupId, setStudyGroupId, studyGroupUuid, setStudyGroupUuid } =
+    useStudyGroupId()
 
-  if (selectedRoomUuid && selectedRoomId) {
+  if (studyGroupUuid && studyGroupId) {
     return (
-      <ChatDetail
-        selectedRoomUuid={selectedRoomUuid}
-        studyGroupId={selectedRoomId}
-        setChatOpen={setChatOpen}
-        studyGroupName={selectedRoomName}
-        setSelectedRoomUuid={setSelectedRoomUuid}
-      />
+      <ChatDetail setChatOpen={setChatOpen} studyGroupName={selectedRoomName} />
     )
   }
 
@@ -53,9 +48,9 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
           <div
             key={msg.uuid}
             onClick={() => {
-              setSelectedRoomUuid(msg.uuid)
+              setStudyGroupUuid(msg.uuid)
               setSelectedRoomName(msg.name)
-              setSelectedRoomId(msg.last_message.id)
+              setStudyGroupId(msg.last_message.id)
             }}
             className="flex flex-col gap-1 border-b border-gray-200 p-3 hover:bg-gray-50 active:bg-gray-100"
           >

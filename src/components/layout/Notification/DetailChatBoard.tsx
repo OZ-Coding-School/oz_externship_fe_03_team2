@@ -6,21 +6,14 @@ import { timeFormat } from '../../../utils/dateFormat'
 import { PeopleBoard } from './PeopleBoard'
 import { useEffect, useRef, useState } from 'react'
 import { useChatMessages } from '../../../api/services/Chat'
+import { useStudyGroupId } from '../../../store/useStudyGroupId'
 
 interface ChatDetailType {
   studyGroupName: string | null
-  studyGroupId: number
-  selectedRoomUuid: string
-  setSelectedRoomUuid: (selectedRoomUuid: string | null) => void
   setChatOpen: (chatOpen: boolean) => void
 }
-export function ChatDetail({
-  studyGroupName,
-  studyGroupId,
-  selectedRoomUuid,
-  setSelectedRoomUuid,
-  setChatOpen,
-}: ChatDetailType) {
+export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
+  const { studyGroupId, studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
   const {
     data: chatData,
     // 평범한.. 걍 데이터
@@ -31,7 +24,7 @@ export function ChatDetail({
     isFetchingNextPage,
     // 다음 페이지 가져오는 중이냐 아니냐
     // 우리집 문서 참고..ㄱ
-  } = useChatMessages(selectedRoomUuid, studyGroupId)
+  } = useChatMessages(studyGroupUuid, studyGroupId)
   const messages = chatData?.pages.flatMap((page) => page) ?? []
 
   const { user } = useUserStore()
@@ -82,7 +75,7 @@ export function ChatDetail({
       <div className="flex items-center justify-between bg-gray-50 p-3">
         <div className="flex items-center gap-4">
           <div className="text-gray-400 hover:text-gray-500 active:text-gray-600">
-            <ArrowLeft size={18} onClick={() => setSelectedRoomUuid(null)} />
+            <ArrowLeft size={18} onClick={() => setStudyGroupUuid(null)} />
           </div>
           <div className="flex flex-col">
             <p className="text-sm font-semibold">{studyGroupName}</p>
