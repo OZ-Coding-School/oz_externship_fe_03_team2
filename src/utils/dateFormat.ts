@@ -50,7 +50,7 @@ export function fullDateFormat(dateValue: string): string {
   return `${year}.${month}.${day} ${period} ${displayHours}:${minutes}`
 }
 
-// 시작일과 종료일을 받아 개월 수를 계산 (3개월 이런식)
+// 시작일과 종료일을 받아 개월 수를 계산 (3개월 or 1개월 미만일땐 3일)
 export const calculateDurationFormat = (
   startDate: string,
   endDate: string
@@ -59,9 +59,13 @@ export const calculateDurationFormat = (
 
   const start = new Date(startDate)
   const end = new Date(endDate)
-  const months = Math.round(
-    (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 30)
-  )
 
-  return `${months}개월`
+  const timeDifferenceInMs = Math.abs(end.getTime() - start.getTime()) // 두 날짜의 시간 차이를 초로 계산
+
+  const totalDays = Math.ceil(timeDifferenceInMs / (1000 * 60 * 60 * 24)) // 초를 일수로 변환 > ceil 올림 처리 (1.2일 > 2일)
+
+  if (totalDays < 30) return `${totalDays}일`
+
+  const totalMonths = Math.round(totalDays / 30) // round로 반올림 (1.4개월 > 1개월, 1.6개월 > 2개월)
+  return `${totalMonths}개월`
 }
