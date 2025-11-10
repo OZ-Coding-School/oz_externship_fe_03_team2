@@ -228,6 +228,11 @@ export function CourseBookmarkCard({
 
   if (!data) return
 
+  // 무료인지 확인
+  const isFreePrice =
+    data.lecture_info.original_price === 0 &&
+    data.lecture_info.discount_price === 0
+
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md">
       <div className="flex gap-4">
@@ -279,14 +284,25 @@ export function CourseBookmarkCard({
 
         {/* 가격, 버튼 */}
         <div className="flex flex-shrink-0 flex-col items-end justify-between">
+          {/* 가격 표시 */}
           <div className="text-right">
-            <p className="text-lg font-bold text-gray-900">
-              ₩{data.lecture_info.discount_price.toLocaleString()}
-            </p>
-            {data.lecture_info.original_price && (
-              <p className="text-sm text-gray-500 line-through">
-                ₩{data.lecture_info.original_price.toLocaleString()}
-              </p>
+            {isFreePrice ? (
+              // 0원이면 무료만 표시
+              <p className="pr-2 text-lg font-bold text-gray-900">무료</p>
+            ) : (
+              // 가격 있으면 > 할인가와 원가 표시
+              <>
+                <p className="text-lg font-bold text-gray-900">
+                  ₩{data.lecture_info.discount_price.toLocaleString()}
+                </p>
+                {data.lecture_info.original_price > 0 &&
+                  data.lecture_info.original_price !==
+                    data.lecture_info.discount_price && (
+                    <p className="text-sm text-gray-500 line-through">
+                      ₩{data.lecture_info.original_price.toLocaleString()}
+                    </p>
+                  )}
+              </>
             )}
           </div>
           <div className="flex items-center gap-4">
