@@ -300,13 +300,6 @@ export interface ReviewsByStudyGroupParameter {
   group_id: number
 }
 
-export interface Review {
-  id: number
-  user: { id: number; nickname: string }
-  star_rating: number
-  content: string
-  created_at: string
-}
 export interface ReviewsByStudyGroupResponse {
   status: number
   message: string
@@ -388,4 +381,41 @@ export interface PhoneVerificationConfirmResponse {
 export interface UpdateProfileResponse {
   detail: string
   data: MeResponse
+}
+
+// 스터디 그룹 목록 조회 파라미터
+export interface GetStudyGroupsParams {
+  status?: 'PENDING' | 'ONGOING' | 'ENDED'
+  page?: number
+  search?: string
+}
+
+// 스터디 그룹의 리뷰 조회 파라미터
+export interface GetGroupReviewsParams {
+  page?: number
+  ordering?: string
+  page_size?: number
+  rating?: number
+}
+
+// 스터디 그룹 리뷰 관련
+export interface Review {
+  id: string
+  rating:
+    | '1_OUT_OF_5_STARS'
+    | '2_OUT_OF_5_STARS'
+    | '3_OUT_OF_5_STARS'
+    | '4_OUT_OF_5_STARS'
+    | '5_OUT_OF_5_STARS'
+  content: string
+  created_at: string
+  updated_at: string
+  is_mine: boolean
+}
+
+export interface ReviewResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Review[]
 }
