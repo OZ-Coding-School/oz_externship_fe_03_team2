@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react'
-import CompletedStudyCard, { type StudyGroup } from './CompletedStudyCard'
+import CompletedStudyCard from './CompletedStudyCard'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
-
-interface completedResponse {
-  status: number
-  message: string
-  data: {
-    study_groups: StudyGroup[]
-  }
-}
+import type {
+  StudyGroups,
+  StudyGroupsResponse,
+} from '../../types/apiInterface/mypageInterface'
 
 function CompletedStudyContents() {
   useDocumentTitle('완료된 스터디')
-  const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([])
+  const [studyGroups, setStudyGroups] = useState<StudyGroups[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -21,79 +17,60 @@ function CompletedStudyContents() {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       try {
         // 더미 데이터
-        const mockData: completedResponse = {
-          status: 200,
-          message: '스터디 그룹 목록 조회에 성공했습니다.',
-          data: {
-            study_groups: [
-              {
-                id: 1,
-                name: 'Vue.js 마스터 스터디',
-                current_headcount: 8,
-                max_headcount: 10,
-                is_leader: false,
-                profile_img_url:
-                  'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-                start_at: '2023-11-01',
-                end_at: '2024-02-01',
-                status: 'completed',
-                lectures: [
-                  {
-                    id: 1,
-                    title: 'Vue.js 기초',
-                    instructor: '김강사',
-                  },
-                ],
-                review_count: 3,
-                star_rating_average: 0,
-                is_reviewed: false,
-              },
-              {
-                id: 2,
-                name: 'Python 데이터 분석 스터디',
-                current_headcount: 6,
-                max_headcount: 8,
-                is_leader: true,
-                profile_img_url: '',
-                start_at: '2023-09-01',
-                end_at: '2024-01-01',
-                status: 'completed',
-                lectures: [
-                  {
-                    id: 2,
-                    title: 'Python 데이터 분석',
-                    instructor: '이강사',
-                  },
-                ],
-                review_count: 5,
-                star_rating_average: 4.7,
-                is_reviewed: true,
-              },
-              {
-                id: 3,
-                name: 'TypeScript 심화 스터디',
-                current_headcount: 5,
-                max_headcount: 6,
-                is_leader: false,
-                profile_img_url: '',
-                start_at: '2023-10-01',
-                end_at: '2023-12-01',
-                status: 'completed',
-                lectures: [
-                  {
-                    id: 3,
-                    title: 'TypeScript 심화',
-                    instructor: '박강사',
-                  },
-                ],
-                review_count: 2,
-                star_rating_average: 0,
-                is_reviewed: false,
-              },
-            ],
-          },
+        const mockData: StudyGroupsResponse = {
+          count: 3,
+          next: null,
+          previous: null,
+          results: [
+            {
+              uuid: '42cb53a6-f194-4f29-9367-b60f31016fcc',
+              name: '두번째실험용1108',
+              profile_img_url:
+                'https://cdn.inflearn.com/wp-content/uploads/TypeScript_inflearn.png',
+              max_headcount: 3,
+              start_at: '2025-11-08T18:19:02.543000+09:00',
+              end_at: '2025-11-20T18:19:02.543000+09:00',
+              status: 'PENDING',
+              current_headcount: 0,
+              is_leader: false,
+              lectures: [
+                {
+                  uuid: '289eea34-554c-441c-81bc-238c9aa66723',
+                  title: '타입스크립트 코리아 : 기초 세미나',
+                  instructor: '이웅재',
+                  original_price: 0,
+                  discount_price: 0,
+                },
+              ],
+              total_pages: 1,
+              total_groups: 2,
+            },
+            {
+              uuid: '3996af11-900c-4843-9c53-f4ff562c9aee',
+              name: '실험용 스터디그룹 생성',
+              profile_img_url:
+                'https://cdn.inflearn.com/wp-content/uploads/TypeScript_inflearn.png',
+              max_headcount: 2,
+              start_at: '2025-11-06T16:48:43.672000+09:00',
+              end_at: '2025-12-06T16:48:43.672000+09:00',
+              status: 'PENDING',
+              current_headcount: 0,
+              is_leader: true,
+              lectures: [
+                {
+                  uuid: '289eea34-554c-441c-81bc-238c9aa66723',
+                  title: '타입스크립트 코리아 : 기초 세미나',
+                  instructor: '이웅재',
+                  original_price: 0,
+                  discount_price: 0,
+                },
+              ],
+              total_pages: 1,
+              total_groups: 2,
+            },
+          ],
         }
-        setStudyGroups(mockData.data.study_groups)
+        setStudyGroups(mockData.results)
       } catch {
         setIsLoading(false) //일단 넣을게 없어서 넣음
       } finally {
@@ -127,7 +104,7 @@ function CompletedStudyContents() {
         ) : studyGroups.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {studyGroups.map((study) => (
-              <CompletedStudyCard key={study.id} study={study} />
+              <CompletedStudyCard key={study.uuid} study={study} />
             ))}
           </div>
         ) : (

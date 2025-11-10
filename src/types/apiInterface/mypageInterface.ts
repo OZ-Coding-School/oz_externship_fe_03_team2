@@ -188,30 +188,33 @@ export interface DetailApplicationResponse {
 
 // 스터디 그룹 목록 조회 - - - - - - - -
 export interface StudyGroups {
-  id: number
+  uuid: string
   name: string
-  current_headcount: number
-  max_headcount: number
-  is_leader: boolean
   profile_img_url: string
+  max_headcount: number
   start_at: string
   end_at: string
   status: 'PENDING' | 'ONGOING' | 'ENDED'
+  current_headcount: number
+  is_leader: boolean
   lectures: Lecture[]
+  total_pages: number
+  total_groups: number
 }
 
 export interface Lecture {
-  id: number
+  uuid: string
   title: string
   instructor: string
+  original_price: number
+  discount_price: number
 }
 
 export interface StudyGroupsResponse {
-  status: number
-  message: string
-  data: {
-    study_groups: StudyGroups[]
-  }
+  count: number
+  next: string | null
+  previous: string | null
+  results: StudyGroups[]
 }
 
 // 스터디 그룹 상세 조회 - - - - - - - -

@@ -5,29 +5,13 @@ import {
   calculateDurationFormat,
   yearMonthFormat,
 } from '../../utils/dateFormat'
-import { type Lecture } from '../../types/apiInterface/mypageInterface'
+import type { StudyGroups } from '../../types/apiInterface/mypageInterface'
 import StarRating from '../common/StarRating'
 import { useState } from 'react'
 import CompletedStudyReviewModal from './CompletedStudyReviewModal'
 
-export interface StudyGroup {
-  id: number
-  name: string
-  current_headcount: number
-  max_headcount: number
-  is_leader: boolean
-  profile_img_url: string
-  start_at: string
-  end_at: string
-  status: string
-  lectures: Lecture[]
-  review_count: number
-  star_rating_average: number
-  is_reviewed: boolean
-}
-
 interface CompletedStudyCardProps {
-  study?: StudyGroup
+  study?: StudyGroups
   isLoading?: boolean
 }
 
