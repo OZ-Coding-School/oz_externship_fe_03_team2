@@ -9,6 +9,8 @@ import type { StudyGroups } from '../../types/apiInterface/mypageInterface'
 import StarRating from '../common/StarRating'
 import { useState } from 'react'
 import CompletedStudyReviewModal from './CompletedStudyReviewModal'
+import { useGetGroupReviews } from '../../api/services/mypage/studyGroup'
+import { ratingToNumber } from '../../utils/ratingToNumber'
 
 interface CompletedStudyCardProps {
   study?: StudyGroups
@@ -17,6 +19,17 @@ interface CompletedStudyCardProps {
 
 function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+
+  // 각 카드에서 개별적으로 리뷰 조회
+  const { data: reviewData } = useGetGroupReviews(
+    study?.uuid ?? '',
+    undefined,
+    !!study?.uuid // study.uuid가 있을 때만 실행
+  )
+
+  // 내가 작성한 리뷰 찾기
+  const myReview = reviewData?.results?.find((review) => review.is_mine)
+  const myRating = myReview ? ratingToNumber(myReview.rating) : 0
 
   const handleReviewClick = () => {
     setIsReviewModalOpen(true)
@@ -114,10 +127,10 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
 
           {/* 리뷰 영역 */}
           <div className="mt-auto">
-            {study.is_reviewed ? (
+            {myReview ? (
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <div className="mb-3 flex items-center justify-between">
-                  <StarRating rating={study.star_rating_average} />
+                  <StarRating rating={myRating} />
                   <button
                     type="button"
                     className="flex cursor-pointer items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
@@ -126,8 +139,7 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
                   </button>
                 </div>
                 <p className="line-clamp-2 text-sm text-gray-700">
-                  {study.is_leader &&
-                    '강의가 정말 도움이 되었습니다. 멤버들과의 협업도 원활했고 많은 것을 배울 수 있었어요.'}
+                  {myReview.content || '리뷰 내용이 없습니다.'}
                 </p>
               </div>
             ) : (
