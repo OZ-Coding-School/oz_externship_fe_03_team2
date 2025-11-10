@@ -5,6 +5,7 @@ import { Toaster } from 'sonner'
 export default function ToastContainer() {
   return (
     <Toaster
+      id="global-toast"
       position="top-center"
       duration={4000}
       toastOptions={{
