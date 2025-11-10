@@ -149,7 +149,7 @@ function MainPage() {
                         date={`${course.discount_price.toLocaleString()}원`}
                         imageUrl={course.thumbnail_img_url}
                         size={`w-full sm:w-[384px] h-[17.375rem]`}
-                        onClick={() => navigate(`/courses/${course.uuid}`)}
+                        onClick={() => navigate(course.url_link)}
                       />
                     ))}
                   </div>
