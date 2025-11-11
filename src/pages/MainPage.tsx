@@ -52,7 +52,7 @@ function MainPage() {
         {/* 오른쪽 이미지 */}
         <div className="h-[220px] w-full max-w-[340px] overflow-hidden rounded-2xl shadow-md sm:h-[389px] sm:max-w-[584px]">
           <img
-            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop"
+            src="/images/mainBannerImg.png"
             alt="스터디룸"
             className="h-full w-full object-cover"
           />
