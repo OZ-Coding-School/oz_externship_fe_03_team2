@@ -21,6 +21,7 @@ import {
   UserRoundPlus,
   X,
 } from 'lucide-react'
+import { allData } from './NotiDummy'
 
 const typeToIcon = (type: string): ReactNode => {
   const typeMap: Record<string, ReactNode> = {
@@ -40,7 +41,7 @@ const typeToIcon = (type: string): ReactNode => {
 
 const typeToColor = (type: string): string => {
   const typeMap: Record<string, string> = {
-    APPLICATION_CREATED: 'bg- text-[#2563EB]',
+    APPLICATION_CREATED: 'bg-[#DBEAFE] text-[#2563EB]',
     APPLICATION_STATUS_APPROVAL: 'bg-[#DCFCE7] text-[#16A34A]',
     APPLICATION_STATUS_REJECTION: 'bg-[#FEE2E2] text-[#DC2626]',
     STUDY_MEMBER_JOINED: 'bg-[#F3E8FF] text-[#9333EA]',
@@ -48,15 +49,15 @@ const typeToColor = (type: string): string => {
     STUDY_SCHEDULE_UPCOMING: 'bg-[#F3E8FF] text-[#9333EA]',
     STUDY_SCHEDULE_TODAY: 'bg-[#F3E8FF] text-[#9333EA]',
     STUDY_RECORD_CREATED: 'bg-[#F3E8FF] text-[#9333EA]',
-    SYSTEM: 'bg-[##d1d5db] text-[#4b5563]',
-    CUSTOM: 'bg-[##fef9c3] text-[#eab308]',
+    SYSTEM: 'bg-[#e5e7eb] text-[#4b5563]',
+    CUSTOM: 'bg-[#fef9c3] text-[#eab308]',
   }
   return typeMap[type]
 }
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
-  const { data: allData } = useAllNotification()
+  // const { data: allData } = useAllNotification()
   useSSE()
 
   const { mutate: patchRead } = useNotiPatchRead()
@@ -118,7 +119,9 @@ export function NotiBoard() {
             onClick={() => !item.is_read && handleRead(item.id)}
             className={`flex w-full border-b border-gray-100 ${!item.is_read && 'bg-primary-50'} gap-3 p-4`}
           >
-            <div className="h-8 w-8 rounded-full bg-[#DBEAFE]">
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-full ${item.type && typeToColor(item.type)}`}
+            >
               {item.type && typeToIcon(item.type)}
             </div>
             <div className="flex flex-1 flex-col gap-1">
