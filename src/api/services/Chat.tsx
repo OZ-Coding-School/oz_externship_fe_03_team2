@@ -1,6 +1,7 @@
 import { useSimpleQuery } from '../Helper/useSimpleQuery'
 import {
   type ChatMessage,
+  type ChatMessageData,
   type ChatRoom,
 } from '../../types/apiInterface/chatInterface'
 import { api } from '../client'
@@ -16,10 +17,10 @@ export const useChatRooms = () => {
 
 // 채팅 메시지 무한 스크롤
 export const useChatMessages = (uuid: string | null) => {
-  return useInfiniteQuery<ChatMessage[], SimpleError>({
+  return useInfiniteQuery<ChatMessageData[], SimpleError>({
     queryKey: ['chatMessages', uuid],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await api.get<ChatMessage[]>(
+      const response = await api.get<ChatMessage>(
         `/v1/chat/rooms/${uuid}/messages`,
         {
           params: {
@@ -29,7 +30,7 @@ export const useChatMessages = (uuid: string | null) => {
           },
         }
       )
-      return response.reverse().map((msg) => ({
+      return response.data.messages.reverse().map((msg) => ({
         ...msg,
         type: 'chat.message' as const,
       }))
