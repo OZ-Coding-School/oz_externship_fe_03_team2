@@ -10,7 +10,7 @@ export const useAllNotification = () => {
   const { accessToken } = useToken()
   return useSimpleQuery<NotificationResponse, SimpleError>(
     ['/notification'],
-    () => api.get('/v1/notifications/'),
+    () => api.get('/v1/notifications'),
     { enabled: !!accessToken }
   )
 }
@@ -18,13 +18,13 @@ export const useAllNotification = () => {
 // 개별 읽음 처리
 export const useNotiPatchRead = () => {
   return useSimpleMutation<void, SimpleError, number>((notification_id) =>
-    api.patch(`/v1/notifications/${notification_id}/read/`)
+    api.post(`/v1/notifications/${notification_id}/read`)
   )
 }
 
 // 모두 읽음 처리
 export const useNotiPatchAllRead = () => {
   return useSimpleMutation<void, SimpleError>(() =>
-    api.patch(`/v1/notifications/read-all`)
+    api.post(`/v1/notifications/read-all`)
   )
 }

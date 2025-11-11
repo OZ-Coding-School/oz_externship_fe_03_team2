@@ -2,7 +2,7 @@ import { X } from 'lucide-react'
 import { monthDayFormat } from '../../../utils/dateFormat'
 import { useState } from 'react'
 import { ChatDetail } from './DetailChatBoard'
-import { useChatRooms, useUnreadMessages } from '../../../api/services/Chat'
+import { useChatRooms } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
 // import { chatData } from '../../NotiDummy'
 
@@ -13,8 +13,9 @@ interface ChatOpenType {
 
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
   const { data: chatData } = useChatRooms()
-  const { data: unread } = useUnreadMessages()
-  const chatCount = unread?.data.total_unread_count
+  // const { data: unread } = useUnreadMessages()z
+  // const chatCount = unread?.data.total_unread_count
+  const chatCount = 3
 
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
   const { studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
@@ -58,9 +59,10 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
                       ? monthDayFormat(msg.last_message.created_at)
                       : ''}
                   </p>
-                  {msg.unread_message_count > 0 && (
+                  {/* {msg.unread_message_count > 0 && ( */}
+                  {chatCount > 0 && (
                     <div className="bg-danger-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white">
-                      {msg.unread_message_count}
+                      {chatCount}
                     </div>
                   )}
                 </div>
