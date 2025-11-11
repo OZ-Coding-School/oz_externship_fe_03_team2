@@ -8,6 +8,7 @@ import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
 import { useToken } from '../../store/useTokenStore'
 import { useUserStore } from '../../store/useUserStore'
+import { UpButton } from '../UpButton'
 
 function Header() {
   const navigate = useNavigate()
@@ -231,6 +232,7 @@ function Header() {
           </div>
         </>
       )}
+      {!user && <UpButton />}
     </>
   )
 }
