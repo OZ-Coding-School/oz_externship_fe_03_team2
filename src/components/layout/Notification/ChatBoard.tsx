@@ -18,7 +18,6 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
 
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
   const { studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
-
   if (studyGroupUuid) {
     return (
       <ChatDetail setChatOpen={setChatOpen} studyGroupName={selectedRoomName} />
