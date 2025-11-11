@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 // import { allData } from './NotiDummy'
 import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
@@ -9,6 +9,50 @@ import {
   useNotiPatchAllRead,
   useNotiPatchRead,
 } from '../api/services/Noti'
+import {
+  BadgeAlert,
+  Bell,
+  CalendarCheck2,
+  CalendarClock,
+  CalendarPlus,
+  Check,
+  Plus,
+  Star,
+  UserRoundPlus,
+  X,
+} from 'lucide-react'
+
+const typeToIcon = (type: string): ReactNode => {
+  const typeMap: Record<string, ReactNode> = {
+    APPLICATION_CREATED: <Plus />,
+    APPLICATION_STATUS_APPROVAL: <Check />,
+    APPLICATION_STATUS_REJECTION: <X />,
+    STUDY_MEMBER_JOINED: <UserRoundPlus />,
+    STUDY_REVIEW_REQUEST: <Star />,
+    STUDY_SCHEDULE_UPCOMING: <CalendarClock />,
+    STUDY_SCHEDULE_TODAY: <CalendarCheck2 />,
+    STUDY_RECORD_CREATED: <CalendarPlus />,
+    SYSTEM: <BadgeAlert />,
+    CUSTOM: <Bell />,
+  }
+  return typeMap[type]
+}
+
+const typeToColor = (type: string): string => {
+  const typeMap: Record<string, string> = {
+    APPLICATION_CREATED: 'bg- text-[#2563EB]',
+    APPLICATION_STATUS_APPROVAL: 'bg-[#DCFCE7] text-[#16A34A]',
+    APPLICATION_STATUS_REJECTION: 'bg-[#FEE2E2] text-[#DC2626]',
+    STUDY_MEMBER_JOINED: 'bg-[#F3E8FF] text-[#9333EA]',
+    STUDY_REVIEW_REQUEST: 'bg-[#F3E8FF] text-[#9333EA]',
+    STUDY_SCHEDULE_UPCOMING: 'bg-[#F3E8FF] text-[#9333EA]',
+    STUDY_SCHEDULE_TODAY: 'bg-[#F3E8FF] text-[#9333EA]',
+    STUDY_RECORD_CREATED: 'bg-[#F3E8FF] text-[#9333EA]',
+    SYSTEM: 'bg-[##d1d5db] text-[#4b5563]',
+    CUSTOM: 'bg-[##fef9c3] text-[#eab308]',
+  }
+  return typeMap[type]
+}
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
@@ -75,7 +119,7 @@ export function NotiBoard() {
             className={`flex w-full border-b border-gray-100 ${!item.is_read && 'bg-primary-50'} gap-3 p-4`}
           >
             <div className="h-8 w-8 rounded-full bg-[#DBEAFE]">
-              {/* 아이콘 */}
+              {item.type && typeToIcon(item.type)}
             </div>
             <div className="flex flex-1 flex-col gap-1">
               <p className="text-sm">{item.content}</p>

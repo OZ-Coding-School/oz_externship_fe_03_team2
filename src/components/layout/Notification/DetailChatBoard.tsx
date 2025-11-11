@@ -1,11 +1,12 @@
 import { ArrowLeft, ChevronDown, Send, X } from 'lucide-react'
 import { useUserStore } from '../../../store/useUserStore'
-import { chatDataDummy, online } from '../../NotiDummy'
 import { timeFormat } from '../../../utils/dateFormat'
 import { PeopleBoard } from './PeopleBoard'
 import { useEffect, useRef, useState } from 'react'
-// import { useChatMessages } from '../../../api/services/Chat'
+import { online } from '../../NotiDummy'
+import { useChatMessages } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
+import { useWebSocket } from '../../../hooks/useWebSocket'
 
 interface ChatDetailType {
   studyGroupName: string | null
@@ -13,21 +14,24 @@ interface ChatDetailType {
 }
 export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const { studyGroupId, studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
-  // const {
-  //   data: chatData,
-  //   // 평범한.. 걍 데이터
-  //   fetchNextPage,
-  //   // 다음 페이지 패치해오기
-  //   hasNextPage,
-  //   // 다음 페이지 있나 없나
-  //   isFetchingNextPage,
-  //   // 다음 페이지 가져오는 중이냐 아니냐
-  //   // 우리집 문서 참고..ㄱ
-  // } = useChatMessages(studyGroupUuid, studyGroupId)
-  const chatData = chatDataDummy
-  const isFetchingNextPage = chatDataDummy.isFetchingNextPage
-  const hasNextPage = chatDataDummy.hasNextPage
-  const fetchNextPage = chatDataDummy.fetchNextPage
+  const {
+    data: chatData,
+    // 평범한.. 걍 데이터
+    fetchNextPage,
+    // 다음 페이지 패치해오기
+    hasNextPage,
+    // 다음 페이지 있나 없나
+    isFetchingNextPage,
+    // 다음 페이지 가져오는 중이냐 아니냐
+    // 우리집 문서 참고..ㄱ
+  } = useChatMessages(studyGroupUuid, studyGroupId)
+  useWebSocket(studyGroupUuid)
+
+  // const chatData = chatDataDummy
+  // const isFetchingNextPage = chatDataDummy.isFetchingNextPage
+  // const hasNextPage = chatDataDummy.hasNextPage
+  // const fetchNextPage = chatDataDummy.fetchNextPage
+
   const messages = chatData?.pages.flatMap((page) => page) ?? []
 
   const { user } = useUserStore()

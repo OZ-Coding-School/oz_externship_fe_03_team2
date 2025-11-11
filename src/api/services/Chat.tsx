@@ -9,34 +9,22 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 
 // 채팅방 목록 불러오기
 export const useChatRooms = () => {
-  return useSimpleQuery<ChatRoom[], SimpleError>(['chatRooms'], () =>
-    api.get('/v1/chat/chatrooms')
+  return useSimpleQuery<ChatRoom, SimpleError>(['chatRooms'], () =>
+    api.get('/v1/chat/rooms')
   )
 }
 
-// // 메시지 목록 조회
-// export const useChatDetail = (study_group_uuid: number) => {
-//   return useSimpleQuery(
-//     ['chatRooms', study_group_uuid],
-//     () => api.get(`/v1/chat/chatrooms/${study_group_uuid}/messages`),
-//     {
-//       enabled: !!study_group_uuid,
-//     }
-//   )
-// }
-
 // 채팅 메시지 무한 스크롤
-export const useChatMessages = (uuid: string | null, id: number | null) => {
+export const useChatMessages = (uuid: string | null) => {
   return useInfiniteQuery<ChatMessage[], SimpleError>({
     queryKey: ['chatMessages', uuid],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await api.get<ChatMessage[]>(
-        `/v1/chat/chatrooms/${uuid}/messages`,
+        `/v1/chat/rooms/${uuid}/messages`,
         {
           params: {
             page: pageParam,
             page_size: pageParam === 1 ? 300 : 100,
-            study_group_id: id,
             // 처음 가져올 때는 300개 가져오고 이후에 스크롤 할 때 100개씩 가져옴.
           },
         }
@@ -60,7 +48,7 @@ export const useChatMessages = (uuid: string | null, id: number | null) => {
       // 다음 페이지 번호 반환
     },
     initialPageParam: 1,
-    enabled: !!uuid && !!id,
+    enabled: !!uuid,
     select: (data) => {
       return {
         ...data,

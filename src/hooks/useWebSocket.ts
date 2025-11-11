@@ -6,15 +6,16 @@ import type {
 } from '../types/apiInterface/chatInterface'
 import { useStudyGroupId } from '../store/useStudyGroupId'
 
-export const useWebSocket = (study_group_id: number) => {
+export const useWebSocket = (study_group_uuid: string | null) => {
   const socketRef = useRef<WebSocket | null>(null)
   const [isError, setIsError] = useState<boolean>(false)
   const queryClient = useQueryClient()
   const { setStudyGroupUuid } = useStudyGroupId()
 
   useEffect(() => {
+    if (!study_group_uuid) return
     const baseUrl = import.meta.env.VITE_API_BASE_URL
-    const wsUrl = `ws://${baseUrl}/ws/study-groups/${study_group_id}/chat/`
+    const wsUrl = `ws://${baseUrl}/ws/study-groups/${study_group_uuid}/chat/`
 
     const socket = new WebSocket(wsUrl)
     // 웹소켓 연결
@@ -45,7 +46,7 @@ export const useWebSocket = (study_group_id: number) => {
         //! 채팅목록 가져오는 api 나오면 인터페이스/탠스택 만들고 타입/쿼리키 연결해서
         //! 받아온 newMsg텍스트 캐시에 추가하는 로직 작성
         queryClient.setQueryData<InfiniteData<ChatMessage[]>>(
-          ['chatMessages', study_group_id],
+          ['chatMessages', study_group_uuid],
           (old) => {
             if (!old) {
               return {
@@ -78,7 +79,7 @@ export const useWebSocket = (study_group_id: number) => {
       socket.close()
       // 컴포넌트 사라질 때 또는 다른 채팅방으로 옮길 때 실행되는 cleanup 함수임
     }
-  }, [study_group_id])
+  }, [study_group_uuid])
 
   // 메시지 보내는 부분
   const sendMessage = (content: string) => {
