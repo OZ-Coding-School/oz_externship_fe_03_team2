@@ -1,5 +1,6 @@
 import { useSimpleQuery } from '../Helper/useSimpleQuery'
 import {
+  type UnreadMessage,
   type ChatMessage,
   type ChatMessageData,
   type ChatRoom,
@@ -12,6 +13,13 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 export const useChatRooms = () => {
   return useSimpleQuery<ChatRoom, SimpleError>(['chatRooms'], () =>
     api.get('/v1/chat/rooms')
+  )
+}
+
+// 안 읽은 메시지 수 불러오기
+export const useUnreadMessages = () => {
+  return useSimpleQuery<UnreadMessage, SimpleError>(['unread'], () =>
+    api.get(`/v1/chat/total-unread-messages`)
   )
 }
 

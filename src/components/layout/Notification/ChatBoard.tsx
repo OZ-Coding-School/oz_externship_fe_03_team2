@@ -1,8 +1,8 @@
 import { X } from 'lucide-react'
 import { monthDayFormat } from '../../../utils/dateFormat'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ChatDetail } from './DetailChatBoard'
-import { useChatRooms } from '../../../api/services/Chat'
+import { useChatRooms, useUnreadMessages } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
 // import { chatData } from '../../NotiDummy'
 
@@ -13,18 +13,11 @@ interface ChatOpenType {
 
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
   const { data: chatData } = useChatRooms()
+  const { data: unread } = useUnreadMessages()
+  const chatCount = unread?.data.total_unread_count
 
-  useEffect(() => {
-    console.log(chatData)
-    console.log(chatCount)
-  }, [chatData])
-  const chatCount = chatData?.reduce(
-    (acc, cur) => acc + cur.unread_message_count,
-    0
-  )
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
-  const { setStudyGroupId, studyGroupUuid, setStudyGroupUuid } =
-    useStudyGroupId()
+  const { studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
 
   if (studyGroupUuid) {
     return (
@@ -46,18 +39,15 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
         </div>
       </div>
       <div className="scrollbar-hide overflow-y-scroll">
-        {chatData && chatData?.length === 0 ? (
+        {chatData && chatData.data.messages.length === 0 ? (
           <div>채팅방이 없습니다.</div>
         ) : (
-          chatData?.map((msg) => (
+          chatData?.data.messages.map((msg) => (
             <div
               key={msg.uuid}
               onClick={() => {
                 setStudyGroupUuid(msg.uuid)
                 setSelectedRoomName(msg.name)
-                if (msg.last_message) {
-                  setStudyGroupId(msg.last_message.id)
-                }
               }}
               className="flex flex-col gap-1 border-b border-gray-200 p-3 hover:bg-gray-50 active:bg-gray-100"
             >

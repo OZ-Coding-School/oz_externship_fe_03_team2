@@ -16,7 +16,19 @@ export interface ChatRoom {
   status: string
   code: string
   message: string
-  data: ChatRoomData[]
+  data: {
+    messages: ChatRoomData[]
+  }
+}
+
+// 안 읽은 메시지 수 API - 응답
+export interface UnreadMessage {
+  status: string
+  code: string
+  message: string
+  data: {
+    total_unread_count: number
+  }
 }
 
 // 메시지 목록 조회 API - 메시지 목록 데이터
