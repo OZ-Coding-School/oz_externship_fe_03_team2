@@ -1,7 +1,7 @@
 import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import type {
-  ChatMessage,
+  ChatMessageData,
   WebSocketResponse,
 } from '../types/apiInterface/chatInterface'
 import { useStudyGroupId } from '../store/useStudyGroupId'
@@ -9,13 +9,14 @@ import { useStudyGroupId } from '../store/useStudyGroupId'
 export const useWebSocket = (study_group_uuid: string | null) => {
   const socketRef = useRef<WebSocket | null>(null)
   const [isError, setIsError] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
   const queryClient = useQueryClient()
   const { setStudyGroupUuid } = useStudyGroupId()
 
   useEffect(() => {
     if (!study_group_uuid) return
-    const baseUrl = import.meta.env.VITE_API_BASE_URL
-    const wsUrl = `ws://${baseUrl}/ws/study-groups/${study_group_uuid}/chat/`
+    const baseUrl = import.meta.env.VITE_API_BASE_URL.replace('http', 'ws')
+    const wsUrl = `${baseUrl}/ws/study-groups/${study_group_uuid}/chat/`
 
     const socket = new WebSocket(wsUrl)
     // 웹소켓 연결
@@ -33,11 +34,22 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       //   origin: 'ws://example.com',
       // }
       // 이 중에 data 부분을 찍고 들어가는 거
-
-      if (response.data) {
-        const newMsg: ChatMessage = {
-          ...response.data,
+      if (response.type === 'force_disconnect') {
+        socket.close()
+        setStudyGroupUuid(null)
+      } else if (
+        response.type !== 'error' &&
+        response.id &&
+        response.sender &&
+        response.content
+      ) {
+        const newMsg: ChatMessageData = {
+          id: response.id,
           type: response.type,
+          sender: response.sender,
+          content: response.content,
+          is_read: false,
+          created_at: response.created_at!,
         }
 
         // 변수에 안 담고 바로 ...prev, response.data 했더니
@@ -45,7 +57,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
         // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함
         //! 채팅목록 가져오는 api 나오면 인터페이스/탠스택 만들고 타입/쿼리키 연결해서
         //! 받아온 newMsg텍스트 캐시에 추가하는 로직 작성
-        queryClient.setQueryData<InfiniteData<ChatMessage[]>>(
+        queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
           ['chatMessages', study_group_uuid],
           (old) => {
             if (!old) {
@@ -64,9 +76,8 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           }
         )
         setIsError(false)
-      } else if (response.type === 'force_disconnect') {
-        socket.close()
-        setStudyGroupUuid(null)
+      } else if (response.type === 'error') {
+        setError(response.message || 'WebSocket 에러')
       }
     }
 
@@ -133,5 +144,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
   return {
     sendMessage,
     isError,
+    error,
   }
 }

@@ -13,7 +13,7 @@ interface ChatDetailType {
   setChatOpen: (chatOpen: boolean) => void
 }
 export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
-  const { studyGroupId, studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
+  const { studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()
   const {
     data: chatData,
     // 평범한.. 걍 데이터
@@ -24,7 +24,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     isFetchingNextPage,
     // 다음 페이지 가져오는 중이냐 아니냐
     // 우리집 문서 참고..ㄱ
-  } = useChatMessages(studyGroupUuid, studyGroupId)
+  } = useChatMessages(studyGroupUuid)
   useWebSocket(studyGroupUuid)
 
   // const chatData = chatDataDummy
@@ -141,16 +141,10 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
         ) : (
           messages?.map((msg) => {
             const isMe = msg.sender.id === user?.id
-            if (msg.type === 'force_disconnect') {
-              return (
-                <div
-                  key={msg.id}
-                  className="flex h-full w-full items-center justify-center text-sm text-gray-400"
-                >
-                  대화 내역이 없습니다.
-                </div>
-              )
-            } else if (msg.type === 'system_message') {
+            if (
+              msg.type === 'system_message' ||
+              msg.type === 'force_disconnect'
+            ) {
               return (
                 <div
                   key={msg.id}

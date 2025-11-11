@@ -21,14 +21,14 @@ export interface ChatRoom {
 
 // 메시지 목록 조회 API - 메시지 목록 데이터
 export interface ChatMessageData {
-  id: number
   type?: 'chat.message' | 'error' | 'force_disconnect' | 'system_message'
+  id: number
   sender: {
     id: number
     nickname: string
   }
   content: string
-  is_read: true
+  is_read?: boolean
   created_at: string
 }
 
