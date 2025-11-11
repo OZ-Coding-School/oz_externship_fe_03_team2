@@ -10,7 +10,6 @@ import { showToast } from '../../utils/showToast'
 import { NotiBoard } from '../NotiBoard'
 import { ChatBadge } from './Notification/ChatBadge'
 import { useAllNotification } from '../../api/services/Noti'
-import { UpButton } from '../UpButton'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
@@ -124,7 +123,6 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
           onClose={() => setOpen(false)}
         />
       )}
-      <UpButton />
 
       {notiOpen && (
         <div ref={notiRef} className="absolute top-12 right-50 z-50 w-[320px]">

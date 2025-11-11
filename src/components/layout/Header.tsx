@@ -232,7 +232,7 @@ function Header() {
           </div>
         </>
       )}
-      {!user && <UpButton />}
+      {<UpButton />}
     </>
   )
 }
