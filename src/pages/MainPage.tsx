@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
-import ImageCards from '../components/common/ImageCards'
+import PopularCoursesCard from '../components/mainpage/PopularCoursesCard'
 import { FeaturesData } from '../components/mainpage'
 import { usePopularCourses } from '../hooks/query/usePopularCourses'
 import useDocumentTitle from '../hooks/useDocumentTitle'
@@ -142,11 +142,15 @@ function MainPage() {
                 {!isLoading && !isError && (
                   <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
                     {courses.map((course) => (
-                      <ImageCards
+                      <PopularCoursesCard
                         key={course.uuid}
                         title={course.title}
-                        description={course.instructor}
-                        date={`${course.discount_price.toLocaleString()}원`}
+                        description=""
+                        instructor={course.instructor}
+                        original_price={course.original_price}
+                        discount_price={course.discount_price}
+                        average_rating={course.average_rating}
+                        date=""
                         imageUrl={course.thumbnail_img_url}
                         onClick={() => navigate(course.url_link)}
                       />
