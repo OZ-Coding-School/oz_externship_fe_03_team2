@@ -32,7 +32,6 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
 
   const notificationCount =
     allData?.results.filter((data) => !data.is_read).length || 0
-  // 알림 더미로 되어있는 거 나중에 수정해야 함
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (

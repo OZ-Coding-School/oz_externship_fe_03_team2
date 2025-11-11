@@ -12,7 +12,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 // 채팅방 목록 불러오기
 export const useChatRooms = () => {
   return useSimpleQuery<ChatRoom, SimpleError>(['chatRooms'], () =>
-    api.get('/v1/chat/rooms')
+    api.get('/v1/chat/chatrooms')
   )
 }
 
@@ -29,7 +29,7 @@ export const useChatMessages = (uuid: string | null) => {
     queryKey: ['chatMessages', uuid],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await api.get<ChatMessage>(
-        `/v1/chat/rooms/${uuid}/messages`,
+        `/v1/chat/chatrooms/${uuid}/messages`,
         {
           params: {
             page: pageParam,
