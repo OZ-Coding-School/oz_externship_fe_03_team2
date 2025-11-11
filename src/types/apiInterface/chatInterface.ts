@@ -2,8 +2,12 @@
 export interface ChatRoomData {
   uuid: string
   name: string
-  last_message_content: string
-  last_message_sender_nickname: string
+  last_message: {
+    id: number
+    content: string
+    sender_nickname: string
+    created_at: string
+  }
   unread_message_count: number
 }
 
@@ -18,11 +22,13 @@ export interface ChatRoom {
 // 메시지 목록 조회 API - 메시지 목록 데이터
 export interface ChatMessageData {
   id: number
-  sender_id: number
-  sender_nickname: string
-  study_group_id: number
+  type?: 'chat.message' | 'error' | 'force_disconnect' | 'system_message'
+  sender: {
+    id: number
+    nickname: string
+  }
   content: string
-  is_read: boolean
+  is_read: true
   created_at: string
 }
 
@@ -50,10 +56,17 @@ export interface WebSocketRequest {
 // 웹소켓 응답
 export interface WebSocketResponse {
   type: 'chat.message' | 'error' | 'force_disconnect' | 'system_message'
-  data?: ChatMessageData
+  id?: number
+  sender?: {
+    id: number
+    nickname: string
+  }
+  content?: string
+  created_at?: string
   code?: string
   message?: string
 }
+
 // 정상 응답일 경우 type과 data만,
 // 에러 응답일 경우 type과 code, message만 옴.
 
