@@ -144,14 +144,7 @@ function MainPage() {
                     {courses.map((course) => (
                       <PopularCoursesCard
                         key={course.uuid}
-                        title={course.title}
-                        description=""
-                        instructor={course.instructor}
-                        original_price={course.original_price}
-                        discount_price={course.discount_price}
-                        average_rating={course.average_rating}
-                        date=""
-                        imageUrl={course.thumbnail_img_url}
+                        course={course}
                         onClick={() => navigate(course.url_link)}
                       />
                     ))}

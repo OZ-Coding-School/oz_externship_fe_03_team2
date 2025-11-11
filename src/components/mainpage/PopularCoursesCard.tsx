@@ -1,30 +1,26 @@
 import StarRating from '../common/StarRating'
+import type { Lecture } from '../../types/apiInterface/mainpageInterface'
 
-export interface PopularCoursesCardrops {
-  title: string
-  description: string
-  date: string
-  imageUrl: string
-  instructor?: string
-  original_price?: number
-  discount_price?: number
-  average_rating?: number
-  size?: string
+export interface PopularCoursesCardProps {
+  course: Lecture
   onClick?: () => void
+  size?: string
 }
 
 export default function PopularCoursesCard({
-  title,
-  description,
-  date,
-  imageUrl,
-  instructor,
-  original_price,
-  discount_price,
-  average_rating,
+  course,
   onClick,
   size = 'w-[389.33px] h-[387.88px]',
-}: PopularCoursesCardrops) {
+}: PopularCoursesCardProps) {
+  const {
+    title,
+    instructor,
+    original_price,
+    discount_price,
+    average_rating,
+    thumbnail_img_url,
+  } = course
+
   return (
     <div
       className={`${size} relative flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-transform duration-300 select-none hover:-translate-y-[.3rem] hover:shadow-[0_0_.9375rem_#00000020]`}
@@ -33,7 +29,7 @@ export default function PopularCoursesCard({
       <div className="h-[217.86px] w-full">
         <img
           className="h-full w-full object-cover"
-          src={imageUrl}
+          src={thumbnail_img_url}
           alt={title}
         />
       </div>
@@ -41,7 +37,6 @@ export default function PopularCoursesCard({
       <div className="absolute bottom-0 flex w-full flex-col gap-2 rounded-b-lg border-t-2 border-gray-200 bg-white p-4">
         <p className="text-[1.125rem] font-bold">{title}</p>
         {instructor && <p className="text-sm text-gray-600">{instructor}</p>}
-        <p className="[word-break:keep-all] text-gray-700">{description}</p>
 
         {average_rating !== undefined && (
           <div className="mt-1">
@@ -65,8 +60,6 @@ export default function PopularCoursesCard({
             ) : null}
           </div>
         )}
-
-        <p className="mt-1 text-[0.75rem] font-light text-gray-500">{date}</p>
       </div>
     </div>
   )
