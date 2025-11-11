@@ -63,7 +63,7 @@ function MyPageSideBar({ menuItems, currentActive }: MyPageSidebarProps) {
       </div>
 
       {/* 데스크톱 사이드바 */}
-      <div className="hidden w-70 flex-shrink-0 rounded-xl border border-gray-200 bg-white p-[25px] shadow-sm md:block">
+      <div className="hidden w-70 flex-shrink-0 self-start rounded-xl border border-gray-200 bg-white p-[25px] md:block">
         {/* 프로필 */}
         {user && (
           <div className="mb-8 border-b border-gray-200 pb-6">

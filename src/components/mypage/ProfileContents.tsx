@@ -39,13 +39,13 @@ function ProfileContents() {
   if (!user) return null
 
   return (
-    <div className="w-full rounded-lg bg-white">
+    <div className="min-h-screen rounded-xl border border-gray-200 bg-white p-8">
       {/* 상단 헤더 */}
-      <div className="border-b border-gray-200 px-8 py-6">
+      <div className="mx-auto mb-6 max-w-5xl">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">내 정보</h2>
-            <p className="mt-1 text-sm text-gray-600">
+            <h2 className="mb-2 text-2xl font-bold text-gray-900">내 정보</h2>
+            <p className="text-gray-600">
               회원 정보를 확인하고 수정할 수 있습니다
             </p>
           </div>
