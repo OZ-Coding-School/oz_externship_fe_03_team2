@@ -74,7 +74,7 @@ export const useUpdateProfile = () => {
     {
       // 성공 후에 전역상태 업데이트
       onSuccess: (responseData: UpdateProfileResponse['data']) => {
-        setUser(responseData as unknown as MeResponse) // MeResponse 타입으로 타입 안전하게
+        setUser(responseData) // MeResponse 타입으로 타입 안전하게
       },
 
       invalidateKeys: ['/v1/users/me'], // 캐시무효화

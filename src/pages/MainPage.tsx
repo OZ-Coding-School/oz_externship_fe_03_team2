@@ -121,7 +121,7 @@ function MainPage() {
             {({ reset }) => (
               <ErrorBoundary
                 onReset={reset}
-                FallbackComponent={({ error, resetErrorBoundary }) => (
+                FallbackComponent={({ resetErrorBoundary }) => (
                   <div className="py-8 text-center text-red-500">
                     인기 강의를 불러오는 중 오류가 발생했습니다.{' '}
                     <button

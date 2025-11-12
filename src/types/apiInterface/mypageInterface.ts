@@ -385,7 +385,7 @@ export interface PhoneVerificationConfirmResponse {
 // 프로필 업데이트 응답
 export interface UpdateProfileResponse {
   detail: string
-  data: MeResponse
+  data: UserData
 }
 
 // 스터디 그룹 목록 조회 파라미터
