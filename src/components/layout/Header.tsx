@@ -36,9 +36,17 @@ function Header() {
   }
 
   const navLinks = [
-    { label: '강의 목록', path: '/ddd', icon: Book },
-    { label: '스터디 그룹', path: '/ddd', icon: Users },
-    { label: '구인 공고', path: '/ddd', icon: Megaphone },
+    {
+      label: '강의 목록',
+      path: 'https://learn.ozcoding.site/lecture',
+      icon: Book,
+    },
+    { label: '스터디 그룹', path: 'https://study.ozcoding.site/', icon: Users },
+    {
+      label: '구인 공고',
+      path: 'https://learn.ozcoding.site/recruit',
+      icon: Megaphone,
+    },
   ]
 
   return (
