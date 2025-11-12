@@ -116,9 +116,6 @@ function ProfileEditModal({
           title = '입력 오류'
           message = '유효하지 않은 닉네임입니다'
           break
-        default:
-          title = '네트워크 오류'
-          message = '네트워크 연결을 확인해주세요'
       }
 
       showToast(message, 'error', title)
