@@ -203,7 +203,11 @@ function Header() {
                     setSidebarOpen(false)
                   }}
                 >
-                  <Avatar name={user.name ?? user.nickname} size="md" />
+                  <Avatar
+                    name={user.name ?? user.nickname}
+                    imgUrl={user.profile_img_url}
+                    size="md"
+                  />
                   <div className="flex flex-1 flex-col">
                     <p className="text-sm font-semibold text-gray-900">
                       {user.name ?? user.nickname}

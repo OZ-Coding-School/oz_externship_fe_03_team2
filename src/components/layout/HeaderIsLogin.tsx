@@ -86,7 +86,11 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
         }`}
         onClick={handleUserInfoClick}
       >
-        <Avatar name={user.name ?? user.nickname} size="sm" isHeader />
+        <Avatar
+          name={user.name ?? user.nickname}
+          imgUrl={user.profile_img_url}
+          size="sm"
+        />
         <span className="text-primary-600 text-base font-medium">
           {user.name ?? user.nickname}
         </span>

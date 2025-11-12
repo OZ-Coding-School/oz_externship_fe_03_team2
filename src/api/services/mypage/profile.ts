@@ -6,7 +6,6 @@ import type {
   PhoneVerificationSendResponse,
   PhoneVerificationConfirmRequest,
   PhoneVerificationConfirmResponse,
-  UpdateMeRequest,
   UpdateProfileResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
@@ -59,15 +58,16 @@ export const useConfirmPhoneVerificationCode = () => {
 export const useUpdateProfile = () => {
   const { setUser } = useUserStore()
 
-  return useSimpleMutation<
-    UpdateProfileResponse['data'],
-    Error,
-    UpdateMeRequest
-  >(
-    async (data: UpdateMeRequest) => {
+  return useSimpleMutation<UpdateProfileResponse['data'], Error, FormData>(
+    async (data: FormData) => {
       const res = await api.patch<UpdateProfileResponse>(
         '/v1/users/update-profile',
-        data
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       )
       return res.data
     },
