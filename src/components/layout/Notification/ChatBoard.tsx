@@ -45,7 +45,6 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
           </div>
         ) : (
           chatData?.data.map((msg) => (
-            // chatData?.data.map((msg) => (
             <div
               key={msg.uuid}
               onClick={() => {
