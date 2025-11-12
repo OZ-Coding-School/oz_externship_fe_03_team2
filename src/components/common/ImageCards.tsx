@@ -4,7 +4,6 @@ export interface ImageCardProps {
   date: string
   imageUrl: string
   size?: string
-  onClick?: () => void
 }
 
 export default function ImageCards({
@@ -12,7 +11,6 @@ export default function ImageCards({
   description,
   date,
   imageUrl,
-  onClick,
   size = 'w-[24rem] h-[17.375rem]',
 }: ImageCardProps) {
   return (
@@ -31,10 +29,7 @@ export default function ImageCards({
         <p className="[word-break:keep-all]">{description}</p>
         <div className="flex justify-between">
           <p className="text-[.875rem] font-light text-gray-500">{date}</p>
-          <button
-            onClick={onClick}
-            className="text-primary-600 hover:text-primary-700 active:text-primary-800"
-          >
+          <button className="text-primary-600 hover:text-primary-700 active:text-primary-800">
             읽어보기
           </button>
         </div>
