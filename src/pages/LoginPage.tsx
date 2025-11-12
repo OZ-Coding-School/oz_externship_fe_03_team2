@@ -70,7 +70,7 @@ function LoginPage() {
             // user 정보 가져오기
             const userRes = await api.get<MeResponse>('/v1/users/me')
 
-            setUser(userRes)
+            setUser(userRes.data)
 
             showToast('로그인 성공 했습니다', 'success', '로그인')
             setForm(FORM_STATE)

@@ -1,5 +1,5 @@
 // 내 정보 조회 - - - - - - - - - - - -
-export interface MeResponse {
+export interface UserData {
   id: number
   email: string
   nickname: string
@@ -8,6 +8,11 @@ export interface MeResponse {
   birthday: string
   profile_img_url: string | null
   created_at: string
+}
+
+export interface MeResponse {
+  detail: string
+  data: UserData
 }
 
 // 내 정보 수정 - - - - - - - - - - - -
