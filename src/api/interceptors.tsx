@@ -31,6 +31,23 @@ const showErrorToast = (title: string, message: string) => {
 
 // 에러핸들러
 const handleError = (error: AxiosError<ErrorResponse>) => {
+  // 서버 응답이 있는 경우 (4xx, 5xx)
+  if (error.response) {
+    const status = error.response.status
+
+    // 500대 서버 에러만 토스트로 표시
+    if (status >= 500) {
+      showToast(
+        '서버 오류',
+        'error',
+        '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요'
+      )
+    }
+
+    // 4xx는 여기서 처리하지 않고 컴포넌트로 전달
+    return Promise.reject(error)
+  }
+
   // 요청은 만들어졌지만 응답이 없는 경우 (네트워크 에러, 타임아웃)
   if (error.request) {
     const errorCode = error.code ?? 'ERR_NETWORK'
