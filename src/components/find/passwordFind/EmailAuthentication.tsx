@@ -72,7 +72,6 @@ export default function EmailAuthentication({
           </p>
         </div>
       </div>
-
       <InputWithLabel
         label="인증코드"
         name="authCode"
@@ -92,7 +91,6 @@ export default function EmailAuthentication({
           cooldown: 60,
         }}
       />
-
       <Button
         variant="primary"
         size="freeWidthLg"
@@ -101,6 +99,7 @@ export default function EmailAuthentication({
       >
         인증하기
       </Button>
+
       <Button variant="outline" size="freeWidthMd" onClick={onPrev}>
         이전 단계
       </Button>

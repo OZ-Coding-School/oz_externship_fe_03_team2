@@ -35,7 +35,12 @@ export default function PasswordFindEmailForm({
       },
       {
         onSuccess: (data) => {
-          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          setFormData((prev) => ({
+            ...prev,
+            requestId: data?.data.request_id,
+            cooldown: data.data.cooldown,
+            expires_in: data.data.expires_in,
+          }))
           onNext()
         },
       }
@@ -75,7 +80,11 @@ export default function PasswordFindEmailForm({
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit} disabled={isPending}>
+        <Button
+          size="freeWidthLg"
+          onClick={handleSubmit}
+          disabled={isPending || formData.cooldown > 0}
+        >
           {isPending ? '인증코드 전송 중..' : '인증코드 전송'}
         </Button>
         <Button size="lg" variant="text" onClick={() => navigate('/login')}>

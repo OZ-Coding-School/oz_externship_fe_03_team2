@@ -12,6 +12,8 @@ export interface PasswordFormData {
   email_verify_token: string
   password: string
   passwordConfirm: string
+  cooldown: number
+  expires_in: number
 }
 
 export default function PasswordFindPage() {
@@ -24,6 +26,8 @@ export default function PasswordFindPage() {
     email_verify_token: '',
     password: '',
     passwordConfirm: '',
+    cooldown: 0,
+    expires_in: 0,
   })
 
   const handleNextStep = () => setLevel((prev) => prev + 1)
