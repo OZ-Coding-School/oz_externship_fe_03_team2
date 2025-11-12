@@ -17,7 +17,6 @@ import {
   useSendPhoneVerificationCode,
   useUpdateProfile,
 } from '../../api/services/mypage/profile'
-import type { UpdateMeRequest } from '../../types/apiInterface/mypageInterface'
 import {
   INIT_NICKNAME_CHECK,
   INITL_VERIFICATION,
@@ -39,7 +38,7 @@ function ProfileEditModal({
   const [verification, setVerification] = useState(INITL_VERIFICATION)
   const [nickname, setNickname] = useState(INIT_NICKNAME_CHECK)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
-  const [_selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -258,24 +257,26 @@ function ProfileEditModal({
       return
     }
 
-    //  변경된 필드만 요청에 포함 (백엔드에서 포함된 필드만 업데이트)
-    const updateData: UpdateMeRequest = {
-      profile_img_url: previewImage || tempData.profile_img_url,
+    const formData = new FormData() // 폼데이터 생성
+
+    // 이미지 파일이 변경되었을 때만 추가
+    if (selectedFile) {
+      formData.append('profile_img', selectedFile) // file 객체
     }
 
     // 닉네임이 변경되었을 때만 포함
-    if (isNicknameChanged) {
-      updateData.nickname = tempData.nickname
+    if (isNicknameChanged && tempData.nickname) {
+      formData.append('nickname', tempData.nickname)
     }
 
     // 전화번호가 변경되었을때만 포함
-    if (isPhoneNumberChanged) {
-      updateData.phone_number = removePhoneFormat(tempData.phone_number || '')
-      updateData.phone_verify_token = verification.verifyToken
+    if (isPhoneNumberChanged && tempData.phone_number) {
+      formData.append('phone_number', removePhoneFormat(tempData.phone_number))
+      formData.append('phone_verify_token', verification.verifyToken)
     }
 
     // api 호출
-    updateProfile(updateData, {
+    updateProfile(formData, {
       onSuccess: () => {
         showToast('프로필이 업데이트되었습니다', 'success', '저장 완료')
         resetState()
