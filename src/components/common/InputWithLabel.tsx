@@ -43,6 +43,7 @@ type InputWithLabelProps = {
     disabled?: boolean
     countdown?: number
     cooldown?: number
+    start?: boolean
   }
 }
 
@@ -65,7 +66,7 @@ function InputWithLabel({
   const { time, isRunning, start } = useCountdown(button?.countdown || 0)
 
   useEffect(() => {
-    if (button?.countdown && button.countdown > 0) {
+    if (button?.start && button?.countdown && button.countdown > 0) {
       start(button.countdown)
     }
   }, [])

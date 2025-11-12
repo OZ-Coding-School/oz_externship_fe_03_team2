@@ -101,6 +101,7 @@ export default function PhoneAuthentication({
           variant: 'primary',
           countdown: formData.expires_in,
           cooldown: formData.cooldown,
+          start: true,
         }}
       />
 

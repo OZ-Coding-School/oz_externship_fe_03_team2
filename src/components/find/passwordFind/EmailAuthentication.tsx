@@ -105,6 +105,7 @@ export default function EmailAuthentication({
           variant: 'primary',
           countdown: formData.expires_in,
           cooldown: formData.cooldown,
+          // start: true,
         }}
       />
       <Button
