@@ -11,7 +11,7 @@ export const useAllNotification = () => {
   return useSimpleQuery<NotificationResponse, SimpleError>(
     ['/notification'],
     () => api.get('/v1/notifications'),
-    { enabled: !!accessToken }
+    { enabled: !!accessToken, staleTime: 0 }
   )
 }
 

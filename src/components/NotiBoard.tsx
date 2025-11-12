@@ -112,30 +112,36 @@ export function NotiBoard() {
         </div>
       </div>
       <div className="flex w-full flex-col overflow-y-scroll">
-        {filterData?.map((item) => (
-          <Link
-            key={item.id}
-            to={item.back_url_link}
-            onClick={() => !item.is_read && handleRead(item.id)}
-            className={`flex w-full border-b border-gray-100 ${!item.is_read && 'bg-primary-50'} gap-3 p-4`}
-          >
-            <div
-              className={`flex h-8 w-8 items-center justify-center rounded-full ${item.type && typeToColor(item.type)}`}
+        {filterData.length === 0 ? (
+          <div className="flex h-full items-center justify-center p-8 text-sm text-gray-500">
+            알림이 없습니다.
+          </div>
+        ) : (
+          filterData?.map((item) => (
+            <Link
+              key={item.id}
+              to={item.back_url_link}
+              onClick={() => !item.is_read && handleRead(item.id)}
+              className={`flex w-full border-b border-gray-100 ${!item.is_read && 'bg-primary-50'} gap-3 p-4`}
             >
-              {item.type && typeToIcon(item.type)}
-            </div>
-            <div className="flex flex-1 flex-col gap-1">
-              <p className="text-sm">{item.content}</p>
-              <p className="text-xs text-gray-500">
-                {/* {monthDayFormat(item.created_at)} */}
-                {/* 없어졌나? */}
-              </p>
-            </div>
-            {!item.is_read && (
-              <div className="bg-primary-500 h-2 w-2 rounded-full"></div>
-            )}
-          </Link>
-        ))}
+              <div
+                className={`flex h-8 w-8 items-center justify-center rounded-full ${item.type && typeToColor(item.type)}`}
+              >
+                {item.type && typeToIcon(item.type)}
+              </div>
+              <div className="flex flex-1 flex-col gap-1">
+                <p className="text-sm">{item.content}</p>
+                <p className="text-xs text-gray-500">
+                  {/* {monthDayFormat(item.created_at)} */}
+                  {/* 없어졌나? */}
+                </p>
+              </div>
+              {!item.is_read && (
+                <div className="bg-primary-500 h-2 w-2 rounded-full"></div>
+              )}
+            </Link>
+          ))
+        )}
       </div>
     </div>
   )

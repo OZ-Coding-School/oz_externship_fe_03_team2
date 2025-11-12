@@ -26,10 +26,12 @@ export interface NotiItem {
     | 'SYSTEM'
     | 'CUSTOM'
   content: string
-  created_at: string
+  created_at?: string
   back_url_link: string
   is_read: boolean
   user_id: number
+  type_display?: string
+  user?: number
 }
 
 // 알림 목록 조회

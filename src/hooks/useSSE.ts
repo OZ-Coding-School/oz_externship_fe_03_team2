@@ -48,11 +48,10 @@ export function useSSE() {
     eventSource.onerror = () => {
       showToast('SSE 연결 오류', 'error')
     }
-    // EventSourcePolyfill은 자동 재연결 시도함
 
     return () => {
       eventSource.close()
-      queryClient.removeQueries({ queryKey: ['/notification', accessToken] })
+      queryClient.removeQueries({ queryKey: ['/notification'] })
     }
   }, [accessToken])
 }
