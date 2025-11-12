@@ -52,9 +52,25 @@ export default function EmailAuthentication({
   }
 
   const handleAuthCode = () => {
-    codeResendMutate({
-      email: formData.email,
-    })
+    codeResendMutate(
+      {
+        email: formData.email,
+      },
+      {
+        onSuccess: (data) => {
+          setFormData((prev) => ({
+            ...prev,
+            request_id: data.data.request_id,
+            expires_in: data.data.expires_in,
+            cooldown: data.data.cooldown,
+            //성공헀을 떄만 쿨타임 초기화 되고 실패헀을 떄는 초기화 안 되게..
+          }))
+        },
+        onError: () => {
+          showToast('오류가 발생했습니다. 잠시 후에 시도해주세요.', 'error')
+        },
+      }
+    )
   }
 
   const authReg = /^[0-9]{6}$/.test(formData.verificationCode)

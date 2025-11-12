@@ -64,6 +64,9 @@ export default function PhoneAuthentication({
             //성공헀을 떄만 쿨타임 초기화 되고 실패헀을 떄는 초기화 안 되게..
           }))
         },
+        onError: (data) => {
+          showToast(data.error, 'error')
+        },
       }
     )
   }

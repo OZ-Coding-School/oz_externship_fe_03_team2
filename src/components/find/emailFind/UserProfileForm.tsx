@@ -43,6 +43,9 @@ export default function UserProfileForm({
           // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
           onNext()
         },
+        onError: () => {
+          showToast('재전송 대기 시간이 지나지 않았습니다.', 'error')
+        },
       }
     )
   }

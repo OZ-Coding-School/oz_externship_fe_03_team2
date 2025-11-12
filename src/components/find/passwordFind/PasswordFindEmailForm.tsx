@@ -43,6 +43,9 @@ export default function PasswordFindEmailForm({
           }))
           onNext()
         },
+        onError: () => {
+          showToast('재전송 대기 시간이 지나지 않았습니다.', 'error')
+        },
       }
     )
   }
