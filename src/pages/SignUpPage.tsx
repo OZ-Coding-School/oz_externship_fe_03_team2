@@ -34,7 +34,11 @@ export interface Form {
 
 interface REQUEST_ID {
   emailRequestId: string
+  emailExpiresIn: number
+  emailCooldown: number
   phoneRequestId: string
+  phoneExpiresIn: number
+  phoneCooldown: number
 }
 
 interface VERIFYTOKEN {
@@ -65,7 +69,11 @@ const CONFIRM_STATE = {
 
 const REQUEST_STATE: REQUEST_ID = {
   emailRequestId: '',
+  emailExpiresIn: 0,
+  emailCooldown: 0,
   phoneRequestId: '',
+  phoneExpiresIn: 0,
+  phoneCooldown: 0,
 }
 
 const VERIFYTOKEN_STATE: VERIFYTOKEN = {
@@ -221,7 +229,10 @@ function SignUpPage() {
           setRequestId((prev) => ({
             ...prev,
             emailRequestId: data.data.request_id,
+            emailExpiresIn: data.data.expires_in,
+            emailCooldown: data.data.cooldown,
           }))
+          console.log(requestId.emailCooldown)
           showToast(`${data.detail}`, 'success', '이메일 코드 전송')
         },
         onError: (error) => {
@@ -271,6 +282,8 @@ function SignUpPage() {
           setRequestId((prev) => ({
             ...prev,
             phoneRequestId: data.data.request_id,
+            phoneExpiresIn: data.data.expires_in,
+            phoneCooldown: data.data.cooldown,
           }))
           showToast(`${data.detail}`, 'success', '핸드폰 코드 전송')
         },
@@ -411,8 +424,8 @@ function SignUpPage() {
                   variant: 'signup',
                   size: 'signup',
                   disabled: !(form.email && !error['email']),
-                  countdown: 600,
-                  cooldown: 60,
+                  countdown: requestId.emailExpiresIn,
+                  cooldown: requestId.emailCooldown,
                 }}
               />
             </div>
@@ -431,7 +444,8 @@ function SignUpPage() {
                   disabled: !(
                     form.emailCode &&
                     !error['emailCode'] &&
-                    confirm.emailSent
+                    confirm.emailSent &&
+                    !confirm.emailVerify
                   ),
                 }}
               />
@@ -454,8 +468,8 @@ function SignUpPage() {
                   variant: 'signup',
                   size: 'signup',
                   disabled: !(form.phone_number && !error['phone_number']),
-                  countdown: 180,
-                  cooldown: 30,
+                  countdown: requestId.phoneExpiresIn,
+                  cooldown: requestId.phoneCooldown,
                 }}
               />
             </div>
@@ -475,7 +489,8 @@ function SignUpPage() {
                   disabled: !(
                     form.phoneCode &&
                     !error['phoneCode'] &&
-                    confirm.phoneSent
+                    confirm.phoneSent &&
+                    !confirm.phoneVerify
                   ),
                 }}
               />

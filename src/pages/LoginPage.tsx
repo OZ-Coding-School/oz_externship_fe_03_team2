@@ -33,7 +33,7 @@ function LoginPage() {
 
   const { setAccessToken } = useToken()
   const { setUser } = useUserStore()
-  const { mutate: LoginMutate } = useLogin()
+  const { mutate: LoginMutate, isPending: isLogin } = useLogin()
 
   const debounceForm = useDebounce(form, 500)
   useEffect(() => {
@@ -195,7 +195,7 @@ function LoginPage() {
             type="submit"
             size="freeLogin"
             variant="login"
-            disabled={!formSubmit}
+            disabled={!formSubmit && isLogin}
           >
             일반회원 로그인
           </Button>
