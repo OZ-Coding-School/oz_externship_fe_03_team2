@@ -49,12 +49,12 @@ function NotificationToast({
       ) : (
         <div className="flex w-80 flex-col rounded-sm border border-gray-400 bg-gray-100 p-2">
           {header}
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-between gap-3">
             <div>
               {/* 알림 아이콘 만들어진거 있으면 넣어도 괜찮아보여서 추가해둠*/}
               <Star />
             </div>
-            <div className="flex flex-col">
+            <div className="flex grow flex-col">
               <div className="flex justify-end gap-2 text-xs text-gray-700">
                 {formatDate}
               </div>
