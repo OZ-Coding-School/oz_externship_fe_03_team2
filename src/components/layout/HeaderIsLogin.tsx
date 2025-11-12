@@ -93,9 +93,11 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
       <div className="hover:text-primary-500 relative flex h-10 w-10 cursor-pointer items-center justify-center text-gray-400">
         <Bell size={24} onClick={handleNotiClick} />
 
-        <span className="bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-[9999px] text-xs font-semibold text-white">
-          {notificationCount}
-        </span>
+        {notificationCount > 0 && (
+          <span className="bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-[9999px] text-xs font-semibold text-white">
+            {notificationCount}
+          </span>
+        )}
       </div>
 
       {/* 유저 정보 */}

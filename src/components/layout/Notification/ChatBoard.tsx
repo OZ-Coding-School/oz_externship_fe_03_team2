@@ -13,7 +13,7 @@ interface ChatOpenType {
 
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
   const { data: chatData } = useChatRooms()
-  // const { data: unread } = useUnreadMessages()z
+  // const { data: unread } = useUnreadMessages()s
   // const chatCount = unread?.data.total_unread_count
   const chatCount = 3
 
@@ -39,10 +39,11 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
         </div>
       </div>
       <div className="scrollbar-hide overflow-y-scroll">
-        {chatData && chatData.data.messages.length === 0 ? (
+        {!chatData?.data || chatData?.data.length === 0 ? (
           <div>채팅방이 없습니다.</div>
         ) : (
-          chatData?.data.messages.map((msg) => (
+          chatData?.data.map((msg) => (
+            // chatData?.data.map((msg) => (
             <div
               key={msg.uuid}
               onClick={() => {

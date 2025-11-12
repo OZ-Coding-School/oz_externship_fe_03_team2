@@ -16,9 +16,7 @@ export interface ChatRoom {
   status: string
   code: string
   message: string
-  data: {
-    messages: ChatRoomData[]
-  }
+  data: ChatRoomData[]
 }
 
 // 안 읽은 메시지 수 API - 응답
