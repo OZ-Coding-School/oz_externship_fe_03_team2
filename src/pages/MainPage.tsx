@@ -1,16 +1,15 @@
 import { useNavigate } from 'react-router'
 import Button from '../components/common/Button'
-import PopularCoursesCard from '../components/mainpage/PopularCoursesCard'
 import { FeaturesData } from '../components/mainpage'
-import { usePopularCourses } from '../hooks/query/usePopularCourses'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
+import PopularCoursesSection from '../components/mainpage/PopularCoursesSection'
+import ErrorFallback from '../components/common/ErrorFallback'
 
 function MainPage() {
   useDocumentTitle()
   const navigate = useNavigate()
-  const { data: courses = [], isLoading, isError } = usePopularCourses()
 
   const normalizeBreaks = (text: string) => text.replace(/<br\s*\/?>/gi, '\n')
 
@@ -119,37 +118,8 @@ function MainPage() {
 
           <QueryErrorResetBoundary>
             {({ reset }) => (
-              <ErrorBoundary
-                onReset={reset}
-                FallbackComponent={({ error, resetErrorBoundary }) => (
-                  <div className="py-8 text-center text-red-500">
-                    인기 강의를 불러오는 중 오류가 발생했습니다.{' '}
-                    <button
-                      onClick={resetErrorBoundary}
-                      className="text-primary-600 underline"
-                    >
-                      다시 시도하기
-                    </button>
-                  </div>
-                )}
-              >
-                {isLoading && (
-                  <p className="py-8 text-center text-gray-500">
-                    인기 강의 불러오는 중...
-                  </p>
-                )}
-
-                {!isLoading && !isError && (
-                  <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
-                    {courses.map((course) => (
-                      <PopularCoursesCard
-                        key={course.uuid}
-                        course={course}
-                        onClick={() => navigate(course.url_link)}
-                      />
-                    ))}
-                  </div>
-                )}
+              <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback}>
+                <PopularCoursesSection navigate={navigate} />
               </ErrorBoundary>
             )}
           </QueryErrorResetBoundary>
