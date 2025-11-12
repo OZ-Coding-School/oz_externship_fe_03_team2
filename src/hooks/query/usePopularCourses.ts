@@ -1,6 +1,6 @@
 import { useSimpleQuery } from '../../api/Helper/useSimpleQuery'
 import { api } from '../../api/client'
-import type { Lecture } from '../../types/apiInterface/mainpageInterface.ts'
+import type { Lecture } from '../../types/apiInterface/.ts'
 
 const fetchPopularCourses = async (): Promise<Lecture[]> => {
   const response = await api.get<{
