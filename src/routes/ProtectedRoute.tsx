@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Navigate } from 'react-router'
 import { useUserStore } from '../store/useUserStore'
-import { showToast } from '../utils/showToast'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -11,18 +10,6 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({ children, requireAuth }: ProtectedRouteProps) => {
   const user = useUserStore((state) => state.user)
   const isAuth = !!user
-
-  useEffect(() => {
-    if (requireAuth && !isAuth) {
-      showToast('로그인 후 이용 가능합니다', 'warning', '접근 제한')
-      return
-    }
-
-    if (!requireAuth && isAuth) {
-      showToast('이미 로그인 상태입니다', 'warning', '접근 제한')
-      return
-    }
-  }, [requireAuth, isAuth])
 
   //로그인 필수인데 로그인 안됨 >  로그인페이지로 리다이렉션
   if (requireAuth && !isAuth) return <Navigate to="/login" replace />
