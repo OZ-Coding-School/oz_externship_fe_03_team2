@@ -87,8 +87,8 @@ export default function EmailAuthentication({
           label: '재전송',
           onClick: handleAuthCode,
           variant: 'primary',
-          countdown: 600,
-          cooldown: 60,
+          countdown: formData.expires_in,
+          cooldown: formData.cooldown,
         }}
       />
       <Button
