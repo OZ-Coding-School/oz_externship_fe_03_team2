@@ -44,7 +44,7 @@ export const useAuthInit = () => {
         // user 정보 조회
         const userRes = await api.get<MeResponse>('/v1/users/me')
 
-        setUser(userRes)
+        setUser(userRes.data)
       } catch {
         clearUser() // refreshToken이 없거나 만료 > 로그아웃 상태
       } finally {
@@ -59,7 +59,7 @@ export const useAuthInit = () => {
   //탠스텍쿼리로 조회한 user 정보 저장
   useEffect(() => {
     if (meData) {
-      setUser(meData)
+      setUser(meData.data)
       setIsAuthCheck(false)
     }
   }, [meData, setUser])
