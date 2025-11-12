@@ -107,7 +107,10 @@ export default function PhoneAuthentication({
       <Button
         variant="primary"
         size="freeWidthLg"
-        onClick={handleSubmit}
+        onClick={() => {
+          handleSubmit()
+          setFormData((prev) => ({ ...prev, cooldown: 0, expires_in: 0 }))
+        }}
         disabled={!authReg}
       >
         인증하기
