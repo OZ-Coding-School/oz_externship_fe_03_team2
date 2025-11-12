@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from './Button'
 import { useCountdown } from '../../hooks/useCountdown'
 import { timeFormat } from '../../utils/timeFormat'
@@ -63,6 +63,12 @@ function InputWithLabel({
   button,
 }: InputWithLabelProps) {
   const { time, isRunning, start } = useCountdown(button?.countdown || 0)
+
+  useEffect(() => {
+    if (button?.countdown && button.countdown > 0) {
+      start(button.countdown)
+    }
+  }, [])
 
   const handleButtonClick = () => {
     if (button?.countdown) {

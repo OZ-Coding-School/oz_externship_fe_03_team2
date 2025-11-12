@@ -52,7 +52,20 @@ export default function PhoneAuthentication({
   }
 
   const handleAuthCode = () => {
-    codeResendMutate({ phone_number: formData.phone })
+    codeResendMutate(
+      { phone_number: formData.phone },
+      {
+        onSuccess: (data) => {
+          setFormData((prev) => ({
+            ...prev,
+            request_id: data.data.request_id,
+            expires_in: data.data.expires_in,
+            cooldown: data.data.cooldown,
+            //성공헀을 떄만 쿨타임 초기화 되고 실패헀을 떄는 초기화 안 되게..
+          }))
+        },
+      }
+    )
   }
 
   const authReg = /^[0-9]{6}$/.test(formData.code)
@@ -83,8 +96,8 @@ export default function PhoneAuthentication({
           label: '재전송',
           onClick: handleAuthCode,
           variant: 'primary',
-          countdown: 180,
-          cooldown: 30,
+          countdown: formData.expires_in,
+          cooldown: formData.cooldown,
         }}
       />
 
@@ -96,7 +109,12 @@ export default function PhoneAuthentication({
       >
         인증하기
       </Button>
-      <Button variant="outline" size="freeWidthMd" onClick={onPrev}>
+      <Button
+        variant="outline"
+        size="freeWidthMd"
+        onClick={onPrev}
+        disabled={formData.cooldown > 0}
+      >
         이전 단계
       </Button>
     </div>

@@ -12,6 +12,8 @@ export interface FormData {
   code: string
   request_id: string
   phone_verify_token: string
+  cooldown: number
+  expires_in: number
 }
 
 export default function EmailFindPage() {
@@ -23,6 +25,8 @@ export default function EmailFindPage() {
     code: '',
     request_id: '',
     phone_verify_token: '',
+    cooldown: 0,
+    expires_in: 0,
   })
 
   const handleNextStep = () => setLevel((prev) => prev + 1)
