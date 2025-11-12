@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { DropDown } from '../components/common/dropDown'
 import { showToast } from '../utils/showToast'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import { showNotificationToast } from '../utils/showNotificationToast'
 
 function CommonTest() {
   useDocumentTitle('공통 컴포넌트')
@@ -98,6 +99,25 @@ function CommonTest() {
     })
     setIsEmailSent(false)
     setErrors({})
+  }
+
+  //날짜는 created_at 그대로 넘겨주면 됩니다.
+  const chatButton = () => {
+    showNotificationToast(
+      '채팅방 이름',
+      '채팅 내용',
+      '2025-01-01T10:00:00Z',
+      'chat',
+      '유저 이름'
+    )
+  }
+  const notificationButton = () => {
+    showNotificationToast(
+      '알림 제목',
+      '알림 내용',
+      '2025-01-01T10:00:00Z',
+      'notice'
+    )
   }
 
   return (
@@ -469,6 +489,14 @@ function CommonTest() {
             />
           </div>
         </section>
+        <div className="mt-10 flex gap-3">
+          <Button variant="outline" size="lg" onClick={chatButton}>
+            채팅
+          </Button>
+          <Button variant="outline" size="lg" onClick={notificationButton}>
+            알림
+          </Button>
+        </div>
       </div>
     </div>
   )
