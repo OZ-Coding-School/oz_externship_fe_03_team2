@@ -1,7 +1,7 @@
 import type { Form } from '../pages/SignUpPage'
 
 const nameRe = /^[A-Za-z가-힣]{2,8}$/
-const nicknameRe = /^[A-Za-z0-9가-힣]{2,12}$/
+const nicknameRe = /^[A-Za-z0-9가-힣]{1,10}$/
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const phoneRe = /^\d{11}$/
 const codeRe = /^\d{6}$/
@@ -61,7 +61,7 @@ function validateField(
     case 'nickname':
       return nicknameRe.test(formdata)
         ? ''
-        : '2~12자, 한글/영문/숫자만 가능합니다'
+        : '1~10자, 한글/영문/숫자만 가능합니다'
     case 'birthday':
       return isValidDateYYYYMMDD(formdata) ? '' : '유효한 날짜를 입력해주세요'
     case 'email':

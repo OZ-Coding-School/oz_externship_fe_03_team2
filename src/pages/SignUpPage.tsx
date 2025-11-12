@@ -105,7 +105,7 @@ function SignUpPage() {
     error: nicknameError,
     isError: isNicknameError,
   } = useNickNameConfirm(form.nickname, checkNickname)
-  const { mutate: signUp } = useSignUp()
+  const { mutate: signUp, isPending: isSignup } = useSignUp()
   const { mutate: sendEmail } = useEmailSend()
   const { mutate: confirmEmail } = useEmailConfirm()
   const { mutate: sendPhone } = usePhoneSend()
@@ -504,7 +504,11 @@ function SignUpPage() {
             />
           </div>
         </div>
-        <Button type="submit" size="freeWidthLg" disabled={!formSubmit}>
+        <Button
+          type="submit"
+          size="freeWidthLg"
+          disabled={!formSubmit && isSignup}
+        >
           가입하기
         </Button>
       </form>
