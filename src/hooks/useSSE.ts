@@ -10,6 +10,18 @@ import {
 export function useSSE() {
   const { accessToken } = useToken()
   const queryClient = useQueryClient()
+  const typeMap = [
+    'APPLICATION_CREATED',
+    'APPLICATION_STATUS_APPROVAL',
+    'APPLICATION_STATUS_REJECTION',
+    'STUDY_MEMBER_JOINED',
+    'STUDY_REVIEW_REQUEST',
+    'STUDY_SCHEDULE_UPCOMING',
+    'STUDY_SCHEDULE_TODAY',
+    'STUDY_RECORD_CREATED',
+    'SYSTEM',
+    'CUSTOM',
+  ]
 
   useEffect(() => {
     if (!accessToken) return
@@ -26,6 +38,8 @@ export function useSSE() {
     eventSource.onmessage = (e) => {
       const newNoti: NotiItem = JSON.parse(e.data)
       // SSE로 새 알림을 받아옴
+
+      if (!newNoti.type || !typeMap.includes(newNoti.type)) return
 
       queryClient.setQueryData<NotificationResponse>(
         ['/notification'],

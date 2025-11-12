@@ -38,9 +38,11 @@ export function ChatBoard({ setChatOpen }: ChatOpenType) {
           <X size={20} onClick={() => setChatOpen(false)} />
         </div>
       </div>
-      <div className="scrollbar-hide overflow-y-scroll">
+      <div className="scrollbar-hide h-full overflow-y-scroll">
         {!chatData?.data || chatData?.data.length === 0 ? (
-          <div>채팅방이 없습니다.</div>
+          <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">
+            채팅방이 없습니다.
+          </div>
         ) : (
           chatData?.data.map((msg) => (
             // chatData?.data.map((msg) => (

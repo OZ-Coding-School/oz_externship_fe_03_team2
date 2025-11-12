@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 // import { allData } from './NotiDummy'
 import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
@@ -82,6 +82,10 @@ export function NotiBoard() {
   const notReadCount =
     allData?.results.filter((data) => !data.is_read).length || 0
   const readCount = allData?.results.filter((data) => data.is_read).length || 0
+
+  useEffect(() => {
+    console.log(filterData)
+  }, [filterData])
 
   return (
     <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white select-none">
