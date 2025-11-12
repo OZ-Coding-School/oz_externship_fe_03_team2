@@ -38,9 +38,9 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
     // 500대 서버 에러만 토스트로 표시
     if (status >= 500) {
       showToast(
-        '서버 오류',
+        '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요',
         'error',
-        '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요'
+        '서버 오류'
       )
     }
 
@@ -56,7 +56,7 @@ const handleError = (error: AxiosError<ErrorResponse>) => {
       message: '요청을 처리할 수 없습니다. 네트워크를 확인해주세요',
     }
     //NotificationToast에 뜨는 현상으로 수정
-    showToast(errorInfo.title, 'error', errorInfo.message)
+    showToast(errorInfo.message, 'error', errorInfo.title)
   }
 
   return Promise.reject(error) // 4xx랑 5xx는 컴포넌트에서 처리하도록 그냥 전달
