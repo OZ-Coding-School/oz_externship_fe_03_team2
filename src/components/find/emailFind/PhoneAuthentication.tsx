@@ -45,6 +45,7 @@ export default function PhoneAuthentication({
             ...prev,
             phone_verify_token: data.data.phone_verify_token,
           }))
+          setFormData((prev) => ({ ...prev, cooldown: 0, expires_in: 0 }))
           onNext()
         },
       }
@@ -110,7 +111,6 @@ export default function PhoneAuthentication({
         size="freeWidthLg"
         onClick={() => {
           handleSubmit()
-          setFormData((prev) => ({ ...prev, cooldown: 0, expires_in: 0 }))
         }}
         disabled={!authReg}
       >

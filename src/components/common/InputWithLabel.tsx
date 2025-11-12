@@ -69,6 +69,7 @@ function InputWithLabel({
     if (button?.start && button?.countdown && button.countdown > 0) {
       start(button.countdown)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleButtonClick = () => {

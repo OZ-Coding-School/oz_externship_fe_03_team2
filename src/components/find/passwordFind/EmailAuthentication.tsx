@@ -45,6 +45,7 @@ export default function EmailAuthentication({
             ...prev,
             email_verify_token: data.data.email_verify_token,
           }))
+          setFormData((prev) => ({ ...prev, cooldown: 0, expires_in: 0 }))
           onNext()
         },
       }
@@ -113,7 +114,6 @@ export default function EmailAuthentication({
         size="freeWidthLg"
         onClick={() => {
           handleSubmit()
-          setFormData((prev) => ({ ...prev, cooldown: 0, expires_in: 0 }))
         }}
         disabled={!authReg}
       >
