@@ -21,7 +21,7 @@ import {
   UserRoundPlus,
   X,
 } from 'lucide-react'
-import { allData } from './NotiDummy'
+// import { allData } from './NotiDummy'
 
 const typeToIcon = (type: string): ReactNode => {
   const typeMap: Record<string, ReactNode> = {
@@ -57,7 +57,7 @@ const typeToColor = (type: string): string => {
 
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
-  // const { data: allData } = useAllNotification()
+  const { data: allData } = useAllNotification()
   useSSE()
 
   const { mutate: patchRead } = useNotiPatchRead()
