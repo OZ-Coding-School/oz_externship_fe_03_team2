@@ -114,9 +114,9 @@ function SignUpPage() {
     isError: isNicknameError,
   } = useNickNameConfirm(form.nickname, checkNickname)
   const { mutate: signUp, isPending: isSignup } = useSignUp()
-  const { mutate: sendEmail } = useEmailSend()
+  const { mutate: sendEmail, isPending: isEmail } = useEmailSend()
   const { mutate: confirmEmail } = useEmailConfirm()
-  const { mutate: sendPhone } = usePhoneSend()
+  const { mutate: sendPhone, isPending: isPhone } = usePhoneSend()
   const { mutate: confirmPhone } = usePhoneConfirm()
 
   useEffect(() => {
@@ -232,7 +232,6 @@ function SignUpPage() {
             emailExpiresIn: data.data.expires_in,
             emailCooldown: data.data.cooldown,
           }))
-          console.log(requestId.emailCooldown)
           showToast(`${data.detail}`, 'success', '이메일 코드 전송')
         },
         onError: (error) => {
@@ -241,6 +240,12 @@ function SignUpPage() {
             'error',
             '이메일 코드 전송'
           )
+          setRequestId((prev) => ({
+            ...prev,
+            emailRequestId: '',
+            emailExpiresIn: 0,
+            emailCooldown: 0,
+          }))
         },
       }
     )
@@ -293,6 +298,12 @@ function SignUpPage() {
             'error',
             '핸드폰 코드 전송'
           )
+          setRequestId((prev) => ({
+            ...prev,
+            phoneRequestId: '',
+            phoneExpiresIn: 0,
+            phoneCooldown: 0,
+          }))
         },
       }
     )
@@ -423,9 +434,10 @@ function SignUpPage() {
                   onClick: emailSend,
                   variant: 'signup',
                   size: 'signup',
-                  disabled: !(form.email && !error['email']),
+                  disabled: !(form.email && !error['email'] && !isEmail),
                   countdown: requestId.emailExpiresIn,
                   cooldown: requestId.emailCooldown,
+                  start: true,
                 }}
               />
             </div>
@@ -436,6 +448,7 @@ function SignUpPage() {
                 error={error['emailCode']}
                 placeholder="전송된 코드를 입력해주세요"
                 onChange={handleChange}
+                disabled={confirm.emailVerify}
                 button={{
                   label: '인증코드확인',
                   onClick: emailVerify,
@@ -467,9 +480,14 @@ function SignUpPage() {
                   onClick: phoneSent,
                   variant: 'signup',
                   size: 'signup',
-                  disabled: !(form.phone_number && !error['phone_number']),
+                  disabled: !(
+                    form.phone_number &&
+                    !error['phone_number'] &&
+                    !isPhone
+                  ),
                   countdown: requestId.phoneExpiresIn,
                   cooldown: requestId.phoneCooldown,
+                  start: true,
                 }}
               />
             </div>
@@ -481,6 +499,7 @@ function SignUpPage() {
                 error={error['phoneCode']}
                 placeholder="인증번호 6자리를 입력해주세요"
                 onChange={handleChange}
+                disabled={confirm.phoneVerify}
                 button={{
                   label: '인증코드확인',
                   onClick: phoneVerify,
@@ -522,7 +541,7 @@ function SignUpPage() {
         <Button
           type="submit"
           size="freeWidthLg"
-          disabled={!formSubmit && isSignup}
+          disabled={!formSubmit || isSignup}
         >
           가입하기
         </Button>

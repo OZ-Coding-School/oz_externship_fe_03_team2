@@ -70,12 +70,13 @@ function InputWithLabel({
       start(button.countdown)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [button?.countdown])
 
   const handleButtonClick = () => {
-    if (button?.countdown) {
-      start(button.countdown)
-    }
+    //API 성공 후에만 시작할 수 있도록 변경
+    // if (button?.countdown) {
+    //   start(button.countdown)
+    // }
     button?.onClick()
   }
 
