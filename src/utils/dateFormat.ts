@@ -69,3 +69,26 @@ export const calculateDurationFormat = (
   const totalMonths = Math.round(totalDays / 30) // round로 반올림 (1.4개월 > 1개월, 1.6개월 > 2개월)
   return `${totalMonths}개월`
 }
+
+export const chatDateFormat = (dateValue: string): string => {
+  const date = new Date(dateValue)
+
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = date.getHours()
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+
+  const period = hours < 12 ? '오전' : '오후'
+  const displayHours = hours % 12 || 12
+
+  return `${month}월 ${day}일 ${period} ${displayHours}:${minutes}`
+}
+
+export const notificationDateFormat = (dateValue: string): string => {
+  const date = new Date(dateValue)
+
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${month}월 ${day}일`
+}

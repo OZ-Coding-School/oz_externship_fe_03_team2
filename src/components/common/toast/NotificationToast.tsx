@@ -1,5 +1,9 @@
 import { Star, X } from 'lucide-react'
 import { toast } from 'sonner'
+import {
+  chatDateFormat,
+  notificationDateFormat,
+} from '../../../utils/dateFormat'
 
 interface NotificationToastType {
   id?: string | number
@@ -18,30 +22,33 @@ function NotificationToast({
   date,
   type = 'chat',
 }: NotificationToastType) {
+  //들어오는 타입에 맞춰서 날짜 가공
+  const formatDate =
+    type === 'chat' ? chatDateFormat(date) : notificationDateFormat(date)
+
+  const header = (
+    <div className="flex justify-between border-b border-gray-400 pb-1">
+      <h1>{title}</h1>
+      <button onClick={() => toast.dismiss(id)}>
+        <X className="text-gray-600" />
+      </button>
+    </div>
+  )
+
   return (
     <div>
       {type === 'chat' ? (
         <div className="flex w-80 flex-col rounded-sm border border-gray-400 bg-gray-100 p-2">
-          <div className="flex justify-between border-b border-gray-400 pb-1">
-            <h1>{title}</h1>
-            <button onClick={() => toast.dismiss(id)}>
-              <X className="text-gray-600" />
-            </button>
-          </div>
+          {header}
           <div className="flex items-center justify-between gap-2">
             <div>{user}</div>
-            <div className="text-xs text-gray-700">{date}</div>
+            <div className="text-xs text-gray-700">{formatDate}</div>
           </div>
           <div className="line-clamp-2 text-sm">{content}</div>
         </div>
       ) : (
         <div className="flex w-80 flex-col rounded-sm border border-gray-400 bg-gray-100 p-2">
-          <div className="flex justify-between border-b border-gray-400 pb-1">
-            <h1>{title}</h1>
-            <button onClick={() => toast.dismiss(id)}>
-              <X className="text-gray-600" />
-            </button>
-          </div>
+          {header}
           <div className="flex items-center justify-center gap-3">
             <div>
               {/* 알림 아이콘 만들어진거 있으면 넣어도 괜찮아보여서 추가해둠*/}
@@ -49,7 +56,7 @@ function NotificationToast({
             </div>
             <div className="flex flex-col">
               <div className="flex justify-end gap-2 text-xs text-gray-700">
-                {date}
+                {formatDate}
               </div>
               <div className="line-clamp-2 text-sm">{content}</div>
             </div>
