@@ -34,9 +34,17 @@ export default function UserProfileForm({
       { phone_number: formData.phone },
       {
         onSuccess: (data) => {
-          setFormData((prev) => ({ ...prev, request_id: data.data.request_id }))
+          setFormData((prev) => ({
+            ...prev,
+            request_id: data.data.request_id,
+            cooldown: data.data.cooldown,
+            expires_in: data.data.expires_in,
+          }))
           // 인증번호 발송 성공했을 시 저장하여 PhoneAuthentication에서 씀
           onNext()
+        },
+        onError: () => {
+          showToast('재전송 대기 시간이 지나지 않았습니다.', 'error')
         },
       }
     )
@@ -51,7 +59,7 @@ export default function UserProfileForm({
   // 이름 유효성 검사
   const debouncedName = useDebounce(formData.name)
   const NameReg =
-    debouncedName === '' ? true : /^[가-힣a-zA-Z]{2,20}$/.test(debouncedName)
+    debouncedName === '' ? true : /^[가-힣a-zA-Z]{1,10}$/.test(debouncedName)
   const NameError = !NameReg ? '유효한 이름을 입력해주세요.' : ''
 
   return (
@@ -84,13 +92,22 @@ export default function UserProfileForm({
           value={formData.phone}
           placeholder="01012345678"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, phone: e.target.value.trim() }))
+            setFormData((prev) => ({
+              ...prev,
+              phone: e.target.value.trim(),
+              expires_in: 0,
+              cooldown: 0,
+            }))
           }
           error={phoneError}
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit} disabled={isPending}>
+        <Button
+          size="freeWidthLg"
+          onClick={handleSubmit}
+          disabled={isPending || formData.cooldown > 0}
+        >
           {isPending ? '인증코드 전송 중..' : '다음 단계'}
         </Button>
         <Button size="lg" variant="text" onClick={() => navigate('/login')}>

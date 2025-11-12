@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from './Button'
 import { useCountdown } from '../../hooks/useCountdown'
 import { timeFormat } from '../../utils/timeFormat'
@@ -43,6 +43,7 @@ type InputWithLabelProps = {
     disabled?: boolean
     countdown?: number
     cooldown?: number
+    start?: boolean
   }
 }
 
@@ -63,6 +64,13 @@ function InputWithLabel({
   button,
 }: InputWithLabelProps) {
   const { time, isRunning, start } = useCountdown(button?.countdown || 0)
+
+  useEffect(() => {
+    if (button?.start && button?.countdown && button.countdown > 0) {
+      start(button.countdown)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleButtonClick = () => {
     if (button?.countdown) {

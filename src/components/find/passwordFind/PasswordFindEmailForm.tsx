@@ -35,8 +35,16 @@ export default function PasswordFindEmailForm({
       },
       {
         onSuccess: (data) => {
-          setFormData((prev) => ({ ...prev, requestId: data?.data.request_id }))
+          setFormData((prev) => ({
+            ...prev,
+            requestId: data?.data.request_id,
+            cooldown: data.data.cooldown,
+            expires_in: data.data.expires_in,
+          }))
           onNext()
+        },
+        onError: () => {
+          showToast('재전송 대기 시간이 지나지 않았습니다.', 'error')
         },
       }
     )
@@ -69,13 +77,22 @@ export default function PasswordFindEmailForm({
           value={formData.email}
           placeholder="example@email.com"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, email: e.target.value.trim() }))
+            setFormData((prev) => ({
+              ...prev,
+              email: e.target.value.trim(),
+              cooldown: 0,
+              expires_in: 0,
+            }))
           }
           error={emailError}
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit} disabled={isPending}>
+        <Button
+          size="freeWidthLg"
+          onClick={handleSubmit}
+          disabled={isPending || formData.cooldown > 0}
+        >
           {isPending ? '인증코드 전송 중..' : '인증코드 전송'}
         </Button>
         <Button size="lg" variant="text" onClick={() => navigate('/login')}>
