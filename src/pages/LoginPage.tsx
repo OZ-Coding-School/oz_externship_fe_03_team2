@@ -195,7 +195,7 @@ function LoginPage() {
             type="submit"
             size="freeLogin"
             variant="login"
-            disabled={!formSubmit && isLogin}
+            disabled={!formSubmit || isLogin}
           >
             일반회원 로그인
           </Button>
