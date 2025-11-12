@@ -12,12 +12,13 @@ const sizeClasses = {
 }
 
 export default function StarRating({ rating, size = 'md' }: StarRatingProps) {
-  if (!rating) return
-
   const fullStars = Math.floor(rating)
   const hasHalfStar = rating % 1 >= 0.5
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0)
   const sizeClass = sizeClasses[size]
+
+  // 정수면 소수점 없이, 소수면 소수점 1자리까지 표시
+  const displayRating = rating % 1 === 0 ? rating.toFixed(0) : rating.toFixed(1)
 
   return (
     <div className="flex items-center gap-1">
@@ -48,7 +49,7 @@ export default function StarRating({ rating, size = 'md' }: StarRatingProps) {
         />
       ))}
       <span className="ml-1 text-sm font-medium text-gray-700">
-        {rating.toFixed(1)}/5
+        {displayRating}/5
       </span>
     </div>
   )
