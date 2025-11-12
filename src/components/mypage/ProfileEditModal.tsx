@@ -77,6 +77,9 @@ function ProfileEditModal({
     const { name, value } = e.target
     const formattedValue = name === 'phone_number' ? phoneFormat(value) : value
 
+    // 닉네임은 10글자 제한
+    if (name === 'nickname' && value.length > 10) return // 초과하면 업데이트x
+
     setTempData((prev) => ({ ...prev, [name]: formattedValue }))
 
     // 닉네임 변경시 체크 상태 초기화
@@ -100,11 +103,25 @@ function ProfileEditModal({
     } else if (isNicknameError) {
       const status = (nicknameError as AxiosError)?.response?.status
       setNickname({ needsCheck: false, completed: true, isUse: false })
-      const message =
-        status === 409
-          ? '이미 사용 중인 닉네임입니다'
-          : '중복확인에 실패했습니다'
-      showToast(message, 'error', status === 409 ? '사용 불가' : '오류 발생')
+
+      let title = '오류 발생'
+      let message = '중복확인에 실패했습니다'
+
+      switch (status) {
+        case 409:
+          title = '사용 불가'
+          message = '이미 사용 중인 닉네임입니다'
+          break
+        case 400:
+          title = '입력 오류'
+          message = '유효하지 않은 닉네임입니다'
+          break
+        default:
+          title = '네트워크 오류'
+          message = '네트워크 연결을 확인해주세요'
+      }
+
+      showToast(message, 'error', title)
     }
   }, [isNicknameSuccess, isNicknameError, nickname.needsCheck, nicknameError])
 
@@ -364,6 +381,7 @@ function ProfileEditModal({
               value={tempData.nickname || ''}
               onChange={handleInputChange}
               placeholder="닉네임을 입력하세요"
+              maxLength={10}
               required
               button={{
                 label: isNicknameLoading ? '확인중...' : '중복확인',
