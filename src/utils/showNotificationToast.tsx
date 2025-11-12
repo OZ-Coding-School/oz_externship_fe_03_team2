@@ -3,10 +3,10 @@ import NotificationToast from '../components/common/toast/NotificationToast'
 
 export const showNotificationToast = (
   title: string,
-  user: string,
   content: string,
   date: string,
-  type: 'chat' | 'notice'
+  type: 'chat' | 'notice',
+  user?: string
 ) => {
   toast.custom(
     (t) => {
