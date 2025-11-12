@@ -89,13 +89,22 @@ export default function UserProfileForm({
           value={formData.phone}
           placeholder="01012345678"
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, phone: e.target.value.trim() }))
+            setFormData((prev) => ({
+              ...prev,
+              phone: e.target.value.trim(),
+              expires_in: 0,
+              cooldown: 0,
+            }))
           }
           error={phoneError}
         />
       </div>
       <div className="flex w-full flex-col items-center gap-1">
-        <Button size="freeWidthLg" onClick={handleSubmit} disabled={isPending}>
+        <Button
+          size="freeWidthLg"
+          onClick={handleSubmit}
+          disabled={isPending || formData.cooldown > 0}
+        >
           {isPending ? '인증코드 전송 중..' : '다음 단계'}
         </Button>
         <Button size="lg" variant="text" onClick={() => navigate('/login')}>

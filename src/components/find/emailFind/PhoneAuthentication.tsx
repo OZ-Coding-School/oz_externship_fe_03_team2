@@ -109,12 +109,7 @@ export default function PhoneAuthentication({
       >
         인증하기
       </Button>
-      <Button
-        variant="outline"
-        size="freeWidthMd"
-        onClick={onPrev}
-        disabled={formData.cooldown > 0}
-      >
+      <Button variant="outline" size="freeWidthMd" onClick={onPrev}>
         이전 단계
       </Button>
     </div>
