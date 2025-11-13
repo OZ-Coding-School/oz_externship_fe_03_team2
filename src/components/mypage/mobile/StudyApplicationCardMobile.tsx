@@ -1,19 +1,10 @@
+import type { Application } from '../../../types/apiInterface/mypageInterface'
+import { getApplicationStatusBadge } from '../../../utils/applicationBadge'
+import { fullDateFormat } from '../../../utils/dateFormat'
 import Badge from '../../common/Badge'
 
-interface StudyApplication {
-  id: number
-  title: string
-  image: string
-  participants: number
-  deadline: string
-  curriculum: string[]
-  tags: string[]
-  appliedAt: string
-  status: 'pending' | 'success' | 'rejected'
-}
-
-interface StudyApplicationProps {
-  data?: StudyApplication
+interface StudyApplicationCardMobileProps {
+  data?: Application
   isLoading?: boolean
   onClick?: () => void
 }
@@ -22,7 +13,7 @@ function StudyApplicationCardMobile({
   data,
   isLoading,
   onClick,
-}: StudyApplicationProps) {
+}: StudyApplicationCardMobileProps) {
   if (isLoading) {
     return (
       <div className="animate-pulse rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
@@ -41,22 +32,9 @@ function StudyApplicationCardMobile({
     )
   }
 
-  if (!data) return null
+  if (!data) return
 
-  const getStatusBadge = () => {
-    switch (data.status) {
-      case 'pending':
-        return { variant: 'primary' as const, text: '대기중' }
-      case 'success':
-        return { variant: 'success' as const, text: '승인됨' }
-      case 'rejected':
-        return { variant: 'danger' as const, text: '거절됨' }
-      default:
-        return { variant: 'primary' as const, text: '대기중' }
-    }
-  }
-
-  const statusBadge = getStatusBadge()
+  const statusBadge = getApplicationStatusBadge(data.status)
 
   return (
     <div
@@ -66,10 +44,10 @@ function StudyApplicationCardMobile({
       <div className="flex gap-3">
         {/* 이미지 */}
         <div className="h-12 w-16 overflow-hidden rounded-lg bg-gray-100">
-          {data.image ? (
+          {data.recruitment_img ? (
             <img
-              src={data.image}
-              alt={data.title}
+              src={data.recruitment_img}
+              alt={data.recruitment_title}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -84,7 +62,7 @@ function StudyApplicationCardMobile({
           {/* 제목과 상태 */}
           <div className="mb-5 flex items-start justify-between gap-2">
             <h3 className="flex-1 truncate text-sm font-semibold text-gray-900">
-              {data.title}
+              {data.recruitment_title}
             </h3>
             <Badge variant={statusBadge.variant} size="sm">
               {statusBadge.text}
@@ -93,8 +71,8 @@ function StudyApplicationCardMobile({
 
           {/* 정보 */}
           <div className="mb-2 flex items-center justify-between text-xs text-gray-600">
-            <span>모집 {data.participants}명</span>
-            <span>{data.appliedAt}</span>
+            <span>모집 {data.expected_headcount}명</span>
+            <span>{fullDateFormat(data.created_at)}</span>
           </div>
 
           {/* 태그 */}

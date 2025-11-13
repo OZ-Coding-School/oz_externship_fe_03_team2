@@ -160,23 +160,30 @@ export interface ToggleBookmarksStudyResponse {
 
 // 내가 지원한 공고 내역 조회 - - - - - - - - -
 export interface MyApplicationParameter {
-  status?: string
+  status?: ApplicationStatus
   cursor?: string
 }
 
+// 지원 상태 enum
+export type ApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELED'
+
+// 지원 내역
 export interface Application {
-  id: number
-  status: string
+  uuid: number
+  status: ApplicationStatus
   created_at: string
   recruitment_title: string
-  thumbnail: string | null
+  recruitment_img: string | null
   expected_headcount: number
   deadline: string
+  lectures: string[]
+  tags: string[]
 }
 
+// 지원 내역 목록 응답
 export interface MyApplicationResponse {
-  items: Application[]
-  next_cursor: string | null
+  detail: string
+  data: Application[]
 }
 
 export interface DetailApplicationResponse {
