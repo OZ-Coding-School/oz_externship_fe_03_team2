@@ -1,73 +1,29 @@
-import { useEffect, useState } from 'react'
 import Modal from '../common/Modal'
 import Badge from '../common/Badge'
 import Button from '../common/Button'
 import { fullDateFormat } from '../../utils/dateFormat'
 import { getStatusBadge } from '../../utils/statusBadge'
 import { Loading } from '../common/Loading'
-import type { DetailApplicationResponse } from '../../types/apiInterface/mypageInterface'
+import { useGetApplicationDetail } from '../../api/services/mypage/studyApplication'
 
 interface StudyDetailModalProps {
   isOpen: boolean
   onClose: () => void
-  applicationId: number | null
+  applicationUuid: string | null
 }
 
 function StudyDetailModal({
   isOpen,
   onClose,
-  applicationId,
+  applicationUuid,
 }: StudyDetailModalProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [applicationDetail, setApplicationDetail] =
-    useState<DetailApplicationResponse | null>(null)
-  // 모달이 열릴때 api호출할 예정
-  useEffect(() => {
-    if (isOpen && applicationId) {
-      fetchApplicationDetail(applicationId)
-    }
+  // TanStack Query 훅 사용
+  const { data, isLoading, error } = useGetApplicationDetail(
+    applicationUuid || '',
+    isOpen && !!applicationUuid // 모달이 열려있고 uuid가 있을 때만 API 호출
+  )
 
-    // 모달이 닫힐 때 데이터 초기화
-    if (!isOpen) {
-      setApplicationDetail(null)
-    }
-  }, [isOpen, applicationId])
-
-  const fetchApplicationDetail = async (_id: number) => {
-    setIsLoading(true)
-    try {
-      // 더미데이터
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      const mockData: DetailApplicationResponse = {
-        id: 101,
-        status: 'APPLIED',
-        created_at: '2025-10-16T02:10:00Z',
-        self_introduction:
-          '3년차 프론트엔드 개발자로 일하고 있습니다. React를 주로 사용하며 최근 DevOps에 관심이 생겨서 이 스터디에 지원하게 되었습니다.',
-        motivation:
-          'DevOps 문화를 이해하고 실제 인프라로 구축해보고 싶어서 지원하였습니다. 현재 회사에서도 CI/CD 파이프라인 구축을 담당하게 될 예정이어서 실무에 바로 적용할 수 있을 것 같습니다.',
-        objective:
-          '3개월 후에는 AWS 기반의 완전한 CI/CD 파이프라인을 구축할 수 있는 능력을 갖추고 싶습니다.',
-        available_time: '평일 저녁 7-9시, 주말 오후 시간대 참여 가능합니다.',
-        has_study_experience: true,
-        study_experience:
-          '작년에 React 스터디를 6개월간 진행했으며, 스터디 결과물로 쇼핑몰 웹사이트를 완성했습니다. 스터디 결과물은 포트폴리오 사이트에 올려놓았습니다.',
-        recruitment: {
-          id: 12,
-          title: '프론트엔드 DevOps 스터디',
-          thumbnail:
-            'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop',
-          expected_headcount: 6,
-          deadline: '2025-10-31',
-        },
-      }
-      setApplicationDetail(mockData)
-    } catch {
-      setApplicationDetail(null)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const applicationDetail = data?.data
 
   return (
     <Modal
@@ -89,6 +45,10 @@ function StudyDetailModal({
     >
       {isLoading ? (
         <Loading />
+      ) : error ? (
+        <div className="py-8 text-center text-gray-500">
+          데이터를 불러올 수 없습니다.
+        </div>
       ) : applicationDetail ? (
         <div className="space-y-6">
           {/* 지원 상태 & 지원 일시 */}
@@ -131,7 +91,7 @@ function StudyDetailModal({
             <p className="mb-2 text-sm font-medium text-gray-700">
               스터디 목표
             </p>
-            <p className="eading-relaxed rounded-lg bg-gray-50 p-4 text-gray-700">
+            <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
               {applicationDetail.objective}
             </p>
           </div>
@@ -151,20 +111,23 @@ function StudyDetailModal({
             <p className="mb-2 text-sm font-medium text-gray-700">
               스터디 경험
             </p>
-            <div className="p-4">
+            <div className="rounded-lg bg-gray-50 p-4">
               <Badge
                 variant={
-                  applicationDetail.study_experience ? 'success' : 'danger'
+                  applicationDetail.has_study_experience ? 'success' : 'danger'
                 }
                 size="sm"
               >
-                {applicationDetail.study_experience ? '경험 있음' : '경험 없음'}
+                {applicationDetail.has_study_experience
+                  ? '경험 있음'
+                  : '경험 없음'}
               </Badge>
-              {applicationDetail.study_experience && (
-                <p className="mt-2 text-sm leading-relaxed text-gray-700">
-                  {applicationDetail.study_experience}
-                </p>
-              )}
+              {applicationDetail.has_study_experience &&
+                applicationDetail.study_experience && (
+                  <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                    {applicationDetail.study_experience}
+                  </p>
+                )}
             </div>
           </div>
         </div>

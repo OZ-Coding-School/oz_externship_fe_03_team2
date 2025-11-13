@@ -5,8 +5,8 @@ import StudyApplicationCard from './StudyApplicationCard'
 import StudyDetailModal from './StudyDetailModal'
 
 function StudyApplicationsList() {
-  const [selectedApplicationId, setSelectedApplicationId] = useState<
-    number | null
+  const [selectedApplicationUuid, setSelectedApplicationUuid] = useState<
+    string | null
   >(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -16,13 +16,13 @@ function StudyApplicationsList() {
   const applications = data?.data ?? []
 
   const handleCardClick = (application: Application) => {
-    setSelectedApplicationId(application.uuid)
+    setSelectedApplicationUuid(application.uuid)
     setIsModalOpen(true)
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
-    setSelectedApplicationId(null)
+    setSelectedApplicationUuid(null)
   }
 
   return (
@@ -50,7 +50,7 @@ function StudyApplicationsList() {
       <StudyDetailModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        applicationId={selectedApplicationId}
+        applicationUuid={selectedApplicationUuid}
       />
     </>
   )
