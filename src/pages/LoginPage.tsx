@@ -33,7 +33,7 @@ function LoginPage() {
 
   const { setAccessToken } = useToken()
   const { setUser } = useUserStore()
-  const { mutate: LoginMutate } = useLogin()
+  const { mutate: LoginMutate, isPending: isLogin } = useLogin()
 
   const debounceForm = useDebounce(form, 500)
   useEffect(() => {
@@ -125,7 +125,7 @@ function LoginPage() {
   return (
     <div className="bg-secondary-50 flex min-h-screen flex-col">
       <Header />
-      <div className="m-auto flex w-[21.75rem] flex-col items-center justify-center">
+      <div className="m-auto flex w-full max-w-[21.75rem] flex-col items-center justify-center">
         <div className="mb-5 flex">
           <span className="bg-primary-500 mr-2 flex h-8 w-8 items-center justify-center rounded-lg font-bold text-white">
             S
@@ -195,7 +195,7 @@ function LoginPage() {
             type="submit"
             size="freeLogin"
             variant="login"
-            disabled={!formSubmit}
+            disabled={!formSubmit || isLogin}
           >
             일반회원 로그인
           </Button>
