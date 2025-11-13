@@ -6,14 +6,15 @@ import {
   type NotificationResponse,
   type NotiItem,
 } from '../types/apiInterface/NotiInterface'
+import { showNotificationToast } from '../utils/showNotificationToast'
 
 export function useSSE() {
   const { accessToken } = useToken()
   const queryClient = useQueryClient()
   const typeMap = [
-    'APPLICATION_CREATED',
-    'APPLICATION_STATUS_APPROVAL',
-    'APPLICATION_STATUS_REJECTION',
+    'APPLICATIONS_CREATED',
+    'APPLICATIONS_STATUS_APPROVAL',
+    'APPLICATIONS_STATUS_REJECTION',
     'STUDY_MEMBER_JOINED',
     'STUDY_REVIEW_REQUEST',
     'STUDY_SCHEDULE_UPCOMING',
@@ -42,6 +43,13 @@ export function useSSE() {
       console.log(newNoti)
 
       if (!newNoti.type || !typeMap.includes(newNoti.type)) return
+
+      showNotificationToast(
+        newNoti.content,
+        newNoti.type,
+        newNoti.created_at,
+        'chat'
+      )
 
       queryClient.setQueryData<NotificationResponse>(
         ['/notification'],

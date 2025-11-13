@@ -1,10 +1,13 @@
 import { ChevronUp } from 'lucide-react'
 import { useUserStore } from '../../../store/useUserStore'
 import { online } from '../../NotiDummy'
+import type { User } from '../../../types/apiInterface/chatInterface'
 interface PeopleBoardType {
   setOpenPeople: (openPeople: boolean) => void
+  onlineUsers: User[]
+  onlineCount: number
 }
-export function PeopleBoard({ setOpenPeople }: PeopleBoardType) {
+export function PeopleBoard({ setOpenPeople, onlineUsers }: PeopleBoardType) {
   const { user } = useUserStore()
   return (
     <div className="shadow-normal flex h-82 w-27 flex-col rounded-br-md bg-gray-50">
@@ -12,18 +15,16 @@ export function PeopleBoard({ setOpenPeople }: PeopleBoardType) {
         <ChevronUp onClick={() => setOpenPeople(false)} />
       </div>
       <div className="scrollbar-hide flex flex-col items-start gap-1.5 overflow-y-scroll px-1 pb-8">
-        {online.people.map((person) => (
+        {onlineUsers.map((person) => (
           <div
             key={person.id}
             className="flex h-auto w-auto items-center justify-center gap-1 rounded-full bg-white px-2 py-1"
           >
-            <div
-              className={`${person.is_online ? 'bg-success-500' : 'bg-gray-300'} h-2 w-2 rounded-full`}
-            ></div>
+            <div className={`bg-success-500 h-2 w-2 rounded-full`}></div>
             <p
               className={`${user?.id === person.id ? 'text-primary-600' : 'text-gray-700'} text-xs`}
             >
-              {person.name}
+              {person.nickname}
             </p>
           </div>
         ))}

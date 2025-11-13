@@ -3,7 +3,6 @@ import { useUserStore } from '../../../store/useUserStore'
 import { timeFormat } from '../../../utils/dateFormat'
 import { PeopleBoard } from './PeopleBoard'
 import { useEffect, useRef, useState } from 'react'
-import { online } from '../../NotiDummy'
 import { useChatMessages } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
 import { useWebSocket } from '../../../hooks/useWebSocket'
@@ -25,18 +24,32 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     // 다음 페이지 가져오는 중이냐 아니냐
     // 우리집 문서 참고..ㄱ
   } = useChatMessages(studyGroupUuid)
-  useWebSocket(studyGroupUuid)
+  const {
+    sendMessage: sendWsMessage,
+    isError,
+    error,
+    onlineUsers,
+    onlineCount,
+  } = useWebSocket(studyGroupUuid)
 
-  // const chatData = chatDataDummy
-  // const isFetchingNextPage = chatDataDummy.isFetchingNextPage
-  // const hasNextPage = chatDataDummy.hasNextPage
-  // const fetchNextPage = chatDataDummy.fetchNextPage
+  useEffect(() => {
+    console.log(chatData)
+  }, ['채팅:', chatData])
+
+  useEffect(() => {
+    console.log(onlineUsers)
+  }, [onlineUsers])
 
   const messages = chatData?.pages.flatMap((page) => page) ?? []
 
+  useEffect(() => {
+    console.log(messages)
+  }, [messages])
+
   const { user } = useUserStore()
   const [openPeople, setOpenPeople] = useState<boolean>(false)
-  const [sendMessage, setSendMessage] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
+  // const filter = new Filter
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -76,6 +89,29 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     you: 'bg-gray-100 rounded-xl rounded-bl-sm',
   }
 
+  const handleSendMessage = () => {
+    if (!message.trim()) return
+    // 빈 메시지나 띄어쓰기만 있는 거 전송 막음
+
+    if (sendWsMessage(message)) {
+      setMessage('')
+      // 전송 시 결과를 true/false로 반환, 성공 시 입력창 초기화
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // if (e.nativeEvent.isComposing) {
+    //   return
+    // }
+
+    if (e.key === 'Enter' && !e.shiftKey) {
+      // 쉬프트+엔터 눌렀을 때는 줄바꿈 할 수 있도록  안 되게 함
+      e.preventDefault()
+      // 원래 엔터 누르면 줄바꿈인데 여기서는 대신 전송하게끔 함
+      handleSendMessage()
+    }
+  }
+
   return (
     <div className="flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none">
       {/* 상단바 */}
@@ -88,7 +124,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
             <p className="text-sm font-semibold">{studyGroupName}</p>
             <div className="flex items-center gap-1">
               <div className="bg-success-500 h-2 w-2 rounded-full"></div>
-              <p className="text-xs text-gray-600">{online.total}명 온라인</p>
+              <p className="text-xs text-gray-600">{onlineCount}명 온라인</p>
             </div>
           </div>
         </div>
@@ -97,33 +133,34 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
         </div>
       </div>
 
-      {/* 접속중 온라인 여부 어케 되나 */}
       <div className="relative flex justify-between gap-2 border-y border-gray-200 bg-gray-50 p-2 whitespace-nowrap">
         <div className="flex h-full items-center gap-2">
-          {online.people.slice(0, 4).map((person) => (
+          {onlineUsers.slice(0, 4).map((person) => (
             <div
               key={person.id}
               className="flex h-auto w-auto flex-0 items-center justify-center gap-1 rounded-full bg-white px-2 py-1"
             >
-              <div
-                className={`${person.is_online ? 'bg-success-500' : 'bg-gray-300'} h-2 w-2 rounded-full`}
-              ></div>
+              <div className={`bg-success-500 h-2 w-2 rounded-full`}></div>
               <p
                 className={`${user?.id === person.id ? 'text-primary-600' : 'text-gray-700'} text-xs`}
               >
-                {person.name}
+                {person.nickname}
               </p>
             </div>
           ))}
         </div>
-        {online.people.length > 4 && (
+        {onlineCount > 4 && (
           <div className="text-gray-400 hover:text-gray-500 active:text-gray-600">
             <ChevronDown onClick={() => setOpenPeople(true)} />
           </div>
         )}
         {openPeople && (
           <div className="absolute top-0 right-0">
-            <PeopleBoard setOpenPeople={setOpenPeople} />
+            <PeopleBoard
+              setOpenPeople={setOpenPeople}
+              onlineCount={onlineCount}
+              onlineUsers={onlineUsers}
+            />
           </div>
         )}
       </div>
@@ -140,7 +177,11 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
           </div>
         ) : (
           messages?.map((msg) => {
-            const isMe = msg.sender.id === user?.id
+            const isMe = Number(msg.sender.id) === user?.id
+            console.log('sender.id:', msg.sender.id)
+            console.log('sender.id 타입:', typeof msg.sender.id)
+            console.log('user.id:', user?.id)
+            console.log('user.id 타입:', typeof user?.id)
             if (
               msg.type === 'system_message' ||
               msg.type === 'force_disconnect'
@@ -180,16 +221,27 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
         )}
       </div>
 
+      {error && (
+        <div className="bg-danger-50 border-danger-200 border-t px-3 py-2">
+          <p className="text-danger-600 text-xs">{error}</p>
+        </div>
+      )}
+
       {/* 입력창 */}
       <div className="border-secondary-200 flex items-center justify-center gap-2 border-t p-3">
         <input
           type="text"
           className="w-full flex-1 rounded-full border border-gray-300 px-3 py-2 text-sm focus:border-gray-400 focus:ring-0 focus:outline-none"
           placeholder="메시지를 입력하세요..."
-          value={sendMessage}
-          onChange={(e) => setSendMessage(e.target.value)}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          disabled={isError}
         />
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white hover:bg-gray-400 active:bg-gray-500">
+        <div
+          onClick={handleSendMessage}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white hover:bg-gray-400 active:bg-gray-500"
+        >
           <Send size={18} />
         </div>
       </div>

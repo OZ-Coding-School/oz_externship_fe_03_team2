@@ -15,9 +15,9 @@ export interface NotificationParams {
 export interface NotiItem {
   id: number
   type?:
-    | 'APPLICATION_CREATED'
-    | 'APPLICATION_STATUS_APPROVAL'
-    | 'APPLICATION_STATUS_REJECTION'
+    | 'APPLICATIONS_CREATED'
+    | 'APPLICATIONS_STATUS_APPROVAL'
+    | 'APPLICATIONS_STATUS_REJECTION'
     | 'STUDY_MEMBER_JOINED'
     | 'STUDY_REVIEW_REQUEST'
     | 'STUDY_SCHEDULE_UPCOMING'
@@ -26,10 +26,10 @@ export interface NotiItem {
     | 'SYSTEM'
     | 'CUSTOM'
   content: string
-  created_at?: string
+  created_at: string
   back_url_link: string
   is_read: boolean
-  user_id: number
+  user_id?: number
   type_display?: string
   user?: number
 }
@@ -42,8 +42,8 @@ export interface NotiItem {
 
 export interface NotificationResponse {
   count: number
-  next: string
-  previous: string
+  next: string | null
+  previous: string | null
   results: NotiItem[]
 }
 

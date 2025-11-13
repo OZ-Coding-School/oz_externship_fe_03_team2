@@ -1,9 +1,8 @@
 import { useSimpleQuery } from '../Helper/useSimpleQuery'
 import {
-  type UnreadMessage,
-  type ChatMessage,
   type ChatMessageData,
-  type ChatRoom,
+  type ChatMessagesResponse,
+  type ChatRoomData,
 } from '../../types/apiInterface/chatInterface'
 import { api } from '../client'
 import type { SimpleError } from '../../types/apiInterface/findInterface'
@@ -11,34 +10,37 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 
 // 채팅방 목록 불러오기
 export const useChatRooms = () => {
-  return useSimpleQuery<ChatRoom, SimpleError>(['chatRooms'], () =>
+  return useSimpleQuery<ChatRoomData[], SimpleError>(['chatRooms'], () =>
     api.get('/v1/chat/chatrooms')
   )
 }
 
 // 안 읽은 메시지 수 불러오기
-export const useUnreadMessages = () => {
-  return useSimpleQuery<UnreadMessage, SimpleError>(['unread'], () =>
-    api.get(`/v1/chat/total-unread-messages`)
-  )
-}
+// export const useUnreadMessages = () => {
+//   return useSimpleQuery<UnreadMessageResponse, SimpleError>(
+//     ['unreadMessages'],
+//     () => api.get('/v1/chat/total-unread-messages'),
+//     {
+//       select: (data) => data.data.total_unread_count
+//     }
+//   )
+// }
 
 // 채팅 메시지 무한 스크롤
 export const useChatMessages = (uuid: string | null) => {
   return useInfiniteQuery<ChatMessageData[], SimpleError>({
     queryKey: ['chatMessages', uuid],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await api.get<ChatMessage>(
+      const response = await api.get<ChatMessagesResponse>(
         `/v1/chat/chatrooms/${uuid}/messages`,
         {
           params: {
             page: pageParam,
             page_size: pageParam === 1 ? 300 : 100,
-            // 처음 가져올 때는 300개 가져오고 이후에 스크롤 할 때 100개씩 가져옴.
           },
         }
       )
-      return response.data.messages.reverse().map((msg) => ({
+      return response.results.map((msg) => ({
         ...msg,
         type: 'chat.message' as const,
       }))
@@ -58,12 +60,12 @@ export const useChatMessages = (uuid: string | null) => {
     },
     initialPageParam: 1,
     enabled: !!uuid,
-    select: (data) => {
-      return {
-        ...data,
-        pages: [...data.pages].reverse(),
-      }
-    },
+    // select: (data) => {
+    //   return {
+    //     ...data,
+    //     pages: [...data.pages].reverse(),
+    //   }
+    // },
   })
 }
 

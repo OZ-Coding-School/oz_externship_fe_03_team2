@@ -2,25 +2,35 @@ import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import type {
   ChatMessageData,
+  User,
   WebSocketResponse,
 } from '../types/apiInterface/chatInterface'
 import { useStudyGroupId } from '../store/useStudyGroupId'
+import { useToken } from '../store/useTokenStore'
 
 export const useWebSocket = (study_group_uuid: string | null) => {
   const socketRef = useRef<WebSocket | null>(null)
   const [isError, setIsError] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
+  const [onlineUsers, setOnlineUsers] = useState<User[]>([])
+  const [onlineCount, setOnlineCount] = useState<number>(0)
+
   const queryClient = useQueryClient()
   const { setStudyGroupUuid } = useStudyGroupId()
+  const { accessToken } = useToken()
 
   useEffect(() => {
     if (!study_group_uuid) return
-    const baseUrl = import.meta.env.VITE_API_BASE_URL.replace('http', 'ws')
-    const wsUrl = `${baseUrl}/ws/study-groups/${study_group_uuid}/chat/`
+    const wsUrl = `wss://api.ozcoding.site/ws/chat/${study_group_uuid}/?token=${accessToken}`
 
     const socket = new WebSocket(wsUrl)
     // 웹소켓 연결
     socketRef.current = socket
+
+    socket.onopen = () => {
+      setIsError(false)
+      setError('')
+    }
 
     socket.onmessage = (e) => {
       const response: WebSocketResponse = JSON.parse(e.data)
@@ -34,22 +44,38 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       //   origin: 'ws://example.com',
       // }
       // 이 중에 data 부분을 찍고 들어가는 거
+      if (response.type === 'online.users') {
+        setOnlineCount(response.count)
+        setOnlineUsers(response.users)
+        return
+      }
       if (response.type === 'force_disconnect') {
         socket.close()
         setStudyGroupUuid(null)
-      } else if (
-        response.type !== 'error' &&
+        return
+      }
+      if (response.type === 'error') {
+        setError(response.message || 'WebSocket 에러')
+        return
+      }
+
+      if (
+        (response.type === 'chat.message' ||
+          response.type === 'system_message') &&
+        'id' in response &&
         response.id &&
+        'sender' in response &&
         response.sender &&
+        'content' in response &&
         response.content
       ) {
         const newMsg: ChatMessageData = {
-          id: response.id,
-          type: response.type,
-          sender: response.sender,
           content: response.content,
-          is_read: false,
-          created_at: response.created_at!,
+          created_at: response.created_at,
+          id: response.id,
+          sender: response.sender,
+          study_group_uuid: response.study_group_uuid,
+          type: response.type,
         }
 
         // 변수에 안 담고 바로 ...prev, response.data 했더니
@@ -76,20 +102,25 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           }
         )
         setIsError(false)
-      } else if (response.type === 'error') {
-        setError(response.message || 'WebSocket 에러')
       }
     }
 
     socket.onerror = () => {
       setIsError(true)
+      setError('연결 오류')
       // = 네트워크 에러. 전송 시도 후에 네트워크에러로 전송 실패한 거 골라냄.
+    }
+
+    socket.onclose = () => {
+      setIsError(false)
     }
 
     return () => {
       socket.close()
       // 컴포넌트 사라질 때 또는 다른 채팅방으로 옮길 때 실행되는 cleanup 함수임
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [study_group_uuid])
 
   // 메시지 보내는 부분
@@ -137,6 +168,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       return true
     } else {
       setIsError(true)
+      setError('연결 실패')
       return false
       // 전송 시도 전 연결상태에 따라 오류 판단
     }
@@ -145,5 +177,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
     sendMessage,
     isError,
     error,
+    onlineUsers,
+    onlineCount,
   }
 }
