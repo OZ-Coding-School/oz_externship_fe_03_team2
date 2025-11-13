@@ -169,7 +169,7 @@ export type ApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELED'
 
 // 지원 내역
 export interface Application {
-  uuid: number
+  uuid: string
   status: ApplicationStatus
   created_at: string
   recruitment_title: string
@@ -186,22 +186,26 @@ export interface MyApplicationResponse {
   data: Application[]
 }
 
+// 지원 내역 상세정보 응답
 export interface DetailApplicationResponse {
-  id: number
-  status: string
-  created_at: string
-  self_introduction: string
-  motivation: string
-  objective: string
-  available_time: string
-  has_study_experience: boolean
-  study_experience: string | null
-  recruitment: {
-    id: number
-    title: string
-    thumbnail: string | null
-    expected_headcount: number
-    deadline: string
+  detail: string
+  data: {
+    uuid: string
+    status: ApplicationStatus
+    created_at: string
+    self_introduction: string
+    motivation: string
+    objective: string
+    available_time: string
+    has_study_experience: boolean
+    study_experience: string
+    recruitment: {
+      uuid: string
+      title: string
+      recruitment_img: string | null
+      expected_headcount: number
+      deadline: string
+    }
   }
 }
 
