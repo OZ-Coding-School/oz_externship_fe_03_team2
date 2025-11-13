@@ -10,12 +10,14 @@ import { showToast } from '../../utils/showToast'
 import { NotiBoard } from '../NotiBoard'
 import { ChatBadge } from './Notification/ChatBadge'
 import { useAllNotification } from '../../api/services/Noti'
+import { useSSE } from '../../hooks/useSSE'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
 }
 
 function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
+  useSSE()
   const { data: allData } = useAllNotification()
   const [open, setOpen] = useState(false)
   const [notiOpen, setNotiOpen] = useState(false)

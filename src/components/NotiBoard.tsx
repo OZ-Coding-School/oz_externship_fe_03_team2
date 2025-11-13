@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 // import { allData } from './NotiDummy'
 import { Link } from 'react-router'
 // import { monthDayFormat } from '../utils/dateFormat'
-// import { useAllNotification } from '../api/services/Noti'
-import { useSSE } from '../hooks/useSSE'
 import {
   useAllNotification,
   useNotiPatchAllRead,
@@ -21,7 +19,7 @@ import {
   UserRoundPlus,
   X,
 } from 'lucide-react'
-// import { allData } from './NotiDummy'
+import { monthDayFormat } from '../utils/dateFormat'
 
 const typeToIcon = (type: string): ReactNode => {
   const typeMap: Record<string, ReactNode> = {
@@ -58,7 +56,6 @@ const typeToColor = (type: string): string => {
 export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
   const { data: allData } = useAllNotification()
-  useSSE()
 
   const { mutate: patchRead } = useNotiPatchRead()
   const handleRead = (notification_id: number) => {
@@ -136,8 +133,7 @@ export function NotiBoard() {
               <div className="flex flex-1 flex-col gap-1">
                 <p className="text-sm">{item.content}</p>
                 <p className="text-xs text-gray-500">
-                  {/* {monthDayFormat(item.created_at)} */}
-                  {/* 없어졌나? */}
+                  {item.created_at && monthDayFormat(item.created_at)}
                 </p>
               </div>
               {!item.is_read && (
