@@ -33,6 +33,8 @@ export const useGetApplicationDetail = (
       if (isError)
         throw new Error('지원 내역 상세 정보를 불러오는데 실패했습니다')
 
+      //   await new Promise((resolve) => setTimeout(resolve, 5000)) //테스트용 5초지연 (로딩 컴포넌트 위치 조정떄문에)
+
       return api.get<DetailApplicationResponse>(
         `/v1/recruitments/applications/me/${application_uuid}`
       )

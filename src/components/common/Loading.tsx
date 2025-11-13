@@ -2,7 +2,7 @@ import { Spinner } from './Spinner'
 
 export function Loading() {
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex min-h-[400px] items-center justify-center">
       <div className="flex h-[17.375rem] w-[53.375rem] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-[25px]">
         <div className="flex flex-col items-center">
           <Spinner />

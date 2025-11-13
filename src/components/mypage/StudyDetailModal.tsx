@@ -1,10 +1,10 @@
 import Modal from '../common/Modal'
-import Badge from '../common/Badge'
 import Button from '../common/Button'
-import { fullDateFormat } from '../../utils/dateFormat'
-import { getStatusBadge } from '../../utils/statusBadge'
-import { Loading } from '../common/Loading'
-import { useGetApplicationDetail } from '../../api/services/mypage/studyApplication'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from '../common/ErrorFallback'
+import StudyDetailModalContent from './StudyDetailModalContent'
+import EmptyData from '../common/EmptyData'
 
 interface StudyDetailModalProps {
   isOpen: boolean
@@ -17,18 +17,9 @@ function StudyDetailModal({
   onClose,
   applicationUuid,
 }: StudyDetailModalProps) {
-  // TanStack Query 훅 사용
-  const { data, isLoading, error } = useGetApplicationDetail(
-    applicationUuid || '',
-    isOpen && !!applicationUuid // 모달이 열려있고 uuid가 있을 때만 API 호출
-  )
-
-  const applicationDetail = data?.data
-
   return (
     <Modal
       title="지원 상세 정보"
-      subtitle={applicationDetail?.recruitment.title || ''}
       isOpen={isOpen}
       onClose={onClose}
       width="w-full max-w-[672px]"
@@ -43,98 +34,16 @@ function StudyDetailModal({
         </>
       }
     >
-      {isLoading ? (
-        <Loading />
-      ) : error ? (
-        <div className="py-8 text-center text-gray-500">
-          데이터를 불러올 수 없습니다.
-        </div>
-      ) : applicationDetail ? (
-        <div className="space-y-6">
-          {/* 지원 상태 & 지원 일시 */}
-          <div className="flex items-start justify-between rounded-lg bg-gray-50 p-4">
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-gray-600">지원 상태</p>
-              <Badge
-                variant={getStatusBadge(applicationDetail.status).variant}
-                size="sm"
-              >
-                {getStatusBadge(applicationDetail.status).text}
-              </Badge>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-right text-sm text-gray-600">지원 일시</p>
-              <p className="text-right text-sm font-medium text-gray-900">
-                {fullDateFormat(applicationDetail.created_at)}
-              </p>
-            </div>
-          </div>
-
-          {/* 자기소개 */}
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">자기소개</p>
-            <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {applicationDetail.self_introduction}
-            </p>
-          </div>
-
-          {/* 지원 동기 */}
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">지원 동기</p>
-            <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {applicationDetail.motivation}
-            </p>
-          </div>
-
-          {/* 스터디 목표 */}
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              스터디 목표
-            </p>
-            <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {applicationDetail.objective}
-            </p>
-          </div>
-
-          {/* 가능한 시간대 */}
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              가능한 시간대
-            </p>
-            <p className="rounded-lg bg-gray-50 p-4 leading-relaxed text-gray-700">
-              {applicationDetail.available_time}
-            </p>
-          </div>
-
-          {/* 스터디 경험 */}
-          <div>
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              스터디 경험
-            </p>
-            <div className="rounded-lg bg-gray-50 p-4">
-              <Badge
-                variant={
-                  applicationDetail.has_study_experience ? 'success' : 'danger'
-                }
-                size="sm"
-              >
-                {applicationDetail.has_study_experience
-                  ? '경험 있음'
-                  : '경험 없음'}
-              </Badge>
-              {applicationDetail.has_study_experience &&
-                applicationDetail.study_experience && (
-                  <p className="mt-2 text-sm leading-relaxed text-gray-700">
-                    {applicationDetail.study_experience}
-                  </p>
-                )}
-            </div>
-          </div>
-        </div>
+      {isOpen && applicationUuid ? (
+        <QueryErrorResetBoundary>
+          {({ reset }) => (
+            <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback}>
+              <StudyDetailModalContent applicationUuid={applicationUuid} />
+            </ErrorBoundary>
+          )}
+        </QueryErrorResetBoundary>
       ) : (
-        <div className="py-8 text-center text-gray-500">
-          데이터를 불러올 수 없습니다.
-        </div>
+        <EmptyData description="지원서 정보를 찾을 수 없습니다" />
       )}
     </Modal>
   )
