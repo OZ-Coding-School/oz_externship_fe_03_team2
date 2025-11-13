@@ -11,11 +11,12 @@ import {
   getDifficultyVariant,
   getPlatformVariant,
 } from '../../utils/badgeFormat'
+import { birthdayFormat } from '../../utils/dateFormat'
 
 interface JobBookmarkCardProps {
   data?: StudyJobs
-  onBookmarkToggle?: (id: number) => void
-  onViewClick?: (id: number) => void
+  onBookmarkToggle?: (uuid: string) => void
+  onViewClick?: (uuid: string) => void
   isLoading?: boolean
 }
 
@@ -91,9 +92,9 @@ export function JobBookmarkCard({
       <div className="flex gap-4">
         {/* 이미지 */}
         <div className="flex h-auto min-w-40 items-center rounded-lg">
-          {data.thumbnail ? (
+          {data.thumbnail_img_url ? (
             <img
-              src={data.thumbnail}
+              src={data.thumbnail_img_url}
               alt={data.title}
               className="h-24 w-full object-cover"
             />
@@ -117,15 +118,15 @@ export function JobBookmarkCard({
           <div className="mb-3 flex items-center gap-4 text-sm text-gray-600">
             <span className="flex items-center gap-1">
               <User className="h-4 w-4" />
-              모집 인원: {data.max_headcount}명
+              모집 인원: {data.expected_headcount}명
             </span>
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
-              마감일: {data.end_at}
+              마감일: {birthdayFormat(data.close_at)}
             </span>
             <span className="flex items-center gap-1">
               <Eye className="h-4 w-4" />
-              조회 {data.views}
+              조회 {data.views_count}
             </span>
             <span className="flex items-center gap-1">
               <Bookmark className="h-4 w-4" />
@@ -137,9 +138,9 @@ export function JobBookmarkCard({
           <div className="mb-3">
             <p className="mb-2 text-sm font-medium text-gray-700">강의 목록:</p>
             <ul className="space-y-1 text-sm text-gray-600">
-              {data.courses.map((course, index) => (
+              {data.lectures.map((leacture, index) => (
                 <li key={index}>
-                  • {course.name} - {course.instructor}
+                  • {leacture.title} - {leacture.instructor}
                 </li>
               ))}
             </ul>
@@ -149,7 +150,7 @@ export function JobBookmarkCard({
           <div className="flex flex-wrap gap-2">
             {data.tags.map((tag, index) => (
               <Badge key={index} variant="primary" size="sm">
-                {tag}
+                {tag.name}
               </Badge>
             ))}
           </div>
@@ -159,7 +160,7 @@ export function JobBookmarkCard({
         <div className="flex flex-shrink-0 flex-col items-start gap-2">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => onBookmarkToggle?.(data.id)}
+              onClick={() => onBookmarkToggle?.(data.uuid)}
               className="cursor-pointer transition-transform hover:scale-110"
             >
               <Bookmark className="fill-primary-500 text-primary-500 h-5 w-5" />
@@ -167,7 +168,7 @@ export function JobBookmarkCard({
             <Button
               variant="primary"
               size="md"
-              onClick={() => onViewClick?.(data.id)}
+              onClick={() => onViewClick?.(data.uuid)}
             >
               공고 보기
             </Button>
