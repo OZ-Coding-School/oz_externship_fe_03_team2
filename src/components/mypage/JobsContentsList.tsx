@@ -1,6 +1,9 @@
 import { JobBookmarkCard } from './BookmarkCard'
 import { showToast } from '../../utils/showToast'
-import { useGetStudyJobBookmarks } from '../../api/services/mypage/studyJobs'
+import {
+  useGetStudyJobBookmarks,
+  useToggleStudyJobBookmark,
+} from '../../api/services/mypage/studyJobs'
 
 interface JobsContentsListProps {
   searchQuery: string
@@ -13,15 +16,22 @@ function JobsContentsList({
 }: JobsContentsListProps) {
   const { data, isLoading } = useGetStudyJobBookmarks()
   const jobs = data?.results || []
+  const { mutate: removeBookmark } = useToggleStudyJobBookmark()
 
   const handleBookmarkToggle = (jobUuid: string) => {
-    //api 추가 전
-    showToast(`${jobUuid}북마크가 삭제되었습니다`, 'success', '북바크 삭제')
+    removeBookmark(jobUuid, {
+      onSuccess: () => {
+        showToast('북마크가 삭제되었습니다', 'success', '북마크 삭제')
+      },
+      onError: () => {
+        showToast('북마크 삭제 실패', 'error', '오류 발생')
+      },
+    })
   }
 
   const handleViewClick = (jobUuid: string) => {
-    //api 추가 전
-    showToast(`공고 uuid : ${jobUuid}`, 'success', '공고보기 클릭')
+    const url = `https://learn.ozcoding.site/recruit/${jobUuid}`
+    window.open(url, '_blank')
   }
 
   const filterJobs = jobs.filter((job) =>

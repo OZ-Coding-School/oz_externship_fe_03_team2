@@ -1,6 +1,7 @@
 import { api } from '../../client'
 import { useSimpleQuery } from '../../Helper/useSimpleQuery'
 import type { BookmarksStudyResponse } from '../../../types/apiInterface/mypageInterface'
+import { useSimpleMutation } from '../../Helper/useSimpleMutation'
 
 // 북마크한 공고 목록 조회 (GET)
 export const useGetStudyJobBookmarks = (page?: number, enabled = true) => {
@@ -18,5 +19,17 @@ export const useGetStudyJobBookmarks = (page?: number, enabled = true) => {
       })
     },
     { enabled }
+  )
+}
+
+// 북마크한 공고 북마크 추가/삭제 (POST)
+export const useToggleStudyJobBookmark = () => {
+  return useSimpleMutation<unknown, Error, string>(
+    async (uuid: string) => {
+      return api.post(`/v1/recruitments/bookmarks/${uuid}`)
+    },
+    {
+      invalidateKeys: ['/v1/recruitments/bookmarks'], // 북마크 목록 캐시 무효화
+    }
   )
 }
