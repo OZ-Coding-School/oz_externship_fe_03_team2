@@ -13,7 +13,7 @@ interface ChatOpenType {
 
 export function ChatBoard({ setChatOpen }: ChatOpenType) {
   const { data: chatData } = useChatRooms()
-  // const { data: unread } = useUnreadMessages()s
+  // const { data: unread } = useUnreadMessages()
   // const chatCount = unread?.data.total_unread_count
   const chatCount = 3
 

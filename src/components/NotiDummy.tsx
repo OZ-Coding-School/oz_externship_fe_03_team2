@@ -188,74 +188,79 @@ export const allData = {
 //   },
 // }
 
-export const chatData = [
-  {
-    uuid: 'b91a4b71-23a2-41e3-b55c-001',
-    name: 'Python 데이터 분석 스터디',
-    last_message: {
-      id: 1,
-      content: '채팅더미.',
-      sender_nickname: '홍길동',
-      created_at: '2025-10-15 10:30:00',
+export const chatData = {
+  status: 'success',
+  code: 'success',
+  message: '채팅방 목록 조회 성공',
+  data: [
+    {
+      uuid: 'b91a4b71-23a2-41e3-b55c-001',
+      name: 'Python 데이터 분석 스터디',
+      last_message: {
+        id: 1,
+        content: '채팅더미.',
+        sender_nickname: '홍길동',
+        created_at: '2025-10-15 10:30:00',
+      },
+      unread_message_count: 0,
     },
-    unread_message_count: 0,
-  },
-  {
-    uuid: 'b91a4b71-23a2-41e3-b55c-002',
-    name: '안냐아ㅏㅇ아아아아ㅏ아아아ㅏ아옹',
-    last_message: {
-      id: 2,
-      content: '안녕하세요.',
-      sender_nickname: '김민섭',
-      created_at: '2025-10-15 10:30:00',
+    {
+      uuid: 'b91a4b71-23a2-41e3-b55c-002',
+      name: '안냐아ㅏㅇ아아아아ㅏ아아아ㅏ아옹',
+      last_message: {
+        id: 2,
+        content: '안녕하세요.',
+        sender_nickname: '김민섭',
+        created_at: '2025-10-15 10:30:00',
+      },
+      unread_message_count: 2,
     },
-    unread_message_count: 2,
-  },
-  {
-    uuid: 'b91a4b71-23a2-41e3-b55c-003',
-    name: 'AWS 클라우드 아키텍처 스터디',
-    last_message: {
-      id: 3,
-      content: '채팅방 더미데이터입니다.',
-      sender_nickname: '민현서',
-      created_at: '2025-10-15 10:30:00',
+    {
+      uuid: 'b91a4b71-23a2-41e3-b55c-003',
+      name: 'AWS 클라우드 아키텍처 스터디',
+      last_message: {
+        id: 3,
+        content: '채팅방 더미데이터입니다.',
+        sender_nickname: '민현서',
+        created_at: '2025-10-15 10:30:00',
+      },
+      unread_message_count: 5,
     },
-    unread_message_count: 5,
-  },
-  {
-    uuid: 'b91a4b71-23a2-41e3-b55c-004',
-    name: 'Node.js 백엔드 개발팀',
-    last_message: {
-      id: 4,
-      content: '안니용',
-      sender_nickname: '정승윤',
-      created_at: '2025-10-15 10:30:00',
+    {
+      uuid: 'b91a4b71-23a2-41e3-b55c-004',
+      name: 'Node.js 백엔드 개발팀',
+      last_message: {
+        id: 4,
+        content: '안니용',
+        sender_nickname: '정승윤',
+        created_at: '2025-10-15 10:30:00',
+      },
+      unread_message_count: 0,
     },
-    unread_message_count: 0,
-  },
-  {
-    uuid: 'b91a4b71-23a2-41e3-b55c-005',
-    name: '메롱',
-    last_message: {
-      id: 5,
-      content: '긋쵸',
-      sender_nickname: '김미진',
-      created_at: '2025-10-15 10:30:00',
+    {
+      uuid: 'b91a4b71-23a2-41e3-b55c-005',
+      name: '메롱',
+      last_message: {
+        id: 5,
+        content: '긋쵸',
+        sender_nickname: '김미진',
+        created_at: '2025-10-15 10:30:00',
+      },
+      unread_message_count: 1,
     },
-    unread_message_count: 1,
-  },
-  {
-    uuid: 'b91a4b71-23a2-41e3-b55c-006',
-    name: '얏호',
-    last_message: {
-      id: 6,
-      content: '응애',
-      sender_nickname: '김현진',
-      created_at: '2025-10-15 10:30:00',
+    {
+      uuid: 'b91a4b71-23a2-41e3-b55c-006',
+      name: '얏호',
+      last_message: {
+        id: 6,
+        content: '응애',
+        sender_nickname: '김현진',
+        created_at: '2025-10-15 10:30:00',
+      },
+      unread_message_count: 0,
     },
-    unread_message_count: 0,
-  },
-]
+  ],
+}
 
 // 채팅내역
 // export const chatMessagesData_10 = [
@@ -401,6 +406,7 @@ export const chatDataDummy = {
         content: 'React 프로젝트 시작합니다',
         created_at: '2025-10-29T08:00:00Z',
         type: 'chat.message',
+        is_read: 'true',
       },
       {
         id: 202,
@@ -409,6 +415,7 @@ export const chatDataDummy = {
         content: '민서비이 반갑습니다',
         created_at: '2025-10-29T08:30:00Z',
         type: 'chat.message',
+        is_read: 'true',
       },
       {
         id: 203,
@@ -417,6 +424,7 @@ export const chatDataDummy = {
         content: '고재성_조교님이 참여하셨습니다',
         created_at: '2025-10-29T08:31:00Z',
         type: 'system_message',
+        is_read: 'true',
       },
       {
         id: 204,
@@ -425,6 +433,7 @@ export const chatDataDummy = {
         content: 'useState 질문 있어요',
         created_at: '2025-10-29T09:00:00Z',
         type: 'chat.message',
+        is_read: 'true',
       },
       {
         id: 205,
@@ -433,6 +442,7 @@ export const chatDataDummy = {
         content: '네 말씀하세요',
         created_at: '2025-10-29T09:05:00Z',
         type: 'chat.message',
+        is_read: 'true',
       },
       {
         id: 206,
@@ -441,6 +451,7 @@ export const chatDataDummy = {
         content: '고재성_조교님이 탈퇴하셨습니다',
         created_at: '2025-10-29T09:06:00Z',
         type: 'system_message',
+        is_read: 'true',
       },
       {
         id: 207,
@@ -449,6 +460,7 @@ export const chatDataDummy = {
         content: '컴포넌트 분리는 어떻게 하나요?',
         created_at: '2025-10-29T10:00:00Z',
         type: 'chat.message',
+        is_read: 'true',
       },
       {
         id: 208,
@@ -457,6 +469,7 @@ export const chatDataDummy = {
         content: '재사용 가능한 단위로 나누면 됩니다',
         created_at: '2025-10-29T10:30:00Z',
         type: 'chat.message',
+        is_read: 'true',
       },
     ],
     [
@@ -467,6 +480,7 @@ export const chatDataDummy = {
         content: '다음 스터디 주제가 뭔가요?',
         created_at: '2025-10-29T11:00:00Z',
         type: 'chat.message',
+        is_read: 'false',
       },
       {
         id: 210,
@@ -475,6 +489,7 @@ export const chatDataDummy = {
         content: 'useEffect와 useContext입니다',
         created_at: '2025-10-29T11:30:00Z',
         type: 'chat.message',
+        is_read: 'false',
       },
       {
         id: 211,
@@ -483,6 +498,7 @@ export const chatDataDummy = {
         content: '고재성_조교님이 참여하셨습니다',
         created_at: '2025-10-29T11:35:00Z',
         type: 'system_message',
+        is_read: 'false',
       },
       {
         id: 212,
@@ -491,6 +507,7 @@ export const chatDataDummy = {
         content: '과제 제출했습니다',
         created_at: '2025-10-29T14:20:00Z',
         type: 'chat.message',
+        is_read: 'false',
       },
       {
         id: 213,
@@ -499,6 +516,7 @@ export const chatDataDummy = {
         content: '사실 뻥이지롱ㅋㅋ',
         created_at: '2025-10-29T14:22:00Z',
         type: 'chat.message',
+        is_read: 'false',
       },
     ],
   ],
