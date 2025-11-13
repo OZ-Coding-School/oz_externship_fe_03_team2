@@ -1,20 +1,10 @@
-import { birthdayFormat } from '../../utils/dateFormat'
+import { birthdayFormat, fullDateFormat } from '../../utils/dateFormat'
 import Badge from '../common/Badge'
-
-interface StudyApplicationData {
-  id: number
-  title: string
-  image: string
-  participants: number
-  deadline: string
-  curriculum: string[]
-  tags: string[]
-  appliedAt: string
-  status: 'pending' | 'success' | 'rejected'
-}
+import type { Application } from '../../types/apiInterface/mypageInterface'
+import { getApplicationStatusBadge } from '../../utils/applicationBadge'
 
 interface StudyApplicationCardProps {
-  data?: StudyApplicationData
+  data?: Application
   onClick?: () => void
   isLoading?: boolean
 }
@@ -74,33 +64,20 @@ export default function StudyApplicationCard({
 
   if (!data) return
 
-  const getStatusBadge = () => {
-    switch (data.status) {
-      case 'pending':
-        return { variant: 'primary' as const, text: '대기중' }
-      case 'success':
-        return { variant: 'success' as const, text: '승인됨' }
-      case 'rejected':
-        return { variant: 'danger' as const, text: '거절됨' }
-      default:
-        return { variant: 'primary' as const, text: '대기중' }
-    }
-  }
-
-  const statusBadge = getStatusBadge()
+  const statusBadge = getApplicationStatusBadge(data.status)
 
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-md"
+      className="cursor-pointer rounded-lg border border-gray-200 bg-white p-6 transition-shadow hover:shadow-sm"
     >
       <div className="flex gap-4">
         {/* 이미지 */}
         <div className="flex h-auto w-40 flex-shrink-0 items-center overflow-hidden rounded-lg">
-          {data.image ? (
+          {data.recruitment_img ? (
             <img
-              src={data.image}
-              alt={data.title}
+              src={data.recruitment_img}
+              alt={data.recruitment_title}
               className="h-24 w-full rounded-lg object-cover"
             />
           ) : (
@@ -114,10 +91,12 @@ export default function StudyApplicationCard({
           {/* 타이틀 + 상태 */}
           <div className="mb-3 flex items-center justify-between">
             <h3 className="flex-1 text-xl font-bold text-gray-900 hover:underline">
-              {data.title}
+              {data.recruitment_title}
             </h3>
-            <div className="flex items-end gap-1">
-              <p className="text-sm text-gray-500">{data.appliedAt}</p>
+            <div className="flex items-end gap-3">
+              <p className="text-sm text-gray-500">
+                {fullDateFormat(data.created_at)}
+              </p>
               <Badge variant={statusBadge.variant} size="sm">
                 {statusBadge.text}
               </Badge>
@@ -128,7 +107,7 @@ export default function StudyApplicationCard({
           <div className="mb-3 flex items-center justify-between">
             <p className="text-sm text-gray-700">
               <span className="mr-1 font-medium">모집 인원:</span>
-              {data.participants}명
+              {data.expected_headcount}명
             </p>
             <p className="text-sm text-gray-700">
               <span className="font-medium">마감일:</span>{' '}
@@ -139,11 +118,11 @@ export default function StudyApplicationCard({
           {/* 강의 목록 */}
           <div className="mb-3">
             <p className="mb-2 text-sm font-medium text-gray-700">강의 목록:</p>
-            <ul className="space-y-1 text-sm text-gray-600">
-              {data.curriculum.map((item, index) => (
-                <li key={index}>• {item}</li>
+            <div className="space-y-1 text-sm text-gray-600">
+              {data.lectures.map((item, index) => (
+                <div key={index}>• {item}</div>
               ))}
-            </ul>
+            </div>
           </div>
 
           {/* 태그뱃지 */}

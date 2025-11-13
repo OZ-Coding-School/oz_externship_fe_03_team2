@@ -34,7 +34,7 @@ export function yearMonthFormat(dateValue: string): string {
   return `${year}년 ${month}월`
 }
 
-// 2025.10.28. 오전 11:11 형식
+// 2025. 10. 28. 오전 11:11 형식
 export function fullDateFormat(dateValue: string): string {
   const date = new Date(dateValue)
 
@@ -45,9 +45,9 @@ export function fullDateFormat(dateValue: string): string {
   const minutes = String(date.getMinutes()).padStart(2, '0')
 
   const period = hours < 12 ? '오전' : '오후'
-  const displayHours = hours % 12 || 12
+  const displayHours = String(hours % 12 || 12).padStart(2, '0')
 
-  return `${year}.${month}.${day} ${period} ${displayHours}:${minutes}`
+  return `${year}. ${month}. ${day}. ${period} ${displayHours}:${minutes}`
 }
 
 // 시작일과 종료일을 받아 개월 수를 계산 (3개월 or 1개월 미만일땐 3일)
