@@ -109,34 +109,41 @@ export interface BookmarksStudyParameter {
   search?: string
 }
 
-export interface StudyCourse {
-  name: string
+// 강의 정보 (lectures 배열)
+export interface StudyLecture {
+  uuid: string
+  title: string
   instructor: string
+  thumbnail_img_url: string
+  platform: string
+  url_link: string
+}
+
+// 태그 정보 (tags 배열)
+export interface StudyTag {
+  id: number
+  name: string
 }
 
 export interface StudyJobs {
-  id: number
   uuid: string
   title: string
-  introduction: string
-  thumbnail: string
-  max_headcount: number
-  start_at: string
-  end_at: string
-  status: 'PENDING' | 'ONGOING' | 'ENDED'
-  courses: StudyCourse[]
-  tags: string[]
-  views: number
+  thumbnail_img_url: string
+  expected_headcount: number
+  lectures: StudyLecture[]
+  tags: StudyTag[]
+  close_at: string
+  views_count: number
   bookmark_count: number
-  bookmarked_at: string
+  is_closed: boolean
+  is_bookmarked: boolean
 }
 
 export interface BookmarksStudyResponse {
+  count: number
+  next: string | null
+  previous: string | null
   results: StudyJobs[]
-  page: number
-  limit: number
-  total_count: number
-  has_next: boolean
 }
 
 // 스터디 구인 공고 북마크 추가/삭제 - - - - - -
