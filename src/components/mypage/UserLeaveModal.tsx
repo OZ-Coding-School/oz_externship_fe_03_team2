@@ -8,6 +8,7 @@ import { showToast } from '../../utils/showToast'
 import { useUserLeave } from '../../api/services/mypage/profile'
 import { useToken } from '../../store/useTokenStore'
 import type { MeWithDrawRequest } from '../../types/apiInterface/mypageInterface'
+import { useUserStore } from '../../store/useUserStore'
 
 interface UserLeaveModalProps {
   isOpen: boolean
@@ -31,6 +32,7 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
     useState('서비스 이용할 시간이 없음')
   const [detailReason, setDetailReason] = useState('')
   const [isChecked, setIsChecked] = useState(false)
+  const { clearUser } = useUserStore()
 
   const navigate = useNavigate()
 
@@ -53,6 +55,7 @@ function UserLeaveModal({ isOpen, onClose }: UserLeaveModalProps) {
     userLeave(userLeaveData, {
       onSuccess: () => {
         clearAccessToken()
+        clearUser()
         showToast('이용해주셔서 감사합니다', 'success', '회원탈퇴 성공')
         navigate('/')
         onClose()

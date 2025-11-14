@@ -418,6 +418,7 @@ function ProfileEditModal({
               label: isSendingCode ? '전송중...' : '인증하기',
               onClick: handleVerificationSend,
               variant: 'secondary',
+              start: verification.showInput,
               countdown: verification.showInput ? 180 : undefined,
               disabled:
                 isSendingCode || !isPhoneValid || isPhoneNumberUnchanged,
