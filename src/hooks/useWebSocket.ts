@@ -29,6 +29,39 @@ export const useWebSocket = (study_group_uuid: string | null) => {
     reset,
   } = useWebSocketStore()
 
+  const addToCache = (content: string, uniqueId: number) => {
+    const systemMsg: ChatMessageData = {
+      id: uniqueId,
+      content: content,
+      created_at: new Date().toISOString(),
+      sender: {
+        id: 0,
+        nickname: '시스템',
+      },
+      study_group_uuid: study_group_uuid!,
+      type: 'system_message',
+    }
+
+    queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
+      ['chatMessages', study_group_uuid],
+      (old) => {
+        if (!old) {
+          return {
+            pages: [[systemMsg]],
+            pageParams: [1],
+          }
+        }
+        const newPages = [...old.pages]
+        const lastPageIndex = newPages.length - 1
+        newPages[lastPageIndex] = [...newPages[lastPageIndex], systemMsg]
+        return {
+          ...old,
+          pages: newPages,
+        }
+      }
+    )
+  }
+
   useEffect(() => {
     if (!study_group_uuid) {
       reset()
@@ -84,39 +117,12 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           )
 
           joinedUsers.forEach((user) => {
-            const systemMsg: ChatMessageData = {
-              id: Date.now() + user.id,
-              content: `${user.id}`,
-              created_at: new Date().toISOString(),
-              sender: {
-                id: 0,
-                nickname: '시스템',
-              },
-              study_group_uuid: study_group_uuid,
-              type: 'system_message',
-            }
-            queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
-              ['chatMessages', study_group_uuid],
-              (old) => {
-                if (!old) {
-                  return {
-                    pages: [[systemMsg]],
-                    pageParams: [1],
-                  }
-                }
-                const newPages = [...old.pages]
-                const lastPageIndex = newPages.length - 1
-                newPages[lastPageIndex] = [
-                  ...newPages[lastPageIndex],
-                  systemMsg,
-                ]
-                return {
-                  ...old,
-                  pages: newPages,
-                }
-              }
+            addToCache(
+              `${user.nickname}님이 입장했습니다.`,
+              Date.now() + user.id
             )
           })
+
           leftUsers.forEach((leftUser) => {
             const systemMsg: ChatMessageData = {
               id: Date.now() + leftUser.id,
