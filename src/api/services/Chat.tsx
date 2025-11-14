@@ -75,12 +75,6 @@ export const useChatMessages = (uuid: string | null) => {
     },
     initialPageParam: 1,
     enabled: !!uuid,
-    // select: (data) => {
-    //   return {
-    //     ...data,
-    //     pages: [...data.pages].reverse(),
-    //   }
-    // },
   })
 }
 
