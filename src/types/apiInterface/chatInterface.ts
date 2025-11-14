@@ -59,8 +59,26 @@ export interface UnreadMessageResponse {
 }
 
 export type WebSocketResponse =
-  | ChatMessageData
-  | OnlineResponse
+  | {
+      type: 'chat.message'
+      id: number
+      sender: {
+        id: number
+        nickname: string
+      }
+      content: string
+      created_at: string
+      study_group_uuid: string
+    }
+  | {
+      type: 'system_message'
+      message: string
+    }
+  | {
+      type: 'online.users'
+      count: number
+      users: User[]
+    }
   | {
       type: 'error'
       code?: string

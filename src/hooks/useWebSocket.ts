@@ -71,16 +71,45 @@ export const useWebSocket = (study_group_uuid: string | null) => {
         return
       }
 
-      if (
-        (response.type === 'chat.message' ||
-          response.type === 'system_message') &&
-        'id' in response &&
-        response.id &&
-        'sender' in response &&
-        response.sender &&
-        'content' in response &&
-        response.content
-      ) {
+      // 시스템 메시지 처리
+      // 백엔드에서 { type: "system_message", message: "메시지 내용" } 형식으로 옴
+      if (response.type === 'system_message') {
+        const systemMsg: ChatMessageData = {
+          id: Date.now(), // 임시 ID (타임스탬프 사용)
+          content: response.message, // message → content로 변환
+          created_at: new Date().toISOString(),
+          sender: {
+            id: 0, // 시스템 ID
+            nickname: '시스템',
+          },
+          study_group_uuid: study_group_uuid,
+          type: 'system_message',
+        }
+
+        // 캐시에 추가
+        queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
+          ['chatMessages', study_group_uuid],
+          (old) => {
+            if (!old) {
+              return {
+                pages: [[systemMsg]],
+                pageParams: [1],
+              }
+            }
+            const newPages = [...old.pages]
+            const lastPageIndex = newPages.length - 1
+            newPages[lastPageIndex] = [...newPages[lastPageIndex], systemMsg]
+            return {
+              ...old,
+              pages: newPages,
+            }
+          }
+        )
+
+        return
+      }
+
+      if (response.type === 'chat.message') {
         const newMsg: ChatMessageData = {
           content: response.content,
           created_at: response.created_at,
@@ -89,7 +118,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           study_group_uuid: response.study_group_uuid,
           type: response.type,
         }
-
         // 변수에 안 담고 바로 ...prev, response.data 했더니
         // undefined일 수 있다고 오류 뜸
         // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함
