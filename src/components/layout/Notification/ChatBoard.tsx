@@ -22,7 +22,12 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
     if (!studyGroupUuid) {
       refetch()
     }
-  }, [studyGroupUuid, refetch, chatOpen])
+  }, [studyGroupUuid, refetch])
+
+  useEffect(() => {
+    setStudyGroupUuid(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatOpen])
 
   return (
     <>

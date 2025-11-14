@@ -5,7 +5,7 @@ import { PeopleBoard } from './PeopleBoard'
 import { useEffect, useRef, useState } from 'react'
 import { useChatMessages } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
-import { useWebSocket } from '../../../hooks/useWebSocket'
+import { useWebSocketStore } from '../../../store/useWebSocketStore'
 
 interface ChatDetailType {
   studyGroupName: string | null
@@ -24,13 +24,8 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     // 다음 페이지 가져오는 중이냐 아니냐
     // 우리집 문서 참고..ㄱ
   } = useChatMessages(studyGroupUuid)
-  const {
-    sendMessage: sendWsMessage,
-    isError,
-    error,
-    onlineUsers,
-    onlineCount,
-  } = useWebSocket(studyGroupUuid)
+  const { sendMessage, isError, error, onlineUsers, onlineCount } =
+    useWebSocketStore()
 
   useEffect(() => {
     console.log(chatData)
@@ -93,7 +88,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     if (!message.trim()) return
     // 빈 메시지나 띄어쓰기만 있는 거 전송 막음
 
-    if (sendWsMessage(message)) {
+    if (sendMessage && sendMessage(message)) {
       setMessage('')
       // 전송 시 결과를 true/false로 반환, 성공 시 입력창 초기화
     }

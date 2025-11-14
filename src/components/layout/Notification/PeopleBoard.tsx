@@ -1,6 +1,5 @@
 import { ChevronUp } from 'lucide-react'
 import { useUserStore } from '../../../store/useUserStore'
-import { online } from '../../NotiDummy'
 import type { User } from '../../../types/apiInterface/chatInterface'
 interface PeopleBoardType {
   setOpenPeople: (openPeople: boolean) => void
