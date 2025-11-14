@@ -413,6 +413,7 @@ export interface GetStudyGroupsParams {
   search?: string
 }
 
+// ================리뷰=======
 // 스터디 그룹의 리뷰 조회 파라미터
 export interface GetGroupReviewsParams {
   page?: number
@@ -424,21 +425,47 @@ export interface GetGroupReviewsParams {
 // 스터디 그룹 리뷰 관련
 export interface Review {
   id: string
-  rating:
-    | '1_OUT_OF_5_STARS'
-    | '2_OUT_OF_5_STARS'
-    | '3_OUT_OF_5_STARS'
-    | '4_OUT_OF_5_STARS'
-    | '5_OUT_OF_5_STARS'
+  rating: number
   content: string
   created_at: string
   updated_at: string
   is_mine: boolean
 }
 
+// 리뷰 통계 히스토그램
+export interface ReviewHistogram {
+  1: number
+  2: number
+  3: number
+  4: number
+  5: number
+}
+
+// 리뷰 메타데이터
+export interface ReviewMeta {
+  group_id: string
+  avg_rating: number
+  count_total: number
+  histogram: ReviewHistogram
+}
+
+// 리뷰 응답 전체
 export interface ReviewResponse {
   count: number
   next: string | null
   previous: string | null
   results: Review[]
+  meta: ReviewMeta
+}
+
+// 리뷰 작성/수정 요청
+export interface ReviewRequest {
+  star_rating: number
+  content: string
+}
+
+// 리뷰 수정 응답
+export interface UpdateReviewResponse {
+  star_rating: number
+  content: string
 }

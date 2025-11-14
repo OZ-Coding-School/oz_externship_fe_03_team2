@@ -1,13 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from '../common/Modal'
 import Button from '../common/Button'
 import StarRatingInput from '../common/StarRatingInput'
+import {
+  useCreateGroupReview,
+  useUpdateGroupReview,
+} from '../../api/services/mypage/studyGroup'
+import { showToast } from '../../utils/showToast'
 
 interface ReviewModalProps {
   isOpen: boolean
   onClose: () => void
   studyName: string
   studyPeriod: string
+  groupUuid: string
+  editingReview?: {
+    id: string
+    rating: number
+    content: string
+  } | null
 }
 
 function CompletedStudyReviewModal({
@@ -15,12 +26,78 @@ function CompletedStudyReviewModal({
   onClose,
   studyName,
   studyPeriod,
+  groupUuid,
+  editingReview,
 }: ReviewModalProps) {
   const [rating, setRating] = useState(0)
   const [reviewText, setReviewText] = useState('')
 
+  // 수정 모드인지 확인
+  const isEditMode = !!editingReview
+
+  // api훅
+  const { mutate: createReview, isPending: isCreate } =
+    useCreateGroupReview(groupUuid)
+  const { mutate: updateReview, isPending: isUpdate } = useUpdateGroupReview(
+    groupUuid,
+    editingReview?.id ?? ''
+  )
+
+  const isPending = isCreate ?? isUpdate
+
+  // 수정 모드일 떄 기존 데이터로
+  useEffect(() => {
+    if (isOpen && editingReview) {
+      setRating(editingReview.rating)
+      setReviewText(editingReview.content)
+    } else if (isOpen && !editingReview) {
+      // 새 리뷰 작성 모드일때는 초기화
+      setRating(0)
+      setReviewText('')
+    }
+  }, [isOpen, editingReview])
+
   const handleSubmit = () => {
-    onClose()
+    if (isEditMode) {
+      // 수정 모드
+      updateReview(
+        { star_rating: rating, content: reviewText },
+        {
+          onSuccess: () => {
+            setRating(0)
+            setReviewText('')
+            onClose()
+            showToast('리뷰가 수정되었습니다', 'success', '리뷰 수정 성공')
+          },
+          onError: () => {
+            showToast(
+              '리뷰를 수정하는데 오류가 발생했습니다',
+              'error',
+              '리뷰 수정 실패'
+            )
+          },
+        }
+      )
+    } else {
+      createReview(
+        { star_rating: rating, content: reviewText },
+        {
+          onSuccess: () => {
+            setRating(0)
+            setReviewText('')
+            onClose()
+            showToast('리뷰가 등록되었습니다', 'success', '리뷰 등록 성공')
+          },
+          onError: () => {
+            showToast(
+              '리뷰 등록하는데 오류가 발생했습니다',
+              'error',
+              '리뷰 등록 실패'
+            )
+          },
+        }
+      )
+    }
   }
 
   const handleCancel = () => {
@@ -43,9 +120,17 @@ function CompletedStudyReviewModal({
             variant="primary"
             size="md"
             onClick={handleSubmit}
-            disabled={rating === 0 || reviewText.trim().length === 0}
+            disabled={
+              rating === 0 || reviewText.trim().length === 0 || isPending
+            }
           >
-            리뷰 등록
+            {isPending
+              ? isEditMode
+                ? '수정 중...'
+                : '등록 중...'
+              : isEditMode
+                ? '리뷰 수정'
+                : '리뷰 등록'}
           </Button>
         </>
       }
