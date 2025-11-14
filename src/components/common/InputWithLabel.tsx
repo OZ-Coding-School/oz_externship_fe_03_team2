@@ -20,11 +20,24 @@ type ButtonSize =
   | 'freeWidthMd'
   | 'signup'
 
+type InputButtonProps = {
+  type?: 'button' | 'submit' | 'reset'
+  label: string
+  onClick: () => void
+  variant?: ButtonVariant
+  size?: ButtonSize
+  icon?: React.ReactNode
+  disabled?: boolean
+  countdown?: number
+  cooldown?: number
+  start?: boolean
+}
+
 type InputWithLabelProps = {
   label?: string
   name: string
   type?: string
-  value: string | undefined
+  value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
   placeholder?: string
@@ -34,24 +47,14 @@ type InputWithLabelProps = {
   description?: string
   required?: boolean
   maxLength?: number
-  button?: {
-    label: string
-    onClick: () => void
-    variant?: ButtonVariant
-    size?: ButtonSize
-    icon?: React.ReactNode
-    disabled?: boolean
-    countdown?: number
-    cooldown?: number
-    start?: boolean
-  }
+  button?: InputButtonProps
 }
 
 function InputWithLabel({
   label,
   name,
   type = 'text',
-  value,
+  value = '',
   onChange,
   onBlur,
   placeholder,
@@ -69,43 +72,38 @@ function InputWithLabel({
     if (button?.start && button?.countdown && button.countdown > 0) {
       start(button.countdown)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [button?.countdown])
+  }, [button?.start, button?.countdown, start])
 
   const handleButtonClick = () => {
-    //API 성공 후에만 시작할 수 있도록 변경
-    // if (button?.countdown) {
-    //   start(button.countdown)
-    // }
     button?.onClick()
   }
 
   const countdown = button?.countdown || 0
   const cooldown = button?.cooldown || countdown
   const isCooldown = time > countdown - cooldown
-  // ex: countdown=180, cooldown=30일 때, 현재 남은 시간이 150보다 클 때 = 시작한지 30초가 안 됐을 때나,  cooldown을 안내려줬을 땐 비활성화
 
   return (
     <div className="flex w-full flex-col">
       {label && (
         <div className="mb-2 flex h-6 items-center gap-5 text-sm font-medium">
-          {/* Label */}
           <label htmlFor={name} className="text-gray-700">
             {label}
             {required && <span className="text-danger-500 ml-1">*</span>}
           </label>
-
           {description && (
             <span className="text-primary-500">{description}</span>
           )}
         </div>
       )}
 
-      {/* input + button(선택) */}
       <div className="flex items-stretch gap-2">
         <div className="flex-1">
           <div
-            className={`flex h-10 items-center rounded-md border bg-white px-4 py-2 transition ${error ? 'border-danger-500' : 'focus-within:border-primary-500 border-gray-300'} ${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
+            className={`flex h-10 items-center rounded-md border bg-white px-4 py-2 transition ${
+              error
+                ? 'border-danger-500'
+                : 'focus-within:border-primary-500 border-gray-300'
+            } ${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
           >
             {icon && <span className="mr-2 text-gray-500">{icon}</span>}
             <input
@@ -124,10 +122,9 @@ function InputWithLabel({
           </div>
         </div>
 
-        {/* 버튼 */}
         {button && (
           <Button
-            type="button"
+            type={button.type || 'button'}
             variant={button.variant || 'primary'}
             size={button.size || 'md'}
             icon={button.icon}
@@ -141,7 +138,6 @@ function InputWithLabel({
         )}
       </div>
 
-      {/* 에러 있을때만 */}
       {error && <p className="text-danger-500 mt-1 text-sm">{error}</p>}
     </div>
   )

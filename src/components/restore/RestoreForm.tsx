@@ -55,7 +55,15 @@ export default function RestoreForm({
           error={error.email}
           button={{
             label: isLoadingSend ? '전송 중...' : '인증코드전송',
-            onClick: onSendEmail,
+            onClick: () => {
+              onSendEmail()
+              console.log(
+                !emailCode,
+                !!error.emailCode,
+                !emailSent,
+                isLoadingConfirm
+              )
+            },
             variant: 'signup',
             size: 'ml',
             disabled: !email || !!error.email || isLoadingSend,
@@ -72,11 +80,22 @@ export default function RestoreForm({
           error={error.emailCode}
           button={{
             label: isLoadingConfirm ? '확인 중...' : '인증코드확인',
-            onClick: onConfirmCode,
+            onClick: () => {
+              onConfirmCode()
+              console.log(
+                !emailCode,
+                !!error.emailCode,
+                !emailSent,
+                isLoadingConfirm
+              )
+            },
             variant: 'signup',
             size: 'ml',
             disabled:
-              !emailCode || !!error.emailCode || !emailSent || isLoadingConfirm,
+              !!emailCode ||
+              !!error.emailCode ||
+              !emailSent ||
+              isLoadingConfirm,
           }}
         />
       </form>
