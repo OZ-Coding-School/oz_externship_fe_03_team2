@@ -140,7 +140,13 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
           </div>
         </div>
         <div className="text-gray-400 hover:text-gray-500 active:text-gray-600">
-          <X size={18} onClick={() => setChatOpen(false)} />
+          <X
+            size={18}
+            onClick={() => {
+              setChatOpen(false)
+              setStudyGroupUuid(null)
+            }}
+          />
         </div>
       </div>
 
@@ -200,7 +206,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
               return (
                 <div
                   key={msg.id}
-                  className="bg-primary-500 flex h-5 w-auto items-center justify-center rounded-full px-3 py-2 text-xs text-white opacity-60"
+                  className="bg-primary-500 flex h-5 w-auto items-center justify-center rounded-full px-3 py-2 text-xs text-white opacity-50"
                 >
                   {msg.content}
                 </div>

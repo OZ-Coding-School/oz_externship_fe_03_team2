@@ -36,7 +36,7 @@ export interface ChatMessagesResponse {
 
 // 실시간 응답 - 유저 정보
 export interface User {
-  id: number
+  id: number | string
   nickname: string
   name: string
 }

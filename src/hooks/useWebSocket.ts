@@ -23,7 +23,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
     setError,
     setOnlineUsers,
     setOnlineCount,
-    prevOnlineUsers,
     setPrevOnlineUsers,
     setSendMessage,
     reset,
@@ -103,30 +102,44 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       }
       if (response.type === 'online.users') {
         const newUsers = response.users
+        const prevOnlineUsers = useWebSocketStore.getState().prevOnlineUsers
+        console.log('이전 유저:', prevOnlineUsers)
+        console.log('새로운 유저:', newUsers)
+
         if (prevOnlineUsers.length > 0) {
           const joinedUsers = newUsers.filter(
-            (newUser) => !prevOnlineUsers.some((prev) => prev.id === newUser.id)
+            (newUser) =>
+              !prevOnlineUsers.some(
+                (prev) => Number(prev.id) === Number(newUser.id)
+              )
             // 새 유저 목록 중에서, 원래 유저목록 아이디가 겹치지 않는 사람을 찾음.
             // = 새로 추가된 사람.. (기존 목록에 유저1, 유저2 이 있었는데 새 목록에는 유저1, 유저2, 유저3이 있었다면 ? 유저3이 새로 들어온 것.)
           )
           const leftUsers = prevOnlineUsers.filter(
             (prevUser) =>
-              !newUsers.some((newUsers) => newUsers.id === prevUser.id)
+              !newUsers.some(
+                (newUsers) => Number(newUsers.id) === Number(prevUser.id)
+              )
             // 기존 유저 목록 중에서, 새 유저 목록 사이에 없는 사람을 찾음.
             // = 나간 사람..
           )
 
+          console.log('입장:', joinedUsers)
+          console.log('퇴장:', leftUsers)
+
           joinedUsers.forEach((user) => {
+            console.log(`${user.nickname}님 입장 메시지 생성`)
             addToCache(
               `${user.nickname}님이 입장했습니다.`,
-              Date.now() + user.id
+              Date.now() + Number(user.id)
             )
           })
 
           leftUsers.forEach((user) => {
+            console.log(`${user.nickname}님 퇴장 메시지 생성`)
             addToCache(
               `${user.nickname}님이 퇴장했습니다.`,
-              Date.now() + user.id
+              Date.now() + Number(user.id)
             )
           })
         }
@@ -275,6 +288,10 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       socket.close()
       // 컴포넌트 사라질 때 또는 다른 채팅방으로 옮길 때 실행되는 cleanup 함수임
       reset()
+
+      queryClient.invalidateQueries({
+        queryKey: ['chatMessages', study_group_uuid],
+      })
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
