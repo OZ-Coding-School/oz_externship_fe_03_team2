@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react'
-import RestoreModal from './RestoreModal'
-import InputWithLabel from '../common/InputWithLabel'
-import Button from '../common/Button'
+import { useState, useEffect } from 'react'
+import RestoreStart from './RestoreStart'
+import RestoreForm from './RestoreForm'
+import SuccessModal from './SuccessModal'
 import useDebounce from '../../hooks/useDebounce'
 import validateAll from '../../utils/validators'
 import { showToast } from '../../utils/showToast'
-import SuccessModal from './SuccessModal'
-import { restoreDateFormat } from '../../utils/dateFormat'
-
-interface SEND {
-  email: string
-  emailCode: string
-}
+import {
+  useSendRestoreEmailCode,
+  useConfirmRestoreEmailCode,
+  useRestoreAccount,
+} from '../../api/emailRestore'
 
 interface RestoreProps {
   isOpen: boolean
@@ -19,153 +17,171 @@ interface RestoreProps {
   setIsOpen: (isOpen: boolean) => void
 }
 
-const SEND_STATE: SEND = {
-  email: '',
-  emailCode: '',
-}
+const INIT_STATE = { email: '', emailCode: '' }
 
-function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
+export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
   const [step, setStep] = useState(0)
-  const [send, setSend] = useState(SEND_STATE)
+  const [form, setForm] = useState(INIT_STATE)
   const [error, setError] = useState<Record<string, string>>({})
   const [emailSent, setEmailSent] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isLoadingSend, setIsLoadingSend] = useState(false)
+  const [isLoadingConfirm, setIsLoadingConfirm] = useState(false)
+  const [requestId, setRequestId] = useState('')
+  const [emailVerifyToken, setEmailVerifyToken] = useState('')
 
-  const debounceForm = useDebounce(send, 500)
+  const debounceForm = useDebounce(form, 400)
+
+  const sendEmailMutation = useSendRestoreEmailCode()
+  const confirmCodeMutation = useConfirmRestoreEmailCode()
+  const restoreMutation = useRestoreAccount()
+
   useEffect(() => {
     if (!isOpen) return
+
     const validator = validateAll(debounceForm)
-    setError((prev) => ({ ...prev, ...validator }))
+    const trimmedEmail = debounceForm.email.trim()
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    let emailError = ''
+    let codeError = ''
+
+    if (!trimmedEmail) emailError = '이메일을 입력해주세요.'
+    else if (!emailRegex.test(trimmedEmail))
+      emailError = '이메일 형식이 올바르지 않습니다.'
+
+    // 인증코드 error 체크
+    if (debounceForm.emailCode && debounceForm.emailCode.length !== 6) {
+      codeError = '6자리 인증코드를 입력해주세요'
+    }
+
+    setError((prev) => ({
+      ...prev,
+      ...validator,
+      email: emailError,
+      emailCode: codeError,
+    }))
   }, [debounceForm, isOpen])
 
   if (!isOpen) return null
 
-  const handleStep = () => {
-    setStep(1)
+  const handleStep = () => setStep(1)
+
+  /** 1단계: 이메일 인증코드 전송 */
+  const sendEmail = async () => {
+    if (!form.email.trim()) return showToast('이메일을 입력해주세요.', 'error')
+    try {
+      setIsLoadingSend(true)
+      const res = await sendEmailMutation.mutateAsync(form.email.trim())
+      if (res?.data.request_id) {
+        setRequestId(res.data.request_id)
+        setEmailSent(true)
+        showToast('인증코드를 발송하였습니다.', 'success')
+      } else {
+        showToast('서버 응답이 올바르지 않습니다.', 'warning')
+      }
+    } catch {
+      showToast('이메일 전송 실패', 'error')
+    } finally {
+      setIsLoadingSend(false)
+    }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    if (name === 'emailCode') {
-      setSend((prev) => ({
-        ...prev,
-        [name]: value.replace(/\D/g, '').slice(0, 6),
-      }))
-    } else {
-      setSend((prev) => ({ ...prev, [name]: value }))
-    }
-
-    if (error[name]) {
-      setError((prev) => ({ ...prev, [name]: '' }))
+  /** 2단계: 인증코드 확인 */
+  const sendEmailCode = async () => {
+    if (!form.email.trim() || !form.emailCode)
+      return showToast('이메일과 인증코드를 입력해주세요.', 'error')
+    try {
+      setIsLoadingConfirm(true)
+      const res = await confirmCodeMutation.mutateAsync({
+        email: form.email.trim(),
+        verification_code: form.emailCode,
+        request_id: requestId,
+      })
+      if (res?.data.email_verify_token) {
+        setEmailVerifyToken(res.data.email_verify_token)
+        showToast('이메일 인증이 완료되었습니다.', 'success')
+      } else {
+        showToast('인증 실패', 'error')
+      }
+    } catch {
+      showToast('인증 실패', 'error')
+    } finally {
+      setIsLoadingConfirm(false)
     }
   }
 
+  /** 3단계: 계정 복구 */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('제출')
-    setIsSuccess(true)
+    if (!emailVerifyToken)
+      return showToast('이메일 인증이 필요합니다.', 'error')
+
+    restoreMutation.mutate(emailVerifyToken, {
+      onSuccess: () => setIsSuccess(true),
+      onError: () => showToast('계정 복구 실패', 'error'),
+    })
   }
 
+  /** 닫기 */
   const handleClose = () => {
     setIsOpen(false)
     setStep(0)
-    setSend(SEND_STATE)
+    setForm(INIT_STATE)
     setError({})
     setEmailSent(false)
     setIsSuccess(false)
+    setRequestId('')
+    setEmailVerifyToken('')
   }
 
-  const sendEmail = () => {
-    console.log('보냄')
-    showToast('성공', 'success', '인증코드전송')
-    setEmailSent(true)
-  }
-  const sendEmailCode = () => {
-    console.log('코드')
+  /** 입력 변경 */
+  const handleChangeEmail = (value: string) =>
+    setForm((prev) => ({ ...prev, email: value }))
+
+  const handleChangeCode = (value: string) => {
+    const sanitized = value.replace(/\D/g, '').slice(0, 6)
+    setForm((prev) => ({
+      ...prev,
+      emailCode: sanitized,
+    }))
+
+    setError((prev) => {
+      const newError = { ...prev }
+      if (sanitized.length === 6) {
+        delete newError.emailCode
+      } else if (sanitized.length > 0) {
+        newError.emailCode = '6자리 인증코드를 입력해주세요'
+      } else {
+        delete newError.emailCode
+      }
+      return newError
+    })
   }
 
-  const footer = () => {
-    const stepBool = step === 1
-    return (
-      <Button
-        size="freeLogin"
-        onClick={stepBool ? handleSubmit : handleStep}
-        type={stepBool ? 'submit' : 'button'}
-      >
-        {stepBool ? '확인' : '계정 다시 사용하기'}
-      </Button>
-    )
-  }
   return (
-    <div>
+    <>
       {step === 0 && (
-        <RestoreModal
-          title="해당 계정은 탈퇴된 상태예요"
-          subtitle={[
-            `${restoreDateFormat(date)} 이후, 계정 정보는 완전히 삭제돼요.`,
-            '계정을 다시 사용하려면 아래 버튼을 눌러 복구를 진행해주세요.',
-          ]}
-          footer={footer()}
-          onClose={handleClose}
-        ></RestoreModal>
+        <RestoreStart onNext={handleStep} onClose={handleClose} date={date} />
       )}
 
       {step === 1 && (
-        <RestoreModal
-          isNext
-          title="계정 다시 사용하기"
-          subtitle={['입력하신 이메일로 인증번호를 보내드릴게요.']}
-          footer={footer()}
+        <RestoreForm
+          email={form.email}
+          emailCode={form.emailCode}
+          error={error}
+          emailSent={emailSent}
+          isLoadingSend={isLoadingSend}
+          isLoadingConfirm={isLoadingConfirm}
+          onChangeEmail={handleChangeEmail}
+          onChangeCode={handleChangeCode}
+          onSendEmail={sendEmail}
+          onConfirmCode={sendEmailCode}
+          onSubmit={handleSubmit}
           onClose={handleClose}
-        >
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div className="flex items-end gap-3">
-              <InputWithLabel
-                label="이메일"
-                name="email"
-                type="email"
-                value={send.email}
-                required
-                placeholder="example@gmail.com"
-                onChange={handleChange}
-                error={error.email}
-                button={{
-                  label: '인증코드전송',
-                  onClick: sendEmail,
-                  variant: 'signup',
-                  size: 'ml',
-                  disabled: !(send.email && !error['email']),
-                  countdown: 600,
-                  cooldown: 60,
-                }}
-              />
-            </div>
-            <div className="flex items-end gap-3">
-              <InputWithLabel
-                name="emailCode"
-                value={send.emailCode}
-                placeholder="전송된 코드를 입력해주세요"
-                onChange={handleChange}
-                error={error.emailCode}
-                button={{
-                  label: '인증코드확인',
-                  onClick: sendEmailCode,
-                  variant: 'signup',
-                  size: 'ml',
-                  disabled: !(
-                    send.emailCode &&
-                    !error['emailCode'] &&
-                    emailSent
-                  ),
-                }}
-              />
-            </div>
-          </form>
-        </RestoreModal>
+        />
       )}
+
       {isSuccess && <SuccessModal onClose={handleClose} />}
-    </div>
+    </>
   )
 }
-
-export default Restore
