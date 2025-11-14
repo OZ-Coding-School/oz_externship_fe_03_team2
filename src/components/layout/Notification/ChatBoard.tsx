@@ -39,7 +39,7 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
         <div className="flex w-full justify-between border-b border-gray-200 bg-gray-50 p-4">
           <div className="flex flex-col items-start justify-center p-1">
             <p className="text-black">채팅방</p>
-            {unreadCount && unreadCount > 0 && (
+            {unreadCount !== undefined && (
               <p className="text-primary-600 text-xs">
                 {unreadCount}개의 읽지 않은 메시지
               </p>
