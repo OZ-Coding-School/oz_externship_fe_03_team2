@@ -24,6 +24,19 @@ export const useChatRooms = () => {
       // 백그라운드에 있을 때는 리패치 안 함
       refetchOnWindowFocus: true,
       // 다시 포커스하면 즉시 리패치함
+      select: (data) => {
+        if (!studyGroupUuid) return data
+
+        return data.map((room) => {
+          if (room.uuid === studyGroupUuid) {
+            return {
+              ...room,
+              unread_message_count: 0,
+            }
+          }
+          return room
+        })
+      },
     }
   )
 }

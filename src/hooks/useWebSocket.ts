@@ -169,6 +169,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
             const allMessages = old.pages.flatMap((page) => page)
             const isDuplicate = allMessages.some((msg) => msg.id === newMsg.id)
             // some : 배열 안에 조건 만족하는 거 하나라도 있는가 확인
+            // 만약 겹치는 거 없으면 원래 그대로 반환
 
             if (isDuplicate) {
               return old
@@ -194,14 +195,14 @@ export const useWebSocket = (study_group_uuid: string | null) => {
                   sender_nickname: newMsg.sender.nickname,
                   created_at: newMsg.created_at,
                 },
-                unread_message_count: room.unread_message_count,
+                unread_message_count: 0,
                 updated_at: new Date().toISOString(),
               }
             }
             return room
           })
         })
-        if (user?.id !== Number(newMsg.sender.id)) {
+        if (Number(user?.id) !== Number(newMsg.sender.id)) {
           showNotificationToast(
             newMsg.content,
             newMsg.sender.nickname,
