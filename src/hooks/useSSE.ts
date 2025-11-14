@@ -75,5 +75,6 @@ export function useSSE() {
       eventSource.close()
       queryClient.removeQueries({ queryKey: ['/notification'] })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken])
 }

@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
-// import { allData } from './NotiDummy'
+import { useMemo, useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
-// import { monthDayFormat } from '../utils/dateFormat'
+
 import {
   useAllNotification,
   useNotiPatchAllRead,
