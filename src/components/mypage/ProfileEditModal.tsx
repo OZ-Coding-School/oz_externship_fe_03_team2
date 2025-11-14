@@ -34,12 +34,15 @@ function ProfileEditModal({
   onClose,
 }: ProfileEditModalProps) {
   const [tempData, setTempData] = useState<UserType>(profileData) //모달에서 수정 중인 프로필 데이터
-
   const [verification, setVerification] = useState(INITL_VERIFICATION)
   const [nickname, setNickname] = useState(INIT_NICKNAME_CHECK)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-
+  const [timerKey, setTimerKey] = useState(0) // 타이머 키 역할하는 상태
+  const [timer, setTimer] = useState({
+    countdown: 0,
+    cooldown: 0,
+  })
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // 휴대폰 인증 api 훅
@@ -65,6 +68,8 @@ function ProfileEditModal({
     setNickname(INIT_NICKNAME_CHECK)
     setPreviewImage(null)
     setSelectedFile(null)
+    setTimerKey(0)
+    setTimer({ countdown: 0, cooldown: 0 })
   }, [profileData])
 
   // 모달이 열릴 때마다 상태 초기화
@@ -184,6 +189,14 @@ function ProfileEditModal({
             requestId: res.request_id,
             showInput: true,
           }))
+
+          setTimer({
+            countdown: res.expires_in,
+            cooldown: res.cooldown,
+          })
+
+          setTimerKey((prev) => prev + 1)
+
           showToast('인증 번호가 전송되었습니다', 'success', '인증번호 전송')
         },
         onError: () => {
@@ -418,8 +431,9 @@ function ProfileEditModal({
               label: isSendingCode ? '전송중...' : '인증하기',
               onClick: handleVerificationSend,
               variant: 'secondary',
-              start: verification.showInput,
-              countdown: verification.showInput ? 180 : undefined,
+              start: timerKey,
+              countdown: timer.countdown,
+              cooldown: timer.cooldown,
               disabled:
                 isSendingCode || !isPhoneValid || isPhoneNumberUnchanged,
             }}

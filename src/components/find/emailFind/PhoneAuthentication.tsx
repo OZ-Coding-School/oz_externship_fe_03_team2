@@ -7,6 +7,7 @@ import {
   useFindEmailSendCode,
 } from '../../../api/services/find/emailFind'
 import { showToast } from '../../../utils/showToast'
+import { useEffect, useState } from 'react'
 
 interface PhoneAuthProps {
   formData: FormData
@@ -21,8 +22,16 @@ export default function PhoneAuthentication({
   onNext,
   onPrev,
 }: PhoneAuthProps) {
+  const [timerKey, setTimerKey] = useState(0)
+
   const { mutate } = useFindEmailConfirmCode()
   const { mutate: codeResendMutate } = useFindEmailSendCode()
+
+  useEffect(() => {
+    if (formData.expires_in && formData.expires_in > 0) {
+      setTimerKey((prev) => prev + 1)
+    }
+  }, [formData.expires_in])
 
   const handleSubmit = () => {
     if (!formData.code) {
@@ -64,6 +73,8 @@ export default function PhoneAuthentication({
             cooldown: data.data.cooldown,
             //성공헀을 떄만 쿨타임 초기화 되고 실패헀을 떄는 초기화 안 되게..
           }))
+
+          setTimerKey((prev) => prev + 1) // 키값 1 증가 > 이걸로 InputWithLabel의 useEffect 다시 실행 유도
         },
         onError: (data) => {
           showToast(data.error, 'error')
@@ -102,7 +113,7 @@ export default function PhoneAuthentication({
           variant: 'primary',
           countdown: formData.expires_in,
           cooldown: formData.cooldown,
-          start: true,
+          start: timerKey,
         }}
       />
 
