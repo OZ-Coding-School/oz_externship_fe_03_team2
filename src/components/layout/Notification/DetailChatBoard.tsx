@@ -48,6 +48,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const filter = new Filter()
+  filter.addWords('ㅅㅂ', 'ㅂㅅ', 'ㅈㄴ', 'ㄷㅊ')
 
   const handleScroll = () => {
     const div = scrollRef.current
@@ -89,11 +90,13 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     if (!message.trim()) return
     // 빈 메시지나 띄어쓰기만 있는 거 전송 막음
 
-    if (filter.isProfane(message.trim())) {
-      alert('채팅에 부적절한 언어가 포함되어 있습니다.')
-    }
+    console.log('원본:', message)
+    console.log('isProfane?', filter.isProfane(message.trim()))
+    console.log('clean 결과:', filter.clean(message.trim()))
 
-    if (sendMessage && sendMessage(message)) {
+    const cleanedMessage = filter.clean(message.trim())
+
+    if (sendMessage && sendMessage(cleanedMessage)) {
       setMessage('')
       // 전송 시 결과를 true/false로 반환, 성공 시 입력창 초기화
     }
