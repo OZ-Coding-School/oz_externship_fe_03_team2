@@ -209,6 +209,18 @@ export interface DetailApplicationResponse {
   }
 }
 
+// 지원 취소 응답 데이터
+export interface CancelApplicationData {
+  uuid: string
+  status: ApplicationStatus
+}
+
+// 지원 취소 응답
+export interface CancelApplicationResponse {
+  detail: string
+  data: CancelApplicationData
+}
+
 // 스터디 그룹 목록 조회 - - - - - - - -
 export interface StudyGroups {
   uuid: string
