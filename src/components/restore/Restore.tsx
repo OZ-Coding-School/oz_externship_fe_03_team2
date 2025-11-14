@@ -28,6 +28,7 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
   const [isLoadingSend, setIsLoadingSend] = useState(false)
   const [isLoadingConfirm, setIsLoadingConfirm] = useState(false)
   const [requestId, setRequestId] = useState('')
+  const [emailVerifyToken, setEmailVerifyToken] = useState('')
 
   const debounceForm = useDebounce(form, 400)
 
@@ -57,15 +58,14 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
 
   const handleStep = () => setStep(1)
 
-  /** 이메일 전송 */
+  /** 1단계: 이메일 인증코드 전송 */
   const sendEmail = async () => {
     if (!form.email.trim()) return showToast('이메일을 입력해주세요.', 'error')
     try {
       setIsLoadingSend(true)
       const res = await sendEmailMutation.mutateAsync(form.email.trim())
-      const requestIdFromRes = res?.request_id
-      if (requestIdFromRes) {
-        setRequestId(requestIdFromRes)
+      if (res?.request_id) {
+        setRequestId(res.request_id)
         setEmailSent(true)
         showToast('인증코드를 발송하였습니다.', 'success')
       } else {
@@ -78,7 +78,7 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
     }
   }
 
-  /** 인증코드 확인 */
+  /** 2단계: 인증코드 확인 */
   const sendEmailCode = async () => {
     if (!form.email.trim() || !form.emailCode)
       return showToast('이메일과 인증코드를 입력해주세요.', 'error')
@@ -90,6 +90,7 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
         request_id: requestId,
       })
       if (res?.email_verify_token) {
+        setEmailVerifyToken(res.email_verify_token)
         showToast('이메일 인증이 완료되었습니다.', 'success')
       } else {
         showToast('인증 실패', 'error')
@@ -101,13 +102,15 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
     }
   }
 
-  /** 제출 */
+  /** 3단계: 계정 복구 */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const token = confirmCodeMutation.data?.email_verify_token
-    if (!token) return showToast('이메일 인증이 필요합니다.', 'error')
-    restoreMutation.mutate(token, {
+    if (!emailVerifyToken)
+      return showToast('이메일 인증이 필요합니다.', 'error')
+
+    restoreMutation.mutate(emailVerifyToken, {
       onSuccess: () => setIsSuccess(true),
+      onError: () => showToast('계정 복구 실패', 'error'),
     })
   }
 
@@ -120,6 +123,7 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
     setEmailSent(false)
     setIsSuccess(false)
     setRequestId('')
+    setEmailVerifyToken('')
   }
 
   /** 입력 변경 */
