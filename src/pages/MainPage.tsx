@@ -147,7 +147,7 @@ function MainPage() {
             <Button
               variant="outline"
               className="!h-[52px] !w-[200px] !rounded-lg !border !border-white !text-white hover:!bg-white hover:!text-[#E0B43A]"
-              onClick={() => navigate('/studygroups')}
+              onClick={() => navigate('/create_study_group')}
             >
               스터디 그룹 만들기
             </Button>
