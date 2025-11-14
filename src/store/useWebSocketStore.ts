@@ -14,6 +14,9 @@ interface WebSocketType {
   onlineCount: number
   setOnlineCount: (count: number) => void
 
+  prevOnlineUsers: User[]
+  setPrevOnlineUsers: (users: User[]) => void
+
   sendMessage: ((content: string) => boolean) | null
   setSendMessage: (fn: (content: string) => boolean) => void
 
@@ -33,6 +36,9 @@ export const useWebSocketStore = create<WebSocketType>((set) => ({
   onlineCount: 0,
   setOnlineCount: (onlineCount) => set({ onlineCount }),
 
+  prevOnlineUsers: [],
+  setPrevOnlineUsers: (prevOnlineUsers) => set({ prevOnlineUsers }),
+
   sendMessage: null,
   setSendMessage: (sendMessage) => set({ sendMessage }),
 
@@ -42,6 +48,7 @@ export const useWebSocketStore = create<WebSocketType>((set) => ({
       error: '',
       onlineUsers: [],
       onlineCount: 0,
+      prevOnlineUsers: [],
       sendMessage: null,
     }),
 }))

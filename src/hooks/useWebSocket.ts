@@ -23,6 +23,8 @@ export const useWebSocket = (study_group_uuid: string | null) => {
     setError,
     setOnlineUsers,
     setOnlineCount,
+    prevOnlineUsers,
+    setPrevOnlineUsers,
     setSendMessage,
     reset,
   } = useWebSocketStore()
@@ -57,11 +59,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       //   origin: 'ws://example.com',
       // }
       // 이 중에 data 부분을 찍고 들어가는 거
-      if (response.type === 'online.users') {
-        setOnlineCount(response.count)
-        setOnlineUsers(response.users)
-        return
-      }
       if (response.type === 'force_disconnect') {
         socket.close()
         setStudyGroupUuid(null)
@@ -71,23 +68,112 @@ export const useWebSocket = (study_group_uuid: string | null) => {
         setError(response.message || 'WebSocket 에러')
         return
       }
+      if (response.type === 'online.users') {
+        const newUsers = response.users
+        if (prevOnlineUsers.length > 0) {
+          const joinedUsers = newUsers.filter(
+            (newUser) => !prevOnlineUsers.some((prev) => prev.id === newUser.id)
+            // 새 유저 목록 중에서, 원래 유저목록 아이디가 겹치지 않는 사람을 찾음.
+            // = 새로 추가된 사람.. (기존 목록에 유저1, 유저2 이 있었는데 새 목록에는 유저1, 유저2, 유저3이 있었다면 ? 유저3이 새로 들어온 것.)
+          )
+          const leftUsers = prevOnlineUsers.filter(
+            (prevUser) =>
+              !newUsers.some((newUsers) => newUsers.id === prevUser.id)
+            // 기존 유저 목록 중에서, 새 유저 목록 사이에 없는 사람을 찾음.
+            // = 나간 사람..
+          )
 
-      // 시스템 메시지 처리
+          joinedUsers.forEach((user) => {
+            const systemMsg: ChatMessageData = {
+              id: Date.now() + user.id,
+              content: `${user.id}`,
+              created_at: new Date().toISOString(),
+              sender: {
+                id: 0,
+                nickname: '시스템',
+              },
+              study_group_uuid: study_group_uuid,
+              type: 'system_message',
+            }
+            queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
+              ['chatMessages', study_group_uuid],
+              (old) => {
+                if (!old) {
+                  return {
+                    pages: [[systemMsg]],
+                    pageParams: [1],
+                  }
+                }
+                const newPages = [...old.pages]
+                const lastPageIndex = newPages.length - 1
+                newPages[lastPageIndex] = [
+                  ...newPages[lastPageIndex],
+                  systemMsg,
+                ]
+                return {
+                  ...old,
+                  pages: newPages,
+                }
+              }
+            )
+          })
+          leftUsers.forEach((leftUser) => {
+            const systemMsg: ChatMessageData = {
+              id: Date.now() + leftUser.id,
+              content: `${leftUser.nickname}님이 퇴장했습니다`,
+              created_at: new Date().toISOString(),
+              sender: {
+                id: 0,
+                nickname: '시스템',
+              },
+              study_group_uuid: study_group_uuid,
+              type: 'system_message',
+            }
+
+            queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
+              ['chatMessages', study_group_uuid],
+              (old) => {
+                if (!old) {
+                  return {
+                    pages: [[systemMsg]],
+                    pageParams: [1],
+                  }
+                }
+                const newPages = [...old.pages]
+                const lastPageIndex = newPages.length - 1
+                newPages[lastPageIndex] = [
+                  ...newPages[lastPageIndex],
+                  systemMsg,
+                ]
+                return {
+                  ...old,
+                  pages: newPages,
+                }
+              }
+            )
+          })
+        }
+        setPrevOnlineUsers(newUsers)
+        setOnlineCount(response.count)
+        setOnlineUsers(response.users)
+        return
+      }
+
+      // 시스템 메시지 처리 (퇴장/강퇴?)
       // 백엔드에서 { type: "system_message", message: "메시지 내용" } 형식으로 옴
       if (response.type === 'system_message') {
         const systemMsg: ChatMessageData = {
-          id: Date.now(), // 임시 ID (타임스탬프 사용)
-          content: response.message, // message → content로 변환
+          id: Date.now(),
+          content: response.message,
           created_at: new Date().toISOString(),
           sender: {
-            id: 0, // 시스템 ID
+            id: 0,
             nickname: '시스템',
           },
           study_group_uuid: study_group_uuid,
           type: 'system_message',
         }
 
-        // 캐시에 추가
         queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
           ['chatMessages', study_group_uuid],
           (old) => {

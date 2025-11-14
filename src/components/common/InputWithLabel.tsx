@@ -68,6 +68,11 @@ function InputWithLabel({
 }: InputWithLabelProps) {
   const { time, isRunning, start } = useCountdown(button?.countdown || 0)
 
+  // useEffect(() => {
+  //   if (button?.start || (button?.countdown && button.countdown > 0)) {
+  //     start(button.countdown)
+  //   }
+  // }, [button?.start, button?.countdown])
   useEffect(() => {
     if (button?.start && button?.countdown && button.countdown > 0) {
       start(button.countdown)
@@ -75,7 +80,13 @@ function InputWithLabel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [button?.start, button?.countdown])
 
+  // const handleButtonClick = () => {
+  //   button?.onClick()
+  // }
   const handleButtonClick = () => {
+    if (button?.countdown) {
+      start(button.countdown)
+    }
     button?.onClick()
   }
 
