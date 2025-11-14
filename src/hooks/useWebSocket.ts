@@ -123,39 +123,10 @@ export const useWebSocket = (study_group_uuid: string | null) => {
             )
           })
 
-          leftUsers.forEach((leftUser) => {
-            const systemMsg: ChatMessageData = {
-              id: Date.now() + leftUser.id,
-              content: `${leftUser.nickname}님이 퇴장했습니다`,
-              created_at: new Date().toISOString(),
-              sender: {
-                id: 0,
-                nickname: '시스템',
-              },
-              study_group_uuid: study_group_uuid,
-              type: 'system_message',
-            }
-
-            queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
-              ['chatMessages', study_group_uuid],
-              (old) => {
-                if (!old) {
-                  return {
-                    pages: [[systemMsg]],
-                    pageParams: [1],
-                  }
-                }
-                const newPages = [...old.pages]
-                const lastPageIndex = newPages.length - 1
-                newPages[lastPageIndex] = [
-                  ...newPages[lastPageIndex],
-                  systemMsg,
-                ]
-                return {
-                  ...old,
-                  pages: newPages,
-                }
-              }
+          leftUsers.forEach((user) => {
+            addToCache(
+              `${user.nickname}님이 퇴장했습니다.`,
+              Date.now() + user.id
             )
           })
         }
@@ -168,38 +139,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       // 시스템 메시지 처리 (퇴장/강퇴?)
       // 백엔드에서 { type: "system_message", message: "메시지 내용" } 형식으로 옴
       if (response.type === 'system_message') {
-        const systemMsg: ChatMessageData = {
-          id: Date.now(),
-          content: response.message,
-          created_at: new Date().toISOString(),
-          sender: {
-            id: 0,
-            nickname: '시스템',
-          },
-          study_group_uuid: study_group_uuid,
-          type: 'system_message',
-        }
-
-        queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
-          ['chatMessages', study_group_uuid],
-          (old) => {
-            if (!old) {
-              return {
-                pages: [[systemMsg]],
-                pageParams: [1],
-              }
-            }
-            const newPages = [...old.pages]
-            const lastPageIndex = newPages.length - 1
-            newPages[lastPageIndex] = [...newPages[lastPageIndex], systemMsg]
-            return {
-              ...old,
-              pages: newPages,
-            }
-          }
-        )
-
-        return
+        addToCache(response.message, Date.now())
       }
 
       if (response.type === 'chat.message') {
@@ -211,11 +151,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           study_group_uuid: response.study_group_uuid,
           type: response.type,
         }
-        // 변수에 안 담고 바로 ...prev, response.data 했더니
-        // undefined일 수 있다고 오류 뜸
-        // 변수에 할당하면 ? 그 순간에 타입이 확정돼서 undefined가 아니구나! 함
-        //! 채팅목록 가져오는 api 나오면 인터페이스/탠스택 만들고 타입/쿼리키 연결해서
-        //! 받아온 newMsg텍스트 캐시에 추가하는 로직 작성
+
         queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
           ['chatMessages', study_group_uuid],
           (old) => {
