@@ -12,8 +12,10 @@ interface ChatOpenType {
 
 export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
   const { data: chatData, refetch } = useChatRooms()
-  // const { data: unreadCount } = useUnreadMessages()
-  const unreadCount = 3
+
+  const unreadCount = chatData?.reduce((sum, item) => {
+    return sum + Number(item.unread_message_count || 0)
+  }, 0)
 
   const [selectedRoomName, setSelectedRoomName] = useState<string | null>(null)
   const { studyGroupUuid, setStudyGroupUuid } = useStudyGroupId()

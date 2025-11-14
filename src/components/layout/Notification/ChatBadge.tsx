@@ -25,7 +25,7 @@ export function ChatBadge() {
       </div>
 
       {chatOpen && (
-        <div className="absolute right-0 bottom-[110%] z-50">
+        <div className="absolute right-0 bottom-[110%] z-99990">
           <ChatBoard setChatOpen={setChatOpen} chatOpen={chatOpen} />
         </div>
       )}
