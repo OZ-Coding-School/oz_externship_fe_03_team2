@@ -28,19 +28,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const { sendMessage, isError, error, onlineUsers, onlineCount } =
     useWebSocketStore()
 
-  useEffect(() => {
-    console.log(chatData)
-  }, ['채팅:', chatData])
-
-  useEffect(() => {
-    console.log(onlineUsers)
-  }, [onlineUsers])
-
   const messages = chatData?.pages.flatMap((page) => page) ?? []
-
-  useEffect(() => {
-    console.log(messages)
-  }, [messages])
 
   const { user } = useUserStore()
   const [openPeople, setOpenPeople] = useState<boolean>(false)
@@ -89,10 +77,6 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const handleSendMessage = () => {
     if (!message.trim()) return
     // 빈 메시지나 띄어쓰기만 있는 거 전송 막음
-
-    console.log('원본:', message)
-    console.log('isProfane?', filter.isProfane(message.trim()))
-    console.log('clean 결과:', filter.clean(message.trim()))
 
     const cleanedMessage = filter.clean(message.trim())
 
@@ -198,10 +182,6 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
         ) : (
           messages?.map((msg) => {
             const isMe = Number(msg.sender.id) === user?.id
-            console.log('sender.id:', msg.sender.id)
-            console.log('sender.id 타입:', typeof msg.sender.id)
-            console.log('user.id:', user?.id)
-            console.log('user.id 타입:', typeof user?.id)
             if (
               msg.type === 'system_message' ||
               msg.type === 'force_disconnect'

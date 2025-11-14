@@ -39,7 +39,6 @@ export function useSSE() {
     eventSource.onmessage = (e) => {
       const newNoti: NotiItem = JSON.parse(e.data)
       // SSE로 새 알림을 받아옴
-      console.log('알림 왔쪄염', newNoti)
 
       if (!newNoti.type || !typeMap.includes(newNoti.type)) return
 

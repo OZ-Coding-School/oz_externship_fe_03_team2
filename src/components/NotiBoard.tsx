@@ -93,10 +93,6 @@ export function NotiBoard() {
     allData?.results.filter((data) => !data.is_read).length || 0
   const readCount = allData?.results.filter((data) => data.is_read).length || 0
 
-  useEffect(() => {
-    console.log(filterData)
-  }, [filterData])
-
   return (
     <div className="shadow-normal flex h-[550px] w-[450px] flex-col overflow-hidden rounded-lg border border-gray-200 bg-white select-none">
       <div className="y-15 m-1 flex w-full justify-between p-4">

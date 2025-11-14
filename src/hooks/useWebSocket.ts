@@ -80,7 +80,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
 
     socket.onmessage = (e) => {
       const response: WebSocketResponse = JSON.parse(e.data)
-      console.log('메씨지 왔쪄염:', response)
       // 여기서 e는 브라우저가 만든 메시지이벤트 객체임
       // MessageEvent {
       //   data: '{"type":"chat.message","data":{...}}',  // ← 서버가 보낸 실제 데이터
@@ -103,9 +102,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       if (response.type === 'online.users') {
         const newUsers = response.users
         const prevOnlineUsers = useWebSocketStore.getState().prevOnlineUsers
-        console.log('이전 유저:', prevOnlineUsers)
-        console.log('새로운 유저:', newUsers)
-
         if (prevOnlineUsers.length > 0) {
           const joinedUsers = newUsers.filter(
             (newUser) =>
@@ -124,11 +120,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
             // = 나간 사람..
           )
 
-          console.log('입장:', joinedUsers)
-          console.log('퇴장:', leftUsers)
-
           joinedUsers.forEach((user) => {
-            console.log(`${user.nickname}님 입장 메시지 생성`)
             addToCache(
               `${user.nickname}님이 입장했습니다.`,
               Date.now() + Number(user.id)
@@ -136,7 +128,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           })
 
           leftUsers.forEach((user) => {
-            console.log(`${user.nickname}님 퇴장 메시지 생성`)
             addToCache(
               `${user.nickname}님이 퇴장했습니다.`,
               Date.now() + Number(user.id)
