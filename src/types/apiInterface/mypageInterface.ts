@@ -458,8 +458,14 @@ export interface ReviewResponse {
   meta: ReviewMeta
 }
 
-// 리뷰 작성 요청
-export interface CreateReviewRequest {
-  star_rating: number // 1~5
+// 리뷰 작성/수정 요청
+export interface ReviewRequest {
+  star_rating: number
+  content: string
+}
+
+// 리뷰 수정 응답
+export interface UpdateReviewResponse {
+  star_rating: number
   content: string
 }

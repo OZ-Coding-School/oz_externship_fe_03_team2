@@ -5,7 +5,8 @@ import type {
   GetStudyGroupsParams,
   GetGroupReviewsParams,
   ReviewResponse,
-  CreateReviewRequest,
+  ReviewRequest,
+  UpdateReviewResponse,
 } from '../../../types/apiInterface/mypageInterface'
 import { useSimpleMutation } from '../../Helper/useSimpleMutation'
 
@@ -63,10 +64,27 @@ export const useCreateGroupReview = (groupUuid: string) => {
   return useSimpleMutation<
     void, // 응답바디가 없음 > void
     Error,
-    CreateReviewRequest
+    ReviewRequest
   >(
     async (reviewData) => {
       await api.post(`/v1/studies/groups/${groupUuid}/reviews`, reviewData)
+    },
+    {
+      invalidateKeys: [
+        '/v1/studies/groups', // 스터디 그룹 목록 재조회
+      ],
+    }
+  )
+}
+
+// 스터디 그룹 리뷰 수정 (PATCH)
+export const useUpdateGroupReview = (groupUuid: string, reviewUuid: string) => {
+  return useSimpleMutation<UpdateReviewResponse, Error, ReviewRequest>(
+    async (reviewData) => {
+      return api.patch<UpdateReviewResponse>(
+        `/v1/studies/groups/${groupUuid}/reviews/${reviewUuid}`,
+        reviewData
+      )
     },
     {
       invalidateKeys: [

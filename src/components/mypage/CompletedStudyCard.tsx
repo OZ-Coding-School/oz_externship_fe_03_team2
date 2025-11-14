@@ -18,6 +18,11 @@ interface CompletedStudyCardProps {
 
 function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [editingReview, setEditingReview] = useState<{
+    id: string
+    rating: number
+    content: string
+  } | null>(null) // 수정할 리뷰 데이터 추가
 
   // 각 카드에서 개별적으로 리뷰 조회
   const { data: reviewData } = useGetGroupReviews(
@@ -30,8 +35,22 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
   const myReview = reviewData?.results?.find((review) => review.is_mine)
   const myRating = myReview ? myReview.rating : 0
 
+  // 리뷰 작성
   const handleReviewClick = () => {
+    setEditingReview(null) // 수정 모드x
     setIsReviewModalOpen(true)
+  }
+
+  // 리뷰 수정
+  const handleEditClick = () => {
+    if (myReview) {
+      setEditingReview({
+        id: myReview.id,
+        rating: myReview.rating,
+        content: myReview.content,
+      })
+      setIsReviewModalOpen(true)
+    }
   }
 
   if (isLoading) {
@@ -79,7 +98,7 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
 
   return (
     <>
-      <div className="flex max-w-95.5 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
+      <div className="flex max-w-95.5 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-sm">
         <div className="h-54 w-full overflow-hidden bg-gray-100">
           {study.profile_img_url ? (
             <img
@@ -133,6 +152,7 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
                   <button
                     type="button"
                     className="flex cursor-pointer items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
+                    onClick={handleEditClick}
                   >
                     <Edit className="h-4 w-4" />
                   </button>
@@ -164,10 +184,14 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
       {/*리뷰모달 */}
       <CompletedStudyReviewModal
         isOpen={isReviewModalOpen}
-        onClose={() => setIsReviewModalOpen(false)}
+        onClose={() => {
+          setIsReviewModalOpen(false)
+          setEditingReview(null) // 모달 닫을때 수정 데이터 초기화
+        }}
         studyName={study.name}
         studyPeriod={`${calculateDurationFormat(study.start_at, study.end_at)} · ${yearMonthFormat(study.end_at)}`}
         groupUuid={study.uuid}
+        editingReview={editingReview}
       />
     </>
   )
