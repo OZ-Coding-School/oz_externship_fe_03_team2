@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useChatMessages } from '../../../api/services/Chat'
 import { useStudyGroupId } from '../../../store/useStudyGroupId'
 import { useWebSocketStore } from '../../../store/useWebSocketStore'
+import Filter from 'badwords-ko'
 
 interface ChatDetailType {
   studyGroupName: string | null
@@ -44,9 +45,9 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const { user } = useUserStore()
   const [openPeople, setOpenPeople] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
-  // const filter = new Filter
-
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  const filter = new Filter()
 
   const handleScroll = () => {
     const div = scrollRef.current
@@ -87,6 +88,10 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   const handleSendMessage = () => {
     if (!message.trim()) return
     // 빈 메시지나 띄어쓰기만 있는 거 전송 막음
+
+    if (filter.isProfane(message.trim())) {
+      alert('채팅에 부적절한 언어가 포함되어 있습니다.')
+    }
 
     if (sendMessage && sendMessage(message)) {
       setMessage('')

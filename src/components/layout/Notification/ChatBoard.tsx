@@ -9,7 +9,7 @@ interface ChatOpenType {
   setChatOpen: (chatOpen: boolean) => void
   chatOpen: boolean
 }
-// ChatBoard.tsx
+
 export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
   const { data: chatData, refetch } = useChatRooms()
   // const { data: unreadCount } = useUnreadMessages()

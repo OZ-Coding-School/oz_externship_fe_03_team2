@@ -132,6 +132,14 @@ export const useWebSocket = (study_group_uuid: string | null) => {
                 pageParams: [1],
               }
             }
+
+            const allMessages = old.pages.flatMap((page) => page)
+            const isDuplicate = allMessages.some((msg) => msg.id === newMsg.id)
+            // some : 배열 안에 조건 만족하는 거 하나라도 있는가 확인
+
+            if (isDuplicate) {
+              return old
+            }
             const newPages = [...old.pages]
             const lastPageIndex = newPages.length - 1
             newPages[lastPageIndex] = [...newPages[lastPageIndex], newMsg]
