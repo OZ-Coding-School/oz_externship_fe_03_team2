@@ -206,6 +206,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
                 </div>
               )
             }
+
             return (
               <div key={msg.id}>
                 {/* 메시지 */}

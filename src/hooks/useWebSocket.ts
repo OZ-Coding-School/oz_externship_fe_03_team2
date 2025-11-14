@@ -46,6 +46,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
 
     socket.onmessage = (e) => {
       const response: WebSocketResponse = JSON.parse(e.data)
+      console.log('메씨지 왔쪄염:', response)
       // 여기서 e는 브라우저가 만든 메시지이벤트 객체임
       // MessageEvent {
       //   data: '{"type":"chat.message","data":{...}}',  // ← 서버가 보낸 실제 데이터

@@ -20,6 +20,7 @@ import {
   X,
 } from 'lucide-react'
 import { monthDayFormat } from '../utils/dateFormat'
+import { useQueryClient } from '@tanstack/react-query'
 
 const typeToIcon = (type: string): ReactNode => {
   const typeMap: Record<string, ReactNode> = {
@@ -57,11 +58,23 @@ export function NotiBoard() {
   const [mode, setMode] = useState<'all' | 'notRead' | 'read'>('all')
   const { data: allData } = useAllNotification()
 
+  const queryClient = useQueryClient()
   const { mutate: patchRead } = useNotiPatchRead()
   const handleRead = (notification_id: number) => {
-    patchRead(notification_id)
+    patchRead(notification_id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['/notification'] })
+      },
+    })
   }
   const { mutate: patchAllRead } = useNotiPatchAllRead()
+  const handleAllRead = () => {
+    patchAllRead(undefined, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['/notification'] })
+      },
+    })
+  }
 
   const filterData = useMemo(() => {
     if (!allData?.results) return []
@@ -89,7 +102,7 @@ export function NotiBoard() {
       <div className="y-15 m-1 flex w-full justify-between p-4">
         <p className="text-lg font-semibold">알림</p>
         <button
-          onClick={() => patchAllRead()}
+          onClick={() => handleAllRead()}
           className="text-primary-600 hover:text-primary-700 active:text-primary-800 text-sm"
         >
           모두 읽음

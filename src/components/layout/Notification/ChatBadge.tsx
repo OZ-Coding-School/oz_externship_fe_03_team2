@@ -1,12 +1,18 @@
 import { MessageCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChatBoard } from './ChatBoard'
-// import { useUnreadMessages } from '../../../api/services/Chat'
+import { useChatRooms } from '../../../api/services/Chat'
+
 export function ChatBadge() {
   const [chatOpen, setChatOpen] = useState(false)
-  // const { data: unread } = useUnreadMessages()
-  // const chatCount = unread?.data.total_unread_count
-  const chatCount = 3
+  const { data: chatRoomAllData } = useChatRooms()
+
+  const chatCount = chatRoomAllData?.reduce((sum, item) => {
+    return sum + Number(item.unread_message_count || 0)
+  }, 0)
+  useEffect(() => {
+    console.log(chatCount)
+  }, [chatCount])
 
   return (
     <div className="fixed right-4 bottom-4 z-1000 lg:right-5 lg:bottom-5">
@@ -24,7 +30,7 @@ export function ChatBadge() {
 
       {chatOpen && (
         <div className="absolute right-0 bottom-[110%] z-50">
-          <ChatBoard setChatOpen={setChatOpen} />
+          <ChatBoard setChatOpen={setChatOpen} chatOpen={chatOpen} />
         </div>
       )}
     </div>

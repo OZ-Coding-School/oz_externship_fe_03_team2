@@ -15,17 +15,6 @@ export const useChatRooms = () => {
   )
 }
 
-// 안 읽은 메시지 수 불러오기
-// export const useUnreadMessages = () => {
-//   return useSimpleQuery<UnreadMessageResponse, SimpleError>(
-//     ['unreadMessages'],
-//     () => api.get('/v1/chat/total-unread-messages'),
-//     {
-//       select: (data) => data.data.total_unread_count
-//     }
-//   )
-// }
-
 // 채팅 메시지 무한 스크롤
 export const useChatMessages = (uuid: string | null) => {
   return useInfiniteQuery<ChatMessageData[], SimpleError>({
