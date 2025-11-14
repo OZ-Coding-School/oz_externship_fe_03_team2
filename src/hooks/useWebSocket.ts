@@ -1,12 +1,14 @@
 import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
-import type {
-  ChatMessageData,
-  User,
-  WebSocketResponse,
+import {
+  type ChatRoomData,
+  type ChatMessageData,
+  type User,
+  type WebSocketResponse,
 } from '../types/apiInterface/chatInterface'
 import { useStudyGroupId } from '../store/useStudyGroupId'
 import { useToken } from '../store/useTokenStore'
+import { showNotificationToast } from '../utils/showNotificationToast'
 
 export const useWebSocket = (study_group_uuid: string | null) => {
   const socketRef = useRef<WebSocket | null>(null)
@@ -100,6 +102,31 @@ export const useWebSocket = (study_group_uuid: string | null) => {
               pages: newPages,
             }
           }
+        )
+        queryClient.setQueryData<ChatRoomData[]>(['chatRooms'], (old) => {
+          if (!old) return old
+          return old.map((room) => {
+            if (room.uuid === study_group_uuid) {
+              return {
+                ...room,
+                last_message: {
+                  id: newMsg.id,
+                  content: newMsg.content,
+                  sender_nickname: newMsg.sender.nickname,
+                  created_at: newMsg.created_at,
+                },
+                unread_message_count: room.unread_message_count,
+                updated_at: new Date().toISOString(),
+              }
+            }
+            return room
+          })
+        })
+        showNotificationToast(
+          newMsg.content,
+          newMsg.sender.nickname,
+          newMsg.created_at,
+          'chat'
         )
         setIsError(false)
       }

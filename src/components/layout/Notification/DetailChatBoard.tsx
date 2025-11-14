@@ -100,9 +100,9 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // if (e.nativeEvent.isComposing) {
-    //   return
-    // }
+    if (e.nativeEvent.isComposing) {
+      return
+    }
 
     if (e.key === 'Enter' && !e.shiftKey) {
       // 쉬프트+엔터 눌렀을 때는 줄바꿈 할 수 있도록  안 되게 함

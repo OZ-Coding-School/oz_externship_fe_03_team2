@@ -23,9 +23,9 @@ import { monthDayFormat } from '../utils/dateFormat'
 
 const typeToIcon = (type: string): ReactNode => {
   const typeMap: Record<string, ReactNode> = {
-    APPLICATION_CREATED: <Plus />,
-    APPLICATION_STATUS_APPROVAL: <Check />,
-    APPLICATION_STATUS_REJECTION: <X />,
+    APPLICATIONS_CREATED: <Plus />,
+    APPLICATIONS_STATUS_APPROVAL: <Check />,
+    APPLICATIONS_STATUS_REJECTION: <X />,
     STUDY_MEMBER_JOINED: <UserRoundPlus />,
     STUDY_REVIEW_REQUEST: <Star />,
     STUDY_SCHEDULE_UPCOMING: <CalendarClock />,
@@ -39,9 +39,9 @@ const typeToIcon = (type: string): ReactNode => {
 
 const typeToColor = (type: string): string => {
   const typeMap: Record<string, string> = {
-    APPLICATION_CREATED: 'bg-[#DBEAFE] text-[#2563EB]',
-    APPLICATION_STATUS_APPROVAL: 'bg-[#DCFCE7] text-[#16A34A]',
-    APPLICATION_STATUS_REJECTION: 'bg-[#FEE2E2] text-[#DC2626]',
+    APPLICATIONS_CREATED: 'bg-[#DBEAFE] text-[#2563EB]',
+    APPLICATIONS_STATUS_APPROVAL: 'bg-[#DCFCE7] text-[#16A34A]',
+    APPLICATIONS_STATUS_REJECTION: 'bg-[#FEE2E2] text-[#DC2626]',
     STUDY_MEMBER_JOINED: 'bg-[#F3E8FF] text-[#9333EA]',
     STUDY_REVIEW_REQUEST: 'bg-[#F3E8FF] text-[#9333EA]',
     STUDY_SCHEDULE_UPCOMING: 'bg-[#F3E8FF] text-[#9333EA]',
