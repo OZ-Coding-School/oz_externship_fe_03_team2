@@ -6,6 +6,7 @@ import useDebounce from '../../hooks/useDebounce'
 import validateAll from '../../utils/validators'
 import { showToast } from '../../utils/showToast'
 import SuccessModal from './SuccessModal'
+import { restoreDateFormat } from '../../utils/dateFormat'
 
 interface SEND {
   email: string
@@ -14,6 +15,7 @@ interface SEND {
 
 interface RestoreProps {
   isOpen: boolean
+  date: string
   setIsOpen: (isOpen: boolean) => void
 }
 
@@ -22,7 +24,7 @@ const SEND_STATE: SEND = {
   emailCode: '',
 }
 
-function Restore({ isOpen, setIsOpen }: RestoreProps) {
+function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
   const [step, setStep] = useState(0)
   const [send, setSend] = useState(SEND_STATE)
   const [error, setError] = useState<Record<string, string>>({})
@@ -100,7 +102,7 @@ function Restore({ isOpen, setIsOpen }: RestoreProps) {
         <RestoreModal
           title="해당 계정은 탈퇴된 상태예요"
           subtitle={[
-            'YYYY년 MM월 DD일 이후, 계정 정보는 완전히 삭제돼요.',
+            `${restoreDateFormat(date)} 이후, 계정 정보는 완전히 삭제돼요.`,
             '계정을 다시 사용하려면 아래 버튼을 눌러 복구를 진행해주세요.',
           ]}
           footer={footer()}

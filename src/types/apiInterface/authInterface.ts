@@ -162,6 +162,9 @@ export interface NaverLoginResponse {
 //오류
 export interface Errors {
   error: string
+  data?: {
+    blocked_until?: string
+  }
   errors?: {
     email?: string[]
     password?: string[]

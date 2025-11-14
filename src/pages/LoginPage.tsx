@@ -30,6 +30,7 @@ function LoginPage() {
   const [form, setForm] = useState<Form>(FORM_STATE)
   const [error, setError] = useState<Record<string, string>>({})
   const [isOpen, setIsOpen] = useState(false)
+  const [restoreDate, setRestoreDate] = useState<string>('')
 
   const { setAccessToken } = useToken()
   const { setUser } = useUserStore()
@@ -87,6 +88,7 @@ function LoginPage() {
         onError: (e) => {
           if (e.status === 403) {
             setIsOpen(true)
+            setRestoreDate(e.response?.data.data?.blocked_until || '')
             return
           }
           showToast(`${e.response?.data.error}`, 'error', '로그인')
@@ -201,7 +203,7 @@ function LoginPage() {
           </Button>
         </form>
       </div>
-      <Restore isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Restore isOpen={isOpen} date={restoreDate} setIsOpen={setIsOpen} />
     </div>
   )
 }
