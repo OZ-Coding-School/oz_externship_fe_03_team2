@@ -8,10 +8,13 @@ import CompletedStudyContents from '../components/mypage/CompletedStudyContents'
 import { useEffect } from 'react'
 import ProfileContentsContainer from '../components/mypage/container/ProfileContentsContainer'
 import StudyContentsContainer from '../components/mypage/container/StudyContentsContainer'
+import useMediaQuery from '../hooks/useMediaQuery'
+import BookmarkContentsContainer from '../components/mypage/container/BookmarkContentsContainer'
 
 function MyPage() {
   const location = useLocation()
   const navigate = useNavigate()
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   // 현재 경로 기반으로 활성 탭 결정 (기본값: profile)
   const currentActive = location.pathname.split('/mypage/')[1] ?? 'profile'
@@ -23,10 +26,26 @@ function MyPage() {
     }
   }, [location.pathname, navigate])
 
+  // 모바일에서 jobs or course > bookmarks 리다이렉트
+  useEffect(() => {
+    if (isMobile && (currentActive === 'jobs' || currentActive === 'course')) {
+      navigate('/mypage/bookmarks', { replace: true })
+    }
+  }, [isMobile, currentActive, navigate])
+
+  // 데스크톱에서 bookmarks > jobs 리다이렉트
+  useEffect(() => {
+    if (!isMobile && currentActive === 'bookmarks') {
+      navigate('/mypage/jobs', { replace: true })
+    }
+  }, [isMobile, currentActive, navigate])
+
   const renderContent = () => {
     switch (currentActive) {
       case 'profile':
         return <ProfileContentsContainer />
+      case 'bookmarks':
+        return <BookmarkContentsContainer />
       case 'jobs':
         return <JobsContents />
       case 'course':
