@@ -10,7 +10,6 @@ import StarRating from '../common/StarRating'
 import { useState } from 'react'
 import CompletedStudyReviewModal from './CompletedStudyReviewModal'
 import { useGetGroupReviews } from '../../api/services/mypage/studyGroup'
-import { ratingToNumber } from '../../utils/ratingToNumber'
 
 interface CompletedStudyCardProps {
   study?: StudyGroups
@@ -29,7 +28,7 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
 
   // 내가 작성한 리뷰 찾기
   const myReview = reviewData?.results?.find((review) => review.is_mine)
-  const myRating = myReview ? ratingToNumber(myReview.rating) : 0
+  const myRating = myReview ? myReview.rating : 0
 
   const handleReviewClick = () => {
     setIsReviewModalOpen(true)
@@ -138,7 +137,7 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
                     <Edit className="h-4 w-4" />
                   </button>
                 </div>
-                <p className="line-clamp-2 text-sm text-gray-700">
+                <p className="line-clamp-2 min-h-10 text-sm text-gray-700">
                   {myReview.content || '리뷰 내용이 없습니다.'}
                 </p>
               </div>
@@ -168,6 +167,7 @@ function CompletedStudyCard({ study, isLoading }: CompletedStudyCardProps) {
         onClose={() => setIsReviewModalOpen(false)}
         studyName={study.name}
         studyPeriod={`${calculateDurationFormat(study.start_at, study.end_at)} · ${yearMonthFormat(study.end_at)}`}
+        groupUuid={study.uuid}
       />
     </>
   )

@@ -2,12 +2,15 @@ import { useState } from 'react'
 import Modal from '../common/Modal'
 import Button from '../common/Button'
 import StarRatingInput from '../common/StarRatingInput'
+import { useCreateGroupReview } from '../../api/services/mypage/studyGroup'
+import { showToast } from '../../utils/showToast'
 
 interface ReviewModalProps {
   isOpen: boolean
   onClose: () => void
   studyName: string
   studyPeriod: string
+  groupUuid: string
 }
 
 function CompletedStudyReviewModal({
@@ -15,12 +18,33 @@ function CompletedStudyReviewModal({
   onClose,
   studyName,
   studyPeriod,
+  groupUuid,
 }: ReviewModalProps) {
   const [rating, setRating] = useState(0)
   const [reviewText, setReviewText] = useState('')
 
+  // api훅
+  const { mutate: createReview, isPending } = useCreateGroupReview(groupUuid)
+
   const handleSubmit = () => {
-    onClose()
+    createReview(
+      { star_rating: rating, content: reviewText },
+      {
+        onSuccess: () => {
+          setRating(0)
+          setReviewText('')
+          onClose()
+          showToast('리뷰가 등록되었습니다', 'success', '리뷰 등록 성공')
+        },
+        onError: () => {
+          showToast(
+            '리뷰 등록하는데 오류가 발생했습니다',
+            'error',
+            '리뷰 등록 실패'
+          )
+        },
+      }
+    )
   }
 
   const handleCancel = () => {
@@ -43,9 +67,11 @@ function CompletedStudyReviewModal({
             variant="primary"
             size="md"
             onClick={handleSubmit}
-            disabled={rating === 0 || reviewText.trim().length === 0}
+            disabled={
+              rating === 0 || reviewText.trim().length === 0 || isPending
+            }
           >
-            리뷰 등록
+            {isPending ? '등록 중...' : '리뷰 등록'}
           </Button>
         </>
       }
