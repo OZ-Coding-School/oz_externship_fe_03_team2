@@ -9,6 +9,7 @@ import {
 import { useStudyGroupId } from '../store/useStudyGroupId'
 import { useToken } from '../store/useTokenStore'
 import { showNotificationToast } from '../utils/showNotificationToast'
+import { useUserStore } from '../store/useUserStore'
 
 export const useWebSocket = (study_group_uuid: string | null) => {
   const socketRef = useRef<WebSocket | null>(null)
@@ -20,6 +21,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
   const queryClient = useQueryClient()
   const { setStudyGroupUuid } = useStudyGroupId()
   const { accessToken } = useToken()
+  const { user } = useUserStore()
 
   useEffect(() => {
     if (!study_group_uuid) return
@@ -122,12 +124,14 @@ export const useWebSocket = (study_group_uuid: string | null) => {
             return room
           })
         })
-        showNotificationToast(
-          newMsg.content,
-          newMsg.sender.nickname,
-          newMsg.created_at,
-          'chat'
-        )
+        if (user?.id !== Number(newMsg.sender.id)) {
+          showNotificationToast(
+            newMsg.content,
+            newMsg.sender.nickname,
+            newMsg.created_at,
+            'chat'
+          )
+        }
         setIsError(false)
       }
     }
