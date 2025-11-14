@@ -93,9 +93,12 @@ function BookmarkStudyCardMobile({
           </p>
 
           {/* 북마크 + 보기버튼 */}
-          <div className="flex items-center gap-2">
-            <button onClick={handleBookmarkToggle} className="shrink-0">
-              <Bookmark className="fill-primary-500 text-primary-500 h-5 w-5" />
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleBookmarkToggle}
+              className="shrink-0 cursor-pointer"
+            >
+              <Bookmark className="fill-primary-500 text-primary-500 hover:fill-primary-600 hover:text-primary-600 h-5 w-5" />
             </button>
             <Button
               variant="primary"
