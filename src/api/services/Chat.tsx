@@ -7,11 +7,24 @@ import {
 import { api } from '../client'
 import type { SimpleError } from '../../types/apiInterface/findInterface'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useStudyGroupId } from '../../store/useStudyGroupId'
 
 // 채팅방 목록 불러오기
 export const useChatRooms = () => {
-  return useSimpleQuery<ChatRoomData[], SimpleError>(['chatRooms'], () =>
-    api.get('/v1/chat/chatrooms')
+  const { studyGroupUuid } = useStudyGroupId()
+  return useSimpleQuery<ChatRoomData[], SimpleError>(
+    ['chatRooms'],
+    () => api.get('/v1/chat/chatrooms'),
+    {
+      refetchInterval: studyGroupUuid ? false : 10000,
+      // 일정 시간마다 스스로 refetch 시키는 아이.. 폴링 을 위해서..
+      // studyGroupUuid가 있을 때 = 그룹채팅 안에 들어와 있을 떄는 웹소켓으로 가져오니까 꺼두고
+      // 채팅방 목록에 있거나 채팅보드 꺼놨을 때는 10초마다 리페치
+      refetchIntervalInBackground: false,
+      // 백그라운드에 있을 때는 리패치 안 함
+      refetchOnWindowFocus: true,
+      // 다시 포커스하면 즉시 리패치함
+    }
   )
 }
 
