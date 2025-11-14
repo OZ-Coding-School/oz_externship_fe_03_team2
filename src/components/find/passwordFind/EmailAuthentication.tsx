@@ -7,6 +7,7 @@ import {
   useEmailVerificationConfirmCode,
   useEmailVerificationSendCode,
 } from '../../../api/services/find/passwordFind'
+import { useEffect, useState } from 'react'
 
 interface EmailAuthProps {
   formData: PasswordFormData
@@ -23,6 +24,13 @@ export default function EmailAuthentication({
 }: EmailAuthProps) {
   const { mutate } = useEmailVerificationConfirmCode()
   const { mutate: codeResendMutate } = useEmailVerificationSendCode()
+  const [timerKey, setTimerKey] = useState(0)
+
+  useEffect(() => {
+    if (formData.expires_in && formData.expires_in > 0) {
+      setTimerKey((prev) => prev + 1)
+    }
+  }, [formData.expires_in])
 
   const handleSubmit = () => {
     if (!formData.verificationCode) {
@@ -66,6 +74,7 @@ export default function EmailAuthentication({
             cooldown: data.data.cooldown,
             //성공헀을 떄만 쿨타임 초기화 되고 실패헀을 떄는 초기화 안 되게..
           }))
+          setTimerKey((prev) => prev + 1)
         },
         onError: () => {
           showToast('오류가 발생했습니다. 잠시 후에 시도해주세요.', 'error')
@@ -106,7 +115,7 @@ export default function EmailAuthentication({
           variant: 'primary',
           countdown: formData.expires_in,
           cooldown: formData.cooldown,
-          start: true,
+          start: timerKey,
         }}
       />
       <Button

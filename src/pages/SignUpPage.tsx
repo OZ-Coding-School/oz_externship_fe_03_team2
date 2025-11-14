@@ -108,6 +108,9 @@ function SignUpPage() {
   const [checkNickname, setCheckNickname] = useState(false)
   const [verifyToken, setVerifyToken] = useState(VERIFYTOKEN_STATE)
 
+  const [emailTimerKey, setEmailTimerKey] = useState(0)
+  const [phoneTimerKey, setPhoneTimerKey] = useState(0)
+
   const {
     data: nickNameData,
     error: nicknameError,
@@ -232,6 +235,7 @@ function SignUpPage() {
             emailExpiresIn: data.data.expires_in,
             emailCooldown: data.data.cooldown,
           }))
+          setEmailTimerKey((prev) => prev + 1)
           showToast(`${data.detail}`, 'success', '이메일 코드 전송')
         },
         onError: (error) => {
@@ -290,6 +294,7 @@ function SignUpPage() {
             phoneExpiresIn: data.data.expires_in,
             phoneCooldown: data.data.cooldown,
           }))
+          setPhoneTimerKey((prev) => prev + 1)
           showToast(`${data.detail}`, 'success', '핸드폰 코드 전송')
         },
         onError: (error) => {
@@ -437,7 +442,7 @@ function SignUpPage() {
                   disabled: !(form.email && !error['email'] && !isEmail),
                   countdown: requestId.emailExpiresIn,
                   cooldown: requestId.emailCooldown,
-                  start: true,
+                  start: emailTimerKey,
                 }}
               />
             </div>
@@ -487,7 +492,7 @@ function SignUpPage() {
                   ),
                   countdown: requestId.phoneExpiresIn,
                   cooldown: requestId.phoneCooldown,
-                  start: true,
+                  start: phoneTimerKey,
                 }}
               />
             </div>

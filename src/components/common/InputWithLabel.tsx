@@ -30,7 +30,7 @@ type InputButtonProps = {
   disabled?: boolean
   countdown?: number
   cooldown?: number
-  start?: boolean
+  start?: number
 }
 
 type InputWithLabelProps = {
