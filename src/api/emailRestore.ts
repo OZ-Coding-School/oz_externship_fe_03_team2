@@ -1,11 +1,14 @@
 import { useSimpleMutation } from '../api/Helper/useSimpleMutation'
 import { api } from './client'
 import { showToast } from '../utils/showToast'
-import * as T from '../types/apiInterface/restoreInterface'
+import type {
+  EmailSendResponse,
+  EmailConfirmResponse,
+} from '../types/apiInterface/authInterface'
 
 /* 탈퇴계정 복구 - 이메일 인증코드 전송 */
 export const sendRestoreEmailCode = (email: string) =>
-  api.post<T.SendRestoreEmailResponse>(
+  api.post<EmailSendResponse>(
     '/v1/email-verifications/restore-user/send-code',
     { email },
     { skipAuth: true }
@@ -17,7 +20,7 @@ export const confirmRestoreEmailCode = async (body: {
   verification_code: string
   request_id: string
 }) => {
-  return await api.post<T.ConfirmRestoreEmailResponse>(
+  return await api.post<EmailConfirmResponse>(
     '/v1/email-verifications/restore-user/confirm-code',
     body,
     { skipAuth: true }
@@ -26,17 +29,17 @@ export const confirmRestoreEmailCode = async (body: {
 
 /* 이메일 인증코드 전송 훅 */
 export const useSendRestoreEmailCode = () => {
-  return useSimpleMutation<T.SendRestoreEmailResponse, T.SimpleError, string>(
+  return useSimpleMutation<EmailSendResponse, Error, string>(
     sendRestoreEmailCode,
     {
       onSuccess: (data) => {
-        if (data?.request_id) {
+        if (data?.data.request_id) {
           showToast('인증코드를 발송하였습니다.', 'success')
         } else {
           showToast('인증코드 발송 응답이 올바르지 않습니다.', 'warning')
         }
       },
-      onError: (error: any) => {
+      onError: (error: Error & { response?: { status?: number } }) => {
         const status = error.response?.status
         if (status === 400)
           showToast('이메일 형식이 올바르지 않습니다.', 'error')
@@ -54,8 +57,8 @@ export const useSendRestoreEmailCode = () => {
 /* 이메일 인증코드 확인 훅 */
 export const useConfirmRestoreEmailCode = () => {
   return useSimpleMutation<
-    T.ConfirmRestoreEmailResponse,
-    T.SimpleError,
+    EmailConfirmResponse,
+    Error,
     {
       email: string
       verification_code: string
@@ -63,11 +66,11 @@ export const useConfirmRestoreEmailCode = () => {
     }
   >(confirmRestoreEmailCode, {
     onSuccess: (data) => {
-      if (data?.email_verify_token)
+      if (data?.data.email_verify_token)
         showToast('이메일 인증이 완료되었습니다.', 'success')
       else showToast('서버 응답에 인증 토큰이 없습니다.', 'warning')
     },
-    onError: (error: any) => {
+    onError: (error: Error & { response?: { status?: number } }) => {
       const status = error.response?.status
       if (status === 400)
         showToast('잘못된 코드입니다. 다시 확인해주세요.', 'error')
@@ -89,7 +92,7 @@ export const restoreAccount = (emailVerifyToken: string) =>
 
 /* 계정 복구 훅 */
 export const useRestoreAccount = () => {
-  return useSimpleMutation<void, T.SimpleError, string>(restoreAccount, {
+  return useSimpleMutation<void, Error, string>(restoreAccount, {
     onSuccess: () => showToast('계정 복구 완료!', 'success'),
     onError: () => showToast('계정 복구 실패', 'error'),
   })

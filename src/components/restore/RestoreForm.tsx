@@ -21,7 +21,6 @@ export default function RestoreForm({
   email,
   emailCode,
   error,
-  emailSent,
   isLoadingSend,
   isLoadingConfirm,
   onChangeEmail,
@@ -55,15 +54,7 @@ export default function RestoreForm({
           error={error.email}
           button={{
             label: isLoadingSend ? '전송 중...' : '인증코드전송',
-            onClick: () => {
-              onSendEmail()
-              console.log(
-                !emailCode,
-                !!error.emailCode,
-                !emailSent,
-                isLoadingConfirm
-              )
-            },
+            onClick: onSendEmail,
             variant: 'signup',
             size: 'ml',
             disabled: !email || !!error.email || isLoadingSend,
@@ -80,21 +71,12 @@ export default function RestoreForm({
           error={error.emailCode}
           button={{
             label: isLoadingConfirm ? '확인 중...' : '인증코드확인',
-            onClick: () => {
-              onConfirmCode()
-              console.log(
-                !emailCode,
-                !!error.emailCode,
-                !emailSent,
-                isLoadingConfirm
-              )
-            },
+            onClick: onConfirmCode,
             variant: 'signup',
             size: 'ml',
             disabled:
-              !!emailCode ||
-              !!error.emailCode ||
-              !emailSent ||
+              !emailCode || // 빈 문자열이면 비활성화
+              !!error.emailCode || // 에러가 있으면 비활성화
               isLoadingConfirm,
           }}
         />

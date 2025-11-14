@@ -43,14 +43,22 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
     const trimmedEmail = debounceForm.email.trim()
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     let emailError = ''
+    let codeError = ''
+
     if (!trimmedEmail) emailError = '이메일을 입력해주세요.'
     else if (!emailRegex.test(trimmedEmail))
       emailError = '이메일 형식이 올바르지 않습니다.'
+
+    // 인증코드 error 체크
+    if (debounceForm.emailCode && debounceForm.emailCode.length !== 6) {
+      codeError = '6자리 인증코드를 입력해주세요'
+    }
 
     setError((prev) => ({
       ...prev,
       ...validator,
       email: emailError,
+      emailCode: codeError,
     }))
   }, [debounceForm, isOpen])
 
@@ -64,8 +72,8 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
     try {
       setIsLoadingSend(true)
       const res = await sendEmailMutation.mutateAsync(form.email.trim())
-      if (res?.request_id) {
-        setRequestId(res.request_id)
+      if (res?.data.request_id) {
+        setRequestId(res.data.request_id)
         setEmailSent(true)
         showToast('인증코드를 발송하였습니다.', 'success')
       } else {
@@ -89,8 +97,8 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
         verification_code: form.emailCode,
         request_id: requestId,
       })
-      if (res?.email_verify_token) {
-        setEmailVerifyToken(res.email_verify_token)
+      if (res?.data.email_verify_token) {
+        setEmailVerifyToken(res.data.email_verify_token)
         showToast('이메일 인증이 완료되었습니다.', 'success')
       } else {
         showToast('인증 실패', 'error')
@@ -130,11 +138,25 @@ export default function Restore({ isOpen, date, setIsOpen }: RestoreProps) {
   const handleChangeEmail = (value: string) =>
     setForm((prev) => ({ ...prev, email: value }))
 
-  const handleChangeCode = (value: string) =>
+  const handleChangeCode = (value: string) => {
+    const sanitized = value.replace(/\D/g, '').slice(0, 6)
     setForm((prev) => ({
       ...prev,
-      emailCode: value.replace(/\D/g, '').slice(0, 6),
+      emailCode: sanitized,
     }))
+
+    setError((prev) => {
+      const newError = { ...prev }
+      if (sanitized.length === 6) {
+        delete newError.emailCode
+      } else if (sanitized.length > 0) {
+        newError.emailCode = '6자리 인증코드를 입력해주세요'
+      } else {
+        delete newError.emailCode
+      }
+      return newError
+    })
+  }
 
   return (
     <>
