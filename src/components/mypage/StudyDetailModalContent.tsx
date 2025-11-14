@@ -2,19 +2,17 @@ import Badge from '../common/Badge'
 import { fullDateFormat } from '../../utils/dateFormat'
 import { getStatusBadge } from '../../utils/statusBadge'
 import { Loading } from '../common/Loading'
-import { useGetApplicationDetail } from '../../api/services/mypage/studyApplication'
+import type { DetailApplicationResponse } from '../../types/apiInterface/mypageInterface'
 
 interface StudyDetailModalContentProps {
-  applicationUuid: string
+  applicationDetail: DetailApplicationResponse['data'] | null
+  isLoading: boolean
 }
 
 function StudyDetailModalContent({
-  applicationUuid,
+  applicationDetail,
+  isLoading,
 }: StudyDetailModalContentProps) {
-  const { data, isLoading } = useGetApplicationDetail(applicationUuid, true)
-
-  const applicationDetail = data?.data
-
   if (isLoading) return <Loading />
 
   if (!applicationDetail) {

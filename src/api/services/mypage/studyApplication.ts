@@ -1,9 +1,11 @@
 import { api } from '../../client'
 import { useSimpleQuery } from '../../Helper/useSimpleQuery'
 import type {
+  CancelApplicationResponse,
   DetailApplicationResponse,
   MyApplicationResponse,
 } from '../../../types/apiInterface/mypageInterface'
+import { useSimpleMutation } from '../../Helper/useSimpleMutation'
 
 // 내가 지원한 공고 내역 조회 (GET)
 export const useGetMyApplications = (enabled = true) => {
@@ -40,5 +42,21 @@ export const useGetApplicationDetail = (
       )
     },
     { enabled: enabled && !!application_uuid } // uuid가 있을 때만 쿼리 실행
+  )
+}
+
+// 지원 취소 (PATCH)
+export const useCancelApplication = (application_uuid: string) => {
+  return useSimpleMutation<CancelApplicationResponse, Error, void>(
+    async () => {
+      return api.patch<CancelApplicationResponse>(
+        `/v1/recruitments/applications/${application_uuid}/withdraw`
+      )
+    },
+    {
+      invalidateKeys: [
+        '/v1/recruitments/applications/me', // 지원 내역 목록 재조회
+      ],
+    }
   )
 }
