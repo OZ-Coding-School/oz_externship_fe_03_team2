@@ -102,38 +102,38 @@ export const useWebSocket = (study_group_uuid: string | null) => {
       if (response.type === 'online.users') {
         const newUsers = response.users
         const prevOnlineUsers = useWebSocketStore.getState().prevOnlineUsers
-        if (prevOnlineUsers.length > 0) {
-          const joinedUsers = newUsers.filter(
-            (newUser) =>
-              !prevOnlineUsers.some(
-                (prev) => Number(prev.id) === Number(newUser.id)
-              )
-            // 새 유저 목록 중에서, 원래 유저목록 아이디가 겹치지 않는 사람을 찾음.
-            // = 새로 추가된 사람.. (기존 목록에 유저1, 유저2 이 있었는데 새 목록에는 유저1, 유저2, 유저3이 있었다면 ? 유저3이 새로 들어온 것.)
-          )
-          const leftUsers = prevOnlineUsers.filter(
-            (prevUser) =>
-              !newUsers.some(
-                (newUsers) => Number(newUsers.id) === Number(prevUser.id)
-              )
-            // 기존 유저 목록 중에서, 새 유저 목록 사이에 없는 사람을 찾음.
-            // = 나간 사람..
-          )
+        // if (prevOnlineUsers.length > 0) {
+        //   const joinedUsers = newUsers.filter(
+        //     (newUser) =>
+        //       !prevOnlineUsers.some(
+        //         (prev) => Number(prev.id) === Number(newUser.id)
+        //       )
+        //     // 새 유저 목록 중에서, 원래 유저목록 아이디가 겹치지 않는 사람을 찾음.
+        //     // = 새로 추가된 사람.. (기존 목록에 유저1, 유저2 이 있었는데 새 목록에는 유저1, 유저2, 유저3이 있었다면 ? 유저3이 새로 들어온 것.)
+        //   )
+        //   const leftUsers = prevOnlineUsers.filter(
+        //     (prevUser) =>
+        //       !newUsers.some(
+        //         (newUsers) => Number(newUsers.id) === Number(prevUser.id)
+        //       )
+        //     // 기존 유저 목록 중에서, 새 유저 목록 사이에 없는 사람을 찾음.
+        //     // = 나간 사람..
+        //   )
 
-          joinedUsers.forEach((user) => {
-            addToCache(
-              `${user.nickname}님이 입장했습니다.`,
-              Date.now() + Number(user.id)
-            )
-          })
+        //   joinedUsers.forEach((user) => {
+        //     addToCache(
+        //       `${user.nickname}님이 입장했습니다.`,
+        //       Date.now() + Number(user.id)
+        //     )
+        //   })
 
-          leftUsers.forEach((user) => {
-            addToCache(
-              `${user.nickname}님이 퇴장했습니다.`,
-              Date.now() + Number(user.id)
-            )
-          })
-        }
+        //   leftUsers.forEach((user) => {
+        //     addToCache(
+        //       `${user.nickname}님이 퇴장했습니다.`,
+        //       Date.now() + Number(user.id)
+        //     )
+        //   })
+        // }
         setPrevOnlineUsers(newUsers)
         setOnlineCount(response.count)
         setOnlineUsers(response.users)
@@ -155,7 +155,6 @@ export const useWebSocket = (study_group_uuid: string | null) => {
           study_group_uuid: response.study_group_uuid,
           type: response.type,
         }
-
         queryClient.setQueryData<InfiniteData<ChatMessageData[]>>(
           ['chatMessages', study_group_uuid],
           (old) => {
@@ -277,6 +276,20 @@ export const useWebSocket = (study_group_uuid: string | null) => {
     setSendMessage(sendMessageFn)
 
     return () => {
+      queryClient.setQueryData<ChatRoomData[]>(['chatRooms'], (old) => {
+        if (!old) return old
+
+        return old.map((room) => {
+          if (room.uuid === study_group_uuid) {
+            return {
+              ...room,
+              unread_message_count: 0,
+            }
+          }
+          return room
+        })
+      })
+
       socket.close()
       // 컴포넌트 사라질 때 또는 다른 채팅방으로 옮길 때 실행되는 cleanup 함수임
       reset()
