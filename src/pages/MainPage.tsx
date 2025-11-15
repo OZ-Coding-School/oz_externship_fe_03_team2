@@ -18,14 +18,14 @@ function MainPage() {
       {/* Hero Section */}
       <section className="flex w-full max-w-7xl flex-col items-center justify-center gap-10 px-6 py-12 sm:flex-row sm:justify-between sm:gap-12 sm:px-8 sm:py-20">
         {/* 왼쪽 텍스트 */}
-        <div className="flex w-full max-w-[584px] flex-col text-center sm:text-left">
-          <h1 className="mb-4 text-[32px] leading-[42px] font-extrabold sm:mb-6 sm:text-[48px] sm:leading-[60px]">
+        <div className="flex w-full max-w-xl flex-col text-center sm:text-left">
+          <h1 className="mb-4 text-4xl leading-snug font-extrabold sm:mb-6 sm:text-5xl sm:leading-tight">
             <span className="text-gray-900">IT 전문 지식을</span>
             <br />
             <span className="text-primary-600">함께 배워나가세요</span>
           </h1>
 
-          <p className="mb-8 text-[15px] leading-[24px] text-gray-600 sm:text-[18px] sm:leading-[28px]">
+          <p className="mb-8 text-sm leading-6 text-gray-600 sm:text-lg sm:leading-7">
             {normalizeBreaks(
               '최고의 강사진과 함께하는 IT 강의와 스터디 그룹으로 실무 역량을 키워보세요.<br/>지금 시작하면 한 달 뒤의 당신은 분명 달라집니다.'
             )}
@@ -34,14 +34,14 @@ function MainPage() {
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start">
             <Button
               onClick={() => navigate('/signup')}
-              className="!bg-primary-500 hover:!bg-primary-600 !h-[48px] !w-full max-w-[300px] !rounded-[8px] !text-white sm:!h-[50px] sm:!w-[177px]"
+              className="bg-primary-500 hover:bg-primary-600 h-12 w-full max-w-xs cursor-pointer rounded-lg text-white sm:h-12 sm:w-44"
             >
               강의 둘러보기
             </Button>
 
             <Button
-              onClick={() => navigate('/studygroups')}
-              className="!border-primary-500 !text-primary-600 hover:!bg-primary-100 !h-[48px] !w-full max-w-[300px] !rounded-[8px] !border sm:!h-[50px] sm:!w-[177px]"
+              onClick={() => navigate('/create_study_group')}
+              className="border-primary-500 text-primary-600 hover:bg-primary-100 h-12 w-full max-w-xs cursor-pointer rounded-lg border sm:h-12 sm:w-44"
             >
               스터디 그룹 참여
             </Button>
@@ -49,7 +49,7 @@ function MainPage() {
         </div>
 
         {/* 오른쪽 이미지 */}
-        <div className="h-[220px] w-full max-w-[340px] overflow-hidden rounded-2xl shadow-md sm:h-[389px] sm:max-w-[584px]">
+        <div className="h-56 w-full max-w-[340px] overflow-hidden rounded-2xl shadow-md sm:h-96 sm:max-w-xl">
           <img
             src="/images/mainBannerImg.png"
             alt="스터디룸"
@@ -62,10 +62,10 @@ function MainPage() {
       <section className="flex w-full flex-col items-center justify-center bg-white px-6 py-12 sm:px-8 sm:py-16">
         <div className="w-full max-w-[1280px] text-center">
           <div className="mx-auto mb-10 w-full max-w-[1216px]">
-            <h2 className="mb-3 text-[20px] font-extrabold text-gray-900 sm:mb-4 sm:text-[24px]">
+            <h2 className="mb-3 text-xl font-extrabold text-gray-900 sm:mb-4 sm:text-2xl">
               왜 StudyHub를 선택해야할까요?
             </h2>
-            <p className="text-[14px] leading-[22px] text-[#4B5563] sm:text-[16px] sm:leading-[24px]">
+            <p className="text-sm leading-6 text-gray-600 sm:text-base sm:leading-6">
               체계적인 학습과 실무 경험을 동시에 얻을 수 있는 최적의
               플랫폼입니다.
             </p>
@@ -79,14 +79,14 @@ function MainPage() {
                   className="flex w-full max-w-[360px] flex-col items-center text-center sm:max-w-[384px]"
                 >
                   <div
-                    className={`mb-4 flex h-[64px] w-[64px] items-center justify-center rounded-full ${bgColor} ${textColor} sm:h-[80px] sm:w-[80px]`}
+                    className={`mb-4 flex h-16 w-16 items-center justify-center rounded-full ${bgColor} ${textColor} sm:h-20 sm:w-20`}
                   >
                     <Icon className="h-8 w-8 sm:h-10 sm:w-10" />
                   </div>
-                  <h3 className="mb-2 text-[16px] font-semibold text-gray-900 sm:text-[18px]">
+                  <h3 className="mb-2 text-base font-semibold text-gray-900 sm:text-lg">
                     {title}
                   </h3>
-                  <p className="w-full max-w-[300px] text-[14px] leading-[22px] whitespace-pre-line text-[#4B5563] sm:max-w-[336px] sm:text-[16px] sm:leading-[24px]">
+                  <p className="w-full max-w-[300px] text-sm leading-6 whitespace-pre-line text-gray-600 sm:max-w-[336px] sm:text-base sm:leading-6">
                     {description}
                   </p>
                 </div>
@@ -101,16 +101,16 @@ function MainPage() {
         <div className="w-full max-w-[1280px]">
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <h2 className="text-[20px] font-extrabold text-gray-900 sm:text-[24px]">
+              <h2 className="text-xl font-extrabold text-gray-900 sm:text-2xl">
                 인기 강의
               </h2>
-              <p className="text-[14px] text-gray-600 sm:text-[16px]">
+              <p className="text-sm text-gray-600 sm:text-base">
                 지금 가장 많은 사람들이 수강하는 강의들
               </p>
             </div>
             <button
               onClick={() => navigate('/lectures')}
-              className="text-primary-600 text-[14px] font-medium hover:underline"
+              className="text-primary-600 cursor-pointer text-sm font-medium hover:underline"
             >
               모든 강의 보기 →
             </button>
@@ -127,27 +127,27 @@ function MainPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="flex w-full justify-center bg-[#E0B43A] px-6 py-20">
+      <section className="flex w-full justify-center bg-yellow-500 px-6 py-20">
         <div className="flex w-full max-w-[1280px] flex-col items-center text-center text-white">
-          <h2 className="mb-4 text-[24px] leading-[32px] font-extrabold sm:text-[28px] sm:leading-[38px]">
+          <h2 className="mb-4 text-2xl font-extrabold sm:text-3xl">
             지금 시작하여 IT 전문가가 되어보세요!
           </h2>
-          <p className="mb-10 text-[16px] leading-[26px] sm:text-[18px] sm:leading-[28px]">
+          <p className="mb-10 text-base sm:text-lg">
             수백 개의 강의와 활발한 스터디 그룹이 여러분을 기다리고 있습니다.
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
             <Button
               variant="outline"
-              className="!h-[52px] !w-[180px] !rounded-lg !border-none !bg-white !text-[#E0B43A] hover:!bg-[#fdf7e3] hover:!text-[#C58C00]"
+              className="h-12 w-44 cursor-pointer rounded-lg border-none bg-white text-yellow-500 hover:bg-yellow-100 hover:text-yellow-700"
               onClick={() => navigate('/signup')}
             >
               무료로 시작하기
             </Button>
             <Button
               variant="outline"
-              className="!h-[52px] !w-[200px] !rounded-lg !border !border-white !text-white hover:!bg-white hover:!text-[#E0B43A]"
-              onClick={() => navigate('/studygroups')}
+              className="h-12 w-48 cursor-pointer rounded-lg border border-white text-white hover:bg-white hover:text-yellow-500"
+              onClick={() => navigate('/create_study_group')}
             >
               스터디 그룹 만들기
             </Button>
