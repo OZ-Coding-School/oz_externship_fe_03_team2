@@ -140,7 +140,7 @@ export const useWebSocket = (study_group_uuid: string | null) => {
         return
       }
 
-      // 시스템 메시지 처리 (퇴장/강퇴?)
+      // 시스템 메시지 처리 (퇴장/강퇴)
       // 백엔드에서 { type: "system_message", message: "메시지 내용" } 형식으로 옴
       if (response.type === 'system_message') {
         addToCache(response.message, Date.now())
