@@ -5,8 +5,6 @@
 
 ### StudyHub
 
-[<img src="https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/release-v0.0.0-ㅎㄱㄷ두?style=flat&logo=google-chrome&logoColor=white" />]()
-<br/>
 [<img src="https://img.shields.io/badge/프로젝트 기간-2025.10.14~2025.11.17-fab2ac?style=flat&logo=&logoColor=white" />]()
 
 </div>
@@ -96,7 +94,7 @@ Udemy와 Inflearn 등 유명 플랫폼의 강의 정보를 스크래핑하여 �
 
 <br>
 
-## 📑 프로젝트 규칙
+## 프로젝트 규칙
 
 ### Branch Strategy
 
@@ -264,9 +262,9 @@ Git Flow 전략을 기반으로 브랜치를 관리합니다.
 
 ## Documents
 
-| 서비스 기획문서                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 팀 문서                                                                |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| 📜 [사용자 요구사항 정의서](https://docs.google.com/spreadsheets/d/1wM-CdYNZFcFZqII8Q_O5LJGXPMte9Q8eI9RsZVvCBME/preview?usp=drive_web&ouid=114046989815109555887)<br>📜 [디자인](https://www.figma.com/design/ALoyv0OXgrUUIeabkAnC64/12기-익스턴십-StudyHub-?node-id=0-1&t=RD4x0Tj0E1KBFxWb-1)<br>📜 [플로우 차트](https://miro.com/welcomeonboard/b1lhU3dSL2F2aGRMQ3dlVzBWUFJZaG1wVnRlNGI1TWZFS2hLZGNibkxDM3NxZWtWMnFkTE5xZHdlTWhKbFpFalp6NmdocHVzNUVSdUlCRTJvQUhTME9kWmluMVAzcFlKL2xjUjBiSkw4UjU0bnJ6QzB3TVZUWUQ2L2RQMStKc1B3VHhHVHd5UWtSM1BidUtUYmxycDRnPT0hdjE=?share_link_id=562074884090)<br>📜 [화면 정의서](https://www.figma.com/design/6mrjWKqoqCB2NGomWmklFZ/2%ED%8C%80?node-id=56-188&t=GHlEicJTCbr3kDzP-1)<br> | ✨ [팀 문서](https://www.notion.so/2-27fcaf5650aa802f864fda97d9ee19d1) |
+| 서비스 기획문서                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 팀 문서                                                                |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| 📜 [사용자 요구사항 정의서](https://docs.google.com/spreadsheets/d/1wM-CdYNZFcFZqII8Q_O5LJGXPMte9Q8eI9RsZVvCBME/preview?usp=drive_web&ouid=114046989815109555887)<br>📜 [디자인](https://www.figma.com/design/ALoyv0OXgrUUIeabkAnC64/12기-익스턴십-StudyHub-?node-id=0-1&t=RD4x0Tj0E1KBFxWb-1)<br>📜 [플로우 차트](https://miro.com/welcomeonboard/b1lhU3dSL2F2a)<br>📜 [화면 정의서](https://www.figma.com/design/6mrjWKqoqCB2NGomWmklFZ/2%ED%8C%80?node-id=56-188&t=GHlEicJTCbr3kDzP-1)<br> | ✨ [팀 문서](https://www.notion.so/2-27fcaf5650aa802f864fda97d9ee19d1) |
 
 <br>
 
