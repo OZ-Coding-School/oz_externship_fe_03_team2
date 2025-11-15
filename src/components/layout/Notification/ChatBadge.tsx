@@ -18,8 +18,10 @@ export function ChatBadge() {
       >
         <MessageCircle size={25} />
         {chatCount && chatCount > 0 ? (
-          <div className="bg-danger-500 absolute top-[-6px] right-[-6px] flex h-[1.3rem] w-[1.3rem] items-center justify-center rounded-full text-[.7rem] lg:top-[-7px] lg:right-[-7px] lg:h-[22.4px] lg:w-[1.4rem] lg:text-[.75rem]">
-            {chatCount}
+          <div
+            className={`bg-danger-500 absolute top-[-6px] right-[-6px] flex h-[1.3rem] w-[1.3rem] items-center justify-center rounded-full text-[.7rem] lg:top-[-7px] lg:right-[-7px] lg:h-[1.4rem] lg:w-[1.4rem] lg:text-[.75rem] ${chatCount > 9 && 'tracking-tighter'}`}
+          >
+            {chatCount > 9 ? `9+` : `${chatCount}`}
           </div>
         ) : null}
       </div>
