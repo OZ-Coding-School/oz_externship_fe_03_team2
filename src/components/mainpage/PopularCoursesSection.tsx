@@ -1,11 +1,8 @@
 import { usePopularCourses } from '../../hooks/query/usePopularCourses'
+import { handleExternalUrl } from '../../utils/navigateUtils'
 import PopularCoursesCard from './PopularCoursesCard'
 
-function PopularCoursesSection({
-  navigate,
-}: {
-  navigate: (path: string) => void
-}) {
+function PopularCoursesSection() {
   const { data: courses = [], isLoading } = usePopularCourses()
 
   if (isLoading) {
@@ -20,7 +17,7 @@ function PopularCoursesSection({
         <PopularCoursesCard
           key={course.uuid}
           course={course}
-          onClick={() => navigate(course.url_link)}
+          onClick={() => handleExternalUrl(course.url_link)}
         />
       ))}
     </div>

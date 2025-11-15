@@ -6,7 +6,7 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
 import PopularCoursesSection from '../components/mainpage/PopularCoursesSection'
 import ErrorFallback from '../components/common/ErrorFallback'
-
+import { handleExternalUrl } from '../utils/navigateUtils'
 function MainPage() {
   useDocumentTitle()
   const navigate = useNavigate()
@@ -16,7 +16,7 @@ function MainPage() {
   return (
     <main className="bg-primary-50 flex flex-col items-center justify-center">
       {/* Hero Section */}
-      <section className="flex w-full max-w-7xl flex-col items-center justify-center gap-10 px-6 py-12 sm:flex-row sm:justify-between sm:gap-12 sm:px-8 sm:py-20">
+      <section className="flex w-full max-w-7xl flex-col justify-center gap-10 px-6 py-12 sm:flex-row sm:justify-between sm:gap-12 sm:px-8 sm:py-20">
         {/* 왼쪽 텍스트 */}
         <div className="flex w-full max-w-xl flex-col text-center sm:text-left">
           <h1 className="mb-4 text-4xl leading-snug font-extrabold sm:mb-6 sm:text-5xl sm:leading-tight">
@@ -33,14 +33,16 @@ function MainPage() {
 
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start">
             <Button
-              onClick={() => navigate('/signup')}
+              onClick={() =>
+                handleExternalUrl('https://learn.ozcoding.site/lecture')
+              }
               className="bg-primary-500 hover:bg-primary-600 h-12 w-full max-w-xs cursor-pointer rounded-lg text-white sm:h-12 sm:w-44"
             >
               강의 둘러보기
             </Button>
 
             <Button
-              onClick={() => navigate('/create_study_group')}
+              onClick={() => handleExternalUrl('https://study.ozcoding.site/')}
               className="border-primary-500 text-primary-600 hover:bg-primary-100 h-12 w-full max-w-xs cursor-pointer rounded-lg border sm:h-12 sm:w-44"
             >
               스터디 그룹 참여
@@ -49,11 +51,11 @@ function MainPage() {
         </div>
 
         {/* 오른쪽 이미지 */}
-        <div className="h-56 w-full max-w-[340px] overflow-hidden rounded-2xl shadow-md sm:h-96 sm:max-w-xl">
+        <div className="flex h-56 w-full max-w-[340px] items-center justify-center overflow-hidden rounded-2xl shadow-md sm:h-96 sm:max-w-xl">
           <img
             src="/images/mainBannerImg.png"
             alt="스터디룸"
-            className="h-full w-full object-cover"
+            className="max-h-full max-w-full object-contain"
           />
         </div>
       </section>
@@ -101,7 +103,7 @@ function MainPage() {
         <div className="w-full max-w-[1280px]">
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <h2 className="text-xl font-extrabold text-gray-900 sm:text-2xl">
+              <h2 className="mb-2 text-xl font-extrabold text-gray-900 sm:text-2xl">
                 인기 강의
               </h2>
               <p className="text-sm text-gray-600 sm:text-base">
@@ -109,7 +111,7 @@ function MainPage() {
               </p>
             </div>
             <button
-              onClick={() => navigate('/lectures')}
+              onClick={() => navigate('https://learn.ozcoding.site/lecture')}
               className="text-primary-600 cursor-pointer text-sm font-medium hover:underline"
             >
               모든 강의 보기 →
@@ -119,7 +121,7 @@ function MainPage() {
           <QueryErrorResetBoundary>
             {({ reset }) => (
               <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback}>
-                <PopularCoursesSection navigate={navigate} />
+                <PopularCoursesSection />
               </ErrorBoundary>
             )}
           </QueryErrorResetBoundary>
@@ -147,7 +149,11 @@ function MainPage() {
             <Button
               variant="outline"
               className="h-12 w-48 cursor-pointer rounded-lg border border-white text-white hover:bg-white hover:text-yellow-500"
-              onClick={() => navigate('/create_study_group')}
+              onClick={() =>
+                handleExternalUrl(
+                  'https://study.ozcoding.site/create_study_group'
+                )
+              }
             >
               스터디 그룹 만들기
             </Button>
