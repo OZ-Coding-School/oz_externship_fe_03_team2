@@ -123,6 +123,10 @@ function SignUpPage() {
   const { mutate: confirmPhone } = usePhoneConfirm()
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     if (checkNickname) {
       if (nickNameData) {
         setConfirm((prev) => ({ ...prev, nickConfirm: true }))
