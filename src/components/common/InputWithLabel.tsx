@@ -76,6 +76,9 @@ function InputWithLabel({
   }, [button?.start, button?.countdown])
 
   const handleButtonClick = () => {
+    if (button?.countdown) {
+      start(button.countdown)
+    }
     button?.onClick()
   }
 

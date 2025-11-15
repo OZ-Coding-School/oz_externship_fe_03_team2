@@ -7,14 +7,22 @@ import { useUserStore } from '../../store/useUserStore'
 import { useToken } from '../../store/useTokenStore'
 import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
+import { NotiBoard } from '../NotiBoard'
+import { ChatBadge } from './Notification/ChatBadge'
+import { useAllNotification } from '../../api/services/Noti'
 
 interface HeaderIsLoginProps {
   isMobile?: boolean
 }
 
 function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
+  const { data: allData } = useAllNotification()
   const [open, setOpen] = useState(false)
+  const [notiOpen, setNotiOpen] = useState(false)
+
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const notiRef = useRef<HTMLDivElement>(null)
+
   const navigate = useNavigate()
 
   const user = useUserStore((state) => state.user)
@@ -22,7 +30,8 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
   const { clearAccessToken } = useToken()
   const { mutate: LogoutMutate } = useLogout()
 
-  const notificationCount = '3' // 알림 하드코딩 되어있는거 나중에 수정해야 함
+  const notificationCount =
+    allData?.results.filter((data) => !data.is_read).length || 0
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     if (
@@ -30,16 +39,19 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
       !dropdownRef.current.contains(event.target as Node)
     )
       setOpen(false) // 드롭다운이 존재하고 클릭 위치가 밖일 때 닫음
+    if (notiRef.current && !notiRef.current.contains(event.target as Node)) {
+      setNotiOpen(false)
+    }
   }, [])
 
   useEffect(() => {
-    if (!open) return // 안열려있으면 종료
+    if (!open && !notiOpen) return // 안열려있으면 종료
 
     document.addEventListener('mousedown', handleClickOutside) //마우스 클릭 이벤트 리스너 등록
     return () => {
       document.removeEventListener('mousedown', handleClickOutside) // 컴포넌트 언마운트 또는 open 상태 변경 시 리스너 제거
     }
-  }, [open, handleClickOutside])
+  }, [open, handleClickOutside, notiOpen])
 
   const handleMyPageClick = () => {
     navigate('/mypage/profile')
@@ -65,6 +77,12 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
   const handleUserInfoClick = () => {
     if (isMobile) return
     setOpen((prev) => !prev)
+    setNotiOpen(false)
+  }
+
+  const handleNotiClick = () => {
+    setOpen(false)
+    setNotiOpen((prev) => !prev)
   }
 
   if (!user) return null // user가 없으면 null(아무것도 렌더링 안함)
@@ -73,10 +91,13 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
     <div className="relative ml-8 flex items-center" ref={dropdownRef}>
       {/* 알림은 모바일에서도 클릭 가능 */}
       <div className="hover:text-primary-500 relative flex h-10 w-10 cursor-pointer items-center justify-center text-gray-400">
-        <Bell size={24} />
-        <span className="bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-[9999px] text-xs font-semibold text-white">
-          {notificationCount}
-        </span>
+        <Bell size={24} onClick={handleNotiClick} />
+
+        {notificationCount > 0 && (
+          <span className="bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-[9999px] text-xs font-semibold text-white">
+            {notificationCount}
+          </span>
+        )}
       </div>
 
       {/* 유저 정보 */}
@@ -104,6 +125,13 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
           onClose={() => setOpen(false)}
         />
       )}
+
+      {notiOpen && (
+        <div ref={notiRef} className="absolute top-12 right-50 z-50 w-[320px]">
+          <NotiBoard />
+        </div>
+      )}
+      <ChatBadge />
     </div>
   )
 }

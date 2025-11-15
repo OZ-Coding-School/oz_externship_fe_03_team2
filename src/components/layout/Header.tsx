@@ -8,8 +8,15 @@ import { useLogout } from '../../api/services/Auth'
 import { showToast } from '../../utils/showToast'
 import { useToken } from '../../store/useTokenStore'
 import { useUserStore } from '../../store/useUserStore'
+import { UpButton } from '../UpButton'
+import { useSSE } from '../../hooks/useSSE'
+import { useWebSocket } from '../../hooks/useWebSocket'
+import { useStudyGroupId } from '../../store/useStudyGroupId'
 
 function Header() {
+  const { studyGroupUuid } = useStudyGroupId()
+  useSSE()
+  useWebSocket(studyGroupUuid)
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -231,6 +238,7 @@ function Header() {
           </div>
         </>
       )}
+      {<UpButton />}
     </>
   )
 }
