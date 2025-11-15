@@ -51,7 +51,7 @@ function MainPage() {
         </div>
 
         {/* 오른쪽 이미지 */}
-        <div className="flex h-56 w-full max-w-[340px] items-center justify-center overflow-hidden rounded-2xl shadow-md sm:h-96 sm:max-w-xl">
+        <div className="mx-auto flex h-56 w-full max-w-[340px] items-center justify-center overflow-hidden rounded-2xl shadow-md sm:h-96 sm:max-w-xl">
           <img
             src="/images/mainBannerImg.png"
             alt="스터디룸"
