@@ -74,8 +74,12 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
                       </p>
                     )}
                     {room.unread_message_count > 0 && (
-                      <div className="bg-danger-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white">
-                        {room.unread_message_count}
+                      <div
+                        className={`bg-danger-500 flex h-5 w-5 items-center justify-center rounded-full text-xs text-white ${room.unread_message_count > 9 && 'tracking-tighter'}`}
+                      >
+                        {room.unread_message_count > 9
+                          ? `9+`
+                          : `${room.unread_message_count}`}
                       </div>
                     )}
                   </div>
