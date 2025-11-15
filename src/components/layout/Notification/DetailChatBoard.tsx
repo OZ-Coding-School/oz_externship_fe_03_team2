@@ -102,10 +102,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
     // =========
     // e.nativeEvent.isComposing이 true면 => 지금 Enter는 글자 조합용이고, 메시지 전송용이 아니다 라고 판단해서 무시하는 것.
 
-    if (e.key === 'Enter' && !e.shiftKey) {
-      // 쉬프트+엔터 눌렀을 때는 줄바꿈 할 수 있도록  안 되게 함
-      e.preventDefault()
-      // 원래 엔터 누르면 줄바꿈인데 여기서는 대신 전송하게끔 함
+    if (e.key === 'Enter') {
       handleSendMessage()
     }
   }
