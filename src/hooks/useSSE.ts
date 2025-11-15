@@ -65,7 +65,6 @@ export function useSSE() {
           }
         }
       )
-      // 여기에 showNotiToast 이런 거 추가..
     }
     eventSource.onerror = () => {
       showToast('SSE 연결 오류', 'error')
