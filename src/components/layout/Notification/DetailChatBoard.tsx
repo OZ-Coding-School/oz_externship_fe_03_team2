@@ -180,45 +180,47 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
             대화 내역이 없습니다.
           </div>
         ) : (
-          messages?.map((msg) => {
-            const isMe = Number(msg.sender.id) === user?.id
-            if (
-              msg.type === 'system_message' ||
-              msg.type === 'force_disconnect'
-            ) {
-              return (
-                <div
-                  key={msg.id}
-                  className="bg-primary-500 flex h-5 w-auto items-center justify-center rounded-full px-3 py-2 text-xs text-white opacity-50"
-                >
-                  {msg.content}
-                </div>
-              )
-            }
-
-            return (
-              <div key={msg.id}>
-                {/* 메시지 */}
-                <div
-                  className={`${isMe ? 'items-end' : 'items-start'} flex flex-col gap-1`}
-                >
-                  {!isMe && (
-                    <p className="text-xs text-gray-500">
-                      {msg.sender.nickname}
-                    </p>
-                  )}
+          messages
+            .filter((msg) => msg && msg.sender && msg.id)
+            .map((msg) => {
+              const isMe = Number(msg.sender.id) === user?.id
+              if (
+                msg.type === 'system_message' ||
+                msg.type === 'force_disconnect'
+              ) {
+                return (
                   <div
-                    className={`${isMe ? CSS.me : CSS.you} max-w-[80%] px-3 py-2 text-sm`}
+                    key={msg.id}
+                    className="bg-primary-500 flex h-5 w-auto items-center justify-center rounded-full px-3 py-2 text-xs text-white opacity-50"
                   >
                     {msg.content}
                   </div>
-                  <p className="text-xs text-gray-500">
-                    {timeFormat(msg.created_at)}
-                  </p>
+                )
+              }
+
+              return (
+                <div key={msg.id}>
+                  {/* 메시지 */}
+                  <div
+                    className={`${isMe ? 'items-end' : 'items-start'} flex flex-col gap-1`}
+                  >
+                    {!isMe && (
+                      <p className="text-xs text-gray-500">
+                        {msg.sender.nickname}
+                      </p>
+                    )}
+                    <div
+                      className={`${isMe ? CSS.me : CSS.you} max-w-[80%] px-3 py-2 text-sm`}
+                    >
+                      {msg.content}
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      {timeFormat(msg.created_at)}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )
-          })
+              )
+            })
         )}
       </div>
 

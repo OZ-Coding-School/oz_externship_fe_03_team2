@@ -75,6 +75,7 @@ export const useChatMessages = (uuid: string | null) => {
     },
     initialPageParam: 1,
     enabled: !!uuid,
+    throwOnError: false,
   })
 }
 
