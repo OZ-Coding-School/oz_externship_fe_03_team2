@@ -27,11 +27,7 @@ export const routesConfig: RouteObject[] = [
         path: 'mypage/*',
         element: (
           <ProtectedRoute requireAuth>
-            <Suspense
-              fallback={
-                <LoadingFallback message="마이페이지를 불러오는 중..." />
-              }
-            >
+            <Suspense fallback={<LoadingFallback />}>
               <Lazy.MyPage />
             </Suspense>
           </ProtectedRoute>
