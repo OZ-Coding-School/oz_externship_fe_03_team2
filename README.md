@@ -130,15 +130,15 @@ oz_externship_fe_03_team2/
 │   └── 기타 svg 파일...
 ├── src/
 │   ├── api/                    # API 관련
-│   │   ├── Helper/            # Tanstack Query 관련 훅
-│   │   ├── services/          # API 서비스 레이어
+│   │   ├── Helper/             # Tanstack Query 관련 훅
+│   │   ├── services/           # API 서비스 레이어
 │   │   └── 기타 설정 파일...
 │   ├── assets/                 # 정적 파일
-│   │   ├── readme/            # README 관련 파일
+│   │   ├── readme/             # README 관련 파일
 │   │   └── 기타 이미지...
 │   ├── components/             # React 컴포넌트
-│   │   ├── common/            # 공통 컴포넌트
-│   │   │   ├── toast/         # 토스트 알림
+│   │   ├── common/             # 공통 컴포넌트
+│   │   │   ├── toast/          # 토스트 알림
 │   │   │   └── 기타 공통 컴포넌트...
 │   │   ├── find/              # 찾기 페이지 컴포넌트
 │   │   │   ├── emailFind/     # 이메일 찾기
