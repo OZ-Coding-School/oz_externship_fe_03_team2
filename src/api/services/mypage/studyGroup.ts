@@ -23,6 +23,9 @@ export const useGetStudyGroups = (
           ...(params?.status && { status: params.status }),
           ...(params?.page !== undefined && { page: params.page }),
           ...(params?.search && { search: params.search }),
+          ...(params?.is_member !== undefined && {
+            is_member: params.is_member,
+          }),
         },
       })
     },

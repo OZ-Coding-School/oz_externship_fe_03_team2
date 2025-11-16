@@ -423,6 +423,7 @@ export interface GetStudyGroupsParams {
   status?: 'PENDING' | 'ONGOING' | 'ENDED'
   page?: number
   search?: string
+  is_member?: boolean
 }
 
 // ================리뷰=======
