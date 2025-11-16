@@ -45,7 +45,7 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
   return (
     <>
       <div
-        className={`flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none ${studyGroupUuid ? 'hidden' : ''}`}
+        className={`flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none ${studyGroupUuid ? 'hidden' : ''} `}
       >
         <div className="flex w-full justify-between border-b border-gray-200 bg-gray-50 p-4">
           <div className="flex flex-col items-start justify-center p-1">
