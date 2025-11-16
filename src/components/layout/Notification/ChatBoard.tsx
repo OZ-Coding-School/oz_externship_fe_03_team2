@@ -13,6 +13,10 @@ interface ChatOpenType {
 export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
   const { data: chatData, refetch } = useChatRooms()
 
+  useEffect(() => {
+    console.log(chatData)
+  }, [chatData])
+
   const unreadCount = chatData?.reduce((sum, item) => {
     return sum + Number(item.unread_message_count || 0)
   }, 0)
@@ -30,6 +34,13 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
     setStudyGroupUuid(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatOpen])
+
+  const sortedChatData = chatData?.slice().sort((a, b) => {
+    if (!a.last_message) return 1
+    if (!b.last_message) return -1
+
+    return b.last_message.created_at > a.last_message.created_at ? 1 : -1
+  })
 
   return (
     <>
@@ -51,12 +62,12 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
         </div>
 
         <div className="scrollbar-hide h-full overflow-y-scroll">
-          {!chatData ? (
+          {chatData?.length === 0 ? (
             <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">
               채팅방이 없습니다.
             </div>
           ) : (
-            chatData.map((room) => (
+            sortedChatData?.map((room) => (
               <div
                 key={room.uuid}
                 onClick={() => {
