@@ -13,10 +13,6 @@ interface ChatOpenType {
 export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
   const { data: chatData, refetch } = useChatRooms()
 
-  useEffect(() => {
-    console.log(chatData)
-  }, [chatData])
-
   const unreadCount = chatData?.reduce((sum, item) => {
     return sum + Number(item.unread_message_count || 0)
   }, 0)
