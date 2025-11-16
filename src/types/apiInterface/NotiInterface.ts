@@ -1,7 +1,3 @@
-// 헤더 알림
-
-import type { ReactNode } from 'react'
-
 export interface NotificationParams {
   is_read?: boolean
 }

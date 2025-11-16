@@ -203,10 +203,11 @@ export const useWebSocket = (study_group_uuid: string | null) => {
         })
         if (Number(user?.id) !== Number(newMsg.sender.id)) {
           showNotificationToast(
+            '',
             newMsg.content,
-            newMsg.sender.nickname,
             newMsg.created_at,
-            'chat'
+            'chat',
+            newMsg.sender.nickname
           )
         }
         setIsError(false)

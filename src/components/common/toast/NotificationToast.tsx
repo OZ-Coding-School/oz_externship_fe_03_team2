@@ -19,10 +19,10 @@ interface NotificationToastType {
 function NotificationToast({
   id,
   title,
-  user,
   content,
   date,
   type = 'chat',
+  user,
   notiNode,
 }: NotificationToastType) {
   //들어오는 타입에 맞춰서 날짜 가공
@@ -31,7 +31,7 @@ function NotificationToast({
 
   const header = (
     <div className="flex justify-between border-b border-gray-200 pb-1">
-      <p className="pl-1">{title}</p>
+      <p className="pl-1">{type === 'chat' ? user : title}</p>
       <button onClick={() => toast.dismiss(id)}>
         <X className="text-gray-400 hover:text-gray-500 active:text-gray-600" />
       </button>
@@ -45,9 +45,7 @@ function NotificationToast({
           {header}
           <div className="flex items-center justify-between gap-3">
             <div className="my-3 flex h-full w-full items-center justify-center gap-2.5 pt-1">
-              <div className="flex-1 text-sm">
-                {user}: {content}
-              </div>
+              <div className="flex-1 text-sm">{content}</div>
             </div>
             <div className="flex h-full gap-3 self-end text-xs whitespace-nowrap text-gray-500">
               {formatDate}
@@ -58,9 +56,9 @@ function NotificationToast({
         <div>
           {header}
           <div className="flex items-center justify-between gap-3">
-            <div className="my-3 flex h-full w-full items-center justify-center gap-2.5 pt-1">
+            <div className="my-3 flex h-full w-full items-center justify-center gap-1 pt-1">
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full ${notiNode ? typeToColor(notiNode) : 'bg-[#DBEAFE] text-[#2563EB]'}`}
+                className={`mx-2 flex h-8 w-8 items-center justify-center rounded-full ${notiNode ? typeToColor(notiNode) : 'bg-[#DBEAFE] text-[#2563EB]'}`}
               >
                 {notiNode ? typeToIcon(notiNode) : <Star />}
               </div>

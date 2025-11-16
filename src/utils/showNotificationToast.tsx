@@ -6,7 +6,8 @@ export const showNotificationToast = (
   content: string,
   date: string,
   type: 'chat' | 'notice',
-  user?: string
+  user?: string,
+  notiNode?: string
 ) => {
   toast.custom(
     (t) => {
@@ -18,6 +19,7 @@ export const showNotificationToast = (
           content={content}
           date={date}
           type={type}
+          notiNode={notiNode}
         />
       )
     },
