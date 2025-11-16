@@ -5,6 +5,7 @@ function CompletedStudyContentsList() {
   // 완료된 스터디 목록 api 훅
   const { data: studyGroupsData, isLoading } = useGetStudyGroups({
     status: 'ENDED',
+    is_member: true,
   })
 
   const studyGroups = studyGroupsData?.results ?? []
