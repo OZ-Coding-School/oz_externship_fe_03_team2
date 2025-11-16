@@ -7,6 +7,7 @@
 
 </div>
 <br><br>
+
 # StudyHub - 함께 성장하는 학습 플랫폼
 
 ### 온라인 강의와 스터디 문화를 결합한 IT 학습 플랫폼
@@ -394,6 +395,6 @@ VITE_NAVER_REDIRECT_URI=네이버 리다이렉션 URI
 
 ---
 
-[⬆ Back to Top](#studyhub---함께-성장하는-학습-플랫폼)
+[⬆ Back to Top](#readme)
 
 </div>
