@@ -1,6 +1,14 @@
 import type { RouteObject } from 'react-router'
 import { Suspense } from 'react'
 import * as Lazy from './lazy'
+import LayoutPage from '../pages/LayoutPage'
+import MainPage from '../pages/MainPage'
+import LoginPage from '../pages/LoginPage'
+import SignUpPage from '../pages/SignUpPage'
+import EmailFindPage from '../pages/EmailFindPage'
+import PasswordFindPage from '../pages/PasswordFindPage'
+import SocialCallback from '../pages/SocialCallback'
+import NotFoundPage from '../pages/NotFoundPage'
 import CommonTest from '../tests/CommonTest'
 import ApiTestPage from '../tests/ApiTestPage'
 import ProtectedRoute from './ProtectedRoute'
@@ -11,7 +19,7 @@ export const routesConfig: RouteObject[] = [
     path: '/',
     element: (
       <Suspense fallback={<LoadingFallback />}>
-        <Lazy.LayoutPage />
+        <LayoutPage />
       </Suspense>
     ),
     children: [
@@ -19,7 +27,7 @@ export const routesConfig: RouteObject[] = [
         index: true,
         element: (
           <Suspense fallback={<LoadingFallback />}>
-            <Lazy.MainPage />
+            <MainPage />
           </Suspense>
         ),
       },
@@ -40,7 +48,7 @@ export const routesConfig: RouteObject[] = [
     element: (
       <ProtectedRoute requireAuth={false}>
         <Suspense fallback={<LoadingFallback />}>
-          <Lazy.LoginPage />
+          <LoginPage />
         </Suspense>
       </ProtectedRoute>
     ),
@@ -50,7 +58,7 @@ export const routesConfig: RouteObject[] = [
     element: (
       <ProtectedRoute requireAuth={false}>
         <Suspense fallback={<LoadingFallback />}>
-          <Lazy.SignUpPage />
+          <SignUpPage />
         </Suspense>
       </ProtectedRoute>
     ),
@@ -60,7 +68,7 @@ export const routesConfig: RouteObject[] = [
     element: (
       <ProtectedRoute requireAuth={false}>
         <Suspense fallback={<LoadingFallback />}>
-          <Lazy.EmailFindPage />
+          <EmailFindPage />
         </Suspense>
       </ProtectedRoute>
     ),
@@ -70,7 +78,7 @@ export const routesConfig: RouteObject[] = [
     element: (
       <ProtectedRoute requireAuth={false}>
         <Suspense fallback={<LoadingFallback />}>
-          <Lazy.PasswordFindPage />
+          <PasswordFindPage />
         </Suspense>
       </ProtectedRoute>
     ),
@@ -79,7 +87,7 @@ export const routesConfig: RouteObject[] = [
     path: '/social-callback',
     element: (
       <Suspense fallback={<LoadingFallback />}>
-        <Lazy.SocialCallback />
+        <SocialCallback />
       </Suspense>
     ),
   },
@@ -89,7 +97,7 @@ export const routesConfig: RouteObject[] = [
     path: '*',
     element: (
       <Suspense fallback={<LoadingFallback />}>
-        <Lazy.NotFoundPage />
+        <NotFoundPage />
       </Suspense>
     ),
   },

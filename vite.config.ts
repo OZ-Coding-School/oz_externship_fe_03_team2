@@ -20,10 +20,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ['react', 'react-dom'],
-          reactRouter: ['react-router'],
-          zustand: ['zustand'],
-          tanstackQuery: ['@tanstack/react-query'],
+          // 자주 변경되지 않는 대형 라이브러리만 분리
+          vendor: ['react', 'react-dom', 'react-router'],
+          // TanStack Query + Zustand는 비교적 작으니 묶기
+          state: ['@tanstack/react-query', 'zustand'],
         },
       },
     },
