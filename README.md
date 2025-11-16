@@ -395,6 +395,6 @@ VITE_NAVER_REDIRECT_URI=네이버 리다이렉션 URI
 
 ---
 
-[⬆ Back to Top](#studyhub---함께-성장하는-학습-플랫폼)
+[⬆ Back to Top](#readme)
 
 </div>
