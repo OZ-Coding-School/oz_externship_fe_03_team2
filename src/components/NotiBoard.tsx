@@ -64,7 +64,9 @@ export function NotiBoard() {
         <div
           className={`${mode === 'all' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
         >
-          <p onClick={() => setMode('all')}>전체보기 ({allData?.count})</p>
+          <p onClick={() => setMode('all')}>
+            전체보기 ({allData && allData?.count > 10 ? '10+' : allData?.count})
+          </p>
         </div>
         <div
           className={`${mode === 'notRead' ? 'text-primary-500 border-b-2' : 'text-gray-500'} flex w-full items-center justify-center p-3`}
