@@ -368,11 +368,11 @@ function SignUpPage() {
   const formSubmit = isFormValid()
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 pb-9">
       <Header />
       <form
         onSubmit={handleSubmit}
-        className="mx-auto my-9 h-auto w-[30rem] bg-white px-[24px] py-[49px]"
+        className="mx-auto mt-9 h-auto w-[30rem] bg-white px-[24px] py-[49px]"
       >
         <h1 className="mb-4 text-center text-3xl font-bold">회원가입</h1>
         <div className="mb-9 flex justify-center gap-4 text-sm font-normal">
