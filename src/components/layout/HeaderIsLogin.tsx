@@ -95,7 +95,7 @@ function HeaderIsLogin({ isMobile = false }: HeaderIsLoginProps) {
 
         {notificationCount > 0 && (
           <span
-            className={`bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-[9999px] text-xs font-semibold text-white ${notificationCount > 9 && 'tracking-tighter'}`}
+            className={`bg-danger-500 absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-full text-xs font-semibold text-white ${notificationCount > 9 && 'tracking-tighter'}`}
           >
             {notificationCount > 9 ? `9+` : `${notificationCount}`}
           </span>

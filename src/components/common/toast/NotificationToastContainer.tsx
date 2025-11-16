@@ -4,7 +4,7 @@ function NotificationToastContainer() {
   return (
     <Toaster
       position="top-right"
-      duration={5000}
+      duration={500000}
       toastOptions={{
         className: 'mt-10',
       }}
