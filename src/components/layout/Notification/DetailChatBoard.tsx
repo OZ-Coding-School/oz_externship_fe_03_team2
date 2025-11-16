@@ -207,7 +207,7 @@ export function ChatDetail({ studyGroupName, setChatOpen }: ChatDetailType) {
                       </p>
                     )}
                     <div
-                      className={`${isMe ? CSS.me : CSS.you} max-w-[80%] px-3 py-2 text-sm`}
+                      className={`${isMe ? CSS.me : CSS.you} max-w-[80%] px-3 py-2 text-sm select-text`}
                     >
                       {msg.content}
                     </div>
