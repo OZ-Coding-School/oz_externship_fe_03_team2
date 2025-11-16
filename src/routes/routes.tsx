@@ -1,28 +1,35 @@
 import type { RouteObject } from 'react-router'
-import LayoutPage from '../pages/LayoutPage'
-import MainPage from '../pages/MainPage'
-import MyPage from '../pages/MyPage'
-import LoginPage from '../pages/LoginPage'
-import SignUpPage from '../pages/SignUpPage'
-import EmailFindPage from '../pages/EmailFindPage'
-import PasswordFindPage from '../pages/PasswordFindPage'
-import SocialCallback from '../pages/SocialCallback'
-import NotFoundPage from '../pages/NotFoundPage'
+import { Suspense } from 'react'
+import * as Lazy from './lazy'
 import CommonTest from '../tests/CommonTest'
 import ApiTestPage from '../tests/ApiTestPage'
 import ProtectedRoute from './ProtectedRoute'
+import LoadingFallback from '../components/common/LoadingFallback'
 
 export const routesConfig: RouteObject[] = [
   {
     path: '/',
-    element: <LayoutPage />,
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Lazy.LayoutPage />
+      </Suspense>
+    ),
     children: [
-      { index: true, element: <MainPage /> },
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Lazy.MainPage />
+          </Suspense>
+        ),
+      },
       {
         path: 'mypage/*',
         element: (
           <ProtectedRoute requireAuth>
-            <MyPage />
+            <Suspense fallback={<LoadingFallback />}>
+              <Lazy.MyPage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -32,7 +39,9 @@ export const routesConfig: RouteObject[] = [
     path: '/login',
     element: (
       <ProtectedRoute requireAuth={false}>
-        <LoginPage />
+        <Suspense fallback={<LoadingFallback />}>
+          <Lazy.LoginPage />
+        </Suspense>
       </ProtectedRoute>
     ),
   },
@@ -40,7 +49,9 @@ export const routesConfig: RouteObject[] = [
     path: '/signup',
     element: (
       <ProtectedRoute requireAuth={false}>
-        <SignUpPage />
+        <Suspense fallback={<LoadingFallback />}>
+          <Lazy.SignUpPage />
+        </Suspense>
       </ProtectedRoute>
     ),
   },
@@ -48,7 +59,9 @@ export const routesConfig: RouteObject[] = [
     path: '/email-find',
     element: (
       <ProtectedRoute requireAuth={false}>
-        <EmailFindPage />
+        <Suspense fallback={<LoadingFallback />}>
+          <Lazy.EmailFindPage />
+        </Suspense>
       </ProtectedRoute>
     ),
   },
@@ -56,16 +69,28 @@ export const routesConfig: RouteObject[] = [
     path: '/password-find',
     element: (
       <ProtectedRoute requireAuth={false}>
-        <PasswordFindPage />
+        <Suspense fallback={<LoadingFallback />}>
+          <Lazy.PasswordFindPage />
+        </Suspense>
       </ProtectedRoute>
     ),
   },
   {
     path: '/social-callback',
-    element: <SocialCallback />,
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Lazy.SocialCallback />
+      </Suspense>
+    ),
   },
-
   { path: '/test', element: <CommonTest /> },
   { path: '/api-test', element: <ApiTestPage /> },
-  { path: '*', element: <NotFoundPage /> },
+  {
+    path: '*',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Lazy.NotFoundPage />
+      </Suspense>
+    ),
+  },
 ]
