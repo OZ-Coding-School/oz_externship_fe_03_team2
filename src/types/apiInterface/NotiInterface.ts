@@ -1,5 +1,3 @@
-// 헤더 알림
-
 export interface NotificationParams {
   is_read?: boolean
 }

@@ -31,10 +31,17 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatOpen])
 
+  const sortedChatData = chatData?.slice().sort((a, b) => {
+    if (!a.last_message) return 1
+    if (!b.last_message) return -1
+
+    return b.last_message.created_at > a.last_message.created_at ? 1 : -1
+  })
+
   return (
     <>
       <div
-        className={`flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none ${studyGroupUuid ? 'hidden' : ''}`}
+        className={`flex h-96 w-80 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow select-none ${studyGroupUuid ? 'hidden' : ''} `}
       >
         <div className="flex w-full justify-between border-b border-gray-200 bg-gray-50 p-4">
           <div className="flex flex-col items-start justify-center p-1">
@@ -51,12 +58,12 @@ export function ChatBoard({ setChatOpen, chatOpen }: ChatOpenType) {
         </div>
 
         <div className="scrollbar-hide h-full overflow-y-scroll">
-          {!chatData ? (
+          {chatData?.length === 0 ? (
             <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">
               채팅방이 없습니다.
             </div>
           ) : (
-            chatData.map((room) => (
+            sortedChatData?.map((room) => (
               <div
                 key={room.uuid}
                 onClick={() => {

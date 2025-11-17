@@ -43,10 +43,12 @@ export function useSSE() {
       if (!newNoti.type || !typeMap.includes(newNoti.type)) return
 
       showNotificationToast(
-        newNoti.content,
-        newNoti.type,
-        newNoti.created_at,
-        'chat'
+        newNoti.type_display || '알림', // title (알림 제목)
+        newNoti.content, // content (알림 내용)
+        newNoti.created_at, // date
+        'notice', // type
+        undefined, // user (채팅 전용)
+        newNoti.type // notiNode (아이콘 타입)
       )
 
       queryClient.setQueryData<NotificationResponse>(
